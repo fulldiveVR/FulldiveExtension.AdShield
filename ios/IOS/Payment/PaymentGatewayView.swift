@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -16,17 +25,17 @@ struct PaymentGatewayView: View {
 
     @ObservedObject var vm: PaymentGatewayViewModel
 
-    @Binding var activeSheet: ActiveSheet?
+    @Binding var showSheet: Bool
+    @Binding var sheet: String
 
     @State var showPrivacySheet = false
     @State var showPlusFeaturesSheet = false
 
     var body: some View {
         if self.vm.accountActive {
-            self.activeSheet = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(1), execute: {
-                self.activeSheet = .activated
-            })
+            self.showSheet = false
+            self.sheet = "activated"
+            self.showSheet = true
         }
 
         return ZStack(alignment: .topTrailing) {
@@ -50,16 +59,14 @@ struct PaymentGatewayView: View {
                             Spacer()
                         }
 
-                        L10n.paymentTitle.withBoldSections(font: .system(size: 13))
+                        L10n.paymentTitle.withBoldSections()
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
-                            .font(.system(size: 13))
                             .padding(.top, 32)
                             .padding(.leading, 24)
                             .padding(.trailing, 32)
 
-                        HStack(alignment: .top) {
-                            Spacer()
+                        HStack {
                             VStack {
                                 BenefitView(icon: Image.fLocation, text: L10n.paymentFeatureTitleChangeLocation)
                                 //BenefitItemView(icon: Image.fComputer, text: "Up to 3 Devices")
@@ -72,7 +79,6 @@ struct PaymentGatewayView: View {
                                 BenefitView(icon: Image.fSpeed, text: L10n.paymentFeatureTitleFasterConnection)
                                 //BenefitItemView(icon: Image.fMessage, text: "Great Support")
                             }
-                            Spacer()
                         }
                         .padding(.top, 18)
                         .padding(.bottom, 18)
@@ -100,7 +106,6 @@ struct PaymentGatewayView: View {
                             Text(L10n.paymentActionRestore)
                                 .foregroundColor(Color.cActivePlus)
                                 .padding(.top, 8)
-                                .multilineTextAlignment(.center)
                                 .onTapGesture {
                                     withAnimation {
                                         self.vm.restoreTransactions()
@@ -110,7 +115,6 @@ struct PaymentGatewayView: View {
                             Text(L10n.paymentActionTermsAndPrivacy)
                                 .foregroundColor(Color.cActivePlus)
                                 .padding(.top, 12)
-                                .multilineTextAlignment(.center)
                                 .actionSheet(isPresented: self.$showPrivacySheet) {
                                     ActionSheet(title: Text(L10n.paymentActionTermsAndPrivacy), buttons: [
                                         .default(Text(L10n.paymentActionTerms)) {
@@ -150,14 +154,15 @@ struct PaymentGatewayView: View {
 
             Button(action: {
                 withAnimation {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(1), execute: {
-                        self.activeSheet = .help
+                        self.sheet = "help"
+                        self.showSheet = true
                     })
                 }
             }) {
                 Image(systemName: Image.fHelp)
-                    .imageScale(.medium)
+                    .imageScale(.large)
                     .foregroundColor(.primary)
                     .frame(width: 32, height: 32, alignment: .center)
                     .padding(8)
@@ -170,10 +175,10 @@ struct PaymentGatewayView: View {
 struct PaymentGatewayView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PaymentGatewayView(vm: PaymentGatewayViewModel(), activeSheet: .constant(nil))
-            PaymentGatewayView(vm: PaymentGatewayViewModel(), activeSheet: .constant(nil))
+            PaymentGatewayView(vm: PaymentGatewayViewModel(), showSheet: .constant(false), sheet: .constant(""))
+            PaymentGatewayView(vm: PaymentGatewayViewModel(), showSheet: .constant(false), sheet: .constant(""))
                 .environment(\.sizeCategory, .extraExtraExtraLarge)
-            PaymentGatewayView(vm: PaymentGatewayViewModel(), activeSheet: .constant(nil))
+            PaymentGatewayView(vm: PaymentGatewayViewModel(), showSheet: .constant(false), sheet: .constant(""))
                 .previewDevice(PreviewDevice(rawValue: "iPhone X"))
         }
     }

@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -23,7 +32,8 @@ struct MainView: View {
 
     @ObservedObject var tabVM: TabViewModel
 
-    @Binding var activeSheet: ActiveSheet?
+    @Binding var showSheet: Bool
+    @Binding var sheet: String
 
     @State var showHelpActions = false
 
@@ -33,13 +43,13 @@ struct MainView: View {
     var body: some View {
         VStack {
             ZStack {
-                HomeView(vm: self.vm, activeSheet: self.$activeSheet)
+                HomeView(vm: self.vm, showSheet: self.$showSheet, sheet: self.$sheet)
                     .opacity(self.tabVM.activeTab == "home" ? 1 : 0)
                 ActivityView(vm: self.activityVM, tabVM: self.tabVM)
                     .opacity(self.tabVM.activeTab == "activity" ? 1 : 0)
                 PacksView(vm: self.packsVM, tabVM: self.tabVM)
                     .opacity(self.tabVM.activeTab == "packs" ? 1 : 0)
-                SettingsTabView(homeVM: self.vm, vm: self.accountVM, tabVM: self.tabVM, inboxVM: self.inboxVM, leaseVM: self.leaseVM, activeSheet: self.$activeSheet)
+                SettingsTabView(homeVM: self.vm, vm: self.accountVM, tabVM: self.tabVM, inboxVM: self.inboxVM, leaseVM: self.leaseVM, showSheet: self.$showSheet, sheet: self.$sheet)
                     .opacity(self.tabVM.activeTab == "more" ? 1 : 0)
 
                 VStack {
@@ -48,15 +58,16 @@ struct MainView: View {
 
                         Button(action: {
                             withAnimation {
-                                self.activeSheet = .help
+                                self.sheet = "help"
+                                self.showSheet = true
                             }
                         }) {
                             Image(systemName: Image.fHelp)
-                                .imageScale(.medium)
+                                .imageScale(.large)
                                 .foregroundColor(.primary)
                                 .frame(width: 32, height: 32, alignment: .center)
                                 .padding(8)
-                                .padding(.top, 25)
+                                .padding(.top, 16)
                                 .onTapGesture {
                                     self.showHelpActions = true
                                 }
@@ -69,24 +80,28 @@ struct MainView: View {
                                             Links.openInBrowser(Links.support())
                                         },
                                         .default(Text(L10n.universalActionShowLog)) {
-                                            self.activeSheet = .log
+                                            self.sheet = "log"
+                                            self.showSheet = true
                                         },
                                         .default(Text(L10n.universalActionShareLog)) {
-                                            self.activeSheet = .sharelog
+                                            self.sheet = "sharelog"
+                                            self.showSheet = true
                                         },
                                         .cancel()
                                     ])
                                 }
                                 .contextMenu {
                                     Button(action: {
-                                        self.activeSheet = .log
+                                        self.sheet = "log"
+                                        self.showSheet = true
                                     }) {
                                         Text(L10n.universalActionShowLog)
                                         Image(systemName: "list.dash")
                                     }
 
                                     Button(action: {
-                                        self.activeSheet = .sharelog
+                                        self.sheet = "sharelog"
+                                        self.showSheet = true
                                     }) {
                                         Text(L10n.universalActionShareLog)
                                         Image(systemName: "square.and.arrow.up")
@@ -94,7 +109,8 @@ struct MainView: View {
 
                                     if !Env.isProduction {
                                         Button(action: {
-                                            self.activeSheet = .debug
+                                            self.sheet = "debug"
+                                            self.showSheet = true
                                         }) {
                                             Text("Debug tools")
                                             Image(systemName: "ant.circle")
@@ -138,7 +154,8 @@ struct MainView_Previews: PreviewProvider {
                 inboxVM: InboxViewModel(),
                 leaseVM: LeaseListViewModel(),
                 tabVM: tabVM,
-                activeSheet: .constant(nil)
+                showSheet: .constant(false),
+                sheet: .constant("")
             )
             .previewDevice(PreviewDevice(rawValue: "iPhone X"))
             .environment(\.colorScheme, .dark)
@@ -151,9 +168,10 @@ struct MainView_Previews: PreviewProvider {
                 inboxVM: InboxViewModel(),
                 leaseVM: LeaseListViewModel(),
                 tabVM: tabVM,
-                activeSheet: .constant(nil)
+                showSheet: .constant(false),
+                sheet: .constant("")
             )
-            .environment(\.sizeCategory, .accessibilityExtraLarge)
+            .environment(\.sizeCategory, .extraExtraExtraLarge)
             .environment(\.colorScheme, .dark)
 
             MainView(
@@ -164,8 +182,8 @@ struct MainView_Previews: PreviewProvider {
                 inboxVM: InboxViewModel(),
                 leaseVM: LeaseListViewModel(),
                 tabVM: tabVM,
-                activeSheet: .constant(nil)
-
+                showSheet: .constant(false),
+                sheet: .constant("")
             )
         }
     }

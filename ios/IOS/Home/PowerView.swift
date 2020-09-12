@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -16,7 +25,8 @@ struct PowerView: View {
 
     @ObservedObject var vm: HomeViewModel
 
-    @Binding var activeSheet: ActiveSheet?
+    @Binding var showSheet: Bool
+    @Binding var sheet: String
 
     @State var point = UnitPoint(x: 0, y: 0)
     @State var orientationOpacity = 0.0
@@ -152,10 +162,12 @@ struct PowerView: View {
                     self.vm.switchMain(activate: self.vm.mainSwitch,
                         noPermissions: {
                             // A callback trigerred when there is no VPN profile
-                            self.activeSheet = .askvpn
+                            self.sheet = "askvpn"
+                            self.showSheet = true
                         },
                         showRateScreen: {
-                            self.activeSheet = .rate
+                            self.sheet = "rate"
+                            self.showSheet = true
                         }
                     )
                 }
@@ -195,18 +207,18 @@ struct PowerView_Previews: PreviewProvider {
         timer.startTimer(seconds: 60 * 5 - 60)
 
         return Group {
-            PowerView(vm: off, activeSheet: .constant(nil))
+            PowerView(vm: off, showSheet: .constant(true), sheet: .constant(""))
                 .previewLayout(.fixed(width: 200, height: 200))
 
-            PowerView(vm: on, activeSheet: .constant(nil))
+            PowerView(vm: on, showSheet: .constant(true), sheet: .constant(""))
                 .previewLayout(.fixed(width: 200, height: 200))
 
-            PowerView(vm: off, activeSheet: .constant(nil))
+            PowerView(vm: off, showSheet: .constant(true), sheet: .constant(""))
                 .previewLayout(.fixed(width: 200, height: 200))
                 .environment(\.colorScheme, .dark)
                 .background(Color.black)
 
-            PowerView(vm: timer, activeSheet: .constant(nil))
+            PowerView(vm: timer, showSheet: .constant(true), sheet: .constant(""))
                 .previewLayout(.fixed(width: 200, height: 200))
                 .environment(\.colorScheme, .dark)
                 .background(Color.black)

@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -15,23 +24,16 @@ import SwiftUI
 struct SpinnerView: View {
 
     @State var spin = false
-    
-    var foreverAnimation: Animation {
-        Animation.linear(duration: 1.3)
-            .repeatForever(autoreverses: false)
-    }
 
     var body: some View {
         Circle()
             .trim(from: 0, to: 7/10)
             .stroke(Color(UIColor.systemGray4), lineWidth: 2)
             .rotationEffect(.degrees(self.spin ? 0 : -360), anchor: .center)
-            .opacity(0.4)
+            .animation(Animation.linear(duration: 1.3).repeatForever(autoreverses: false))
             .frame(width: 24, height: 24)
             .onAppear {
-                withAnimation(foreverAnimation) {
-                    self.spin = true
-                }
+                self.spin = true
             }
     }
 }

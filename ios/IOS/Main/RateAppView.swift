@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -15,7 +24,7 @@ import StoreKit
 
 struct RateAppView: View {
 
-    @Binding var activeSheet: ActiveSheet?
+    @Binding var showSheet: Bool
 
     @State var rating = 0
 
@@ -38,7 +47,7 @@ struct RateAppView: View {
                         Button(action: {
                             self.rating = number
                             if number < 4 {
-                                self.activeSheet = nil
+                                self.showSheet = false
                             }
                         }) {
                             Image(systemName: self.rating < number ? "star" : "star.fill")
@@ -56,7 +65,8 @@ struct RateAppView: View {
                         .padding()
 
                     Button(action: {
-                        self.activeSheet = nil
+                        self.showSheet = false
+                        // TODO: redirect to app store
                         SKStoreReviewController.requestReview()
                     }) {
                         ZStack {
@@ -76,7 +86,7 @@ struct RateAppView: View {
 
             .navigationBarItems(trailing:
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                 }) {
                     Text(L10n.universalActionDone)
                 }
@@ -94,10 +104,10 @@ struct RateAppView: View {
 struct RateAppView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            RateAppView(activeSheet: .constant(nil))
-            RateAppView(activeSheet: .constant(nil), rating: 3)
+            RateAppView(showSheet: .constant(false))
+            RateAppView(showSheet: .constant(false), rating: 3)
                 .previewDevice(PreviewDevice(rawValue: "iPhone X"))
-            RateAppView(activeSheet: .constant(nil), rating: 5)
+            RateAppView(showSheet: .constant(false), rating: 5)
                 .previewDevice(PreviewDevice(rawValue: "iPad Pro (12.9-inch) (3rd generation)"))
         }
     }

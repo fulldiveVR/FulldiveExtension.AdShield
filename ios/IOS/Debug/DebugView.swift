@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -15,7 +24,8 @@ import SwiftUI
 struct DebugView: View {
 
     let vm: DebugViewModel
-    @Binding var activeSheet: ActiveSheet?
+    @Binding var showSheet: Bool
+    @Binding var sheet: String
     @Binding var showPreviewAllScreens: Bool
 
     var body: some View {
@@ -25,25 +35,26 @@ struct DebugView: View {
 
             List {
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     self.vm.activateAccount()
                 }) {
                     Text("Activate account")
                 }
 
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     self.vm.deactivateAccount()
                 }) {
                     Text("Deactivate account")
                 }
 
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     onBackground {
                         sleep(5)
                         onMain {
-                            self.activeSheet = .rate
+                            self.sheet = "rate"
+                            self.showSheet = true
                         }
                     }
                 }) {
@@ -51,7 +62,7 @@ struct DebugView: View {
                 }
 
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     onBackground {
                         sleep(5)
                         onMain {
@@ -63,7 +74,19 @@ struct DebugView: View {
                 }
 
                 Button(action: {
-                   self.activeSheet = nil
+                    self.showSheet = false
+                    onBackground {
+                        sleep(5)
+                        onMain {
+                            // TODO
+                        }
+                    }
+                }) {
+                    Text("Reset configuration (wipe data)")
+                }
+
+                Button(action: {
+                   self.showSheet = false
                    onBackground {
                        sleep(5)
                        onMain {
@@ -75,7 +98,7 @@ struct DebugView: View {
                }
 
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     onBackground {
                         sleep(5)
                         onMain {
@@ -87,7 +110,7 @@ struct DebugView: View {
                 }
 
                 Button(action: {
-                    self.activeSheet = nil
+                    self.showSheet = false
                     onBackground {
                         sleep(5)
                         onMain {
@@ -105,6 +128,6 @@ struct DebugView: View {
 
 struct DebugView_Previews: PreviewProvider {
     static var previews: some View {
-        DebugView(vm: DebugViewModel(homeVM: HomeViewModel()), activeSheet: .constant(nil), showPreviewAllScreens: .constant(false))
+        DebugView(vm: DebugViewModel(homeVM: HomeViewModel()), showSheet: .constant(false), sheet: .constant(""), showPreviewAllScreens: .constant(false))
     }
 }

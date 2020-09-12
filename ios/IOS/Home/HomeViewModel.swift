@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -25,9 +34,6 @@ class HomeViewModel: ObservableObject {
 
     init() {
         sharedActions.changeGateway = switchGateway
-        sharedActions.refreshStats = { ok in
-            self.refreshAdsCounter(delay: false, ok: ok)
-        }
         Config.shared.setOnConfigUpdated {
             onMain { self.syncUiWithConfig() }
         }
@@ -185,7 +191,7 @@ class HomeViewModel: ObservableObject {
                     }
                 } else {
                     // Tunnel is already up and running, check lease and account
-                    if status?.hasGateway() ?? false {
+                    if status!.hasGateway() {
                         if !Config.shared.accountActive() || !Config.shared.leaseActive() {
                             self.log.w("start: Lease expired, showing alert dialog")
                             self.showExpiredAlert()
@@ -274,9 +280,11 @@ class HomeViewModel: ObservableObject {
                             } else {
                                 self.log.w("Foreground: synced: missing lease")
                             }
+                            self.refreshAdsCounter()
                         }
                     } else {
                         self.log.v("Foreground: synced")
+                        self.refreshAdsCounter()
                     }
                 }}
             }
@@ -350,7 +358,7 @@ class HomeViewModel: ObservableObject {
 
                                     self.expiration.update(Config.shared.lease())
                                     self.recheckActiveLeaseAfterActivating()
-                                    self.refreshAdsCounter(delay: true)
+                                    self.refreshAdsCounter()
                                     self.log.v("User action: switchMain: done")
                                 }}
                             } else if Config.shared.vpnEnabled() && Config.shared.hasLease() && Config.shared.accountActive() {
@@ -368,7 +376,7 @@ class HomeViewModel: ObservableObject {
                                         }
 
                                         self.expiration.update(Config.shared.lease())
-                                        self.refreshAdsCounter(delay: true)
+                                        self.refreshAdsCounter()
                                         self.log.v("User action: switchMain: done")
                                     }}
                                 }}
@@ -378,7 +386,7 @@ class HomeViewModel: ObservableObject {
                                 return self.handleError(CommonError.accountInactive, cause: error)
                             } else {
                                 // Filtering only mode
-                                self.refreshAdsCounter(delay: true) {
+                                self.refreshAdsCounter {
                                     if self.shouldShowRateScreen() {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(1), execute: {
                                             showRateScreen(())
@@ -596,7 +604,6 @@ class HomeViewModel: ObservableObject {
                 return done(nil, status)
             } else if status.active {
                 self.log.v(" NETX active")
-                self.refreshAdsCounter(delay: false)
                 if status.hasGateway() {
                     self.log.v("  Connected to gateway: \(status.gatewayId!)")
                     self.mainSwitch = true
@@ -700,9 +707,9 @@ class HomeViewModel: ObservableObject {
     }
 
     private let decoder = initJsonDecoder()
-    func refreshAdsCounter(delay: Bool, ok: @escaping Ok<Void> = { _ in }) {
+    func refreshAdsCounter(ok: @escaping Ok<Void> = { _ in }) {
         // Delay so that we get some entries on the activity list without the need to re-enter the app
-        bgThread.asyncAfter(deadline: .now() + TimeInterval(delay ? 3 : 0), execute: {
+        bgThread.asyncAfter(deadline: .now() + TimeInterval(3), execute: {
             self.network.sendMessage(msg: "stats", skipReady: false) { error, result in
                 if error != nil {
                     return self.log.w("refreshAdsCounter: failed sending stats message".cause(error))

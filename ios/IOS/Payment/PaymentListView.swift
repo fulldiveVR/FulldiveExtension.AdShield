@@ -1,9 +1,18 @@
 //
 //  This file is part of Blokada.
 //
-//  This Source Code Form is subject to the terms of the Mozilla Public
-//  License, v. 2.0. If a copy of the MPL was not distributed with this
-//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//  Blokada is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  Blokada is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -31,7 +40,6 @@ struct PaymentListView: View {
                     }
                 }
                 .padding(.bottom, 8)
-                Spacer()
             }
             .padding(.top, 1)
             .opacity(self.vm.working || self.vm.options.isEmpty ? 0.0 : 1.0)
@@ -45,14 +53,9 @@ struct PaymentListView: View {
                     Spacer()
                     VStack {
                         if self.vm.working {
-                            if #available(iOS 14.0, *) {
-                                ProgressView()
-                                    .padding(.bottom)
-                            } else {
-                                SpinnerView()
-                                    .frame(width: 24, height: 24)
-                                    .padding(.bottom)
-                            }
+                            SpinnerView()
+                                .frame(width: 24, height: 24)
+                                .padding(.bottom)
 
                             Text(L10n.universalStatusProcessing)
                                 .multilineTextAlignment(.center)
