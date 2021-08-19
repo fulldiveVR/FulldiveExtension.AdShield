@@ -22,6 +22,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.util.Log
 import android.widget.TextView
 import androidx.core.app.ShareCompat
@@ -92,26 +93,21 @@ object LogService {
         val uri = File(handle)
         val actualUri = FileProvider.getUriForFile(ctx, "${ctx.packageName}.files", uri)
 
-        val activity = ctx as? Activity
-        if (activity != null) {
-            val intent = ShareCompat.IntentBuilder.from(activity)
-                .setStream(actualUri)
-                .setType("text/*")
-                .intent
-                .setAction(Intent.ACTION_SEND)
-                .setDataAndType(actualUri, "text/*")
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            ctx.startActivity(intent)
-        } else {
-            val openFileIntent = Intent(Intent.ACTION_SEND)
-            openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            openFileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            openFileIntent.type = "plain/*"
-            openFileIntent.putExtra(Intent.EXTRA_STREAM, actualUri)
-            ctx.startActivity(openFileIntent)
+
+        val openFileIntent = Intent(Intent.ACTION_SEND)
+        openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        openFileIntent.data = Uri.parse("mailto:")
+        openFileIntent.type = "plain/*"
+        openFileIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("support@fulldive.com"))
+        openFileIntent.putExtra(Intent.EXTRA_SUBJECT, "Logs")
+        openFileIntent.putExtra(Intent.EXTRA_STREAM, actualUri)
+
+        try {
+            ctx.startActivity(Intent.createChooser(openFileIntent, "Choose Email Client"))
+        } catch (e: java.lang.Exception) {
+            Logger.w("Log", "Exception caught while trying to share log $e")
         }
+
     }
 
     private fun shareLogAlternative() {

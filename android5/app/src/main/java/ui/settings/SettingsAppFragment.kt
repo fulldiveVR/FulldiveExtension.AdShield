@@ -25,7 +25,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import org.blokada.R
+import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
 import service.EnvironmentService
 import service.UpdateService
@@ -176,16 +176,16 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             useForeground.value = useFg
         })
 
-        val config: Preference = findPreference("app_config")!!
-        config.setOnPreferenceClickListener {
-            UpdateService.resetSeenUpdate()
-            blockaRepoVM.refreshRepo()
-            true
-        }
+//        val config: Preference = findPreference("app_config")!!
+//        config.setOnPreferenceClickListener {
+//            UpdateService.resetSeenUpdate()
+//            blockaRepoVM.refreshRepo()
+//            true
+//        }
 
-        blockaRepoVM.repoConfig.observe(viewLifecycleOwner, Observer {
-            config.summary = it.name
-        })
+//        blockaRepoVM.repoConfig.observe(viewLifecycleOwner, Observer {
+//            config.summary = it.name
+//        })
 
         val boot: Preference = findPreference("app_startonboot")!!
         boot.setOnPreferenceClickListener {

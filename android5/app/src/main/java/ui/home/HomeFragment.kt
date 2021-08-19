@@ -21,7 +21,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.*
-import org.blokada.R
+import org.adshield.R
 import service.AlertDialogService
 import service.EnvironmentService
 import service.UpdateService
@@ -73,7 +73,6 @@ class HomeFragment : Fragment() {
                 }
                 s.active && EnvironmentService.isSlim() -> {
                     getString(R.string.home_status_detail_active_slim)
-                        .withBoldSections(requireContext().getColorFromAttr(R.attr.colorRingLibre1))
                 }
                 s.active && counter == null -> {
                     getString(R.string.home_status_detail_active)
@@ -141,7 +140,7 @@ class HomeFragment : Fragment() {
                 else -> showFailureDialog(s.error)
             }
 
-            plusButton.visible = s.inProgress || s.active
+            plusButton.visible = false
             plusButton.isEnabled = !s.inProgress
             if (!s.inProgress) {
                 // Trying to fix a weird out of sync switch state

@@ -16,6 +16,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:alpha="1"
     android:background="?android:attr/colorBackgroundFloating"
     android:padding="@dimen/half"
     tools:context="ui.home.HelpFragment">
@@ -81,21 +82,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/main_ask_for_permissions_description" />
 
-                    <TextView
-                        android:id="@+id/vpnperm_more"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/doubled"
-                        android:gravity="center"
-                        android:text="@string/universal_action_learn_more"
-                        android:textColor="?android:attr/colorPrimary" />
-
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="80dp"
                         android:layout_marginTop="@dimen/normal"
                         android:layout_marginBottom="@dimen/normal"
-                        android:background="?android:attr/shadowColor" />
+                        android:alpha="0"
+                        android:background="@android:color/white" />
 
                     <Button
                         android:id="@+id/vpnperm_continue"

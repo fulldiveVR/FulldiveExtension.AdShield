@@ -16,7 +16,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.*
-import org.blokada.R
+import org.adshield.R
 import ui.Command
 import ui.executeCommand
 import ui.utils.cause

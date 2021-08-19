@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import model.App
-import org.blokada.R
+import org.adshield.R
 import ui.utils.getColorFromAttr
 
 class AppsFragment : Fragment() {

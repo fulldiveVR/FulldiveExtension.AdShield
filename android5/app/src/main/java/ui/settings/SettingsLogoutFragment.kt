@@ -16,7 +16,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.*
-import org.blokada.R
+import org.adshield.R
 import service.tr
 import ui.AccountViewModel
 import ui.app

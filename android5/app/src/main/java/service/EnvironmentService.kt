@@ -14,7 +14,7 @@ package service
 
 import android.os.Build
 import model.DeviceId
-import org.blokada.BuildConfig
+import org.adshield.BuildConfig
 
 object EnvironmentService {
 
@@ -35,9 +35,9 @@ object EnvironmentService {
         val touch = if (isSupportingTouch()) "touch" else "donttouch"
         val compatible = if (isCompatible()) "compatible" else "incompatible"
         return if (isFdroid())
-            "blokada/5.x.x (android-droid droid droid droid droid droid droid compatible)"
+            "adshield/5.x.x (android-droid droid droid droid droid droid droid compatible)"
         else
-            "blokada/$version (android-$androidVersion $flavor $type $arch $brand $device $touch api $compatible)"
+            "adshield/$version (android-$androidVersion $flavor $type $arch $brand $device $touch api $compatible)"
     }
 
     fun isPublicBuild(): Boolean {

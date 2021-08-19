@@ -27,7 +27,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.HistoryEntry
-import org.blokada.R
+import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app

@@ -33,7 +33,7 @@ import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.blokada.R
+import org.adshield.R
 import service.*
 import ui.advanced.packs.PacksViewModel
 import ui.home.ActivatedFragment
@@ -279,8 +279,11 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.help_help -> {
-                val fragment = HelpFragment.newInstance()
-                fragment.show(supportFragmentManager, null)
+                val nav = findNavController(R.id.nav_host_fragment)
+                nav.navigate(R.id.navigation_settings)
+                nav.navigate(
+                    SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.kb, getString(R.string.universal_action_help))
+                )
             }
             R.id.help_logs -> LogService.showLog()
             R.id.help_sharelog -> LogService.shareLog()

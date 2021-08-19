@@ -18,7 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
-import org.blokada.R
+import org.adshield.R
 import ui.utils.getColorFromAttr
 import utils.toBlokadaPlusText
 import utils.withBoldSections

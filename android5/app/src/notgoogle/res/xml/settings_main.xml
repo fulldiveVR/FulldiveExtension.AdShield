@@ -65,24 +65,6 @@
             app:key="main_donate"
             app:title="@string/universal_action_donate" />
 
-        <Preference
-            android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_baseline_emoji_emotions_24"
-            app:key="main_community"
-            app:title="@string/universal_action_community" />
-
-        <Preference
-            android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_baseline_chat_bubble_outline_24"
-            app:key="main_support"
-            app:title="@string/universal_action_contact_us" />
-
-        <Preference
-            android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_baseline_people_alt_24"
-            app:key="main_about"
-            app:title="@string/account_action_about" />
-
     </PreferenceCategory>
 
 

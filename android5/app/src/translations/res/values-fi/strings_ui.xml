@@ -105,7 +105,7 @@
     <string name="advanced_section_slugline_packs">Aktivoi rajoittavampi estäminen</string>
     <string name="advanced_section_slugline_apps">Valitse sovellukset joita ei pitäisi koskaan estää</string>
     <string name="advanced_section_slugline_encryption">Säädä DNS:n ja salauksen tasoa</string>
-    <string name="advanced_action_slim_migrate_to_full">Käytät Blokada Slimiä. Lisätietoja</string>
+    <string name="advanced_action_slim_migrate_to_full">Käytät AdShieldiä. Lisätietoja</string>
     <string name="location_choice_header">Valitse sijainti</string>
     <string name="activity_section_header">Tapahtumat</string>
     <string name="activity_section_header_details">Aktiviteettien yksityiskohdat</string>

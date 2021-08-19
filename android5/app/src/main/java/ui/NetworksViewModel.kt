@@ -20,7 +20,7 @@ import service.AlertDialogService
 import service.ConnectivityService
 import service.PersistenceService
 import utils.Logger
-import org.blokada.R
+import org.adshield.R
 
 class NetworksViewModel : ViewModel() {
 

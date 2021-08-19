@@ -12,7 +12,7 @@
 
 package model
 
-import org.blokada.R
+import org.adshield.R
 import service.ContextService
 import service.tr
 

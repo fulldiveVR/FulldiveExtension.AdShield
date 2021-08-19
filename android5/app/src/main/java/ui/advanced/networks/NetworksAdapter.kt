@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import model.NetworkDescriptor
 import model.NetworkType
-import org.blokada.R
+import org.adshield.R
 import ui.NetworksViewModel
 import ui.utils.getColorFromAttr
 

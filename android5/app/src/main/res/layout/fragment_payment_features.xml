@@ -61,7 +61,7 @@
                         style="@style/Text.Plus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="BLOKADA"
+                        android:text="AdShield"
                         android:textColor="?android:attr/textColor" />
 
                     <TextView

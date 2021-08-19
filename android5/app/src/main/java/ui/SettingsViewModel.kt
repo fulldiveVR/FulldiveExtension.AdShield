@@ -22,7 +22,7 @@ import service.PersistenceService
 import ui.utils.cause
 import utils.Logger
 import java.lang.Exception
-import org.blokada.R
+import org.adshield.R
 import repository.DnsDataSource
 
 class SettingsViewModel : ViewModel() {

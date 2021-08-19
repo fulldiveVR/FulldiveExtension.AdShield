@@ -24,7 +24,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.blokada.R
+import org.adshield.R
 import ui.BottomSheetFragment
 import ui.TunnelViewModel
 import ui.advanced.statusToLevel

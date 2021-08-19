@@ -18,7 +18,7 @@ import model.Account
 import model.AccountId
 import model.ActiveUntil
 import model.BlokadaException
-import org.blokada.R
+import org.adshield.R
 import repository.BlockaRepository
 import service.AlertDialogService
 import service.ConnectivityService

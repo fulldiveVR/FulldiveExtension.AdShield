@@ -10,5 +10,5 @@
  * @author Karol Gusak (karol@blocka.net)
  */
 
-rootProject.name = "Blokada"
+rootProject.name = "AdShield"
 include ':app'

@@ -21,7 +21,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import model.Lease
-import org.blokada.R
+import org.adshield.R
 
 class LeasesAdapter(private val interaction: Interaction) :
     ListAdapter<Lease, LeasesAdapter.LeaseViewHolder>(LeaseDC()) {

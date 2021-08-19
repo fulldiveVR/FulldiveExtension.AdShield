@@ -26,7 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
-import org.blokada.R
+import org.adshield.R
 import service.EnvironmentService
 import ui.TunnelViewModel
 import ui.home.ProtectionLevelFragment

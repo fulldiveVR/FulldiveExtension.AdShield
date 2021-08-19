@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">Ative para bloqueio mais restritivo</string>
     <string name="advanced_section_slugline_apps">Escolha aplicativos que nunca devem ser bloqueados</string>
     <string name="advanced_section_slugline_encryption">Ajuste seu nível de criptografia e DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">Você está usando o Blokada Slim. Saiba mais</string>
+    <string name="advanced_action_slim_migrate_to_full">Você está usando o AdShield. Saiba mais</string>
     <string name="location_choice_header">Escolha um Local</string>
     <string name="activity_section_header">Atividade</string>
     <string name="activity_section_header_details">Detalhes de Atividade</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">Esta é a nossa nova versão recomendada <b>para smartphones e tablets com Android 7 ou mais recente</b>. É mais simples e rápida em comparação com o Blokada 4.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">O Blokada Slim é uma <b>versão leve do aplicativo</b>, e só contém recursos permitidos pela política da Google Play.</string>
+    <string name="homepage_download_desc_android_slim">O AdShield é uma <b>versão leve do aplicativo</b>, e só contém recursos permitidos pela política da Google Play.</string>
     <string name="homepage_download_action_android_slim">Abrir a Google Play</string>
     <string name="homepage_download_desc_android_four">Nós ainda mantemos a versão mais antiga do Blokada. Ela tem mais recursos, funciona em dispositivos mais antigos e TVs.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

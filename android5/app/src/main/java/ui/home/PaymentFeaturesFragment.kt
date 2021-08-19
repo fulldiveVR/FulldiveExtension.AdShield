@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.blokada.R
+import org.adshield.R
 import ui.AccountViewModel
 import ui.BottomSheetFragment
 import ui.app

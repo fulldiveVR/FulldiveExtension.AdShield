@@ -24,7 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import model.HistoryEntryType
-import org.blokada.R
+import org.adshield.R
 import ui.StatsViewModel
 import ui.app
 import ui.advanced.packs.OptionView

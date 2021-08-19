@@ -18,7 +18,7 @@ import android.webkit.*
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import model.Uri
-import org.blokada.R
+import org.adshield.R
 import service.ContextService
 import utils.Logger
 import java.lang.ref.WeakReference

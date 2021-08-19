@@ -17,7 +17,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.RelativeSizeSpan
 import android.text.style.TextAppearanceSpan
 import androidx.core.text.*
-import org.blokada.R
+import org.adshield.R
 import service.ContextService
 import ui.utils.cause
 import ui.utils.getColorFromAttr

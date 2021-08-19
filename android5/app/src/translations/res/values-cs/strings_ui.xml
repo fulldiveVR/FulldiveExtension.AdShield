@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">Toto je naše nová, doporučená verze <b>pro chytré telefony a tablety s Androidem 7 nebo novějším</b>. Ve srovnání s Blokadou 4 je to jednodušší a rychlejší.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim je <b>odlehčená verze původní aplikace</b>a obsahuje pouze funkce povolené zásadami Google Play.</string>
+    <string name="homepage_download_desc_android_slim">AdShield je <b>odlehčená verze původní aplikace</b>a obsahuje pouze funkce povolené zásadami Google Play.</string>
     <string name="homepage_download_action_android_slim">Otevřít Google Play</string>
     <string name="homepage_download_desc_android_four">Stále udržujeme starší verzi Blokady. Má více funkcí, funguje na starších zařízeních a televizorech.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

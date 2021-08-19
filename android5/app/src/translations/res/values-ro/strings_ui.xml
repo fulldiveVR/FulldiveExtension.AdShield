@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">Activați pentru o blocare mai restrictivă</string>
     <string name="advanced_section_slugline_apps">Alegeți aplicațiile ce nu ar trebui să fie blocate niciodată</string>
     <string name="advanced_section_slugline_encryption">Ajustați nivelul de criptare şi DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">Folosiți Blokada Slim. Aflați mai multe</string>
+    <string name="advanced_action_slim_migrate_to_full">Folosiți AdShield. Aflați mai multe</string>
     <string name="location_choice_header">Selectați o locație</string>
     <string name="activity_section_header">Activitate</string>
     <string name="activity_section_header_details">Detalii de activitate</string>

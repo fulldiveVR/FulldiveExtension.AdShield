@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.google.android.material.imageview.ShapeableImageView
 import model.Pack
-import org.blokada.R
+import org.adshield.R
 import service.tr
 
 class PacksAdapter(private val interaction: Interaction? = null) :

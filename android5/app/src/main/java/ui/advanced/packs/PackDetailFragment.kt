@@ -22,7 +22,7 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import org.blokada.R
+import org.adshield.R
 import service.tr
 import ui.app
 

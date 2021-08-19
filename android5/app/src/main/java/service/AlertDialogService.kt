@@ -17,7 +17,7 @@ import android.content.DialogInterface
 import android.widget.TextView
 import android.graphics.Typeface
 import android.widget.Toast
-import org.blokada.R
+import org.adshield.R
 import utils.Logger
 
 object AlertDialogService {

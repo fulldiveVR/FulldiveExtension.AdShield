@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">تفعيل لحظْر أكثر تقييداً</string>
     <string name="advanced_section_slugline_apps">اختر التطبيقات التي لا يجب حظرها أبداً</string>
     <string name="advanced_section_slugline_encryption">ضبط مستوى التشفير الخاصّ بك و DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">أنت تستخدم Blokada Slim. تعرّف على المزيد</string>
+    <string name="advanced_action_slim_migrate_to_full">أنت تستخدم AdShield. تعرّف على المزيد</string>
     <string name="location_choice_header">اختر موقع</string>
     <string name="activity_section_header">الأنشطة</string>
     <string name="activity_section_header_details">تفاصيل النشاط</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">هذا هو الإصدار الجديد الموصى به <b>للهواتف الذكيّة و اللّوحيّة مع أندرويد 7 أو الأحدث</b>. إنّه أبسط وأسرع بالمقارنة مع بلوكادا 4.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">نسخة تجريبيّة .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim هو نسخة <b>خفيفة الوزن من التطبيق</b>، وهي تحتوي فقط على الميّزات المسموح بها من قبل سياسة Google Play.</string>
+    <string name="homepage_download_desc_android_slim">AdShield هو نسخة <b>خفيفة الوزن من التطبيق</b>، وهي تحتوي فقط على الميّزات المسموح بها من قبل سياسة Google Play.</string>
     <string name="homepage_download_action_android_slim">فتح Google Play</string>
     <string name="homepage_download_desc_android_four">لا نزال نحافظ على الإصدار القديم من بلوكادا. لديه المزيد من الميّزات، يعمل على الأجهزة القديمة، و أجهزة التلفاز.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

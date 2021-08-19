@@ -15,7 +15,7 @@ package ui.home
 import android.os.Bundle
 import android.view.*
 import androidx.navigation.fragment.findNavController
-import org.blokada.R
+import org.adshield.R
 import ui.BottomSheetFragment
 import utils.Links
 

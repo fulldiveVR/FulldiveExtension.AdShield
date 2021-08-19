@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">Daha kısıtlayıcı engelleme için etkinleştirin</string>
     <string name="advanced_section_slugline_apps">Asla engellenmemesi gereken uygulamaları seçin</string>
     <string name="advanced_section_slugline_encryption">Şifreleme seviyenizi ve DNS\'nizi ayarlayın</string>
-    <string name="advanced_action_slim_migrate_to_full">Blokada Slim\'i kullanıyorsunuz. Daha fazla bilgi edinin</string>
+    <string name="advanced_action_slim_migrate_to_full">AdShield\'i kullanıyorsunuz. Daha fazla bilgi edinin</string>
     <string name="location_choice_header">Bir konum seçin</string>
     <string name="activity_section_header">Etkinlik</string>
     <string name="activity_section_header_details">Etkinlik Ayrıntıları</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">Bu, <b>Android 7 veya daha yenisine sahip akıllı telefonlar ve tabletler için</b> önerilen yeni sürümümüzdür. Blokada 4\'e göre daha basit ve hızlıdır.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim, <b>uygulamanın hafif bir sürümüdür</b> ve yalnızca Google Play politikası tarafından izin verilen özellikleri içerir.</string>
+    <string name="homepage_download_desc_android_slim">AdShield, <b>uygulamanın hafif bir sürümüdür</b> ve yalnızca Google Play politikası tarafından izin verilen özellikleri içerir.</string>
     <string name="homepage_download_action_android_slim">Google Play\'i Aç</string>
     <string name="homepage_download_desc_android_four">Hala Blokada\'nın eski sürümünü sürdürüyoruz. Daha fazla özelliğe sahiptir, eski cihazlarda ve TV\'lerde çalışır.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

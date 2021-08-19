@@ -17,7 +17,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.blokada.R
+import org.adshield.R
 import ui.BottomSheetFragment
 
 class AppsFilterFragment : BottomSheetFragment() {

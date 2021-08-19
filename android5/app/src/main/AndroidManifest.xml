@@ -12,8 +12,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.blokada"
-    android:sharedUserId="org.blokada">
+    package="org.adshield"
+    android:sharedUserId="org.adshield">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -64,7 +64,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="app.blokada.org"
+                    android:host="app.adshield.org"
                     android:pathPrefix="/success"
                     android:scheme="https" />
             </intent-filter>

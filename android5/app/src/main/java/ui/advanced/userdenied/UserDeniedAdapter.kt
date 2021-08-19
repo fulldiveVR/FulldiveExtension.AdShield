@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.blokada.R
+import org.adshield.R
 
 class UserDeniedAdapter(
     private val interaction: Interaction? = null

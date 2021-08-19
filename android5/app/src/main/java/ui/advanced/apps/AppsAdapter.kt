@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import model.App
 import model.AppId
-import org.blokada.R
+import org.adshield.R
 import repository.AppRepository
 
 class AppsAdapter(

@@ -19,7 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
-import org.blokada.R
+import org.adshield.R
 import service.AlertDialogService
 import ui.AccountViewModel
 import ui.SettingsViewModel

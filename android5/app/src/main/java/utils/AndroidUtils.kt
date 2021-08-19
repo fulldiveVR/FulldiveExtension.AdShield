@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import model.SystemTunnelRevoked
 import model.Uri
-import org.blokada.R
+import org.adshield.R
 import service.ContextService
 import service.tr
 import utils.Logger

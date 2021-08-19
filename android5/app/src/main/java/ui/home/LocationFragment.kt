@@ -26,7 +26,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.delay
 import model.Gateway
-import org.blokada.R
+import org.adshield.R
 import ui.BottomSheetFragment
 import ui.TunnelViewModel
 import ui.app

@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">Aktifkan untuk pemblokiran yang lebih ketat</string>
     <string name="advanced_section_slugline_apps">Pilih aplikasi yang tidak boleh diblokir</string>
     <string name="advanced_section_slugline_encryption">Atur tingkat enkripsi dan pilih server DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">Anda sedang menggunakan Blokada Slim. Pelajari lebih lanjut</string>
+    <string name="advanced_action_slim_migrate_to_full">Anda sedang menggunakan AdShield. Pelajari lebih lanjut</string>
     <string name="location_choice_header">Pilih lokasi</string>
     <string name="activity_section_header">Aktifitas</string>
     <string name="activity_section_header_details">Detail Aktivitas</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">Versi ini adalah versi terbaru dan yang kami rekomendasikan <b>untuk smartphone dan tablet yang menggunakan Android 7 atau lebih baru</b>. Versi ini lebih simpel dan cepat dibandingkan Blokada 4.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim adalah <b>versi lebih ringan dari Blokada</b>, dan hanya berisi fitur-fitur yang memenuhi syarat kebijakan Google Play Store.</string>
+    <string name="homepage_download_desc_android_slim">AdShield adalah <b>versi lebih ringan dari Blokada</b>, dan hanya berisi fitur-fitur yang memenuhi syarat kebijakan Google Play Store.</string>
     <string name="homepage_download_action_android_slim">Buka Google Play</string>
     <string name="homepage_download_desc_android_four">Kami masih me-maintain Blokada versi lama. Versi ini memiliki lebih banyak fitur dan berfungsi pada perangkat yang lama dan juga smart TV.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

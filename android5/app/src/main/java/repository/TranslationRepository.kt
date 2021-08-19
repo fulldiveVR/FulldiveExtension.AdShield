@@ -23,32 +23,11 @@ import java.io.FileNotFoundException
 import java.util.*
 
 val SUPPORTED_LANGUAGES = listOf(
-    "en", "pl", "de", "es", "it", "hi", "ru", "bg", "tr", "ja", "id", "cs", "zh-Hant", "ar", "fi",
-    "ro", "pt-BR", "fr", "hu", "nl", "sv"
+    "en"
 )
 
 val LANGUAGE_NICE_NAMES = mapOf(
-    "en" to "English",
-    "pl" to "Polski",
-    "de" to "Deutsch",
-    "es" to "Español",
-    "it" to "Italiano",
-    "hi" to "हिन्दी",
-    "ru" to "Pусский",
-    "bg" to "Български",
-    "tr" to "Türk",
-    "ja" to "日本語",
-    "id" to "bahasa Indonesia",
-    "cs" to "Český",
-    "zh-Hant" to "中文 (繁體)",
-    "ar" to "عربى",
-    "fi" to "Suomalainen",
-    "ro" to "Română",
-    "pt-BR" to "Portugues (Brasil)",
-    "fr" to "Français",
-    "hu" to "Magyar",
-    "nl" to "Nederlands",
-    "sv" to "Svenska"
+    "en" to "English"
 )
 
 fun LocaleListCompat.getFirstSupportedLocale(): Locale {

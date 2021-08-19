@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import model.Lease
-import org.blokada.R
+import org.adshield.R
 import ui.AccountViewModel
 import ui.TunnelViewModel
 import ui.app

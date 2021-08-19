@@ -16,7 +16,7 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import androidx.lifecycle.ViewModelProvider
 import model.TunnelStatus
-import org.blokada.R
+import org.adshield.R
 import utils.Logger
 
 class QuickSettingsToggle : TileService() {

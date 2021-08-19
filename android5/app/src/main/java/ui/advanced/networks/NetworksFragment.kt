@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.NetworkDescriptor
-import org.blokada.R
+import org.adshield.R
 import service.AlertDialogService
 import service.ConnectivityService
 import service.NetworkMonitorPermissionService

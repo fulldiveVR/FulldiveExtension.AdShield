@@ -17,24 +17,24 @@ import java.net.URLEncoder
 
 object Links {
 
-    val intro = "https://go.blokada.org/introadblocking"
-    val whyUpgrade = "https://go.blokada.org/vpn"
-    val whatIsDns = "https://go.blokada.org/dns"
-    val whyVpnPerms = "https://go.blokada.org/vpnperms"
-    val howToRestore = "https://go.blokada.org/vpnrestore"
-    val tunnelFailure = "https://go.blokada.org/tunnelfailure"
-    val startOnBoot = "https://go.blokada.org/startonboot"
+    val intro = "https://fulldive.com"
+    val whyUpgrade = "https://fulldive.com"
+    val whatIsDns = "https://fulldive.com"
+    val whyVpnPerms = "https://fulldive.com"
+    val howToRestore = "https://fulldive.com"
+    val tunnelFailure = "https://fulldive.com"
+    val startOnBoot = "https://fulldive.com"
 
-    val kb = "https://go.blokada.org/kb_android"
-    val donate = "https://go.blokada.org/donate"
-    val privacy = "https://go.blokada.org/privacy"
-    val terms = "https://go.blokada.org/terms"
-    val credits = "https://blokada.org/"
-    val community = "https://go.blokada.org/forum"
+    val kb = "https://fulldive.com"
+    val donate = "https://fulldive.com"
+    val privacy = "https://fulldive.com"
+    val terms = "https://fulldive.com"
+    val credits = "https://fulldive.com"
+    val community = "https://fulldive.com"
 
     val updated =
-        if (EnvironmentService.isSlim()) "https://go.blokada.org/updated_android_slim"
-        else "https://go.blokada.org/updated_android"
+        if (EnvironmentService.isSlim()) "https://fulldive.com"
+        else "https://fulldive.com"
 
     fun manageSubscriptions(accountId: String) =
         if (EnvironmentService.isSlim()) support(accountId)
@@ -44,6 +44,6 @@ object Links {
         "https://app.blokada.org/support?account-id=$accountId" +
         "&user-agent=${URLEncoder.encode(EnvironmentService.getUserAgent())}"
 
-    fun isSubscriptionLink(link: String) = link.startsWith("https://app.blokada.org/activate")
+    fun isSubscriptionLink(link: String) = link.startsWith("https://fulldive.com")
 
 }

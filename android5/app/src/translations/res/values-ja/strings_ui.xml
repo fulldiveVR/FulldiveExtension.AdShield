@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">ブロックに利用するリストを管理する</string>
     <string name="advanced_section_slugline_apps">アプリのバイパスを管理する</string>
     <string name="advanced_section_slugline_encryption">暗号化レベルと DNS を管理する</string>
-    <string name="advanced_action_slim_migrate_to_full">Blokada Slim を使用しています。詳細はこちら</string>
+    <string name="advanced_action_slim_migrate_to_full">AdShield を使用しています。詳細はこちら</string>
     <string name="location_choice_header">接続先を選択</string>
     <string name="activity_section_header">アクティビティ</string>
     <string name="activity_section_header_details">アクティビティの詳細</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">これは、<b>Android 7 以降を搭載したスマートフォンやタブレット向けの新しい推奨バージョン</b>です。Blokada 4 と比較して、よりシンプルで高速です。</string>
     <string name="homepage_download_action_android_five">Blokada 5.apk</string>
     <string name="homepage_download_action_android_five_beta">Beta.apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim は<b>軽量版のアプリ</b>であり、Google Play ポリシーで許可されている機能のみが含まれています。</string>
+    <string name="homepage_download_desc_android_slim">AdShield は<b>軽量版のアプリ</b>であり、Google Play ポリシーで許可されている機能のみが含まれています。</string>
     <string name="homepage_download_action_android_slim">Google Play を開く</string>
     <string name="homepage_download_desc_android_four">私たちはまだ Blokada の古いバージョンをメンテナンスしています。Blokada 5 にない機能を搭載し、古いデバイスや Android TV でも動作します。</string>
     <string name="homepage_download_action_android_four">Blokada 4.apk</string>

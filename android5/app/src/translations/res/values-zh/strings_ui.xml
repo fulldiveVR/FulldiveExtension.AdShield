@@ -124,7 +124,7 @@
     <string name="advanced_section_slugline_packs">啟用以進行更嚴格的阻擋</string>
     <string name="advanced_section_slugline_apps">選擇不要被阻擋的 APP</string>
     <string name="advanced_section_slugline_encryption">調整您的加密等級與 DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">您正在使用 Blokada Slim。取得更多資訊</string>
+    <string name="advanced_action_slim_migrate_to_full">您正在使用 AdShield。取得更多資訊</string>
     <string name="location_choice_header">選擇位置</string>
     <string name="activity_section_header">活動</string>
     <string name="activity_section_header_details">活動詳細資訊</string>
@@ -415,7 +415,7 @@
     <string name="homepage_download_desc_android_five">這是我們推薦的新版本，<b>供搭載 Android 7 或更新版本的智慧型手機與平板電腦</b>使用。它與 Blokada 4 相比更簡潔且更快。</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim 是<b>輕量版的應用程式</b>，並僅包含 Google Play 政策允許的功能。</string>
+    <string name="homepage_download_desc_android_slim">AdShield 是<b>輕量版的應用程式</b>，並僅包含 Google Play 政策允許的功能。</string>
     <string name="homepage_download_action_android_slim">開啟 Google Play</string>
     <string name="homepage_download_desc_android_four">我們仍在維護較舊版本的 Blokada。它有更多功能，且可在較舊的裝置與電視上執行。</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

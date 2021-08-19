@@ -14,7 +14,7 @@ package model
 
 import android.content.Context
 import com.squareup.moshi.JsonClass
-import org.blokada.R
+import org.adshield.R
 import repository.DnsDataSource
 import ui.utils.now
 

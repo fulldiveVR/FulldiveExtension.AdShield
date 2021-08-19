@@ -27,7 +27,7 @@ import androidx.preference.PreferenceFragmentCompat
 import model.Account
 import model.AccountId
 import model.BlokadaException
-import org.blokada.R
+import org.adshield.R
 import service.ContextService
 import service.tr
 import ui.AccountViewModel
@@ -84,9 +84,6 @@ object SettingsNavigation {
             "main_app" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
             "main_kb" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.kb, getString(R.string.universal_action_help))
             "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.donate, getString(R.string.universal_action_donate))
-            "main_community" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.community, getString(R.string.universal_action_community))
-            "main_support" -> accountId?.let { SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.support(it), getString(R.string.universal_action_contact_us)) }
-            "main_about" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.credits, getString(R.string.account_action_about))
             "account_subscription_manage" -> accountId?.let { SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(Links.manageSubscriptions(it), getString(R.string.account_action_manage_subscription)) }
             "account_help_why" -> SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(Links.whyUpgrade, getString(R.string.account_action_why_upgrade))
             "logout_howtorestore" -> SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(Links.howToRestore, getString(R.string.account_action_how_to_restore))

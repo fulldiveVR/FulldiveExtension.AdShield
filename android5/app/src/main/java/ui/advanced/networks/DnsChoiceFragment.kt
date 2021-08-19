@@ -26,7 +26,7 @@ import model.Dns
 import model.DnsId
 import model.Gateway
 import model.isDnsOverHttps
-import org.blokada.R
+import org.adshield.R
 import repository.DnsDataSource
 import ui.BottomSheetFragment
 import ui.advanced.packs.OptionView

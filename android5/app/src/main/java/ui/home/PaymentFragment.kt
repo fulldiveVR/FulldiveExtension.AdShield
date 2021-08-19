@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import org.blokada.R
+import org.adshield.R
 import ui.AccountViewModel
 import ui.BottomSheetFragment
 import ui.app

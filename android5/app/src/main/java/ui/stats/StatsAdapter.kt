@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import model.HistoryEntry
 import model.HistoryEntryType
-import org.blokada.R
+import org.adshield.R
 import ui.StatsViewModel
 import java.lang.Integer.min
 import java.util.*

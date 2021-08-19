@@ -123,7 +123,7 @@
     <string name="advanced_section_slugline_packs">Aktivera för en mer restriktiv blockering</string>
     <string name="advanced_section_slugline_apps">Välj appar som aldrig ska blockeras</string>
     <string name="advanced_section_slugline_encryption">Justera din krypteringsnivå och DNS</string>
-    <string name="advanced_action_slim_migrate_to_full">Du använder Blokada Slim. Läs mer</string>
+    <string name="advanced_action_slim_migrate_to_full">Du använder AdShield. Läs mer</string>
     <string name="location_choice_header">Välj en plats</string>
     <string name="activity_section_header">Aktivitet</string>
     <string name="activity_section_header_details">Aktivitetsinformation</string>
@@ -408,7 +408,7 @@
     <string name="homepage_download_desc_android_five">Detta är vår nya, rekommenderade version <b>för smartphones och surfplattor med Android 7 eller nyare</b>. Den är enklare och snabbare jämfört med Blokada 4.</string>
     <string name="homepage_download_action_android_five">Blokada 5 .apk</string>
     <string name="homepage_download_action_android_five_beta">Beta .apk</string>
-    <string name="homepage_download_desc_android_slim">Blokada Slim är en <b>lättviktig version av appen</b>, den innehåller endast funktioner som tillåts av Google Play-policyn.</string>
+    <string name="homepage_download_desc_android_slim">AdShield är en <b>lättviktig version av appen</b>, den innehåller endast funktioner som tillåts av Google Play-policyn.</string>
     <string name="homepage_download_action_android_slim">Öppna Google Play</string>
     <string name="homepage_download_desc_android_four">Vi upprätthåller fortfarande den äldre versionen av Blokada. Den har fler funktioner och fungerar på äldre enheter och TV-apparater.</string>
     <string name="homepage_download_action_android_four">Blokada 4 .apk</string>

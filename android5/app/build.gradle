@@ -24,7 +24,7 @@ android {
     ndkVersion "21.3.6528147"
 
     defaultConfig {
-        applicationId "org.blokada" // Not a real name, see flavors below
+        applicationId "org.adshield" // Not a real name, see flavors below
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 514000000
@@ -45,7 +45,7 @@ android {
         release {
             def f = rootProject.file('keystore.properties')
             if (f.exists()) {
-                println "Release build will use Blokada keystore"
+                println "Release build will use AddShield keystore"
                 Properties props = new Properties()
                 InputStream inputStream = new FileInputStream(f)
                 props.load(inputStream)
@@ -81,22 +81,22 @@ android {
     productFlavors {
         full {
             // full lands on blokada.org, and on Huawei App Gallery
-            applicationId "org.blokada.origin.alarm"
+            applicationId "org.adshield.full"
         }
 
         google {
             // google build lands on Google Play, missing some features.
-            applicationId "org.blokada.alarm.dnschanger"
+            applicationId "org.adshield.google"
         }
 
         escaped {
             // escaped build can be installed on top of google build to get all features.
-            applicationId "org.blokada.alarm.dnschanger"
+            applicationId "org.adshield.escaped"
         }
 
         droid {
             // droid lands on F-Droid.
-            applicationId "org.blokada.fem.fdroid"
+            applicationId "org.adshield.fdroid"
         }
     }
 

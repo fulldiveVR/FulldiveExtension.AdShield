@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.blokada.R
+import org.adshield.R
 import ui.StatsViewModel
 import ui.app
 import ui.stats.StatsFilterFragment

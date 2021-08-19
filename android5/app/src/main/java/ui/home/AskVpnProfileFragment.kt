@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import org.blokada.R
+import org.adshield.R
 import service.VpnPermissionService
 import service.tr
 import ui.AccountViewModel
@@ -56,17 +56,7 @@ class AskVpnProfileFragment : BottomSheetFragment() {
         back.setOnClickListener {
             dismiss()
         }
-
-        val more: View = root.findViewById(R.id.vpnperm_more)
-        more.setOnClickListener {
-            dismiss()
-            val nav = findNavController()
-            nav.navigate(
-                HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                Links.whyVpnPerms, getString(R.string.app_settings_action_vpn_profile)
-            ))
-        }
-
+        
         val vpnContinue: View = root.findViewById(R.id.vpnperm_continue)
         vpnContinue.setOnClickListener {
             vpnPerm.askPermission()

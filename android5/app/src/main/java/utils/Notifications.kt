@@ -18,7 +18,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import model.TunnelStatus
 import engine.Host
-import org.blokada.R
+import org.adshield.R
 import service.Localised
 import ui.Command
 import ui.MainActivity

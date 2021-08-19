@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import model.NetworkType
 import model.isDnsOverHttps
-import org.blokada.R
+import org.adshield.R
 import repository.DnsDataSource
 import service.AlertDialogService
 import ui.AccountViewModel
