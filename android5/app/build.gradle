@@ -24,7 +24,7 @@ android {
     ndkVersion "21.3.6528147"
 
     defaultConfig {
-        applicationId "org.adshield" // Not a real name, see flavors below
+        applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 514000000
@@ -81,22 +81,22 @@ android {
     productFlavors {
         full {
             // full lands on blokada.org, and on Huawei App Gallery
-            applicationId "org.adshield.full"
+            applicationId "com.fulldive.extension.adshield.full"
         }
 
         google {
             // google build lands on Google Play, missing some features.
-            applicationId "org.adshield.google"
+            applicationId "com.fulldive.extension.adshield.google"
         }
 
         escaped {
             // escaped build can be installed on top of google build to get all features.
-            applicationId "org.adshield.escaped"
+            applicationId "com.fulldive.extension.adshield.escaped"
         }
 
         droid {
             // droid lands on F-Droid.
-            applicationId "org.adshield.fdroid"
+            applicationId "com.fulldive.extension.adshield.fdroid"
         }
     }
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -31,6 +30,10 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <permission
+        android:name="com.fulldive.extension.adshield.access.read"
+        android:protectionLevel="signature" />
 
     <application
         android:name="ui.MainApplication"
@@ -118,6 +121,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="appextension.StealthActivity"
+            android:exported="true"
+            android:theme="@style/stealthTheme">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ui.MainActivity" />
+        </activity>
+
         <receiver android:name="service.ExpirationReceiver" />
 
         <receiver android:name="service.DozeReceiver" />
@@ -157,6 +170,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
+
+        <provider
+            android:name="appextension.ExtensionContentProvider"
+            android:authorities="com.fulldive.extension.adshield.google.FulldiveContentProvider"
+            android:exported="true"
+            android:permission="com.fulldive.extension.adshield.access.read" />
 
     </application>
 

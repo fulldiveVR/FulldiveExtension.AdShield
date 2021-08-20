@@ -12,7 +12,6 @@
 
 package ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -29,16 +28,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import appextension.AppExtensionWorkType
+import appextension.LaunchHelper
+import appextension.getContentUri
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.R
 import service.*
-import ui.advanced.packs.PacksViewModel
 import ui.home.ActivatedFragment
 import ui.home.FirstTimeFragment
-import ui.home.HelpFragment
 import ui.home.HomeFragmentDirections
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
@@ -142,6 +142,11 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
         intent?.let {
             handleIntent(it)
         }
+
+        val workType: String? = intent?.action
+        if (workType != null && workType == AppExtensionWorkType.OPEN.id) {
+            VpnPermissionService.askPermission()
+        }
     }
 
     private fun setupEvents() {
@@ -195,6 +200,8 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
                     fragment.show(supportFragmentManager, null)
                 }
             }
+            val uri = getContentUri(LaunchHelper.getCurrentState(status))
+            contentResolver.insert(uri, null)
         })
     }
 
