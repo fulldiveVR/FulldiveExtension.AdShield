@@ -13,7 +13,6 @@ def versionPatch = 0
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
-    ndkVersion "21.3.6528147"
 
     defaultConfig {
         applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
