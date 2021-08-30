@@ -1,22 +1,12 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui.home
 
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,9 +34,9 @@ class HomeFragment : Fragment() {
     private lateinit var powerButton: PowerView
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         activity?.let {
             vm = ViewModelProvider(it.app()).get(TunnelViewModel::class.java)
@@ -56,10 +46,7 @@ class HomeFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val plusButton: PlusButton = root.findViewById(R.id.home_plusbutton)
         powerButton = root.findViewById(R.id.home_powerview)
-
-        var plusButtonReady = false
 
         val longStatus: TextView = root.findViewById(R.id.home_longstatus)
         val updateLongStatus = { s: TunnelStatus, counter: Long? ->
@@ -67,9 +54,9 @@ class HomeFragment : Fragment() {
                 s.inProgress -> getString(R.string.home_status_detail_progress)
                 s.active && s.gatewayId != null && counter == null -> {
                     (
-                        getString(R.string.home_status_detail_active) + "\n" +
-                        getString(R.string.home_status_detail_plus)
-                    ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorRingPlus1))
+                            getString(R.string.home_status_detail_active) + "\n" +
+                                    getString(R.string.home_status_detail_plus)
+                            ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorRingPlus1))
                 }
                 s.active && EnvironmentService.isSlim() -> {
                     getString(R.string.home_status_detail_active_slim)
@@ -80,9 +67,12 @@ class HomeFragment : Fragment() {
                 }
                 s.active && s.gatewayId != null -> {
                     (
-                        getString(R.string.home_status_detail_active_with_counter, counter.toString()) + "\n" +
-                        getString(R.string.home_status_detail_plus)
-                    ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorRingPlus1))
+                            getString(
+                                R.string.home_status_detail_active_with_counter,
+                                counter.toString()
+                            ) + "\n" +
+                                    getString(R.string.home_status_detail_plus)
+                            ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorRingPlus1))
                 }
                 s.active -> {
                     getString(R.string.home_status_detail_active_with_counter, counter.toString())
@@ -140,19 +130,8 @@ class HomeFragment : Fragment() {
                 else -> showFailureDialog(s.error)
             }
 
-            plusButton.visible = false
-            plusButton.isEnabled = !s.inProgress
-            if (!s.inProgress) {
-                // Trying to fix a weird out of sync switch state
-                lifecycleScope.launch {
-                    plusButton.plusActive = s.isPlusMode()
-                }
-            }
-
             // Only after first init, to not animate on fragment creation
             powerButton.animate = true
-            plusButton.animate = plusButtonReady
-            plusButtonReady = true // Hacky
         })
 
         adsCounterVm.counter.observe(viewLifecycleOwner, Observer { counter ->
@@ -161,27 +140,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        vm.config.observe(viewLifecycleOwner, Observer { config ->
-            plusButton.location = config.gateway?.niceName()
-            plusButton.plusEnabled = config.vpnEnabled
-        })
-
-        plusButton.onNoLocation = ::showLocationSheet
-
-        plusButton.onActivated = { activated ->
-            if (activated) vm.switchGatewayOn()
-            else vm.switchGatewayOff()
-        }
-
         accountVM.account.observe(viewLifecycleOwner, Observer { account ->
-            plusButton.upgrade = !account.isActive()
-            plusButton.animate = plusButtonReady
-            plusButtonReady = true // Hacky
-
-            plusButton.onClick = {
-                if (account.isActive()) showLocationSheet()
-                else showPlusSheet()
-            }
 
             if (!account.isActive()) {
                 setHasOptionsMenu(true)
@@ -244,9 +203,11 @@ class HomeFragment : Fragment() {
         val additional: Pair<String, () -> Unit>? =
             if (shouldShowKbLink(ex)) getString(R.string.universal_action_learn_more) to {
                 val nav = findNavController()
-                nav.navigate(HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.tunnelFailure, getString(R.string.universal_action_learn_more)
-                ))
+                nav.navigate(
+                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                        Links.tunnelFailure, getString(R.string.universal_action_learn_more)
+                    )
+                )
                 Unit
             }
             else null
@@ -273,7 +234,8 @@ class HomeFragment : Fragment() {
                 nav.navigate(
                     SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
                         Links.donate, getString(R.string.universal_action_donate)
-                    ))
+                    )
+                )
                 true
             }
             else -> false

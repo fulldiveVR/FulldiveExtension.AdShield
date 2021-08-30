@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui.home
 
 import androidx.lifecycle.ViewModelProvider
@@ -52,28 +40,6 @@ class PaymentTermsFragment : BottomSheetFragment() {
 
         val cancel: View = root.findViewById(R.id.cancel)
         cancel.setOnClickListener {
-            dismiss()
-        }
-
-        vm.account.observe(viewLifecycleOwner, Observer { account ->
-            val contact: View = root.findViewById(R.id.payment_support)
-            contact.setOnClickListener {
-                nav.navigate(
-                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                        Links.support(account.id), getString(R.string.universal_action_contact_us)
-                    )
-                )
-                dismiss()
-            }
-        })
-
-        val terms: View = root.findViewById(R.id.payment_terms)
-        terms.setOnClickListener {
-            nav.navigate(
-                HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.terms, getString(R.string.payment_action_terms)
-                )
-            )
             dismiss()
         }
 

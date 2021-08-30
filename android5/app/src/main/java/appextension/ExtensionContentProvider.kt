@@ -92,7 +92,7 @@ class ExtensionContentProvider : ContentProvider() {
 
     companion object {
         private const val PREFERENCE_AUTHORITY =
-            "com.fulldive.extension.adshield.google.FulldiveContentProvider"
+            "com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
         const val BASE_URL = "content://$PREFERENCE_AUTHORITY"
         const val KEY_WORK_STATUS = "work_status"
         const val KEY_RESULT = "result"

@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui
 
 import android.content.Intent
@@ -28,22 +16,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import appextension.AppExtensionWorkType
-import appextension.LaunchHelper
-import appextension.getContentUri
+import appextension.*
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.R
 import service.*
-import ui.home.ActivatedFragment
 import ui.home.FirstTimeFragment
-import ui.home.HomeFragmentDirections
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
-import utils.ExpiredNotification
 import utils.Links
 import utils.Logger
 
@@ -54,7 +37,7 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
     private lateinit var tunnelVM: TunnelViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var statsVM: StatsViewModel
-    private lateinit var blockaRepoVM: BlockaRepoViewModel
+//    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,14 +122,12 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
             } ?: run { toolbar.title }
         }
 
-        intent?.let {
-            handleIntent(it)
-        }
-
         val workType: String? = intent?.action
         if (workType != null && workType == AppExtensionWorkType.OPEN.id) {
             VpnPermissionService.askPermission()
         }
+
+        PopupManager.onAppStarted(this)
     }
 
     private fun setupEvents() {
@@ -154,42 +135,8 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
         tunnelVM = ViewModelProvider(app()).get(TunnelViewModel::class.java)
         settingsVM = ViewModelProvider(app()).get(SettingsViewModel::class.java)
         statsVM = ViewModelProvider(app()).get(StatsViewModel::class.java)
-        blockaRepoVM = ViewModelProvider(app()).get(BlockaRepoViewModel::class.java)
         activationVM = ViewModelProvider(this).get(ActivationViewModel::class.java)
 
-        var expiredDialogShown = false
-        activationVM.state.observe(this, Observer { state ->
-            when (state) {
-                ActivationViewModel.ActivationState.JUST_PURCHASED -> {
-                    accountVM.refreshAccount()
-                    val nav = findNavController(R.id.nav_host_fragment)
-                    nav.navigateUp()
-                }
-                ActivationViewModel.ActivationState.JUST_ACTIVATED -> {
-                    val fragment = ActivatedFragment.newInstance()
-                    fragment.show(supportFragmentManager, null)
-                }
-                ActivationViewModel.ActivationState.JUST_EXPIRED -> {
-                    if (!expiredDialogShown) {
-                        expiredDialogShown = true
-                        AlertDialogService.showAlert(getString(R.string.error_vpn_expired),
-                            title = getString(R.string.alert_vpn_expired_header),
-                            onDismiss = {
-                                lifecycleScope.launch {
-                                    activationVM.setInformedUserAboutExpiration()
-                                    NotificationService.cancel(ExpiredNotification())
-                                    tunnelVM.clearLease()
-                                    accountVM.refreshAccount()
-                                }
-                            })
-                    }
-                }
-            }
-        })
-
-        accountVM.accountExpiration.observe(this, Observer { activeUntil ->
-            activationVM.setExpiration(activeUntil)
-        })
 
         tunnelVM.tunnelStatus.observe(this, Observer { status ->
             if (status.active) {
@@ -205,37 +152,10 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
         })
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        handleIntent(intent)
-    }
-
-    private fun handleIntent(intent: Intent) {
-        lifecycleScope.launch {
-            delay(1000) // So user sees the transition
-            intent.extras?.getString(ACTION)?.let { action ->
-                when (action) {
-                    ACC_MANAGE -> {
-                        accountVM.account.value?.let { account ->
-                            Logger.w("MainActivity", "Navigating to account manage screen")
-                            val nav = findNavController(R.id.nav_host_fragment)
-                            nav.navigate(R.id.navigation_home)
-                            nav.navigate(
-                                HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                                    Links.manageSubscriptions(account.id), getString(R.string.universal_action_upgrade)
-                                ))
-                        } ?: Logger.e("MainActivity", "No account while received action $ACC_MANAGE")
-                    }
-                }
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         tunnelVM.refreshStatus()
         accountVM.checkAccount()
-        blockaRepoVM.maybeRefreshRepo()
         lifecycleScope.launch {
             statsVM.refresh()
         }
@@ -286,14 +206,12 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.help_help -> {
-                val nav = findNavController(R.id.nav_host_fragment)
-                nav.navigate(R.id.navigation_settings)
-                nav.navigate(
-                    SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.kb, getString(R.string.universal_action_help))
-                )
+                PopupManager.showContactSupportDialog(this) {
+                    EmailHelper.sendEmailToSupport(this)
+                }
             }
-            R.id.help_logs -> LogService.showLog()
-            R.id.help_sharelog -> LogService.shareLog()
+//            R.id.help_logs -> LogService.showLog()
+//            R.id.help_sharelog -> LogService.shareLog()
             R.id.help_settings -> {
                 val nav = findNavController(R.id.nav_host_fragment)
                 nav.navigate(R.id.navigation_settings)
@@ -301,14 +219,6 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
                     SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
                 )
             }
-//            R.id.help_debug -> AlertDialogService.showChoiceAlert(
-//                choices = listOf(
-//                    "> Test app crash (it should restart)" to {
-//                        throw BlokadaException("This is a test of a fatal crash")
-//                    }
-//                ),
-//                title = "Debug Tools"
-//            )
             else -> return false
         }
         return true

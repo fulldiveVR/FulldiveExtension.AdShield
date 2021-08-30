@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package service
 
 import android.app.Activity
@@ -45,7 +33,7 @@ object LogService {
     private var onShareLogCallbacks = emptyMap<String, PrintsDebugInfo>()
 
     private val handle by lazy {
-        val handle = file.commonDir().file("blokada5.log.txt")
+        val handle = file.commonDir().file("log.txt")
         Log.println(Log.VERBOSE, "Logger", "Logger will log to file: $handle")
         handle
     }
@@ -58,7 +46,7 @@ object LogService {
         val log = file.load(handle)
 
         val builder = AlertDialog.Builder(context.requireContext())
-        builder.setTitle("Blokada Log")
+        builder.setTitle("Log")
         builder.setMessage(log.takeLast(500).reversed().joinToString("\n"))
         builder.setPositiveButton("Close") { dialog, _ ->
             dialog.dismiss()

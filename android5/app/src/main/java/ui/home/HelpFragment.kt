@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui.home
 
 import androidx.lifecycle.ViewModelProvider
@@ -69,18 +57,6 @@ class HelpFragment : BottomSheetFragment() {
             ))
             dismiss()
         }
-
-        vm.account.observe(viewLifecycleOwner, Observer { account ->
-            val contact: View = root.findViewById(R.id.help_contact)
-            contact.setOnClickListener {
-                val nav = findNavController()
-                nav.navigate(R.id.navigation_settings)
-                nav.navigate(SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                    Links.support(account.id), getString(R.string.universal_action_contact_us)
-                ))
-                dismiss()
-            }
-        })
 
         return root
     }

@@ -1,26 +1,13 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.ActiveUntil
-import service.ExpirationService
 import service.PersistenceService
 import utils.Logger
 import java.util.*
 
-class ActivationViewModel: ViewModel() {
+class ActivationViewModel : ViewModel() {
 
     enum class ActivationState {
         INACTIVE, PURCHASING, JUST_PURCHASED, JUST_ACTIVATED, ACTIVE, JUST_EXPIRED
@@ -28,7 +15,6 @@ class ActivationViewModel: ViewModel() {
 
     private val log = Logger("Activation")
     private val persistence = PersistenceService
-    private val expiration = ExpirationService
 
     private val _state = MutableLiveData<ActivationState>()
     val state: LiveData<ActivationState> = _state.distinctUntilChanged()
@@ -36,9 +22,6 @@ class ActivationViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             _state.value = persistence.load(ActivationState::class)
-        }
-        expiration.onExpired = {
-            setExpiration(Date(0))
         }
     }
 
@@ -68,8 +51,6 @@ class ActivationViewModel: ViewModel() {
                         updateLiveData(ActivationState.ACTIVE)
                     }
                 }
-
-                if (active) expiration.setExpirationAlarm(activeUntil)
             }
         }
     }

@@ -245,7 +245,7 @@
     "account encrypt label dns": "DNS",
     "account encrypt action what is dns": "DNS 是什麼？",
     "account encrypt section header": "加密",
-    "account encrypt section blocka dns": "Blokada DNS",
+    "account encrypt section blocka dns": "Full DNS",
     "account encrypt label use blocka dns": "使用 Plus 模式的 Blokada DNS",
     "account lease label devices list": "這些裝置已連結至您的帳號。",
     "account lease label devices": "裝置",

@@ -1,25 +1,16 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui.advanced.apps
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.launch
-import model.*
-import repository.AppRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import engine.EngineService
+import kotlinx.coroutines.launch
+import model.App
+import model.AppId
+import repository.AppRepository
 import ui.utils.cause
 import utils.Logger
-import java.lang.Exception
 
 class AppsViewModel : ViewModel() {
 
@@ -94,9 +85,10 @@ class AppsViewModel : ViewModel() {
             _apps.value?.let {
                 try {
                     val isBypassed = it.first { it.isSystem }.isBypassed
-                    it.filter { app -> app.isSystem && app.isBypassed == isBypassed }.forEach { app ->
-                        appRepo.switchBypassForApp(app.id)
-                    }
+                    it.filter { app -> app.isSystem && app.isBypassed == isBypassed }
+                        .forEach { app ->
+                            appRepo.switchBypassForApp(app.id)
+                        }
                     engine.forceReload()
                     refresh()
                 } catch (ex: Exception) {
@@ -134,11 +126,12 @@ class AppsViewModel : ViewModel() {
             Filter.NOT_BYPASSED -> {
                 entries = entries.filter { !it.isBypassed }
             }
-            else -> {}
+            else -> {
+            }
         }
 
         // Apply filtering on group
-        when(group) {
+        when (group) {
             Group.INSTALLED -> {
                 entries = entries.filter { !it.isSystem }
             }

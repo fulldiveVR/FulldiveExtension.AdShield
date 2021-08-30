@@ -1,15 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ This file is part of Blokada.
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ Copyright © 2021 Blocka AB. All rights reserved.
-  ~
-  ~ @author Karol Gusak (karol@blocka.net)
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.adshield"
     android:sharedUserId="org.adshield">
@@ -131,8 +120,6 @@
                 android:value="ui.MainActivity" />
         </activity>
 
-        <receiver android:name="service.ExpirationReceiver" />
-
         <receiver android:name="service.DozeReceiver" />
 
         <service
@@ -153,7 +140,7 @@
 
         <service
             android:name="ui.QuickSettingsToggle"
-            android:icon="@drawable/blokada_logo"
+            android:icon="@drawable/full_adshield_logo"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -173,7 +160,7 @@
 
         <provider
             android:name="appextension.ExtensionContentProvider"
-            android:authorities="com.fulldive.extension.adshield.google.FulldiveContentProvider"
+            android:authorities="com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
             android:exported="true"
             android:permission="com.fulldive.extension.adshield.access.read" />
 

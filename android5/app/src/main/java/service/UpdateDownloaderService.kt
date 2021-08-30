@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package service
 
 import android.app.DownloadManager
@@ -88,31 +76,6 @@ object UpdateDownloaderService {
         }
         ctx.startActivity(openFileIntent)
     }
-
-//    private fun getDownloadPercentage(): Int {
-//        if (downloadId == null) return DOWNLOAD_COMPLETE
-//
-//        val query = DownloadManager.Query()
-//        query.setFilterById(downloadId!!)
-//        val c = dm.query(query)
-//        if (c.moveToFirst()) {
-//            val bytes_downloaded = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-//            val bytes_total = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-//            return ((bytes_downloaded / bytes_total.toFloat()) * 100).toInt()
-//        } else return DOWNLOAD_FAIL
-//    }
-//
-//    private fun monitorDownloadProgress() = async {
-//        var downloading = true
-//        while (downloading) {
-//            delay(2000)
-//            async(UI) {
-//                val progress = getDownloadPercentage()
-//                emit(EVENT_UPDATE_PROGRESS, progress)
-//                if (progress in listOf(DOWNLOAD_FAIL, DOWNLOAD_COMPLETE)) downloading = false
-//            }
-//        }
-//    }
 
     private fun download(uri: Uri): DownloadDeferred {
         val deferred = CompletableDeferred<Uri>()

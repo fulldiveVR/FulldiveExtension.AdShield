@@ -1,15 +1,3 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package utils
 
 import android.app.PendingIntent
@@ -31,8 +19,7 @@ private const val IMPORTANCE_HIGH = 4
 enum class NotificationChannels(val title: Localised, val importance: Int) {
     ACTIVITY("Activity", IMPORTANCE_NONE),
     ANNOUNCEMENT("Announcements", IMPORTANCE_HIGH),
-    UPDATE("Updates", IMPORTANCE_HIGH),
-    BLOCKA("Blokada Plus", IMPORTANCE_HIGH);
+    UPDATE("Updates", IMPORTANCE_HIGH);
 }
 
 sealed class NotificationPrototype(
@@ -51,7 +38,7 @@ class MonitorNotification(
         val b = NotificationCompat.Builder(ctx)
 //        b.setContentTitle(ctx.resources.getString(R.string.notification_keepalive_title, counter))
 //        b.setContentText(ctx.getString(R.string.notification_blocked_text, reason))
-        b.setSmallIcon(R.drawable.ic_stat_blokada)
+        b.setSmallIcon(R.drawable.ic_stat_adshield)
         b.priority = NotificationCompat.PRIORITY_MAX
         b.setVibrate(LongArray(0))
         b.setOngoing(true)
@@ -205,7 +192,7 @@ class UpdateNotification(versionName: String): NotificationPrototype(3, Notifica
         val b = NotificationCompat.Builder(ctx)
         b.setContentTitle(ctx.getString(R.string.notification_update_header))
         b.setContentText(ctx.getString(R.string.universal_action_learn_more))
-        b.setSmallIcon(R.drawable.ic_stat_blokada)
+        b.setSmallIcon(R.drawable.ic_stat_adshield)
         b.setPriority(NotificationCompat.PRIORITY_DEFAULT)
         b.setVibrate(LongArray(0))
 
@@ -216,22 +203,22 @@ class UpdateNotification(versionName: String): NotificationPrototype(3, Notifica
     }
 )
 
-class ExpiredNotification: NotificationPrototype(4, NotificationChannels.BLOCKA,
-    create = { ctx ->
-        val b = NotificationCompat.Builder(ctx)
-        b.setContentTitle(ctx.getString(R.string.notification_vpn_expired_header))
-        b.setContentText(ctx.getString(R.string.notification_vpn_expired_subtitle))
-        b.setStyle(NotificationCompat.BigTextStyle().bigText(ctx.getString(R.string.notification_vpn_expired_body)))
-        //b.setSmallIcon(R.drawable.ic_stat_blokada)
-        b.setSmallIcon(R.drawable.ic_stat_blokada)
-        b.setPriority(NotificationCompat.PRIORITY_MAX)
-        b.setVibrate(LongArray(0))
-
-        val intentActivity = Intent(ctx, MainActivity::class.java)
-        val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
-        b.setContentIntent(piActivity)
-    }
-)
+//class ExpiredNotification: NotificationPrototype(4, NotificationChannels.BLOCKA,
+//    create = { ctx ->
+//        val b = NotificationCompat.Builder(ctx)
+//        b.setContentTitle(ctx.getString(R.string.notification_vpn_expired_header))
+//        b.setContentText(ctx.getString(R.string.notification_vpn_expired_subtitle))
+//        b.setStyle(NotificationCompat.BigTextStyle().bigText(ctx.getString(R.string.notification_vpn_expired_body)))
+//        //b.setSmallIcon(R.drawable.ic_stat_blokada)
+//        b.setSmallIcon(R.drawable.ic_stat_adshield)
+//        b.setPriority(NotificationCompat.PRIORITY_MAX)
+//        b.setVibrate(LongArray(0))
+//
+//        val intentActivity = Intent(ctx, MainActivity::class.java)
+//        val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
+//        b.setContentIntent(piActivity)
+//    }
+//)
 
 //class AnnouncementNotification(announcement: Announcement): BlokadaNotification(6,
 //    NotificationChannels.ANNOUNCEMENT, autoCancel = true,

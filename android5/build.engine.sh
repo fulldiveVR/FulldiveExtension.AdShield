@@ -1,20 +1,4 @@
-#!/bin/sh
-
-#
-# This file is part of Blokada.
-#
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# Copyright © 2021 Blocka AB. All rights reserved.
-#
-# @author Karol Gusak (karol@blocka.net)
-#
-
-# I couldnt make that gradle rust android plugin work
-
-export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle/
+#!/bin/shexport ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle/
 cd ../blocka_engine
 
 echo "Building for arm"

@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ This file is part of Blokada.
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ Copyright © 2021 Blocka AB. All rights reserved.
-  ~
-  ~ @author Karol Gusak (karol@blocka.net)
-  -->
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -24,16 +12,16 @@
             app:title="@string/app_settings_theme_label"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:icon="@drawable/ic_baseline_backup_24"
-            app:key="app_backup"
-            app:title="@string/app_settings_backup"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            app:icon="@drawable/ic_baseline_backup_24"-->
+<!--            app:key="app_backup"-->
+<!--            app:title="@string/app_settings_backup"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
-        <Preference
-            app:icon="@drawable/ic_baseline_refresh_24"
-            app:key="app_startonboot"
-            app:title="@string/app_settings_start_on_boot" />
+<!--        <Preference-->
+<!--            app:icon="@drawable/ic_baseline_refresh_24"-->
+<!--            app:key="app_startonboot"-->
+<!--            app:title="@string/app_settings_start_on_boot" />-->
 
     </PreferenceCategory>
 
@@ -47,11 +35,11 @@
             app:title="@string/app_settings_section_use_foreground"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:icon="@drawable/ic_baseline_open_in_browser_24"
-            app:key="app_browser"
-            app:title="@string/app_settings_browser_label"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            app:icon="@drawable/ic_baseline_open_in_browser_24"-->
+<!--            app:key="app_browser"-->
+<!--            app:title="@string/app_settings_browser_label"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 

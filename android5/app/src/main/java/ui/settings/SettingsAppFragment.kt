@@ -1,45 +1,29 @@
-/*
- * This file is part of Blokada.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- *
- * Copyright © 2021 Blocka AB. All rights reserved.
- *
- * @author Karol Gusak (karol@blocka.net)
- */
-
 package ui.settings
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
 import service.EnvironmentService
-import service.UpdateService
-import ui.BlockaRepoViewModel
 import ui.SettingsViewModel
-import ui.app
 import ui.THEME_RETRO_KEY
 import ui.THEME_RETRO_NAME
+import ui.app
 import utils.Links
 
 class SettingsAppFragment : PreferenceFragmentCompat() {
 
     private lateinit var vm: SettingsViewModel
-    private lateinit var blockaRepoVM: BlockaRepoViewModel
+//    private lateinit var blockaRepoVM: BlockaRepoViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_app, rootKey)
@@ -50,18 +34,18 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
 
         activity?.let {
             vm = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
-            blockaRepoVM = ViewModelProvider(it.app()).get(BlockaRepoViewModel::class.java)
+//            blockaRepoVM = ViewModelProvider(it.app()).get(BlockaRepoViewModel::class.java)
         }
 
-        val language: ListPreference = findPreference("app_language")!!
+        val language: ListPreference? = findPreference("app_language")
         val languages = mutableMapOf(
             "root" to getString(R.string.app_settings_status_default)
         ).also {
             it.putAll(LANGUAGE_NICE_NAMES.toSortedMap())
         }
-        language.entryValues = languages.keys.toTypedArray()
-        language.entries = languages.map { it.value }.toTypedArray()
-        language.setOnPreferenceChangeListener { _, newValue ->
+        language?.entryValues = languages.keys.toTypedArray()
+        language?.entries = languages.map { it.value }.toTypedArray()
+        language?.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {
                 "root" -> vm.setLocale(null)
                 else -> vm.setLocale(newValue as String)
@@ -88,13 +72,13 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val browser: ListPreference = findPreference("app_browser")!!
-        browser.entryValues = listOf(
+        val browser: ListPreference? = findPreference("app_browser")
+        browser?.entryValues = listOf(
             getString(R.string.app_settings_browser_internal),
             getString(R.string.app_settings_browser_external)
         ).toTypedArray()
-        browser.entries = browser.entryValues
-        browser.setOnPreferenceChangeListener { _, newValue ->
+        browser?.entries = browser?.entryValues
+        browser?.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {
                 getString(R.string.app_settings_browser_internal) -> vm.setUseChromeTabs(false)
                 else -> vm.setUseChromeTabs(true)
@@ -107,10 +91,10 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             getString(R.string.universal_action_no)
         ).toTypedArray()
 
-        val backup: ListPreference = findPreference("app_backup")!!
-        backup.entryValues = yesNoChoice
-        backup.entries = backup.entryValues
-        backup.setOnPreferenceChangeListener { _, newValue ->
+        val backup: ListPreference? = findPreference("app_backup")
+        backup?.entryValues = yesNoChoice
+        backup?.entries = backup?.entryValues
+        backup?.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {
                 getString(R.string.universal_action_yes) -> vm.setUseBackup(true)
                 else -> vm.setUseBackup(false)
@@ -157,18 +141,18 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
 
             val locale = it.locale
             val selected = locale ?: "root"
-            language.setDefaultValue(selected)
-            language.value = selected
+            language?.setDefaultValue(selected)
+            language?.value = selected
 
             val b = if (it.useChromeTabs) getString(R.string.app_settings_browser_external)
             else getString(R.string.app_settings_browser_internal)
-            browser.setDefaultValue(b)
-            browser.value = b
+            browser?.setDefaultValue(b)
+            browser?.value = b
 
             val useBackup = if (it.backup) getString(R.string.universal_action_yes)
             else getString(R.string.universal_action_no)
-            backup.setDefaultValue(useBackup)
-            backup.value = useBackup
+            backup?.setDefaultValue(useBackup)
+            backup?.value = useBackup
 
             val useFg = if (it.useForegroundService) getString(R.string.universal_action_yes)
             else getString(R.string.universal_action_no)
@@ -187,8 +171,8 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
 //            config.summary = it.name
 //        })
 
-        val boot: Preference = findPreference("app_startonboot")!!
-        boot.setOnPreferenceClickListener {
+        val boot: Preference? = findPreference("app_startonboot")
+        boot?.setOnPreferenceClickListener {
             val nav = findNavController()
             nav.navigate(
                 SettingsAppFragmentDirections.actionSettingsAppFragmentToWebFragment(
@@ -198,22 +182,22 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val info: Preference = findPreference("app_info")!!
-        info.setOnPreferenceClickListener {
+        val info: Preference? = findPreference("app_info")
+        info?.setOnPreferenceClickListener {
             val ctx = requireContext()
             ctx.startActivity(getIntentForAppInfo(ctx))
             true
         }
 
-        val vpn: Preference = findPreference("app_vpn")!!
-        vpn.setOnPreferenceClickListener {
+        val vpn: Preference? = findPreference("app_vpn")
+        vpn?.setOnPreferenceClickListener {
             val ctx = requireContext()
             ctx.startActivity(getIntentForVpnProfile(ctx))
             true
         }
 
-        val notification: Preference = findPreference("app_notifications")!!
-        notification.setOnPreferenceClickListener {
+        val notification: Preference? = findPreference("app_notifications")
+        notification?.setOnPreferenceClickListener {
             val ctx = requireContext()
             ctx.startActivity(getIntentForNotificationChannelsSettings(ctx))
             true
@@ -221,7 +205,11 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
     }
 
     private fun showRestartRequired() {
-        Toast.makeText(requireContext(), getString(R.string.universal_status_restart_required), Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.universal_status_restart_required),
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun getIntentForVpnProfile(ctx: Context) = Intent().apply {
