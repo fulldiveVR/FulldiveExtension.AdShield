@@ -26,7 +26,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "http://office.fulldive.com:8083" }
+        maven {
+            url "http://office.fulldive.com:8083"
+            allowInsecureProtocol = true
+        }
     }
 }
 
