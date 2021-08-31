@@ -29,31 +29,27 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file('../keys/keys.jks')
+            storePassword System.getenv("FULLDIVE_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("FULLDIVE_ALIAS")
+            keyPassword System.getenv("FULLDIVE_ALIAS_PASSWORD")
+        }
+    }
+
     buildTypes {
         debug {
             // By default it is a 'debuggable' build, signed with a debug key.
         }
 
         release {
-            def f = rootProject.file('keystore.properties')
-            if (f.exists()) {
-                println "Release build will use AddShield keystore"
-                Properties props = new Properties()
-                InputStream inputStream = new FileInputStream(f)
-                props.load(inputStream)
-                inputStream.close()
-
-                signingConfigs {
-                    release {
-                        storeFile file('../keys/keys.jks')
-                        storePassword System.getenv("FULLDIVE_KEYSTORE_PASSWORD")
-                        keyAlias System.getenv("FULLDIVE_ALIAS")
-                        keyPassword System.getenv("FULLDIVE_ALIAS_PASSWORD")
-                    }
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFileName = "AdShield-v${android.defaultConfig.versionCode}-${variant.productFlavors.name[0]}-${variant.buildType.name}.apk"
                 }
-                signingConfig signingConfigs.release
             }
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
