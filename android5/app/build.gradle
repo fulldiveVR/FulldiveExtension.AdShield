@@ -43,22 +43,12 @@ android {
         }
 
         release {
-            def f = rootProject.file('keystore.properties')
-            if (f.exists()) {
-                println "Release build will use AddShield keystore"
-                Properties props = new Properties()
-                InputStream inputStream = new FileInputStream(f)
-                props.load(inputStream)
-                inputStream.close()
-
-                signingConfig signingConfigs.release
-                applicationVariants.all { variant ->
-                    variant.outputs.each { output ->
-                        output.outputFileName = "AdShield-v${android.defaultConfig.versionCode}-${variant.productFlavors.name[0]}-${variant.buildType.name}.apk"
-                    }
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    output.outputFileName = "AdShield-v${android.defaultConfig.versionCode}-${variant.productFlavors.name[0]}-${variant.buildType.name}.apk"
                 }
             }
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
