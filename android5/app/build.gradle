@@ -46,7 +46,7 @@ android {
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    output.outputFileName = "AdShield-v${android.defaultConfig.versionCode}-${variant.productFlavors.name[0]}-${variant.buildType.name}.apk"
+                    output.outputFileName = "AdShield-v${android.defaultConfig.versionName}-${variant.buildType.name}.apk"
                 }
             }
             minifyEnabled false
