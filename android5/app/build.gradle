@@ -14,6 +14,15 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
+    signingConfigs {
+        release {
+            storeFile file('../keys/keys.jks')
+            storePassword System.getenv("FULLDIVE_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("FULLDIVE_ALIAS")
+            keyPassword System.getenv("FULLDIVE_ALIAS_PASSWORD")
+        }
+    }
+
     defaultConfig {
         applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
         minSdkVersion 24
@@ -42,18 +51,10 @@ android {
                 props.load(inputStream)
                 inputStream.close()
 
-                signingConfigs {
-                    release {
-                        storeFile file('../keys/keys.jks')
-                        storePassword System.getenv("FULLDIVE_KEYSTORE_PASSWORD")
-                        keyAlias System.getenv("FULLDIVE_ALIAS")
-                        keyPassword System.getenv("FULLDIVE_ALIAS_PASSWORD")
-                    }
-                }
                 signingConfig signingConfigs.release
                 applicationVariants.all { variant ->
                     variant.outputs.each { output ->
-                        output.outputFileName = "AdShield-v${android.defaultConfig.versionName}-${variant.buildType.name}.apk"
+                        output.outputFileName = "AdShield-v${android.defaultConfig.versionCode}-${variant.productFlavors.name[0]}-${variant.buildType.name}.apk"
                     }
                 }
             }
