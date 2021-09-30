@@ -49,7 +49,6 @@ class AppsAdapter(
         override fun onClick(v: View?) {
             if (adapterPosition == RecyclerView.NO_POSITION) return
             val clicked = getItem(adapterPosition)
-            itemView.alpha = 0.3f
             interaction?.onClick(clicked)
         }
 

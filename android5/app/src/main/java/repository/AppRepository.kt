@@ -114,12 +114,21 @@ object AppRepository {
     }
 
     fun isAppBypassed(id: AppId): Boolean {
-        return bypassedAppIds.contains(id)
+        return bypassedAppIds.contains(id) || alwaysBypassed.contains(id)
     }
 
     fun switchBypassForApp(id: AppId) {
-        if (isAppBypassed(id)) bypassedAppIds -= id
-        else bypassedAppIds += id
+        when {
+            alwaysBypassed.contains(id) -> {
+                // Do nothing.
+            }
+            isAppBypassed(id) -> {
+                bypassedAppIds -= id
+            }
+            else -> {
+                bypassedAppIds += id
+            }
+        }
     }
 
     fun getAppIcon(id: AppId): Drawable? {
