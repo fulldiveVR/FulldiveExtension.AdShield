@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_height="match_parent" android:layout_width="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/typesettingSiameseLayout" android:layout_height="wrap_content" android:layout_width="@dimen/apple_petal_width" app:layout_constraintBottom_toTopOf="@id/redmondTemperanceView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <CheckBox android:background="@color/impend_fringe_uproot" android:hint="@string/prefer_tombstone_constitute" android:id="@+id/munificentElectrophorusView" android:layout_height="wrap_content" android:layout_width="0dp" android:text="@string/ogress_stiffen_billy" android:textColor="@color/dexterity_addison_mycenaean" android:textSize="@dimen/duct_casual_textsize" app:layout_constraintBottom_toTopOf="@id/hamburgerPancakeView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+        <Button android:background="#2EF3636A" android:hint="@string/loose_tribesman_small" android:id="@+id/hamburgerPancakeView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/terramycin_foal_possemen_cloudy" android:textColor="@color/summitry_usurious_scathing" app:layout_constraintBottom_toTopOf="@id/libyaSaultView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/munificentElectrophorusView"/>
+        <AutoCompleteTextView android:hint="@string/pudding_arlene_pursuant" android:id="@+id/libyaSaultView" android:layout_height="wrap_content" android:layout_margin="@dimen/quantify_abigail_width" android:layout_width="match_parent" android:text="@string/ross_grandma_gordon" android:textColor="@color/czerniak_slave_olav" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/hamburgerPancakeView"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <AutoCompleteTextView android:background="@color/kenneth_debutante_apply" android:hint="@string/adoptive_taurus_eumenides_sixteenth" android:id="@+id/redmondTemperanceView" android:layout_height="wrap_content" android:layout_width="match_parent" android:text="@string/spiro_lipread_democratic" android:textColor="@color/cede_figure" app:layout_constraintBottom_toTopOf="@id/amidView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/typesettingSiameseLayout"/>
+    <Button android:background="@color/handcuff_bleed_cabaret" android:hint="@string/venus_nebular_weinstein" android:id="@+id/amidView" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/probity_ethnology_vend_droplet" android:textColor="@color/solve_afford" app:layout_constraintBottom_toTopOf="@id/revvedLayout" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/redmondTemperanceView"/>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/revvedLayout" android:layout_height="wrap_content" android:layout_width="0dp" android:paddingEnd="32dp" android:paddingStart="@dimen/bloodstain_soccer_margin" app:layout_constraintBottom_toTopOf="@id/pharmacologyPappyView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/amidView">
+        <CheckBox android:background="@color/saxifrage_pigment_lacquer" android:hint="@string/shaken_nimble_wilkinson" android:id="@+id/newfoundShepherdView" android:layout_height="wrap_content" android:layout_width="match_parent" android:text="@string/tadpole_automorphic_needham" app:layout_constraintBottom_toTopOf="@id/agwayCystView" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+        <AutoCompleteTextView android:background="@color/wrongdo_anselm_vengeance" android:hint="@string/naval_deny_wiggle" android:id="@+id/agwayCystView" android:layout_height="wrap_content" android:layout_width="@dimen/tampa_guaranteeing_padding" android:text="@string/tapa_sportswear_windblown" android:textColor="#FC6A6885" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/newfoundShepherdView"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <CheckBox android:background="@color/caddis_irrepressible" android:hint="@string/punch_lizzie_dickson" android:id="@+id/pharmacologyPappyView" android:layout_height="wrap_content" android:layout_width="0dp" android:text="@string/anodic_toothbrush_stab" android:textColor="@color/damon_thermosetting" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/revvedLayout"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
