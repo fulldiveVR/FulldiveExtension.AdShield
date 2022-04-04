@@ -34,7 +34,7 @@
             android:layout_width="@dimen/header_width"
             android:layout_height="@dimen/header_height"
             android:src="@drawable/header"
-            android:tint="?android:attr/textColorPrimary" />
+            app:tint="?android:attr/textColorPrimary" />
 
         <TextView
             android:id="@+id/home_status"
@@ -61,7 +61,18 @@
             android:id="@+id/home_powerview"
             android:layout_width="@dimen/powerview"
             android:layout_height="@dimen/powerview"
-            app:powerIcon="@android:drawable/ic_lock_power_off" />
+            app:powerIcon="@drawable/ic_power_button" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/statusTextView"
+            android:padding="4dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/textColorAccent"
+            android:background="@drawable/background_button_connected"
+            tools:text="Connected"/>
 
         <TextView
             android:id="@+id/home_longstatus"

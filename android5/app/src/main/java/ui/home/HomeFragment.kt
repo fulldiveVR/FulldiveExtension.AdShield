@@ -14,6 +14,7 @@ package ui.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -44,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var adsCounterVm: AdsCounterViewModel
 
     private lateinit var powerButton: PowerView
+    private lateinit var mainButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,

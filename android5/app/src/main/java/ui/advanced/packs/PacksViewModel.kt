@@ -12,19 +12,21 @@
 
 package ui.advanced.packs
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.launch
-import model.*
-import service.AlertDialogService
-import service.BlocklistService
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import engine.EngineService
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import model.*
+import org.adshield.R
+import service.AlertDialogService
+import service.BlocklistService
 import service.PersistenceService
 import ui.utils.cause
-import utils.Logger
-import java.lang.Exception
-import org.adshield.R
 import ui.utils.now
+import utils.Logger
 import kotlin.random.Random
 
 class PacksViewModel : ViewModel() {
@@ -60,10 +62,12 @@ class PacksViewModel : ViewModel() {
                     log.w("Packs are stale, re-downloading")
                     // Also include urls of any active pack
                     _packs.value?.let { packs ->
-                        val urls = packs.packs.filter { it.status.installed }.flatMap { it.getUrls() }.distinct()
+                        val urls =
+                            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.NonWildcards) }
+                                .distinct()
                         blocklist.downloadAll(urls, force = true)
                         blocklist.mergeAll(urls)
-                        engine.reloadBlockLists()
+                        engine.reloadBlockLists(getActiveUrls())
                         persistence.save(packs.copy(lastRefreshMillis = now()))
                     }
                 } catch (ex: Throwable) {
@@ -98,13 +102,14 @@ class PacksViewModel : ViewModel() {
 
                 // Also include urls of any active pack
                 _packs.value?.let { packs ->
-                    val moreUrls = packs.packs.filter { it.status.installed }.flatMap { it.getUrls() }
+                    val moreUrls =
+                        packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.NonWildcards) }
                     urls = (urls + moreUrls).distinct()
                 }
 
                 blocklist.downloadAll(urls)
                 blocklist.mergeAll(urls)
-                engine.reloadBlockLists()
+                engine.reloadBlockLists(getActiveUrls())
                 updatePack(pack.changeStatus(installing = false, installed = true))
             } catch (ex: Throwable) {
                 log.e("Could not install pack".cause(ex))
@@ -126,12 +131,12 @@ class PacksViewModel : ViewModel() {
                 // Include urls of any active pack
                 _packs.value?.let { packs ->
                     val urls = packs.packs.filter { it.status.installed && it.id != pack.id }
-                        .flatMap { it.getUrls() }
+                        .flatMap { it.getUrls(PackFilterType.NonWildcards) }
                     blocklist.downloadAll(urls)
                     blocklist.mergeAll(urls)
                 }
 
-                engine.reloadBlockLists()
+                engine.reloadBlockLists(getActiveUrls())
                 updatePack(pack.changeStatus(installing = false, installed = false))
             } catch (ex: Throwable) {
                 log.e("Could not uninstall pack".cause(ex))
@@ -139,6 +144,13 @@ class PacksViewModel : ViewModel() {
                 alert.showAlert(R.string.error_pack_install)
             }
         }
+    }
+
+    fun getActiveUrls(): Set<String> {
+        // Also include urls of any active pack
+        return _packs.value?.let { packs ->
+            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
+        } ?: emptySet()
     }
 
     private fun updatePack(pack: Pack) {

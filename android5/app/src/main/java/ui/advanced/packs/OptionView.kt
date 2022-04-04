@@ -91,16 +91,12 @@ class OptionView : FrameLayout {
     private fun refresh() {
         nameView.text = name
 
-        _icon?.run {
-            iconView.setImageDrawable(this)
-        }
-
         if (active) {
-            iconView.setColorFilter(context.getColorFromAttr(android.R.attr.colorPrimary))
+            iconView.setImageDrawable(_icon)
             checkmarkView.visibility = View.VISIBLE
             nameView.setTypeface(null, Typeface.BOLD)
         } else {
-            iconView.setColorFilter(context.getColorFromAttr(android.R.attr.textColorTertiary))
+            iconView.setImageResource(R.drawable.ic_unlock)
             checkmarkView.visibility = View.GONE
             nameView.setTypeface(null, Typeface.NORMAL)
         }

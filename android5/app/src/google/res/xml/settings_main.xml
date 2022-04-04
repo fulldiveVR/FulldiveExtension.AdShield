@@ -20,7 +20,7 @@
 
         <Preference
             android:fragment="ui.settings.SettingsAppFragment"
-            android:icon="@drawable/ic_baseline_settings_24"
+            android:icon="@drawable/ic_settings"
             app:key="main_app"
             app:title="@string/app_settings_section_header" />
 

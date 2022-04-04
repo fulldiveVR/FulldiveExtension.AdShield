@@ -12,8 +12,8 @@
 
 package model
 
+import android.util.Log
 import com.squareup.moshi.JsonClass
-import service.EnvironmentService
 import service.Localised
 import utils.Logger
 
@@ -87,12 +87,12 @@ data class PackSource(
     val urls: List<Uri>,
     val liveUpdateUrl: Uri?,
     val applyFor: List<PackConfig>?,
-    val whitelist: Boolean
+    val whitelist: Boolean,
+    val isWildcard: Boolean = false
 ) {
     companion object {}
 
-    // Last link is always the direct source link (and not mirror)
-    fun urlsForFlavor() = if (EnvironmentService.isFdroid()) listOf(urls.last()) else urls.dropLast(1)
+    fun urlsForFlavor() = urls
 }
 
 @JsonClass(generateAdapter = true)
@@ -108,7 +108,7 @@ data class PackStatus(
 @JsonClass(generateAdapter = true)
 data class Packs(
     val packs: List<Pack>,
-    val version : Int?,
+    val version: Int?,
     val lastRefreshMillis: Long
 ) {
     fun replace(pack: Pack): Packs {
@@ -145,9 +145,11 @@ fun Pack.allTagsCommaSeparated(): String {
     }
 }
 
-fun Pack.changeStatus(installed: Boolean? = null, updatable: Boolean? = null, installing: Boolean? = null,
-                                               badge: Boolean? = null, enabledConfig: List<PackConfig>? = null,
-                                               config: PackConfig? = null, hits: Int? = null): Pack {
+fun Pack.changeStatus(
+    installed: Boolean? = null, updatable: Boolean? = null, installing: Boolean? = null,
+    badge: Boolean? = null, enabledConfig: List<PackConfig>? = null,
+    config: PackConfig? = null, hits: Int? = null
+): Pack {
     return Pack(
         this.id,
         this.tags,
@@ -167,7 +169,9 @@ fun Pack.changeStatus(installed: Boolean? = null, updatable: Boolean? = null, in
 
 private fun Pack.switchConfig(config: PackConfig?): List<PackConfig> {
     var newConfig = (if (config == null) this.status.config else
-    if (this.status.config.contains(config)) this.status.config.filter { it != config } else this.status.config + listOf(config))
+        if (this.status.config.contains(config)) this.status.config.filter { it != config } else this.status.config + listOf(
+            config
+        ))
 
     if (newConfig.isEmpty()) {
         // Dont allow to have empty config (unless originally it's empty)
@@ -184,31 +188,61 @@ fun Pack.withSource(source: PackSource): Pack {
     )
 }
 
-fun PackSource.Companion.new(urls: List<Uri>, applyFor: PackConfig): PackSource {
+fun PackSource.Companion.new(
+    urls: List<Uri>,
+    applyFor: PackConfig,
+    isWildcard: Boolean = false
+): PackSource {
     return PackSource(
-        id = "xxx", urls = urls, liveUpdateUrl = null, applyFor = listOf(applyFor),
-        whitelist = false
+        id = "xxx",
+        urls = urls,
+        liveUpdateUrl = null,
+        applyFor = listOf(applyFor),
+        whitelist = false,
+        isWildcard = isWildcard
     )
 }
 
-fun Pack.getUrls(): List<Uri> {
+sealed class PackFilterType {
+    object All : PackFilterType()
+    object WildcardsOnly : PackFilterType()
+    object NonWildcards : PackFilterType()
+}
+
+fun Pack.getUrls(type: PackFilterType = PackFilterType.All): List<Uri> {
     if (configs.isEmpty()) {
         // For packs without configs, just take all sources
-        return sources.flatMap { it.urlsForFlavor() }.distinct()
-    } else {
-        val activeSources = sources.filter {
-            if (it.applyFor == null) {
-                false
-            } else {
-                it.applyFor.intersect(status.config).isNotEmpty()
+        return sources
+            .filter {
+                when (type) {
+                    is PackFilterType.WildcardsOnly -> it.isWildcard
+                    is PackFilterType.NonWildcards -> !it.isWildcard
+                    else -> true
+                }
             }
-        }
+            .flatMap {
+                it.urlsForFlavor()
+            }.distinct()
+    } else {
+        val activeSources = sources
+            .filter {
+                if (it.applyFor == null) {
+                    false
+                } else {
+                    it.applyFor.intersect(status.config)
+                        .isNotEmpty() && when (type) {
+                        is PackFilterType.WildcardsOnly -> it.isWildcard
+                        is PackFilterType.NonWildcards -> !it.isWildcard
+                        else -> true
+                    }
+                }
+            }
 
-        if (activeSources.isEmpty()) {
+        return if (activeSources.isEmpty()) {
             Logger.w("Pack", "No matching sources for chosen configuration, choosing first")
-            return sources.first().urlsForFlavor()
+            sources.first().urlsForFlavor()
         } else {
-            return activeSources.flatMap { it.urlsForFlavor() }.distinct()
+            activeSources.flatMap { it.urlsForFlavor() }.distinct()
         }
     }
 }

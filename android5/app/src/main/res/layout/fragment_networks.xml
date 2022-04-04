@@ -21,6 +21,7 @@
         android:id="@+id/network_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/half"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,19 +32,14 @@
             android:layout_height="1dp"
             android:background="?android:attr/shadowColor" />
 
-        <LinearLayout
+        <include
+            layout="@layout/item_network"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/colorBackgroundFloating"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/half"
-            android:paddingBottom="@dimen/half">
-
-            <include
-                layout="@layout/item_network"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_marginStart="@dimen/normal"
+            android:layout_marginEnd="@dimen/normal"
+            android:layout_marginTop="@dimen/half"
+            android:layout_marginBottom="@dimen/half" />
 
         <View
             android:layout_width="match_parent"
@@ -65,14 +61,17 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="@dimen/half"
+            android:layout_marginTop="@dimen/half"
+            android:layout_marginBottom="@dimen/half"
+            android:layout_marginStart="@dimen/half"
             android:paddingEnd="@dimen/half"
             android:paddingBottom="@dimen/half">
 
             <ImageView
-                android:layout_width="@dimen/icon_small"
-                android:layout_height="@dimen/icon_small"
-                android:src="@drawable/ic_baseline_help_outline_24"
-                app:tint="?android:attr/textColorSecondary" />
+                android:layout_marginStart="@dimen/normal"
+                android:layout_width="@dimen/icon_bigger"
+                android:layout_height="@dimen/icon_bigger"
+                android:src="@drawable/ic_recognise_networks" />
 
             <TextView
                 android:id="@+id/network_perms_text"
@@ -80,12 +79,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/half"
+                android:layout_marginStart="@dimen/half"
                 android:text="@string/networks_permission_request" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="@dimen/half"
             android:background="?android:attr/shadowColor" />
     </LinearLayout>

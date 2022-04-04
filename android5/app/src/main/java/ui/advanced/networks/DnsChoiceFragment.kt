@@ -114,7 +114,7 @@ class DnsChoiceFragment : BottomSheetFragment() {
 
         item.name = dns.label
         item.icon = ContextCompat.getDrawable(requireContext(),
-            if (dns.isDnsOverHttps()) R.drawable.ic_baseline_lock_24 else R.drawable.ic_baseline_no_encryption_24
+            if (dns.isDnsOverHttps()) R.drawable.ic_use_dns else R.drawable.ic_unlock
         )
         item.active = dns.id == selectedDns
 

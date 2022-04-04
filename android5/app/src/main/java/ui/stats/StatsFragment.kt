@@ -14,7 +14,6 @@ package ui.stats
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,8 +30,6 @@ import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app
-import ui.settings.SettingsFragmentDirections
-import ui.utils.getColorFromAttr
 
 class StatsFragment : Fragment() {
 
@@ -42,9 +39,9 @@ class StatsFragment : Fragment() {
     private lateinit var search: SearchView
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
         activity?.let {
@@ -59,7 +56,11 @@ class StatsFragment : Fragment() {
         val adapter = StatsAdapter(vm, interaction = object : StatsAdapter.Interaction {
             override fun onClick(item: HistoryEntry) {
                 val nav = findNavController()
-                nav.navigate(StatsFragmentDirections.actionNavigationActivityToActivityDetailFragment(item.name))
+                nav.navigate(
+                    StatsFragmentDirections.actionNavigationActivityToActivityDetailFragment(
+                        item.name
+                    )
+                )
             }
         })
 
@@ -74,7 +75,7 @@ class StatsFragment : Fragment() {
         tabs.getTabAt(0)?.text = getString(R.string.activity_category_recent)
         tabs.getTabAt(1)?.text = getString(R.string.activity_category_top)
 
-        when(vm.getSorting()) {
+        when (vm.getSorting()) {
             StatsViewModel.Sorting.TOP -> tabs.selectTab(tabs.getTabAt(1))
             else -> tabs.selectTab(tabs.getTabAt(0))
         }
@@ -85,7 +86,7 @@ class StatsFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                val sorting = when(tab.position) {
+                val sorting = when (tab.position) {
                     0 -> StatsViewModel.Sorting.RECENT
                     else -> StatsViewModel.Sorting.TOP
                 }

@@ -29,9 +29,10 @@
 
             <ImageView
                 android:id="@+id/network_icon"
-                android:layout_width="@dimen/icon_huge"
-                android:layout_height="@dimen/icon_huge"
-                android:src="@drawable/ic_baseline_wifi_24" />
+                android:layout_marginStart="@dimen/normal"
+                android:layout_width="@dimen/icon_bigger"
+                android:layout_height="@dimen/icon_bigger"
+                android:src="@drawable/ic_all_networks" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -76,20 +77,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/doubled">
+            android:padding="@dimen/normal">
 
             <ui.advanced.packs.OptionView
                 android:id="@+id/network_action_encryptdns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconRef="@drawable/ic_lock_check"
+                app:iconRef="@drawable/ic_encrypted_dns"
                 app:name="@string/networks_action_encrypt_dns" />
 
             <ui.advanced.packs.OptionView
                 android:id="@+id/network_action_changedns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconRef="@drawable/ic_baseline_no_encryption_24"
+                app:iconRef="@drawable/ic_use_dns"
                 app:name="@string/networks_action_use_dns" />
 
             <ui.advanced.packs.OptionView

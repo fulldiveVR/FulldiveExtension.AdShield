@@ -12,6 +12,7 @@
 
 package engine
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import service.BlocklistService
 import service.EnvironmentService
 import service.StatsService
 import utils.Logger
+import java.util.regex.Pattern.matches
 
 internal object FilteringService {
 
@@ -33,13 +35,13 @@ internal object FilteringService {
 
     private var filteringStrategy: FilteringStrategy = NoopFilteringStrategy
 
-    fun reload() {
+    fun reload(urls: Set<String>) {
+        // init adp if have adp blocklist.
         log.v("Reloading blocklist")
         merged = blocklist.loadMerged()
         userAllowed = blocklist.loadUserAllowed()
         userDenied = blocklist.loadUserDenied()
         log.v("Reloaded: ${merged.size} hosts, + user: ${userDenied.size} denied, ${userAllowed.size} allowed")
-
         if (merged.size < 10000) {
             log.w("Merged blocklist is suspiciously small, may not block sufficiently")
         }
@@ -53,22 +55,12 @@ internal object FilteringService {
                 log.e("Empty merged blocklist and user denied list, will not block anything")
                 NoopFilteringStrategy
             }
-            // "*." is sorted as first
-            merged.first().startsWith("*.") -> {
-                log.v("Detected wildcard blocklist, will use wildcard matching")
-                merged = merged.map { it.replace("*.", "") }
-                WildcardFilteringStrategy(merged)
-            }
-            // "||" is sorted as last
-            merged.last().startsWith("||") -> {
-                log.v("Detected ABP wildcard blocklist, will use wildcard matching")
-                merged = merged.map { it.replace("||", "").replace("^", "") }
-                WildcardFilteringStrategy(merged)
-            }
             else -> {
                 SimpleFilteringStrategy(merged)
             }
         }
+
+        ABPService.setAdblockSubscriptions(urls)
     }
 
     fun allowed(host: Host): Boolean {
@@ -101,29 +93,13 @@ private interface FilteringStrategy {
 
 private class SimpleFilteringStrategy(
     private val merged: List<Host>,
-): FilteringStrategy {
+) : FilteringStrategy {
 
     override fun denied(host: Host): Boolean {
-        return merged.contains(host)
+        return merged.contains(host) || ABPService.isBlocked(host)
     }
-
 }
 
-private class WildcardFilteringStrategy(
-    private val merged: List<Host>,
-): FilteringStrategy {
-
-    override fun denied(host: Host): Boolean {
-        var partial = host
-        do {
-            if (merged.contains(partial)) return true
-            partial = partial.substringAfter(".")
-        } while (partial.contains("."))
-        return false
-    }
-
-}
-
-private object NoopFilteringStrategy: FilteringStrategy {
+private object NoopFilteringStrategy : FilteringStrategy {
     override fun denied(host: Host) = false
 }

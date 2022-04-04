@@ -103,9 +103,9 @@ class NetworksFragment : Fragment() {
         recycler.adapter = adapter
         recycler.layoutManager = manager
 
-        vm.configs.observe(viewLifecycleOwner, {
+        vm.configs.observe(viewLifecycleOwner) {
             adapter.swapData(it.filter { !it.network.isFallback() }.map { it.network })
-        })
+        }
 
         // Configure the top "All networks" panel
         root.findViewById<View>(R.id.network_all).setOnClickListener {
@@ -120,11 +120,11 @@ class NetworksFragment : Fragment() {
 
         vm.activeConfig.observe(viewLifecycleOwner, {
             adapter.notifyDataSetChanged()
-            root.findViewById<ImageView>(R.id.network_icon).setColorFilter(
-                if (it.network.isFallback()) {
-                    requireContext().getColor(R.color.green)
-                } else requireContext().getColorFromAttr(android.R.attr.textColor)
-            )
+//            root.findViewById<ImageView>(R.id.network_icon).setColorFilter(
+//                if (it.network.isFallback()) {
+//                    requireContext().getColor(R.color.green)
+//                } else requireContext().getColorFromAttr(android.R.attr.textColor)
+//            )
         })
 
         return root

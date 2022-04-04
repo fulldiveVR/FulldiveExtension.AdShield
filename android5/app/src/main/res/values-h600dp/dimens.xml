@@ -32,4 +32,6 @@
     <dimen name="powerview">240dp</dimen>
     <dimen name="powerview_below">48dp</dimen>
     <dimen name="plusbutton_above">120dp</dimen>
+
+    <dimen name="text_size_normal">18sp</dimen>
 </resources>

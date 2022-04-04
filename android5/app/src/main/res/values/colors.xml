@@ -14,11 +14,12 @@
 <resources>
     <color name="light_background">@color/white</color>
     <color name="light_backgroundSecondary">@color/gray_100</color>
-    <color name="light_text">@color/black</color>
-    <color name="light_textSecondary">@color/gray_600</color>
+    <color name="light_text">@color/textColorPrimary</color>
+    <color name="light_textSecondary">@color/textColorSecondary</color>
     <color name="light_inactive">@color/gray_400</color>
-    <color name="light_accent">@color/orange</color>
+    <color name="light_accent">@color/textColorAccent</color>
     <color name="light_shadow">@color/gray_200</color>
+    <color name="light_bar_background">#F2F3F4</color>
 
     <color name="dark_background">@color/black</color>
     <color name="dark_backgroundSecondary">@color/gray_999</color>
@@ -27,6 +28,7 @@
     <color name="dark_inactive">@color/gray_800</color>
     <color name="dark_accent">@color/orange</color>
     <color name="dark_shadow">@color/gray_900</color>
+    <color name="dark_bar_background">#F2F3F4</color>
 
     <color name="textColorPrimary">#0D1826</color>
     <color name="textColorSecondary">#BABDC1</color>

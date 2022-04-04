@@ -91,6 +91,7 @@
                         android:background="@android:color/white" />
 
                     <Button
+                        style="@style/accentButton"
                         android:id="@+id/vpnperm_continue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -70,7 +70,7 @@ class ProtectionLevelFragment : BottomSheetFragment(skipCollapsed = false) {
         val detailDoh = root.findViewById<TextView>(R.id.home_detail_dns_doh)
         val detailVpn = root.findViewById<TextView>(R.id.home_detail_vpn)
 
-        tunnelVM.tunnelStatus.observe(viewLifecycleOwner, { status ->
+        tunnelVM.tunnelStatus.observe(viewLifecycleOwner) { status ->
             val level = statusToLevel(status)
             val ctx = requireContext()
             encryptLevel.text = ctx.levelToShortText(level)
@@ -129,7 +129,7 @@ class ProtectionLevelFragment : BottomSheetFragment(skipCollapsed = false) {
 //                    }
                 }
             }
-        })
+        }
 
         return root
     }

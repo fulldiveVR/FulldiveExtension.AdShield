@@ -72,7 +72,7 @@ class NetworksDetailFragment : Fragment() {
         val actionChangeDns: OptionView = root.findViewById(R.id.network_action_changedns)
         val actionForceLibre: OptionView = root.findViewById(R.id.network_action_forcelibre)
 
-        viewModel.configs.observe(viewLifecycleOwner, {
+        viewModel.configs.observe(viewLifecycleOwner) {
             viewModel.getConfigForId(args.networkId).let { cfg ->
                 val ctx = requireContext()
 
@@ -85,27 +85,19 @@ class NetworksDetailFragment : Fragment() {
                 when (cfg.network.type) {
                     NetworkType.FALLBACK -> {
                         // Hide unnecessary things for the "All networks" config
-                        icon.setImageResource(R.drawable.ic_baseline_wifi_lock_24)
+                        icon.setImageResource(R.drawable.ic_all_networks)
                         name.text = ctx.getString(R.string.networks_label_all_networks)
                         desc.text = ctx.getString(R.string.networks_label_details_default_network)
                         actionUseNetworkDns.visibility = View.GONE
                         actionForceLibre.visibility = View.GONE
                     }
                     NetworkType.WIFI -> {
-                        icon.setImageResource(R.drawable.ic_baseline_wifi_24)
+                        icon.setImageResource(R.drawable.ic_wifi)
                         desc.text = ctx.getString(R.string.networks_label_specific_network_type)
                     }
                     else -> {
-                        icon.setImageResource(R.drawable.ic_baseline_signal_cellular_4_bar_24)
+                        icon.setImageResource(R.drawable.ic_any_mobile)
                     }
-                }
-
-                // Color the icon if this the currently active config
-                val active = viewModel.getActiveNetworkConfig()
-                if (active.network == cfg.network) {
-                    icon.setColorFilter(ctx.getColor(R.color.green))
-                } else {
-                    icon.setColorFilter(ctx.getColorFromAttr(android.R.attr.textColor))
                 }
 
                 // Actions and interdependencies between them
@@ -117,9 +109,9 @@ class NetworksDetailFragment : Fragment() {
                 actionChangeDns.active = true
                 actionChangeDns.name = ctx.getString(R.string.networks_action_use_dns, dns.label)
                 actionChangeDns.icon = if (dns.isDnsOverHttps())
-                    ContextCompat.getDrawable(ctx, R.drawable.ic_baseline_lock_24)
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_use_dns)
                 else
-                    ContextCompat.getDrawable(ctx, R.drawable.ic_baseline_no_encryption_24)
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_unlock)
 
                 actionEncrypt.setOnClickListener {
                     viewModel.actionEncryptDns(cfg.network, !actionEncrypt.active)
@@ -158,12 +150,15 @@ class NetworksDetailFragment : Fragment() {
                     else -> ctx.getString(R.string.networks_summary_network_dns_and_plus_mode)
                 }
                 summaryUseDns.text = when {
-                    cfg.useNetworkDns -> ctx.getString(R.string.networks_summary_network_dns, dns.label)
+                    cfg.useNetworkDns -> ctx.getString(
+                        R.string.networks_summary_network_dns,
+                        dns.label
+                    )
                     else -> ctx.getString(R.string.networks_summary_use_dns, dns.label)
                 }
                 summaryForceLibre.visibility = if (cfg.forceLibreMode) View.VISIBLE else View.GONE
             }
-        })
+        }
 
         return root
     }

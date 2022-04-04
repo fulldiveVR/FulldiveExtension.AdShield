@@ -15,7 +15,7 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/full_adshield_logo"
+        android:icon="@drawable/ic_shield_menu"
         android:title="@string/main_tab_home" />
 
     <item

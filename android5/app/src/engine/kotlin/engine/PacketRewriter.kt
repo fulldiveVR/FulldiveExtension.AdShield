@@ -14,7 +14,7 @@ package engine
 
 import android.system.ErrnoException
 import android.system.OsConstants
-import model.*
+import model.ex
 import org.pcap4j.packet.*
 import org.pcap4j.packet.namednumber.UdpPort
 import org.xbill.DNS.*
@@ -47,9 +47,12 @@ internal class PacketRewriter(
     }
 
     fun handleToDevice(destination: ByteBuffer, length: Int): Boolean {
-        if (isUdp (destination) && (
+        if (isUdp(destination) && (
                     srcAddress4(destination, dns.externalForIndex(0).address) ||
-                            (dns.count() > 1 && srcAddress4(destination, dns.externalForIndex(1).address))
+                            (dns.count() > 1 && srcAddress4(
+                                destination,
+                                dns.externalForIndex(1).address
+                            ))
                     )
         ) {
             rewriteSrcDns4(destination, length)
@@ -230,7 +233,10 @@ fun handleForwardException(ex: Exception): Boolean {
             true
         }
         c is SocketException && c.message == "Pending connect failure" -> {
-            Logger.v("Rewriter", "Got pending connect failure, reconnecting socket (probably switching network)")
+            Logger.v(
+                "Rewriter",
+                "Got pending connect failure, reconnecting socket (probably switching network)"
+            )
             true
         }
         c is ErrnoException && c.errno == OsConstants.EPERM -> {

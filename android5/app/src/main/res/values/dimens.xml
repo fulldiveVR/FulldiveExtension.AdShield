@@ -34,4 +34,6 @@
 
     <dimen name="maxwidth">600dp</dimen>
     <dimen name="sheet_maxwidth">300dp</dimen>
+
+    <dimen name="text_size_normal">18sp</dimen>
 </resources>

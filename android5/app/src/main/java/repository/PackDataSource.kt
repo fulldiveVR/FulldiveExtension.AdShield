@@ -41,7 +41,8 @@ object PackDataSource {
             .withSource(
                 PackSource.new(
                     urls = listOf("https://abp.oisd.nl/basic/"),
-                    applyFor = "Basic (Wildcards)"
+                    applyFor = "Basic (Wildcards)",
+                    isWildcard = true
                 )
             )
             .withSource(
@@ -50,7 +51,154 @@ object PackDataSource {
                     applyFor = "Basic"
                 )
             ),
-
+        Pack.mocked(
+            id = "adBlock",
+            tags = listOf(
+                Pack.recommended,
+                Pack.official,
+                "adblocking",
+                "tracking",
+                "privacy",
+                "phishing",
+                "security"
+            ),
+            title = "AdBlock Plus",
+            slugline = "A good general purpose blocklist",
+            description = "This universal list primarily blocks ads, and mobile app ads. Should not interfere with normal apps and services.",
+            creditName = "easylist",
+            creditUrl = "https://easylist.to/",
+            configs = listOf(
+                "General (Wildcards)",
+                "Easy Privacy (Wildcards)",
+                "Cookie List (Wildcards)",
+                "Germany (Wildcards)",
+                "Italy (Wildcards)",
+                "Bulgarian (Wildcards)",
+                "Dutch (Wildcards)",
+                "French (Wildcards)",
+                "China (Wildcards)",
+                "Indonesian (Wildcards)",
+                "Arabic (Wildcards)",
+                "Czech and Slovak (Wildcards)",
+                "Latvian (Wildcards)",
+                "Hebrew (Wildcards)",
+                "Russia (Wildcards)",
+            )
+        )
+            .changeStatus(config = "General (Wildcards)")
+            .changeStatus(installed = false) // Default config. Will auto download.
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/easylist.txt"),
+                    applyFor = "General (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist.to/easylist/easyprivacy.txt"),
+                    applyFor = "Easy Privacy (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://secure.fanboy.co.nz/fanboy-cookiemonster.txt"),
+                    applyFor = "Cookie List (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/easylistgermany.txt"),
+                    applyFor = "Germany (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/easylistitaly.txt"),
+                    applyFor = "Italy (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/easylistdutch.txt"),
+                    applyFor = "Dutch (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/liste_fr.txt"),
+                    applyFor = "French (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/easylistchina.txt"),
+                    applyFor = "China (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://stanev.org/abp/adblock_bg.txt"),
+                    applyFor = "Bulgarian (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://raw.githubusercontent.com/heradhis/indonesianadblockrules/master/subscriptions/abpindo.txt"),
+                    applyFor = "Indonesian (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/Liste_AR.txt"),
+                    applyFor = "Arabic (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://raw.githubusercontent.com/tomasko126/easylistczechandslovak/master/filters.txt"),
+                    applyFor = "Czech and Slovak (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://notabug.org/latvian-list/adblock-latvian/raw/master/lists/latvian-list.txt"),
+                    applyFor = "Latvian (Wildcards)",
+                    isWildcard = true
+                )
+            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://raw.githubusercontent.com/easylist/EasyListHebrew/master/EasyListHebrew.txt"),
+                    applyFor = "Hebrew (Wildcards)",
+                    isWildcard = true
+                )
+            )
+//            .withSource(
+//                PackSource.new(
+//                    urls = listOf("http://margevicius.lt/easylistlithuania.txt"),
+//                    applyFor = "Lithuania (Wildcards)",
+//                    isWildcard = true
+//                )
+//            )
+            .withSource(
+                PackSource.new(
+                    urls = listOf("https://easylist-downloads.adblockplus.org/ruadlist+easylist.txt"),
+                    applyFor = "Russia (Wildcards)",
+                    isWildcard = true
+                )
+            ),
         Pack.mocked(
             id = "energized",
             tags = listOf(
@@ -520,19 +668,22 @@ object PackDataSource {
             .withSource(
                 PackSource.new(
                     urls = listOf("https://hosts.netlify.app/Lite/adblock.txt"),
-                    applyFor = "Lite (Wildcards)"
+                    applyFor = "Lite (Wildcards)",
+                    isWildcard = true
                 )
             )
             .withSource(
                 PackSource.new(
                     urls = listOf("https://hosts.netlify.app/Pro/adblock.txt"),
-                    applyFor = "Pro (Wildcards)"
+                    applyFor = "Pro (Wildcards)",
+                    isWildcard = true
                 )
             )
             .withSource(
                 PackSource.new(
                     urls = listOf("https://hosts.netlify.app/Xtra/adblock.txt"),
-                    applyFor = "Xtra (Wildcards)"
+                    applyFor = "Xtra (Wildcards)",
+                    isWildcard = true
                 )
             ),
 

@@ -12,7 +12,6 @@
 
 package engine
 
-import model.BlokadaException
 import ui.utils.cause
 import utils.Logger
 import android.system.ErrnoException
@@ -26,7 +25,6 @@ import org.pcap4j.util.PropertiesLoader
 import java.io.*
 import java.net.*
 import java.nio.ByteBuffer
-import kotlin.experimental.xor
 
 
 internal class PacketLoopForLibre (
@@ -173,35 +171,33 @@ internal class PacketLoopForLibre (
         deviceOut.write(b.array(), b.arrayOffset() + b.position(), b.limit())
     }
 
-    private fun setupErrorsPipe() = {
+    private fun setupErrorsPipe(): StructPollfd {
         val pipe = Os.pipe()
         errorPipe = pipe[0]
         val errors = StructPollfd()
         errors.fd = errorPipe
         errors.listenFor(OsConstants.POLLHUP or OsConstants.POLLERR)
-        errors
-    }()
+        return errors
+    }
 
-    private fun setupDevicePipe(input: FileInputStream) = {
-        this.devicePipe = input.fd
+    private fun setupDevicePipe(input: FileInputStream): StructPollfd {
+        devicePipe = input.fd
         val device = StructPollfd()
         device.fd = input.fd
-        device
-    }()
+        return device
+    }
 
-    private fun setupPolls(errors: StructPollfd, device: StructPollfd) = {
+    private fun setupPolls(errors: StructPollfd, device: StructPollfd): Array<StructPollfd> {
         val polls = arrayOfNulls<StructPollfd>(2 + forwarder.size()) as Array<StructPollfd>
         polls[0] = errors
         polls[1] = device
-
         var i = 0
         while (i < forwarder.size()) {
             polls[2 + i] = forwarder[i].pipe
             i++
         }
-
-        polls
-    }()
+        return polls
+    }
 
     private fun poll(polls: Array<StructPollfd>) {
         while (true) {

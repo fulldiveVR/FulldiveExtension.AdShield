@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M28.2591,26.1581C29.9024,25.0025 30.607,22.9151 30.0003,21C29.3935,19.0849 27.5355,18.0357 25.5266,18.0373H24.3661C23.6074,15.0807 21.1043,12.8979 18.072,12.5486C15.0396,12.1993 12.1058,13.7559 10.6949,16.4627C9.2839,19.1694 9.688,22.4659 11.7108,24.7518"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M25,25.5H15V28.5H25V25.5Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M25,22H19"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M16,22H15"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+</vector>

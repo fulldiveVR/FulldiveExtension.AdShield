@@ -18,6 +18,7 @@ import model.*
 import engine.EngineService
 import service.PersistenceService
 import service.StatsService
+import ui.advanced.packs.PacksViewModel
 import ui.utils.cause
 import utils.Logger
 import java.lang.Exception
@@ -39,6 +40,7 @@ class StatsViewModel : ViewModel() {
 
     private var sorting = Sorting.RECENT
     private var filter = Filter.ALL
+    private var packsFilter = PacksViewModel.Filter.HIGHLIGHTS
     private var searchTerm: String? = null
 
     private val _stats = MutableLiveData<Stats>()
@@ -53,10 +55,16 @@ class StatsViewModel : ViewModel() {
     private val _denied = MutableLiveData<Denied>()
     val denied = _denied.map { it.value }
 
+    private val _packs = MutableLiveData<Packs>()
+    val packs = _packs.map { applyPacksFilters(it.packs) }
+
+    private val activeTags = listOf("official")
+
     init {
         viewModelScope.launch {
             _allowed.value = persistence.load(Allowed::class)
             _denied.value = persistence.load(Denied::class)
+            _packs.value = persistence.load(Packs::class)
             statistics.setup()
         }
     }
@@ -108,7 +116,7 @@ class StatsViewModel : ViewModel() {
                     persistence.save(new)
                     _allowed.value = new
                     updateLiveData()
-                    engine.reloadBlockLists()
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not allow host $name".cause(ex))
                     persistence.save(current)
@@ -125,7 +133,7 @@ class StatsViewModel : ViewModel() {
                     persistence.save(new)
                     _allowed.value = new
                     updateLiveData()
-                    engine.reloadBlockLists()
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not unallow host $name".cause(ex))
                     persistence.save(current)
@@ -142,7 +150,7 @@ class StatsViewModel : ViewModel() {
                     persistence.save(new)
                     _denied.value = new
                     updateLiveData()
-                    engine.reloadBlockLists()
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not deny host $name".cause(ex))
                     persistence.save(current)
@@ -159,7 +167,7 @@ class StatsViewModel : ViewModel() {
                     persistence.save(new)
                     _denied.value = new
                     updateLiveData()
-                    engine.reloadBlockLists()
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not undeny host $name".cause(ex))
                     persistence.save(current)
@@ -174,6 +182,13 @@ class StatsViewModel : ViewModel() {
 
     fun isDenied(name: String): Boolean {
         return _denied.value?.value?.contains(name) ?: false
+    }
+
+    fun getActiveUrls(): Set<String> {
+        // Also include urls of any active pack
+        return _packs.value?.let { packs ->
+            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
+        } ?: emptySet()
     }
 
     private fun updateLiveData() {
@@ -213,6 +228,26 @@ class StatsViewModel : ViewModel() {
             Sorting.RECENT -> {
                 // Sorted by recent
                 entries.sortedByDescending { it.time }
+            }
+        }
+    }
+
+    private fun applyPacksFilters(allPacks: List<Pack>): List<Pack> {
+        return when (packsFilter) {
+            PacksViewModel.Filter.ACTIVE -> {
+                allPacks.filter { pack ->
+                    pack.status.installed
+                }
+            }
+            PacksViewModel.Filter.ALL -> {
+                allPacks.filter { pack ->
+                    activeTags.intersect(pack.tags).isEmpty() != true
+                }
+            }
+            else -> {
+                allPacks.filter { pack ->
+                    pack.tags.contains(Pack.recommended) /* && !pack.status.installed */
+                }
             }
         }
     }

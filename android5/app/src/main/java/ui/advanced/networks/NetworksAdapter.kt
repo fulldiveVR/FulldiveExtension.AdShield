@@ -82,18 +82,16 @@ class NetworksAdapter(
             }
 
             if (item.type == NetworkType.WIFI) {
-                icon.setImageResource(R.drawable.ic_baseline_wifi_24)
+                icon.setImageResource(R.drawable.ic_wifi)
             } else {
-                icon.setImageResource(R.drawable.ic_baseline_signal_cellular_4_bar_24)
+                icon.setImageResource(R.drawable.ic_any_mobile)
             }
 
             val cfg = viewModel.getConfig(item)
             if (item == viewModel.getActiveNetworkConfig().network) {
-                icon.setColorFilter(ctx.getColor(R.color.green))
                 config.text = cfg.summarizeLocalised(ctx)
                 active.isChecked = true
             } else {
-                icon.setColorFilter(ctx.getColorFromAttr(android.R.attr.textColor))
                 active.isChecked = cfg.enabled
 
                 config.text = when {

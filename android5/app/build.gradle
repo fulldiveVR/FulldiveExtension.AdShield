@@ -19,8 +19,8 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: "kotlin-kapt"
 
 def versionMajor = 1
-def versionMinor = 0
-def versionPatch = 8
+def versionMinor = 1
+def versionPatch = 0
 
 android {
     compileSdkVersion 30
@@ -39,7 +39,7 @@ android {
         applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode versionMajor*10000+versionMinor*100+versionPatch
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -181,6 +181,8 @@ dependencies {
     // unzip default blocklist
     implementation 'net.lingala.zip4j:zip4j:2.6.4'
 
+    implementation "org.adblockplus:adblock-android-settings:4.4.0"
+
     // test deps
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
@@ -193,7 +195,7 @@ dependencies {
 apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
 
 cargo {
-    module  = "../blocka_engine"
+    module = "../blocka_engine"
     libname = "blocka_dns"
     targets = ["arm", "arm64", "x86", "x86_64"]
     profile = "release"
