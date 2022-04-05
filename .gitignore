@@ -7,3 +7,4 @@ keystore.properties
 
 # Dirs from the 4 branch, not relevant to 5
 android4
+blocka_engine/arm64
