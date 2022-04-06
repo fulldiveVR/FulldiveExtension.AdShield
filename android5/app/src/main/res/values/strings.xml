@@ -80,7 +80,7 @@
   <string name="account_active_forever">Forever</string>
   <string name="account_active_forever_full">Active forever</string>
   <string name="main_ask_for_permissions_header">Just one more step</string>
-  <string name="main_ask_for_permissions_description">Full AdShield is using a VPN Configuration to forwarding some requests to our DNS for better privacy and browsing experience. You will be asked to allow it in the next step.</string>
+  <string name="main_ask_for_permissions_description">To improve privacy, Full AdShield uses a VPN Configuration to forward some requests to DNS. You will be asked to allow it in the next step.</string>
   <string name="main_share_message">Full AdShield for iOS helped me block %s ads and trackers!</string>
   <string name="main_rate_us_header">Rate us!</string>
   <string name="main_rate_us_description">How do you like Full AdShield so far?</string>
