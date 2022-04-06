@@ -15,12 +15,9 @@ package ui
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.*
-import repository.DnsDataSource
-import service.AlertDialogService
 import service.ConnectivityService
 import service.PersistenceService
 import utils.Logger
-import org.adshield.R
 
 class NetworksViewModel : ViewModel() {
 
@@ -102,7 +99,22 @@ class NetworksViewModel : ViewModel() {
     fun actionUseDns(network: NetworkDescriptor, dns: DnsId, useBlockaDnsInPlusMode: Boolean) {
         log.v("actionUseDns ($dns, blockaInPlus: $useBlockaDnsInPlusMode) for ${network.id()}")
         viewModelScope.launch {
-            val cfg = getConfig(network).copy(dnsChoice = dns, useBlockaDnsInPlusMode = useBlockaDnsInPlusMode)
+            val cfg = getConfig(network).copy(
+                dnsChoice = dns,
+                useBlockaDnsInPlusMode = useBlockaDnsInPlusMode
+            )
+            _configs.replace(cfg)
+            updateLiveData()
+        }
+    }
+
+    fun actionUseAlterDns(network: NetworkDescriptor, dns: DnsId, useBlockaDnsInPlusMode: Boolean) {
+        log.v("actionUseAlterDns ($dns, blockaInPlus: $useBlockaDnsInPlusMode) for ${network.id()}")
+        viewModelScope.launch {
+            val cfg = getConfig(network).copy(
+                alterDns = dns,
+                useBlockaDnsInPlusMode = useBlockaDnsInPlusMode
+            )
             _configs.replace(cfg)
             updateLiveData()
         }

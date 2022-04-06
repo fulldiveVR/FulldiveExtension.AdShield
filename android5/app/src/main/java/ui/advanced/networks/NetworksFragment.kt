@@ -13,8 +13,9 @@
 package ui.advanced.networks
 
 import android.os.Bundle
-import android.view.*
-import android.widget.ImageView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +34,6 @@ import ui.NetworksViewModel
 import ui.app
 import ui.settings.getIntentForAppInfo
 import ui.utils.getColor
-import ui.utils.getColorFromAttr
 
 class NetworksFragment : Fragment() {
 
@@ -43,9 +43,9 @@ class NetworksFragment : Fragment() {
     private lateinit var vm: NetworksViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
         activity?.let {
@@ -66,7 +66,7 @@ class NetworksFragment : Fragment() {
             )
         }
 
-         val showPermsGrantedInfo = {
+        val showPermsGrantedInfo = {
             permsText.text = getString(R.string.networks_permission_request_granted)
             permsText.setTextColor(getColor(R.color.green))
             permsButton.setOnClickListener {
@@ -90,7 +90,11 @@ class NetworksFragment : Fragment() {
         val adapter = NetworksAdapter(vm, interaction = object : NetworksAdapter.Interaction {
             override fun onClick(item: NetworkDescriptor) {
                 val nav = findNavController()
-                nav.navigate(NetworksFragmentDirections.actionSettingsNetworksFragmentToNetworksDetailFragment(item.id()))
+                nav.navigate(
+                    NetworksFragmentDirections.actionSettingsNetworksFragmentToNetworksDetailFragment(
+                        item.id()
+                    )
+                )
             }
 
             override fun onEnabled(item: NetworkDescriptor, enabled: Boolean) {
@@ -110,11 +114,14 @@ class NetworksFragment : Fragment() {
         // Configure the top "All networks" panel
         root.findViewById<View>(R.id.network_all).setOnClickListener {
             val nav = findNavController()
-            nav.navigate(NetworksFragmentDirections.actionSettingsNetworksFragmentToNetworksDetailFragment(
-                NetworkDescriptor.fallback().id()
-            ))
+            nav.navigate(
+                NetworksFragmentDirections.actionSettingsNetworksFragmentToNetworksDetailFragment(
+                    NetworkDescriptor.fallback().id()
+                )
+            )
         }
-        root.findViewById<TextView>(R.id.network_config).text = requireContext().getString(R.string.networks_action_network_specific)
+        root.findViewById<TextView>(R.id.network_config).text =
+            requireContext().getString(R.string.networks_action_network_specific)
         root.findViewById<View>(R.id.network_switch).visibility = View.GONE
         root.findViewById<View>(R.id.network_divider).visibility = View.GONE
 

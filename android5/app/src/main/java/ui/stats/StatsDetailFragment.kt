@@ -26,8 +26,8 @@ import androidx.navigation.fragment.navArgs
 import model.HistoryEntryType
 import org.adshield.R
 import ui.StatsViewModel
-import ui.app
 import ui.advanced.packs.OptionView
+import ui.app
 import ui.utils.AndroidUtils
 
 
@@ -49,7 +49,7 @@ class StatsDetailFragment : Fragment() {
             viewModel = ViewModelProvider(it.app()).get(StatsViewModel::class.java)
         }
 
-        val root =  inflater.inflate(R.layout.fragment_stats_detail, container, false)
+        val root = inflater.inflate(R.layout.fragment_stats_detail, container, false)
 
         val icon: ImageView = root.findViewById(R.id.activity_icon)
         val name: TextView = root.findViewById(R.id.activity_name)
@@ -67,21 +67,53 @@ class StatsDetailFragment : Fragment() {
                         icon.setImageResource(R.drawable.ic_shield_off_outline)
                         icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
                         comment.text = getString(R.string.activity_request_allowed_whitelisted)
+                        context?.let { context ->
+                            comment.setTextColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.textColorForwarded
+                                )
+                            )
+                        }
                     }
                     HistoryEntryType.blocked_denied -> {
                         icon.setImageResource(R.drawable.ic_shield_off_outline)
                         icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.red))
                         comment.text = getString(R.string.activity_request_blocked_blacklisted)
+                        context?.let { context ->
+                            comment.setTextColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.textColorDenied
+                                )
+                            )
+                        }
                     }
                     HistoryEntryType.passed -> {
                         icon.setImageResource(R.drawable.ic_shield_outline)
                         icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
                         comment.text = getString(R.string.activity_request_allowed)
+                        context?.let { context ->
+                            comment.setTextColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.textColorDenied
+                                )
+                            )
+                        }
                     }
                     else -> {
                         icon.setImageResource(R.drawable.ic_shield_outline)
                         icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.red))
                         comment.text = getString(R.string.activity_request_blocked)
+                        context?.let { context ->
+                            comment.setTextColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.textColorForwarded
+                                )
+                            )
+                        }
                     }
                 }
 

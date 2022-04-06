@@ -16,22 +16,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import model.Dns
 import model.DnsId
-import model.Gateway
 import model.isDnsOverHttps
 import org.adshield.R
 import repository.DnsDataSource
 import ui.BottomSheetFragment
 import ui.advanced.packs.OptionView
-import ui.utils.getColorFromAttr
-import utils.Logger
 
 class DnsChoiceFragment : BottomSheetFragment() {
 
@@ -42,6 +37,7 @@ class DnsChoiceFragment : BottomSheetFragment() {
     var selectedDns: DnsId? = null
     var useBlockaDnsInPlusMode: Boolean = true
     var onDnsSelected = { dns: DnsId -> }
+    var isAlterDns = false
 
     private lateinit var useBlockaDns: SwitchCompat
 
@@ -85,17 +81,24 @@ class DnsChoiceFragment : BottomSheetFragment() {
             container3.removeAllViews()
             container4.removeAllViews()
 
-            val it = DnsDataSource.getDns().sortedByDescending { it.isDnsOverHttps() }
-            val groupedLocations = it.map {
-                when {
-                    it.region.startsWith("europe") -> 2 to it
-                    it.region.startsWith("us") || it.region.startsWith("northamerica") -> 3 to it
-                    it.region.startsWith("asia") -> 4 to it
-                    else -> 1 to it
+            val groupedLocations = if (isAlterDns) {
+                DnsDataSource.getAlterDNS().map {
+                    1 to it
+                }
+            } else {
+                val it = DnsDataSource.getDns().sortedByDescending { it.isDnsOverHttps() }
+                it.map {
+                    when {
+                        it.region.startsWith("europe") -> 2 to it
+                        it.region.startsWith("us") || it.region.startsWith("northamerica") -> 3 to it
+                        it.region.startsWith("asia") -> 4 to it
+                        else -> 1 to it
+                    }
                 }
             }
 
-            for(pairs in groupedLocations) {
+
+            for (pairs in groupedLocations) {
                 val (region, dns) = pairs
                 when (region) {
                     1 -> addItemView(container1, dns)
@@ -113,7 +116,8 @@ class DnsChoiceFragment : BottomSheetFragment() {
         val item = OptionView(requireContext())
 
         item.name = dns.label
-        item.icon = ContextCompat.getDrawable(requireContext(),
+        item.icon = ContextCompat.getDrawable(
+            requireContext(),
             if (dns.isDnsOverHttps()) R.drawable.ic_use_dns else R.drawable.ic_unlock
         )
         item.active = dns.id == selectedDns

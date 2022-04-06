@@ -37,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/normal"
-            android:layout_marginEnd="@dimen/normal"
             android:layout_marginTop="@dimen/half"
+            android:layout_marginEnd="@dimen/normal"
             android:layout_marginBottom="@dimen/half" />
 
         <View
@@ -58,19 +58,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/half"
+            android:layout_marginTop="@dimen/half"
+            android:layout_marginBottom="@dimen/half"
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingStart="@dimen/half"
-            android:layout_marginTop="@dimen/half"
-            android:layout_marginBottom="@dimen/half"
-            android:layout_marginStart="@dimen/half"
             android:paddingEnd="@dimen/half"
             android:paddingBottom="@dimen/half">
 
             <ImageView
-                android:layout_marginStart="@dimen/normal"
                 android:layout_width="@dimen/icon_bigger"
                 android:layout_height="@dimen/icon_bigger"
+                android:layout_marginStart="@dimen/normal"
                 android:src="@drawable/ic_recognise_networks" />
 
             <TextView
@@ -78,8 +78,8 @@
                 style="@style/Text.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/half"
                 android:layout_marginStart="@dimen/half"
+                android:paddingStart="@dimen/half"
                 android:text="@string/networks_permission_request" />
         </LinearLayout>
 

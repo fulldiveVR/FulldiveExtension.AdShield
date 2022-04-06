@@ -76,7 +76,7 @@ object Defaults {
         useBlockaDnsInPlusMode = true,
         forceLibreMode = false,
         enabled = false,
-        createdAt = now()
+        createdAt = now(),
+        alterDns = DnsDataSource.fullDiveDNS.id
     )
-
 }

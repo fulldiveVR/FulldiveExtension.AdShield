@@ -94,6 +94,13 @@
                 app:name="@string/networks_action_use_dns" />
 
             <ui.advanced.packs.OptionView
+                android:id="@+id/network_action_changeAlterDns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:iconRef="@drawable/ic_use_dns"
+                app:name="@string/networks_action_use_alter_dns" />
+
+            <ui.advanced.packs.OptionView
                 android:id="@+id/network_action_networkdns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,6 +168,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/half"
                 android:text="@string/networks_summary_force_libre_mode" />
+
+            <TextView
+                android:id="@+id/network_summary_alter_dns"
+                style="@style/Text.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/half"
+                android:text="@string/alter_dns_description" />
 
         </LinearLayout>
 

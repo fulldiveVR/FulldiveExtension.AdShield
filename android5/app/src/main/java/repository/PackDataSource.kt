@@ -30,8 +30,8 @@ object PackDataSource {
                 "security"
             ),
             title = "OISD",
-            slugline = "A good general purpose blocklist",
-            description = "This universal list primarily blocks ads, and mobile app ads. Should not interfere with normal apps and services.",
+            slugline = "A good general purpose forwarding list",
+            description = "This universal list primarily forward ads, and mobile app ads. Should not interfere with normal apps and services.",
             creditName = "sjhgvr",
             creditUrl = "https://oisd.nl/",
             configs = listOf("Basic (Wildcards)", "Basic")
@@ -63,8 +63,8 @@ object PackDataSource {
                 "security"
             ),
             title = "AdBlock Plus",
-            slugline = "A good general purpose blocklist",
-            description = "This universal list primarily blocks ads, and mobile app ads. Should not interfere with normal apps and services.",
+            slugline = "Well known tool for your privacy protection",
+            description = "This universal list primarily forward ads, and mobile app ads. Should not interfere with normal apps and services.",
             creditName = "easylist",
             creditUrl = "https://easylist.to/",
             configs = listOf(
@@ -211,7 +211,7 @@ object PackDataSource {
                 "regional"
             ),
             title = "Energized",
-            slugline = "Ads and trackers blocking list",
+            slugline = "Ads and trackers forwarding list",
             description = "This Energized System is designed for Unix-like systems, gets a list of domains that serve ads, tracking scripts and malware from multiple reputable sources and creates a hosts file that prevents your system from connecting to them. Beware, installing \"Social\" configuration may make your social apps, like Messenger, misbehave.",
             creditName = "Team Boltz",
             creditUrl = "https://energized.pro/",
@@ -274,7 +274,7 @@ object PackDataSource {
                 "gambling"
             ),
             title = "Steven Black",
-            slugline = "Popular for adblocking",
+            slugline = "Popular for forwarding",
             description = "Consolidating and Extending hosts files from several well-curated sources. You can optionally pick extensions to block Porn, Social Media, and other categories.",
             creditName = "Steven Black",
             creditUrl = "https://github.com/StevenBlack/hosts",
@@ -323,8 +323,8 @@ object PackDataSource {
                 "youtube"
             ),
             title = "Goodbye Ads",
-            slugline = "Alternative blocklist with advanced features",
-            description = "A blocklist with unique extensions to choose from. Be aware it is more aggressive, and may break apps or sites. It blocks graph.facebook.com and mqtt-mini.facebook.com. You may consider whitelisting them in the Activity section, in case you experience problems with Facebook apps.",
+            slugline = "Alternative forwarding list with advanced features",
+            description = "A forwarding list with unique extensions to choose from. Be aware it is more aggressive, and may break apps or sites. It blocks graph.facebook.com and mqtt-mini.facebook.com. You may consider whitelisting them in the Activity section, in case you experience problems with Facebook apps.",
             creditName = "Jerryn70",
             creditUrl = "https://github.com/jerryn70/GoodbyeAds",
             configs = listOf("Standard", "YouTube", "Samsung", "Xiaomi", "Spotify")
@@ -364,8 +364,8 @@ object PackDataSource {
         Pack.mocked(
             id = "adaway", tags = listOf(Pack.official, "adblocking"),
             title = "AdAway",
-            slugline = "Adblocking for your mobile device",
-            description = "A special blocklist containing mobile ad providers.",
+            slugline = "Forwarding for your mobile device",
+            description = "A special forwarding list containing mobile ad providers.",
             creditName = "AdAway Team",
             creditUrl = "https://github.com/AdAway/AdAway",
             configs = listOf("Standard")
@@ -383,7 +383,7 @@ object PackDataSource {
             tags = listOf(Pack.recommended, Pack.official, "phishing", "security"),
             title = "Phishing Army",
             slugline = "Protects against cyber attacks",
-            description = "A blocklist to filter phishing websites. Phishing is a malpractice based on redirecting to fake websites, which look exactly like the original ones, in order to trick visitors, and steal sensitive information. Installing this blocklist will help you prevent such situations.",
+            description = "A tool to filter phishing websites. Phishing is a malpractice based on redirecting to fake websites, which look exactly like the original ones, in order to trick visitors, and steal sensitive information. Installing this blocklist will help you prevent such situations.",
             creditName = "Andrea Draghetti",
             creditUrl = "https://phishing.army/index.html",
             configs = listOf("Standard", "Extended")
@@ -423,7 +423,7 @@ object PackDataSource {
         Pack.mocked(
             id = "blacklist", tags = listOf(Pack.official, "adblocking", "tracking", "privacy"),
             title = "Blacklist",
-            slugline = "Curated blocklist to block trackers and advertisements",
+            slugline = "Curated forwarding list to forward trackers and advertisements",
             description = "This is a curated and well-maintained blocklist to block ads, tracking, and more! Updated regularly.",
             creditName = "anudeepND",
             creditUrl = "https://github.com/anudeepND/blacklist",
@@ -448,7 +448,7 @@ object PackDataSource {
             tags = listOf(Pack.recommended, Pack.official, "tracking", "privacy"),
             title = "Exodus Privacy",
             slugline = "Analyzes privacy concerns in Android applications",
-            description = "This blocklist is based on The Exodus Privacy project, which analyses Android applications and looks for embedded trackers. A tracker is a piece of software meant to collect data about you, or what you do. This is a very small list, so you should also activate one of the more popular lists (like Energized).",
+            description = "This forwarding list is based on The Exodus Privacy project, which analyses Android applications and looks for embedded trackers. A tracker is a piece of software meant to collect data about you, or what you do. This is a very small list, so you should also activate one of the more popular lists (like Energized).",
             creditName = "Exodus Privacy",
             creditUrl = "https://go.blokada.org/exodusprivacy",
             configs = listOf("Standard")
@@ -465,8 +465,8 @@ object PackDataSource {
             id = "developerdan",
             tags = listOf(Pack.official, "adblocking", "tracking", "privacy", "social"),
             title = "Developer Dan's Hosts",
-            slugline = "A blocklist for ads and tracking, updated regularly",
-            description = "This is a good choice as the primary blocklist. It's well balanced, medium size, and frequently updated.",
+            slugline = "A forwarding list for ads and tracking, updated regularly",
+            description = "This is a good choice as the primary forwarding list. It's well balanced, medium size, and frequently updated.",
             creditName = "Daniel White",
             creditUrl = "https://go.blokada.org/developerdan",
             configs = listOf("Ads & Tracking", "Facebook", "AMP", "Hate & Junk")
@@ -510,7 +510,7 @@ object PackDataSource {
                 "security"
             ),
             title = "The Block List Project",
-            slugline = "A collection of blocklists for various use cases.",
+            slugline = "A collection of forwarding lists for various use cases.",
             description = "These lists were created because the founder of the project wanted something with a little more control over what is being blocked.",
             creditName = "blocklistproject",
             creditUrl = "https://go.blokada.org/blocklistproject",
@@ -558,7 +558,7 @@ object PackDataSource {
             id = "spam404",
             tags = listOf(Pack.recommended, Pack.official, "privacy", "phishing", "security"),
             title = "Spam404",
-            slugline = "A blocklist based on spam reports",
+            slugline = "A forwarding list based on spam reports",
             description = "Spam404 is a service that helps online companies with content monitoring, penetration testing and brand protection. This list is based on the reports received from companies.",
             creditName = "spam404",
             creditUrl = "https://go.blokada.org/spam404",
@@ -576,7 +576,7 @@ object PackDataSource {
             id = "hblock",
             tags = listOf(Pack.official, "adblocking", "tracking", "phishing", "security"),
             title = "hBlock",
-            slugline = "A comprehensive lists to block ads and tracking",
+            slugline = "A comprehensive lists to handle ads and tracking",
             description = "hBlock is a list with domains that serve ads, tracking scripts and malware. It prevents your device from connecting to them.",
             creditName = "hblock",
             creditUrl = "https://go.blokada.org/hblock",
@@ -602,7 +602,7 @@ object PackDataSource {
             ),
             title = "Combined Privacy Block Lists",
             slugline = "A general purpose, medium weight list",
-            description = "This list blocks malicious and harmfully deceptive content, like advertising, tracking, telemetry, scam, and malware servers. This list does not block porn, social media, or so-called fake news domains. CPBL aims to provide block lists that offer comprehensive protection, while remaining reasonable in size and scope.",
+            description = "This list handle malicious and harmfully deceptive content, like advertising, tracking, telemetry, scam, and malware servers. This list does not handle porn, social media, or so-called fake news domains. CPBL aims to provide block lists that offer comprehensive protection, while remaining reasonable in size and scope.",
             creditName = "bongochong",
             creditUrl = "https://go.blokada.org/cpbl",
             configs = listOf("Standard", "Mini")
@@ -624,8 +624,8 @@ object PackDataSource {
         Pack.mocked(
             id = "danpollock", tags = listOf(Pack.official, "adblocking", "tracking"),
             title = "Dan Pollock's Hosts",
-            slugline = "A reasonably balanced ad blocking hosts file",
-            description = "This is a well known, general purpose blocklist of small size, updated regularly.",
+            slugline = "A reasonably balanced ad forwarding hosts file",
+            description = "This is a well known, general purpose forwarding list of small size, updated regularly.",
             creditName = "Dan Pollock",
             creditUrl = "https://go.blokada.org/danpollock",
             configs = listOf("Standard")
@@ -641,8 +641,8 @@ object PackDataSource {
         Pack.mocked(
             id = "urlhaus", tags = listOf(Pack.recommended, Pack.official, "security"),
             title = "URLhaus",
-            slugline = "A blocklist based on malware database",
-            description = "A blocklist of malicious websites that are being used for malware distribution, based on urlhaus.abuse.ch.",
+            slugline = "A forwarding list based on malware database",
+            description = "A forwarding list of malicious websites that are being used for malware distribution, based on urlhaus.abuse.ch.",
             creditName = "curben",
             creditUrl = "https://go.blokada.org/urlhaus",
             configs = listOf("Standard")
@@ -658,7 +658,7 @@ object PackDataSource {
         Pack.mocked(
             id = "1hosts", tags = listOf(Pack.recommended, Pack.official, "adblocking", "tracking"),
             title = "1Hosts",
-            slugline = "A blocklist for ads and tracking, updated regularly",
+            slugline = "A forwarding list for ads and tracking, updated regularly",
             description = "Protect your data & eyeballs from being auctioned to the highest bidder. Please choose Light configuration first. If it is not good enough for you, try Pro instead.",
             creditName = "badmojr",
             creditUrl = "https://go.blokada.org/1hosts",
@@ -690,8 +690,8 @@ object PackDataSource {
         Pack.mocked(
             id = "d3host", tags = listOf(Pack.recommended, Pack.official, "adblocking", "tracking"),
             title = "d3Host",
-            slugline = "A blocklist from the maker of the adblocker test",
-            description = "This is the official blocklist from d3ward, the maker of the popular adblocker testing website. It is meant to achieve 100% score in the test. Keep in mind, this is a minimum list. You may want to use it together with another blocklist activated. If you wish to perform the test, just visit go.blokada.org/test",
+            slugline = "A forwarding list from the maker of the adblocker test",
+            description = "This is the official forwarding list from d3ward, the maker of the popular adblocker testing website. It is meant to achieve 100% score in the test. Keep in mind, this is a minimum list. You may want to use it together with another blocklist activated. If you wish to perform the test, just visit go.blokada.org/test",
             creditName = "d3ward",
             creditUrl = "https://go.blokada.org/d3host",
             configs = listOf("Standard")

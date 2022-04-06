@@ -52,7 +52,8 @@ data class NetworkSpecificConfig(
     val dnsChoice: DnsId,
     val useBlockaDnsInPlusMode: Boolean,
     val forceLibreMode: Boolean,
-    val createdAt: Long = 0
+    val createdAt: Long = 0,
+    val alterDns: DnsId
 ) {
 
     override fun toString(): String {

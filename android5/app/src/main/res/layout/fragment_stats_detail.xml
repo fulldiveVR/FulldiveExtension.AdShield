@@ -31,6 +31,7 @@
             <ImageView
                 android:id="@+id/activity_icon"
                 android:layout_width="@dimen/icon_huge"
+                android:visibility="gone"
                 android:layout_height="@dimen/icon_huge"
                 android:src="@drawable/ic_shield_outline"
                 android:tint="@color/red" />
@@ -84,7 +85,7 @@
                 android:id="@+id/activity_primaryaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconRef="@drawable/ic_shield_off_outline"
+                app:iconRef="@drawable/ic_unlock"
                 app:name="@string/activity_action_add_to_blacklist" />
 
             <ui.advanced.packs.OptionView

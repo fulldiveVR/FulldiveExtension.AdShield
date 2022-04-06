@@ -16,6 +16,7 @@
     <dimen name="oneandhalf">16dp</dimen>
     <dimen name="normal">12dp</dimen>
     <dimen name="half">6dp</dimen>
+    <dimen name="small">4dp</dimen>
 
     <dimen name="icon_small">24dp</dimen>
     <dimen name="icon">40dp</dimen>
@@ -36,9 +37,11 @@
     <dimen name="sheet_maxwidth">300dp</dimen>
 
     <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_medium">12sp</dimen>
     <dimen name="tab_layout_min_width">56dp</dimen>
     <dimen name="size_8dp">8dp</dimen>
     <dimen name="size_16dp">16dp</dimen>
     <dimen name="size_4dp">4dp</dimen>
     <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_36dp">36dp</dimen>
 </resources>

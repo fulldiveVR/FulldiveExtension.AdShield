@@ -23,8 +23,6 @@ import engine.MetricsService.PACKET_BUFFER_SIZE
 import org.pcap4j.packet.*
 import org.pcap4j.packet.factory.PacketFactoryPropertiesLoader
 import org.pcap4j.util.PropertiesLoader
-import ui.utils.cause
-import utils.Logger
 import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -207,7 +205,7 @@ internal class PacketLoopForLibre(
         device
     }()
 
-    private fun setupPolls(errors: StructPollfd, device: StructPollfd) = {
+    private fun setupPolls(errors: StructPollfd, device: StructPollfd):  Array<StructPollfd> = {
         val polls = arrayOfNulls<StructPollfd>(2 + forwarder.size()) as Array<StructPollfd>
         polls[0] = errors
         polls[1] = device
@@ -216,8 +214,8 @@ internal class PacketLoopForLibre(
             polls[2 + i] = forwarder[i].pipe
             i++
         }
-        polls
-    }
+         polls
+    }()
 
     private fun poll(polls: Array<StructPollfd>) {
         while (true) {
