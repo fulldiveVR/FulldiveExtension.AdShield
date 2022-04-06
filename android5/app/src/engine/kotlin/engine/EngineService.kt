@@ -139,7 +139,7 @@ object EngineService {
             when {
                 // Plus mode
                 isPlusMode() -> {
-                    dnsMapper.setDns(dns, doh, plusMode = true)
+                    dnsMapper.setDns(dns, dnsAlter, doh, plusMode = true)
                     if (doh) dnsService.startDnsProxy(dns)
                     systemTunnel.onConfigureTunnel = { tun ->
                         configurator.forPlus(tun, dns, lease = config.lease())
@@ -156,7 +156,7 @@ object EngineService {
                 }
                 // Slim mode
                 EnvironmentService.isSlim() -> {
-                    dnsMapper.setDns(dns, doh)
+                    dnsMapper.setDns(dns, dnsAlter, doh)
                     if (doh) dnsService.startDnsProxy(dns)
                     systemTunnel.onConfigureTunnel = { tun ->
                         configurator.forLibre(tun, dns)
@@ -167,7 +167,7 @@ object EngineService {
                 }
                 // Libre mode
                 else -> {
-                    dnsMapper.setDns(dns, doh)
+                    dnsMapper.setDns(dns, dnsAlter, doh)
                     if (doh) dnsService.startDnsProxy(dns)
                     systemTunnel.onConfigureTunnel = { tun ->
                         configurator.forLibre(tun, dns)
@@ -229,6 +229,7 @@ object EngineService {
 private data class EngineConfiguration(
     val tunnelEnabled: Boolean,
     val dns: Dns,
+    val dnsAlter: Dns,
     val doh: Boolean,
     val privateKey: PrivateKey,
     val gateway: Gateway?,
@@ -249,17 +250,16 @@ private data class EngineConfiguration(
 
     companion object {
         fun new(network: NetworkSpecificConfig, user: BlockaConfig): EngineConfiguration {
-            val (dnsForLibre, dnsForPlus) = decideDnsForNetwork(network)
-            val plusMode = decidePlusMode(dnsForPlus, user, network)
-            val dns = if (plusMode) dnsForPlus else dnsForLibre
+            val (dnsForLibre, dnsAlter) = decideDnsForNetwork(network)
 
             return EngineConfiguration(
                 tunnelEnabled = user.tunnelEnabled,
-                dns = dns,
-                doh = decideDoh(dns, plusMode, network.encryptDns),
+                dns = dnsForLibre,
+                dnsAlter = dnsAlter,
+                doh = decideDoh(dnsForLibre, false, network.encryptDns),
                 privateKey = user.privateKey,
-                gateway = if (plusMode) user.gateway else null,
-                lease = if (plusMode) user.lease else null,
+                gateway = null,
+                lease = null,
                 networkDns = if (network.useNetworkDns) ConnectivityService.getActiveNetworkDns() else emptyList(),
                 forceLibreMode = network.forceLibreMode,
                 network = network,
@@ -288,8 +288,9 @@ private data class EngineConfiguration(
                 } else {
                     DnsDataSource.byId(n.dnsChoice)
                 }
+            val alterDns = DnsDataSource.fdadblock //TODO: add select alterdns
 
-            return forLibre to forLibre
+            return forLibre to alterDns
         }
 
         private fun decidePlusMode(dns: Dns, user: BlockaConfig, network: NetworkSpecificConfig) = when {
@@ -326,7 +327,7 @@ private data class EngineConfiguration(
     }
 
     override fun toString(): String {
-        return "(enabled=$tunnelEnabled, dns=${dns.id}, doh=$doh, gw=${gateway?.niceName()})"
+        return "(enabled=$tunnelEnabled, dns=${dns.id}, dnsAlter=${dnsAlter.id}, doh=$doh, gw=${gateway?.niceName()})"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -337,6 +338,7 @@ private data class EngineConfiguration(
 
         if (tunnelEnabled != other.tunnelEnabled) return false
         if (dns != other.dns) return false
+        if (dnsAlter != other.dnsAlter) return false
         if (doh != other.doh) return false
         if (privateKey != other.privateKey) return false
         if (gateway != other.gateway) return false
@@ -350,6 +352,7 @@ private data class EngineConfiguration(
     override fun hashCode(): Int {
         var result = tunnelEnabled.hashCode()
         result = 31 * result + dns.hashCode()
+        result = 31 * result + dnsAlter.hashCode()
         result = 31 * result + doh.hashCode()
         result = 31 * result + privateKey.hashCode()
         result = 31 * result + (gateway?.hashCode() ?: 0)
