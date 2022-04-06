@@ -51,17 +51,17 @@ internal class PacketRewriter(
     }
 
     fun handleToDevice(destination: ByteBuffer, length: Int): Boolean {
-        if (isUdp(destination) && (
-                    srcAddress4(destination, dns.externalForIndex(0).address) ||
-                            (dns.count() > 1 && srcAddress4(
-                                destination,
-                                dns.externalForIndex(1).address
-                            ))
+        return if (isUdp(destination) && (
+                    srcAddress4(destination, dns.dstDnsAlter().address)
+                            || srcAddress4(destination, dns.externalForIndex(0).address)
+                            || (dns.count() > 1 && srcAddress4(
+                        destination, dns.externalForIndex(1).address
+                    ))
                     )
         ) {
             rewriteSrcDns4(destination, length)
-            return true
-        } else return false
+            true
+        } else false
     }
 
     private val ipv4Version = (1 shl 6).toByte()

@@ -58,31 +58,27 @@ object DnsMapperService {
     }
 
     fun externalToInternal(address: InetAddress): InetAddress? {
+        var result: InetAddress? = null
         val src = dnsProxyDst4.copyOf()
-        return if (useProxyDns) {
+        if (useProxyDns) {
             src[3] = 1.toByte()
-            Inet4Address.getByAddress(src)
+            result = Inet4Address.getByAddress(src)
         } else {
             val dst = servers.firstOrNull { it == address }
             if (dst != null) {
                 val index = servers.indexOf(dst)
                 src[3] = (index + 1).toByte()
-                Inet4Address.getByAddress(src)
-            } else null
-        }
-    }
-
-    fun internalToExternal(address: InetAddress): InetAddress {
-        return when {
-            servers.isEmpty() -> address
-            else -> try {
-                // Last octet of DNS server IP corresponds to its index
-                val index = address.address.last() - 1
-                servers[index]
-            } catch (e: Exception) {
-                address
+                result = Inet4Address.getByAddress(src)
+            } else {
+                val dst2 = serversAlter.firstOrNull { it == address }
+                if (dst2 != null) {
+                    val index = serversAlter.indexOf(dst2)
+                    src[3] = (index + 1).toByte()
+                    result = Inet4Address.getByAddress(src)
+                }
             }
         }
+        return result
     }
 
     fun dstDnsPort(): UdpPort {
