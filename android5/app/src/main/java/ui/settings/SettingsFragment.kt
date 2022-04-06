@@ -18,23 +18,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import model.Account
 import model.AccountId
-import model.BlokadaException
 import org.adshield.R
 import service.ContextService
-import service.tr
 import ui.AccountViewModel
 import ui.app
-import ui.utils.AndroidUtils
 import utils.Links
-import utils.toBlokadaPlusText
 import utils.toBlokadaText
 import utils.toSimpleString
 

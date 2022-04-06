@@ -36,6 +36,7 @@ class AppsFragment : Fragment() {
 
     private lateinit var searchGroup: ViewGroup
     private lateinit var searchView: SearchView
+
     private val indicators by unsafeLazy {
         listOf(
             R.drawable.tab_indicator_0,
