@@ -43,9 +43,9 @@ class SettingsFragment : Fragment() {
     private lateinit var vm: AccountViewModel
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         activity?.let {
             vm = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
@@ -53,16 +53,19 @@ class SettingsFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        vm.account.observe(viewLifecycleOwner, Observer { account ->
+        vm.account.observe(viewLifecycleOwner) { account ->
             val active = root.findViewById<TextView>(R.id.settings_active)
             active.text = if (account.isActive()) {
-                getString(R.string.account_status_text, getAccountType(account), account.active_until.toSimpleString())
+                getString(
+                    R.string.account_status_text,
+                    getAccountType(account),
+                    account.active_until.toSimpleString()
+                )
                     .toBlokadaText()
             } else {
                 getString(R.string.account_status_text_libre).toBlokadaText()
             }
-        })
-
+        }
         return root
     }
 
@@ -82,12 +85,38 @@ object SettingsNavigation {
             "main_logout" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsLogoutFragment()
             "main_leases" -> SettingsFragmentDirections.actionNavigationSettingsToLeasesFragment()
             "main_app" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
-            "main_kb" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.kb, getString(R.string.universal_action_help))
-            "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(Links.donate, getString(R.string.universal_action_donate))
-            "account_subscription_manage" -> accountId?.let { SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(Links.manageSubscriptions(it), getString(R.string.account_action_manage_subscription)) }
-            "account_help_why" -> SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(Links.whyUpgrade, getString(R.string.account_action_why_upgrade))
-            "logout_howtorestore" -> SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(Links.howToRestore, getString(R.string.account_action_how_to_restore))
-            "logout_support" -> accountId?.let { SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(Links.support(it), getString(R.string.universal_action_contact_us)) }
+            "main_kb" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+                Links.kb,
+                getString(R.string.universal_action_help)
+            )
+            "main_discord" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+                Links.discordInvite,
+                getString(R.string.settings_action_discord)
+            )
+            "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+                Links.donate,
+                getString(R.string.universal_action_donate)
+            )
+            "account_subscription_manage" -> accountId?.let {
+                SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
+                    Links.manageSubscriptions(it),
+                    getString(R.string.account_action_manage_subscription)
+                )
+            }
+            "account_help_why" -> SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
+                Links.whyUpgrade,
+                getString(R.string.account_action_why_upgrade)
+            )
+            "logout_howtorestore" -> SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
+                Links.howToRestore,
+                getString(R.string.account_action_how_to_restore)
+            )
+            "logout_support" -> accountId?.let {
+                SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
+                    Links.support(it),
+                    getString(R.string.universal_action_contact_us)
+                )
+            }
             else -> null
         }
         path?.let { nav.navigate(it) }

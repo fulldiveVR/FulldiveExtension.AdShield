@@ -16,25 +16,25 @@ import service.EnvironmentService
 import java.net.URLEncoder
 
 object Links {
+    private const val FULLDIVE_URL = "https://fulldive.com"
 
-    val intro = "https://fulldive.com"
-    val whyUpgrade = "https://fulldive.com"
-    val whatIsDns = "https://fulldive.com"
-    val whyVpnPerms = "https://fulldive.com"
-    val howToRestore = "https://fulldive.com"
-    val tunnelFailure = "https://fulldive.com"
-    val startOnBoot = "https://fulldive.com"
+    const val intro = FULLDIVE_URL
+    const val whyUpgrade = FULLDIVE_URL
+    const val whatIsDns = FULLDIVE_URL
+    const val whyVpnPerms = FULLDIVE_URL
+    const val howToRestore = FULLDIVE_URL
+    const val tunnelFailure = FULLDIVE_URL
+    const val startOnBoot = FULLDIVE_URL
 
-    val kb = "https://fulldive.com"
-    val donate = "https://fulldive.com"
-    val privacy = "https://fulldive.com/privacy-policy"
-    val terms = "https://fulldive.com"
-    val credits = "https://fulldive.com"
-    val community = "https://fulldive.com"
+    const val kb = FULLDIVE_URL
+    const val discordInvite = "https://discord.com/invite/3f79ygxZ3y"
+    const val donate = FULLDIVE_URL
+    const val privacy = "https://fulldive.com/privacy-policy"
+    const val terms = FULLDIVE_URL
+    const val credits = FULLDIVE_URL
+    const val community = FULLDIVE_URL
 
-    val updated =
-        if (EnvironmentService.isSlim()) "https://fulldive.com"
-        else "https://fulldive.com"
+    val updated = if (EnvironmentService.isSlim()) FULLDIVE_URL else FULLDIVE_URL
 
     fun manageSubscriptions(accountId: String) =
         if (EnvironmentService.isSlim()) support(accountId)
@@ -42,8 +42,9 @@ object Links {
 
     fun support(accountId: String) =
         "https://app.blokada.org/support?account-id=$accountId" +
-        "&user-agent=${URLEncoder.encode(EnvironmentService.getUserAgent())}"
+                "&user-agent=${URLEncoder.encode(EnvironmentService.getUserAgent())}"
 
-    fun isSubscriptionLink(link: String) = link.startsWith("https://fulldive.com")
+    fun isSubscriptionLink(link: String) = link.startsWith(FULLDIVE_URL)
 
+    fun isDiscordLink(link: String) = link.startsWith(discordInvite)
 }

@@ -18,7 +18,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import org.adshield.R
 
@@ -72,25 +71,21 @@ class ActivateView : BaseFrameLayout {
 
     var inactiveMode = true
         set(value) {
-            if (field != value) {
-                field = value
-                if (field) {
-                    setInactiveState()
-                    activateStateImageView.background = inactiveBackground
-                    activateStateImageView.setImageDrawable(inactiveDrawable)
-                }
+            field = value
+            if (field) {
+                setInactiveState()
+                activateStateImageView.background = inactiveBackground
+                activateStateImageView.setImageDrawable(inactiveDrawable)
             }
         }
 
     var activeMode = false
         set(value) {
-            if (field != value) {
-                field = value
-                if (field) {
-                    setActiveState()
-                    activateStateImageView.background = activeBackground
-                    activateStateImageView.setImageDrawable(activeDrawable)
-                }
+            field = value
+            if (field) {
+                setActiveState()
+                activateStateImageView.background = activeBackground
+                activateStateImageView.setImageDrawable(activeDrawable)
             }
         }
 

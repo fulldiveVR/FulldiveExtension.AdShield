@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -28,15 +27,25 @@
 
     <PreferenceCategory
         app:key="main_other"
-        app:title="@string/account_section_header_other">
+        app:title="@string/universal_action_support">
 
         <Preference
             android:fragment="ui.web.WebFragment"
             android:icon="@drawable/ic_baseline_help_outline_24"
             app:key="main_kb"
-            app:title="@string/universal_action_help" />
+            app:title="@string/homepage_action_faq" />
+
+        <Preference
+            android:fragment="ui.web.WebFragment"
+            android:icon="@drawable/ic_email_us"
+            app:key="main_kb"
+            app:title="@string/settings_action_email" />
+
+        <Preference
+            android:fragment="ui.web.WebFragment"
+            android:icon="@drawable/ic_discord"
+            app:key="main_discord"
+            app:title="@string/settings_action_discord" />
 
     </PreferenceCategory>
-
-
 </PreferenceScreen>

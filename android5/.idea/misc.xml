@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/xml/settings_account.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/xml/settings_app.xml" value="0.2078125" />
         <entry key="app/src/main/res/xml/settings_logout.xml" value="0.16510416666666666" />
+        <entry key="app/src/notgoogle/res/xml/settings_main.xml" value="0.335" />
       </map>
     </option>
   </component>
