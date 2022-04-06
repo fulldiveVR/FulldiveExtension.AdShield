@@ -14,7 +14,6 @@ package engine
 
 import android.system.ErrnoException
 import android.system.OsConstants
-import model.ex
 import android.util.Log
 import model.ex
 import org.pcap4j.packet.*
@@ -85,7 +84,6 @@ internal class PacketRewriter(
         } catch (e: Exception) {
             return false
         }
-        Log.d("fftf", "parseDns: " + length + " originEnvelope.payload: " + originEnvelope.payload)
         if (originEnvelope.payload !is UdpPacket) return false
 
         val udp = originEnvelope.payload as UdpPacket
@@ -103,7 +101,6 @@ internal class PacketRewriter(
         if (dnsMessage.question == null) return false
 
         val host = dnsMessage.question.name.toString(true).toLowerCase(Locale.ENGLISH)
-        Log.d("fftf", "parseDns, host: $host")
         val dnsAddress: InetAddress
         val dnsPort: UdpPort
         if (filter && !filtering.allowed(host) && filtering.denied(host)) {
@@ -114,7 +111,6 @@ internal class PacketRewriter(
             dnsAddress = dns.externalForIndex(dnsIndex)
             dnsPort = dns.dstDnsPort()
         }
-        Log.d("fftf", "parseDns, dnsAddress: $dnsAddress, dnsPort: $dnsPort")
 
         val udpForward = UdpPacket.Builder(udp)
             .srcAddr(originEnvelope.header.srcAddr)
