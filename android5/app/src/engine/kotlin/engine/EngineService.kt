@@ -288,7 +288,7 @@ private data class EngineConfiguration(
                 } else {
                     DnsDataSource.byId(n.dnsChoice)
                 }
-            val alterDns = DnsDataSource.fdadblock //TODO: add select alterdns
+            val alterDns = DnsDataSource.alterById(n.alterDns)
 
             return forLibre to alterDns
         }

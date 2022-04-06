@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -11,52 +12,31 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#d8d8d8</color>
-    <color name="colorSecondary">#0D1826</color>
-    <color name="colorOppositePrimary">#121212</color>
+    <color name="light_background">@color/white</color>
+    <color name="light_backgroundSecondary">@color/gray_100</color>
+    <color name="light_text">@color/textColorPrimary</color>
+    <color name="light_textSecondary">@color/textColorSecondary</color>
+    <color name="light_inactive">@color/gray_400</color>
+    <color name="light_accent">@color/textColorAccent</color>
+    <color name="light_shadow">@color/gray_200</color>
+    <color name="light_bar_background">#F2F3F4</color>
 
-    <color name="colorAccent">#FF9900</color>
-    <color name="colorAlert">#FF5E10</color>
-
-    <color name="colorBar">#F2F3F4</color>
-    <color name="colorIconPrimary">#616972</color>
-    <color name="colorIconSecondary">#BABDC1</color>
-    <color name="colorIconTertiary">#616972</color>
-
-    <color name="statusBarColor">#ffd8d8d8</color>
+    <color name="dark_background">@color/black</color>
+    <color name="dark_backgroundSecondary">@color/gray_999</color>
+    <color name="dark_text">@color/white</color>
+    <color name="dark_textSecondary">@color/gray_600</color>
+    <color name="dark_inactive">@color/gray_800</color>
+    <color name="dark_accent">@color/orange</color>
+    <color name="dark_shadow">@color/gray_900</color>
+    <color name="dark_bar_background">#F2F3F4</color>
 
     <color name="textColorPrimary">#0D1826</color>
     <color name="textColorSecondary">#BABDC1</color>
-    <color name="textColorTertiary">#616972</color>
-
+    <color name="textColorAccent">#FF9900</color>
     <color name="textColorForwarded">#63CAC6</color>
     <color name="textColorDenied">#8E83FF</color>
-
+    <color name="colorAlert">#FF5E10</color>
+    <color name="colorIconPrimary">#616972</color>
     <color name="colorAccentAlpha5">#0CFF9900</color>
     <color name="colorAccentAlpha30">#4CFF9900</color>
-
-    <color name="colorTransparent">#00ffffff</color>
-    <color name="backgroundTabsAndNavBars">#ffffff</color>
-
-    <color name="shadowColor">#F2F3F4</color>
-
-    <color name="colorPermanentWhite">#FFFFFF</color>
-
-    <color name="colorGreen">#33C75A</color>
-
-    <color name="colorConnected">#0CFF9900</color>
-
-    <!-- gamification-->
-    <color name="colorGamificationPrimary">#80D789</color>
-    <color name="colorGamificationSecondary">#63CAC6</color>
-    <color name="colorLevelReward">#FFC63E</color>
-
-    <color name="colorDivider">#C6C6C8B2</color>
-    <color name="backgroundColoredButton">#FF9900</color>
-    <color name="backgroundColoredButtonAlpha40">#66FF9900</color>
-    <color name="backgroundPrimary">#ffffff</color>
-    <color name="backgroundPrimaryAlpha40">#66ffffff</color>
-
-    <color name="backgroundSearchBar">#F3F3F3</color>
 </resources>

@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fulldive.wallet.extensions.unsafeLazy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.R
@@ -27,6 +26,7 @@ import ui.StatsViewModel
 import ui.app
 import ui.utils.Tab
 import ui.utils.TabLayout
+import utils.unsafeLazy
 
 class UserDeniedFragment : Fragment() {
 

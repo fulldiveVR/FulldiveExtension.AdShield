@@ -24,7 +24,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import appextension.getColorCompat
 import model.HistoryEntry
 import model.HistoryEntryType
 import org.adshield.R
@@ -55,7 +54,7 @@ class StatsAdapter(
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
 
-        //        private val icon: ImageView = itemView.findViewById(R.id.activity_icon)
+//        private val icon: ImageView = itemView.findViewById(R.id.activity_icon)
         private val iconCounter: TextView = itemView.findViewById(R.id.activity_iconcounter)
         private val name: TextView = itemView.findViewById(R.id.activity_name)
         private val action: TextView = itemView.findViewById(R.id.activity_action)
@@ -73,35 +72,32 @@ class StatsAdapter(
         }
 
         fun bind(item: HistoryEntry) = with(itemView) {
-            when (item.type) {
+            when(item.type) {
                 HistoryEntryType.passed_allowed -> {
                     iconCounter.visibility = View.VISIBLE
-                    action.setText(R.string.activity_regular)
-                    action.setTextColor(context.getColorCompat(R.color.textColorDenied))
+                    action.setText(R.string.activity_forwarded)
+                    action.setTextColor(ContextCompat.getColor(context,R.color.textColorForwarded))
                 }
                 HistoryEntryType.blocked_denied -> {
                     iconCounter.visibility = View.VISIBLE
-                    action.setText(R.string.activity_forwarded)
-                    action.setTextColor(context.getColorCompat(R.color.textColorForwarded))
+                    action.setText(R.string.activity_regular)
+                    action.setTextColor(ContextCompat.getColor(context,R.color.textColorDenied))
                 }
                 HistoryEntryType.passed -> {
                     iconCounter.visibility = View.VISIBLE
                     action.setText(R.string.activity_regular)
-                    action.setTextColor(context.getColorCompat(R.color.textColorDenied))
+                    action.setTextColor(ContextCompat.getColor(context,R.color.textColorDenied))
                 }
                 else -> {
                     iconCounter.visibility = View.VISIBLE
                     action.setText(R.string.activity_forwarded)
-                    action.setTextColor(context.getColorCompat(R.color.textColorForwarded))
+                    action.setTextColor(ContextCompat.getColor(context,R.color.textColorForwarded))
                 }
             }
 
             // Modified state
             val isOnCustomLists = viewModel.isAllowed(item.name) || viewModel.isDenied(item.name)
-            val listApplied = item.type in listOf(
-                HistoryEntryType.blocked_denied,
-                HistoryEntryType.passed_allowed
-            )
+            val listApplied = item.type in listOf(HistoryEntryType.blocked_denied, HistoryEntryType.passed_allowed)
             if (isOnCustomLists xor listApplied) {
                 modified.visibility = View.VISIBLE
                 itemView.alpha = 0.5f
@@ -115,17 +111,13 @@ class StatsAdapter(
             time.text = DateUtils.getRelativeTimeSpanString(item.time.time, Date().time, 0)
         }
 
-        private fun getBlockedAllowedString(
-            context: Context,
-            counter: Int,
-            blocked: Boolean
-        ): String {
+        private fun getBlockedAllowedString(context: Context, counter: Int, blocked: Boolean): String {
             val base = context.getString(
                 if (blocked) R.string.activity_state_blocked
                 else R.string.activity_state_allowed
             )
             val times = if (counter == 1) context.getString(R.string.activity_happened_one_time)
-            else context.getString(R.string.activity_happened_many_times, counter.toString())
+                else context.getString(R.string.activity_happened_many_times, counter.toString())
             return "$base $times"
         }
     }
