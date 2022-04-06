@@ -57,7 +57,7 @@ class StatsFilterFragment : BottomSheetFragment() {
             }
         )
         activeButton.isChecked = true
-        val cancel: View = root.findViewById(R.id.cancel)
+        val cancel: View = root.findViewById(R.id.cancelButton)
         cancel.setOnClickListener {
             val filter = when (radioGroup.checkedRadioButtonId) {
                 R.id.activity_filterblocked -> StatsViewModel.Filter.BLOCKED

@@ -12,42 +12,51 @@
 
 package ui.advanced.apps
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
+import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import model.App
 import org.adshield.R
+import service.AlertDialogService
+import ui.utils.Tab
+import ui.utils.TabLayout
 import ui.utils.getColorFromAttr
+import utils.unsafeLazy
 
 class AppsFragment : Fragment() {
 
     private lateinit var vm: AppsViewModel
 
+    private lateinit var searchGroup: ViewGroup
+    private lateinit var searchView: SearchView
+    private val indicators by unsafeLazy {
+        listOf(
+            R.drawable.tab_indicator_0,
+            R.drawable.tab_indicator_1
+        )
+    }
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         activity?.run {
             vm = ViewModelProvider(this).get(AppsViewModel::class.java)
         }
 
         val root = inflater.inflate(R.layout.fragment_apps, container, false)
 
-        val filter: ImageView = root.findViewById(R.id.app_filter)
-        filter.setOnClickListener {
-            val fragment = AppsFilterFragment.newInstance()
-            fragment.show(parentFragmentManager, null)
-        }
+        searchGroup = root.findViewById(R.id.app_searchgroup)
+        searchGroup.visibility = View.GONE
 
         val adapter = AppsAdapter(interaction = object : AppsAdapter.Interaction {
             override fun onClick(item: App) {
@@ -55,48 +64,51 @@ class AppsFragment : Fragment() {
             }
         })
 
-        val manager = LinearLayoutManager(context)
-        val recycler: RecyclerView = root.findViewById(R.id.app_recyclerview)
-        recycler.adapter = adapter
-        recycler.layoutManager = manager
+        val layoutManager = LinearLayoutManager(context)
+        val recyclerView: RecyclerView = root.findViewById(R.id.app_recyclerview)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = layoutManager
 
-        val tabs: TabLayout = root.findViewById(R.id.app_tabs)
+        val tabLayout: TabLayout = root.findViewById(R.id.app_tabs)
 
         // Needed for dynamic translation
-        tabs.getTabAt(0)?.text = getString(R.string.apps_label_installed)
-        tabs.getTabAt(1)?.text = getString(R.string.apps_label_system)
+        tabLayout.getTabAt(0)?.setTabText(R.string.apps_label_installed)
+        tabLayout.getTabAt(1)?.setTabText(R.string.apps_label_system)
 
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: Tab) {
+                tab.updateSize()
+                tab.updateFont()
+            }
 
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val group = when(tab.position) {
+            override fun onTabSelected(tab: Tab) {
+                tabLayout.setSelectedTabIndicator(indicators[tab.position % indicators.size])
+                tab.updateSize()
+                tab.updateFont()
+
+                val group = when (tab.position) {
                     0 -> AppsViewModel.Group.INSTALLED
                     else -> AppsViewModel.Group.SYSTEM
                 }
                 vm.showGroup(group)
             }
 
+            override fun onTabReselected(tab: Tab) = Unit
         })
 
-        val updateTabsAndFilter = {
-            when (vm.getFilter()) {
-                AppsViewModel.Filter.BYPASSED -> {
-                    filter.setColorFilter(requireContext().getColorFromAttr(android.R.attr.colorPrimary))
-                }
-                AppsViewModel.Filter.NOT_BYPASSED -> {
-                    filter.setColorFilter(requireContext().getColorFromAttr(android.R.attr.colorPrimary))
-                }
-                else -> {
-                    filter.setColorFilter(null)
-                }
-            }
-        }
+        val updateTabsAndFilter = { updateFilterIcon() }
 
-        val search: SearchView = root.findViewById(R.id.app_search)
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView = root.findViewById(R.id.app_search)
+        searchView.setOnClickListener {
+            searchView.isIconified = false
+            searchView.requestFocus()
+        }
+        searchView.setOnCloseListener {
+            searchGroup.visibility = View.GONE
+            true
+        }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(term: String): Boolean {
                 return false
@@ -110,12 +122,69 @@ class AppsFragment : Fragment() {
 
         })
 
-        vm.apps.observe(viewLifecycleOwner, Observer {
+        vm.apps.observe(viewLifecycleOwner) {
             adapter.swapData(it)
             updateTabsAndFilter()
-        })
+        }
 
         return root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.stats_menu, menu)
+        filterMenuItemDrawable = menu.findItem(R.id.stats_filter).icon
+        updateFilterIcon()
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    var filterMenuItemDrawable: Drawable? = null
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.stats_search -> {
+                if (searchGroup.visibility == View.GONE) {
+                    searchGroup.visibility = View.VISIBLE
+                    searchView.isIconified = false
+                    searchView.requestFocus()
+                } else {
+                    searchGroup.visibility = View.GONE
+                }
+                true
+            }
+            R.id.stats_filter -> {
+                val fragment = AppsFilterFragment.newInstance()
+                fragment.show(parentFragmentManager, null)
+                true
+            }
+            R.id.stats_clear -> {
+                AlertDialogService.showAlert(getString(R.string.universal_status_confirm),
+                    title = getString(R.string.universal_action_clear),
+                    positiveAction = getString(R.string.universal_action_yes) to {
+                        vm.clear()
+                    })
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun updateFilterIcon() {
+        when (vm.getFilter()) {
+            AppsViewModel.Filter.BYPASSED -> {
+                filterMenuItemDrawable?.colorFilter = PorterDuffColorFilter(
+                    requireContext().getColorFromAttr(android.R.attr.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
+            AppsViewModel.Filter.NOT_BYPASSED -> {
+                filterMenuItemDrawable?.colorFilter = PorterDuffColorFilter(
+                    requireContext().getColorFromAttr(android.R.attr.colorPrimary),
+                    PorterDuff.Mode.SRC_IN
+                )
+            }
+            else -> {
+                filterMenuItemDrawable?.colorFilter = null
+            }
+        }
+    }
 }

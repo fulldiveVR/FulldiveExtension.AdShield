@@ -33,4 +33,8 @@
     <color name="textColorPrimary">#0D1826</color>
     <color name="textColorSecondary">#BABDC1</color>
     <color name="textColorAccent">#FF9900</color>
+    <color name="colorAlert">#FF5E10</color>
+    <color name="colorIconPrimary">#616972</color>
+    <color name="colorAccentAlpha5">#0CFF9900</color>
+    <color name="colorAccentAlpha30">#4CFF9900</color>
 </resources>

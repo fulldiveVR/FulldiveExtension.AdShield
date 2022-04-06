@@ -125,7 +125,7 @@
   <string name="pack_category_highlights">Highlights</string>
   <string name="pack_category_active">Active</string>
   <string name="pack_category_all">All</string>
-  <string name="advanced_section_header_packs">Blocklists</string>
+  <string name="advanced_section_header_packs">Forwarding lists</string>
   <string name="advanced_section_slugline_packs">Activate for more restrictive blocking</string>
   <string name="advanced_section_slugline_apps">Choose apps that should never be blocked</string>
   <string name="advanced_section_slugline_encryption">Adjust your encryption level and DNS</string>
@@ -164,7 +164,7 @@
   <string name="activity_filter_show_allowed">Allowed only</string>
   <string name="activity_empty_text">Try using your device, and come back here later, to see where your device connects to.</string>
   <string name="activity_device_filter_show_all">All devices</string>
-  <string name="userdenied_section_header">My blocklists</string>
+  <string name="userdenied_section_header">My forwarding lists</string>
   <string name="userdenied_section_slugline">Manage blocking of particular websites</string>
   <string name="userdenied_tab_allowed">Allowed</string>
   <string name="userdenied_tab_blocked">Blocked</string>
@@ -354,7 +354,7 @@
   <string name="app_settings_section_advanced">Advanced</string>
   <string name="app_settings_section_use_foreground">Keep alive</string>
   <string name="intro_header">Full AdShield is Active!</string>
-  <string name="intro_text">A blue ring means that Full AdShield is working.\n\nRemember, some ads, like YouTube, cannot be blocked. However, you will notice a difference in many other apps.\n\nWe recommend you activate Always on VPN / Connect on Demand in your system settings.</string>
+  <string name="intro_text">An active coloured button means that Full AdShield is working.\n\nMind that some ads and popups can still not be blocked. However, you will notice a significant difference.\n\nWe recommend you activate Always on VPN / Connect on Demand in your system settings.</string>
   <string name="location_region_worldwide">Everywhere</string>
   <string name="location_region_america">America</string>
   <string name="location_region_europe">Europe</string>
@@ -455,4 +455,11 @@
   <string name="support_submit">Send</string>
   <string name="support_title">Contact us</string>
   <string name="flat_set">Set</string>
+  <string name="status_connected">Connected</string>
+  <string name="status_disconnected">Disconnected</string>
+  <string name="alter_dns_title">Alternative DNS</string>
+  <string name="alter_dns_description">Full adshield will use alter DNS for forwarding requests that are issued in the forwarding lists.</string>
+  <string name="networks_action_use_alter_dns">Alter DNS: %s</string>
+  <string name="settings_action_discord">Join Discord</string>
+  <string name="settings_action_email">Email us</string>
 </resources>

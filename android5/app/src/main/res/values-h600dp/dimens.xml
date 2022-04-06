@@ -34,4 +34,7 @@
     <dimen name="plusbutton_above">120dp</dimen>
 
     <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="tab_layout_min_width">56dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
 </resources>

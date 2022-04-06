@@ -74,10 +74,21 @@
         <item name="backgroundTint">?android:attr/colorBackgroundFloating</item>
     </style>
 
-    <style name="Widget.ActionBar.Blokada"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="Widget.ActionBar.Blokada" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="elevation">0dp</item>
     </style>
 
+    <style name="FlatTheme.TabLayoutTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/textsize_xlarge</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+    <dimen name="textsize_xlarge">20sp</dimen>
 </resources>

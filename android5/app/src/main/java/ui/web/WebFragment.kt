@@ -79,8 +79,11 @@ class WebFragment : BottomSheetFragment() {
             launchInBrowser(args.url)
         }
 
-        if ((settingsVM.getUseChromeTabs() || Links.isSubscriptionLink(args.url))
-            && (tabsServiceBound || bindChromeTabs())) {
+        if ((settingsVM.getUseChromeTabs() ||
+                    Links.isSubscriptionLink(args.url) ||
+                    Links.isDiscordLink(args.url))
+            && (tabsServiceBound || bindChromeTabs())
+        ) {
             launchInCustomTabs(args.url)
         } else {
             // Only instantiate WebView if we're not using custom tabs
@@ -126,7 +129,6 @@ class WebFragment : BottomSheetFragment() {
 
                 })
                 container.addView(webView)
-
                 webView.loadUrl(args.url)
             }
         }
@@ -148,7 +150,8 @@ class WebFragment : BottomSheetFragment() {
             openInBrowser(url)
             waitToComeBack()
             performActionsAfterExternalViewScenario(url)
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+        }
     }
 
     private fun performUrlSpecificActions(url: String) {
@@ -214,8 +217,10 @@ class WebFragment : BottomSheetFragment() {
         }
     }
 
-    fun bindChromeTabs() = CustomTabsClient.bindCustomTabsService(requireContext(),
-        CUSTOM_TAB_PACKAGE_NAME, connection)
+    fun bindChromeTabs() = CustomTabsClient.bindCustomTabsService(
+        requireContext(),
+        CUSTOM_TAB_PACKAGE_NAME, connection
+    )
 }
 
 private const val CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome"

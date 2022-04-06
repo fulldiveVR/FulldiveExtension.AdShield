@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -92,10 +91,12 @@
                             android:layout_marginBottom="@dimen/normal"
                             android:background="?android:attr/shadowColor" />
 
-                        <Button
+                        <TextView
                             android:id="@+id/activated_continue"
+                            style="@style/accentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
                             android:text="@string/payment_action_choose_location" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
