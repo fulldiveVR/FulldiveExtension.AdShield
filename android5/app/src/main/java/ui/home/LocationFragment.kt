@@ -12,7 +12,6 @@
 
 package ui.home
 
-import android.location.Location
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,10 +20,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.delay
 import model.Gateway
 import org.adshield.R
 import ui.BottomSheetFragment
@@ -66,7 +61,7 @@ class LocationFragment : BottomSheetFragment() {
         val back: View = root.findViewById(R.id.back)
         back.setOnClickListener { goBack() }
 
-        val cancel: View = root.findViewById(R.id.cancel)
+        val cancel: View = root.findViewById(R.id.cancelButton)
         cancel.setOnClickListener { goBack() }
 
         if (!clickable) {

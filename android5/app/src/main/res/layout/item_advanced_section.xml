@@ -34,8 +34,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/pack_thumb"
-                android:layout_width="@dimen/icon_verybig"
-                android:layout_height="@dimen/icon_verybig"
+                android:layout_width="@dimen/icon"
+                android:layout_height="@dimen/icon"
                 android:src="@drawable/bg_gradient"
                 app:shapeAppearanceOverlay="@style/roundedImageView" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="@dimen/icon"
                 android:layout_height="@dimen/icon"
                 android:layout_gravity="center"
-                app:tint="@color/white"
+                app:tint="@color/textColorAccent"
                 android:src="@drawable/ic_baseline_apps_24" />
         </FrameLayout>
 
@@ -90,8 +90,8 @@
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
             android:padding="@dimen/half"
-            android:tint="?android:attr/textColorSecondary"
-            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24"
+            app:tint="?android:attr/textColorSecondary" />
     </LinearLayout>
 
     <View

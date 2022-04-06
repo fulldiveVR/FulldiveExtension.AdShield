@@ -104,6 +104,7 @@
                         <Button
                             android:id="@+id/firsttime_continue"
                             android:layout_width="match_parent"
+                            style="@style/accentButton"
                             android:layout_height="wrap_content"
                             android:text="@string/universal_action_continue" />
 

@@ -16,6 +16,7 @@
     <dimen name="oneandhalf">16dp</dimen>
     <dimen name="normal">12dp</dimen>
     <dimen name="half">6dp</dimen>
+    <dimen name="small">4dp</dimen>
 
     <dimen name="icon_small">24dp</dimen>
     <dimen name="icon">40dp</dimen>
@@ -28,12 +29,21 @@
     <dimen name="header_width_payment">130dp</dimen>
     <dimen name="header_height">24dp</dimen>
 
-    <dimen name="powerview">140dp</dimen>
+    <dimen name="powerview">200dp</dimen>
     <dimen name="powerview_below">32dp</dimen>
     <dimen name="plusbutton_above">90dp</dimen>
 
     <dimen name="maxwidth">600dp</dimen>
     <dimen name="sheet_maxwidth">300dp</dimen>
+
+    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_medium">12sp</dimen>
+    <dimen name="tab_layout_min_width">56dp</dimen>
+    <dimen name="size_8dp">8dp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_4dp">4dp</dimen>
+    <dimen name="size_30dp">30dp</dimen>
+    <dimen name="size_36dp">36dp</dimen>
 
 
     <dimen name="connotative_cereus">252dp</dimen>

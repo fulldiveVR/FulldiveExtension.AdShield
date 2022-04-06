@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,7 +17,6 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/colorBackgroundFloating"
     android:orientation="vertical"
-    android:padding="@dimen/half"
     tools:context="ui.home.LocationFragment">
 
     <ImageView
@@ -30,82 +28,110 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/icon">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/size_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="@dimen/maxwidth">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 style="@style/Text.H3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginBottom="@dimen/size_16dp"
+                android:paddingStart="@dimen/size_16dp"
                 android:text="@string/activity_filter_header" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/normal"
-                android:background="?android:attr/shadowColor" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <RadioGroup
+                    android:id="@+id/radioGroup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_max="@dimen/sheet_maxwidth">
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
+                    <RadioButton
                         android:id="@+id/activity_filterall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/activity_filter_show_all" />
-
-                    <Button
-                        android:id="@+id/activity_filterblocked"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activity_filter_show_blocked" />
-
-                    <Button
-                        android:id="@+id/activity_filterallowed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/activity_filter_show_allowed" />
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
+                        android:text="@string/activity_filter_show_all"
+                        android:textAlignment="textStart" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/normal"
-                        android:layout_marginBottom="@dimen/normal"
-                        android:background="?android:attr/shadowColor" />
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:background="?android:attr/shadowColor"
+                        android:textAlignment="textStart" />
 
-                    <Button
-                        android:id="@+id/cancel"
-                        style="?attr/materialButtonOutlinedStyle"
+                    <RadioButton
+                        android:id="@+id/activity_filterblocked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/universal_action_cancel" />
-                </LinearLayout>
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
+                        android:text="@string/activity_filter_show_blocked"
+                        android:textAlignment="textStart" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:background="?android:attr/shadowColor"
+                        android:textAlignment="textStart" />
+
+                    <RadioButton
+                        android:id="@+id/activity_filterallowed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
+                        android:text="@string/activity_filter_show_allowed"
+                        android:textAlignment="textStart" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/size_16dp"
+                        android:background="?android:attr/shadowColor"
+                        android:textAlignment="textStart" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/cancelButton"
+                    style="@style/accentButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/doubled"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:layout_marginEnd="@dimen/doubled"
+                    android:text="@string/flat_set"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>

@@ -46,13 +46,13 @@ class AdvancedFragment : Fragment() {
     )
 
     private val sections by lazy {
-        listOf(
+        listOfNotNull(
             if (EnvironmentService.isSlim()) null
             else {
                 Section(
                     name = getString(R.string.advanced_section_header_packs),
                     slugline = getString(R.string.advanced_section_slugline_packs),
-                    iconResId = R.drawable.ic_shield,
+                    iconResId = R.drawable.ic_blocklists,
                     destination = AdvancedFragmentDirections.actionAdvancedFragmentToNavigationPacks()
                 )
             },
@@ -62,7 +62,7 @@ class AdvancedFragment : Fragment() {
                 Section(
                     name = getString(R.string.userdenied_section_header),
                     slugline = getString(R.string.userdenied_section_slugline),
-                    iconResId = R.drawable.ic_baseline_admin_panel_settings_24,
+                    iconResId = R.drawable.ic_my_blocklists,
                     destination = AdvancedFragmentDirections.actionAdvancedFragmentToUserDeniedFragment()
                 )
             },
@@ -72,7 +72,7 @@ class AdvancedFragment : Fragment() {
                 Section(
                     name = getString(R.string.apps_section_header),
                     slugline = getString(R.string.advanced_section_slugline_apps),
-                    iconResId = R.drawable.ic_baseline_apps_24,
+                    iconResId = R.drawable.ic_apps,
                     destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
                 )
             },
@@ -80,10 +80,10 @@ class AdvancedFragment : Fragment() {
             Section(
                 name = getString(R.string.networks_section_header),
                 slugline = getString(R.string.networks_section_label),
-                iconResId = R.drawable.ic_baseline_wifi_lock_24,
+                iconResId = R.drawable.ic_networks,
                 destination = AdvancedFragmentDirections.actionAdvancedFragmentToSettingsNetworksFragment()
             )
-        ).filterNotNull()
+        )
     }
 
     override fun onCreateView(
@@ -164,7 +164,7 @@ internal fun statusToLevel(status: TunnelStatus): Int {
     return when {
         status.inProgress -> -1
         status.gatewayId != null -> 2
-        status.active && status.isUsingDnsOverHttps -> 1
+        status.active && status.isUsingDnsOverHttps -> 2
         status.active -> 0
         else -> 0
     }

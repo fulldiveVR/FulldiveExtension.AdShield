@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M8,0L32,0A8,8 0,0 1,40 8L40,32A8,8 0,0 1,32 40L8,40A8,8 0,0 1,0 32L0,8A8,8 0,0 1,8 0z"
+      android:fillColor="#F2F3F4"/>
+  <path
+      android:pathData="M10,17.4826C10.2944,17.2036 10.5976,16.9393 10.9087,16.6896C16.5185,12.1871 24.691,12.4515 30,17.4826"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FF9900"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M27,20.8995C23.134,17.0335 16.866,17.0335 13,20.8995"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FF9900"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M24,24.1569C21.7908,21.9477 18.2092,21.9477 16,24.1569"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FF9900"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M20,28C20.6904,28 21.25,27.4404 21.25,26.75C21.25,26.0597 20.6904,25.5 20,25.5C19.3097,25.5 18.75,26.0597 18.75,26.75C18.75,27.4404 19.3097,28 20,28Z"
+      android:fillColor="#FF9900"
+      android:fillType="evenOdd"/>
+</vector>

@@ -1,0 +1,49 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M13,15C14.1045,15 15,14.1045 15,13C15,11.8954 14.1045,11 13,11C11.8954,11 11,11.8954 11,13C11,14.1045 11.8954,15 13,15Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M20,15C21.1045,15 22,14.1045 22,13C22,11.8954 21.1045,11 20,11C18.8954,11 18,11.8954 18,13C18,14.1045 18.8954,15 20,15Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M27,15C28.1045,15 29,14.1045 29,13C29,11.8954 28.1045,11 27,11C25.8954,11 25,11.8954 25,13C25,14.1045 25.8954,15 27,15Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M13,22C14.1045,22 15,21.1045 15,20C15,18.8954 14.1045,18 13,18C11.8954,18 11,18.8954 11,20C11,21.1045 11.8954,22 13,22Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M20,22C21.1045,22 22,21.1045 22,20C22,18.8954 21.1045,18 20,18C18.8954,18 18,18.8954 18,20C18,21.1045 18.8954,22 20,22Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M27,22C28.1045,22 29,21.1045 29,20C29,18.8954 28.1045,18 27,18C25.8954,18 25,18.8954 25,20C25,21.1045 25.8954,22 27,22Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M13,29C14.1045,29 15,28.1045 15,27C15,25.8954 14.1045,25 13,25C11.8954,25 11,25.8954 11,27C11,28.1045 11.8954,29 13,29Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M20,29C21.1045,29 22,28.1045 22,27C22,25.8954 21.1045,25 20,25C18.8954,25 18,25.8954 18,27C18,28.1045 18.8954,29 20,29Z"
+      android:fillColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M27,29C28.1045,29 29,28.1045 29,27C29,25.8954 28.1045,25 27,25C25.8954,25 25,25.8954 25,27C25,28.1045 25.8954,29 27,29Z"
+      android:fillColor="?attr/colorAccent"/>
+</vector>

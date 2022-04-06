@@ -13,17 +13,15 @@
 package ui.stats
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.HistoryEntry
@@ -31,20 +29,28 @@ import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app
-import ui.settings.SettingsFragmentDirections
-import ui.utils.getColorFromAttr
+import ui.utils.Tab
+import ui.utils.TabLayout
+import utils.unsafeLazy
 
 class StatsFragment : Fragment() {
 
     private lateinit var vm: StatsViewModel
 
     private lateinit var searchGroup: ViewGroup
-    private lateinit var search: SearchView
+    private lateinit var searchView: SearchView
+
+    private val indicators by unsafeLazy {
+        listOf(
+            R.drawable.tab_indicator_0,
+            R.drawable.tab_indicator_1
+        )
+    }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
         activity?.let {
@@ -59,69 +65,79 @@ class StatsFragment : Fragment() {
         val adapter = StatsAdapter(vm, interaction = object : StatsAdapter.Interaction {
             override fun onClick(item: HistoryEntry) {
                 val nav = findNavController()
-                nav.navigate(StatsFragmentDirections.actionNavigationActivityToActivityDetailFragment(item.name))
+                nav.navigate(
+                    StatsFragmentDirections.actionNavigationActivityToActivityDetailFragment(
+                        item.name
+                    )
+                )
             }
         })
 
-        val manager = LinearLayoutManager(context)
-        val recycler: RecyclerView = root.findViewById(R.id.activity_recyclerview)
-        recycler.adapter = adapter
-        recycler.layoutManager = manager
+        val layoutManager = LinearLayoutManager(context)
+        val recyclerView: RecyclerView = root.findViewById(R.id.activity_recyclerview)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = layoutManager
 
-        val tabs: TabLayout = root.findViewById(R.id.activity_tabs)
+        val tabLayout: TabLayout = root.findViewById(R.id.activity_tabs)
 
         // Needed for dynamic translation
-        tabs.getTabAt(0)?.text = getString(R.string.activity_category_recent)
-        tabs.getTabAt(1)?.text = getString(R.string.activity_category_top)
+        tabLayout.getTabAt(0)?.setTabText(getString(R.string.activity_category_recent))
+        tabLayout.getTabAt(1)?.setTabText(getString(R.string.activity_category_top))
 
-        when(vm.getSorting()) {
-            StatsViewModel.Sorting.TOP -> tabs.selectTab(tabs.getTabAt(1))
-            else -> tabs.selectTab(tabs.getTabAt(0))
+        when (vm.getSorting()) {
+            StatsViewModel.Sorting.TOP -> tabLayout.selectTab(tabLayout.getTabAt(1))
+            else -> tabLayout.selectTab(tabLayout.getTabAt(0))
         }
 
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabUnselected(tab: Tab) {
+                tab.updateSize()
+                tab.updateFont()
+            }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: Tab) {
+                tabLayout.setSelectedTabIndicator(indicators[tab.position % indicators.size])
+                tab.updateSize()
+                tab.updateFont()
 
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val sorting = when(tab.position) {
+                val sorting = when (tab.position) {
                     0 -> StatsViewModel.Sorting.RECENT
                     else -> StatsViewModel.Sorting.TOP
                 }
                 vm.sort(sorting)
-                recycler.scrollToTop()
+                recyclerView.scrollToTop()
             }
 
+            override fun onTabReselected(tab: Tab) = Unit
         })
 
         val updateTabsAndFilter = {
             when (vm.getFilter()) {
                 StatsViewModel.Filter.ALLOWED -> {
-                    tabs.getTabAt(1)?.text = getString(R.string.activity_category_top_allowed)
+                    tabLayout.getTabAt(1)?.setTabText(R.string.activity_category_top_allowed)
 //                    filter.setColorFilter(requireContext().getColorFromAttr(android.R.attr.colorPrimary))
                 }
                 StatsViewModel.Filter.BLOCKED -> {
-                    tabs.getTabAt(1)?.text = getString(R.string.activity_category_top_blocked)
+                    tabLayout.getTabAt(1)?.setTabText(R.string.activity_category_top_blocked)
 //                    filter.setColorFilter(requireContext().getColorFromAttr(android.R.attr.colorPrimary))
                 }
                 else -> {
-                    tabs.getTabAt(1)?.text = getString(R.string.activity_category_top)
+                    tabLayout.getTabAt(1)?.setTabText(R.string.activity_category_top)
 //                    filter.setColorFilter(null)
                 }
             }
         }
 
-        search = root.findViewById(R.id.activity_search)
-        search.setOnClickListener {
-            search.isIconified = false
-            search.requestFocus()
+        searchView = root.findViewById(R.id.activity_search)
+        searchView.setOnClickListener {
+            searchView.isIconified = false
+            searchView.requestFocus()
         }
-        search.setOnCloseListener {
+        searchView.setOnCloseListener {
             searchGroup.visibility = View.GONE
             true
         }
-        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(term: String): Boolean {
                 return false
@@ -140,11 +156,11 @@ class StatsFragment : Fragment() {
 
         val empty: View = root.findViewById(R.id.activity_empty)
 
-        vm.history.observe(viewLifecycleOwner, Observer {
+        vm.history.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) empty.visibility = View.GONE
             adapter.swapData(it)
             updateTabsAndFilter()
-        })
+        }
 
         lifecycleScope.launch {
             // Let the user see as the stats refresh
@@ -174,8 +190,8 @@ class StatsFragment : Fragment() {
                     // Ignore action when empty
                 } else if (searchGroup.visibility == View.GONE) {
                     searchGroup.visibility = View.VISIBLE
-                    search.isIconified = false
-                    search.requestFocus()
+                    searchView.isIconified = false
+                    searchView.requestFocus()
                 } else {
                     searchGroup.visibility = View.GONE
                 }

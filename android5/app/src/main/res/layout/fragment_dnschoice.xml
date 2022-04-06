@@ -114,8 +114,8 @@
                                     style="@style/Text.Small"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:visibility="gone"
-                                    android:text="@string/location_region_america" />
+                                    android:text="@string/location_region_america"
+                                    android:visibility="gone" />
 
                                 <LinearLayout
                                     android:id="@+id/dnschoice_container3"
@@ -151,18 +151,20 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="@dimen/normal"
                             android:paddingEnd="@dimen/normal"
-                            android:text="@string/account_encrypt_label_use_blocka_dns" />
+                            android:text="@string/account_encrypt_label_use_blocka_dns"
+                            android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="?android:attr/shadowColor"
+                            android:visibility="gone" />
 
                         <Button
                             android:id="@+id/done"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/accentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/universal_action_done" />

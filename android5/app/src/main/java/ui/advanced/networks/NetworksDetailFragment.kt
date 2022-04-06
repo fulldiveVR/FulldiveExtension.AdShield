@@ -12,7 +12,6 @@
 
 package ui.advanced.networks
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +29,8 @@ import repository.DnsDataSource
 import service.AlertDialogService
 import ui.AccountViewModel
 import ui.NetworksViewModel
-import ui.app
 import ui.advanced.packs.OptionView
-import ui.utils.getColorFromAttr
+import ui.app
 
 
 class NetworksDetailFragment : Fragment() {
@@ -67,12 +65,14 @@ class NetworksDetailFragment : Fragment() {
         val summaryUseDns: TextView = root.findViewById(R.id.network_summary_use_dns)
         val summaryUseDnsPlus: TextView = root.findViewById(R.id.network_summary_use_dns_plus)
         val summaryForceLibre: TextView = root.findViewById(R.id.network_summary_force_libre)
+        val summaryAlterDns: TextView = root.findViewById(R.id.network_summary_alter_dns)
         val actionEncrypt: OptionView = root.findViewById(R.id.network_action_encryptdns)
         val actionUseNetworkDns: OptionView = root.findViewById(R.id.network_action_networkdns)
         val actionChangeDns: OptionView = root.findViewById(R.id.network_action_changedns)
+        val actionChangeAlterDns: OptionView = root.findViewById(R.id.network_action_changeAlterDns)
         val actionForceLibre: OptionView = root.findViewById(R.id.network_action_forcelibre)
 
-        viewModel.configs.observe(viewLifecycleOwner, {
+        viewModel.configs.observe(viewLifecycleOwner) {
             viewModel.getConfigForId(args.networkId).let { cfg ->
                 val ctx = requireContext()
 
@@ -85,27 +85,19 @@ class NetworksDetailFragment : Fragment() {
                 when (cfg.network.type) {
                     NetworkType.FALLBACK -> {
                         // Hide unnecessary things for the "All networks" config
-                        icon.setImageResource(R.drawable.ic_baseline_wifi_lock_24)
+                        icon.setImageResource(R.drawable.ic_all_networks)
                         name.text = ctx.getString(R.string.networks_label_all_networks)
                         desc.text = ctx.getString(R.string.networks_label_details_default_network)
                         actionUseNetworkDns.visibility = View.GONE
                         actionForceLibre.visibility = View.GONE
                     }
                     NetworkType.WIFI -> {
-                        icon.setImageResource(R.drawable.ic_baseline_wifi_24)
+                        icon.setImageResource(R.drawable.ic_wifi)
                         desc.text = ctx.getString(R.string.networks_label_specific_network_type)
                     }
                     else -> {
-                        icon.setImageResource(R.drawable.ic_baseline_signal_cellular_4_bar_24)
+                        icon.setImageResource(R.drawable.ic_any_mobile)
                     }
-                }
-
-                // Color the icon if this the currently active config
-                val active = viewModel.getActiveNetworkConfig()
-                if (active.network == cfg.network) {
-                    icon.setColorFilter(ctx.getColor(R.color.green))
-                } else {
-                    icon.setColorFilter(ctx.getColorFromAttr(android.R.attr.textColor))
                 }
 
                 // Actions and interdependencies between them
@@ -117,9 +109,18 @@ class NetworksDetailFragment : Fragment() {
                 actionChangeDns.active = true
                 actionChangeDns.name = ctx.getString(R.string.networks_action_use_dns, dns.label)
                 actionChangeDns.icon = if (dns.isDnsOverHttps())
-                    ContextCompat.getDrawable(ctx, R.drawable.ic_baseline_lock_24)
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_use_dns)
                 else
-                    ContextCompat.getDrawable(ctx, R.drawable.ic_baseline_no_encryption_24)
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_unlock)
+
+                val alterDns = DnsDataSource.alterById(cfg.alterDns)
+                actionChangeAlterDns.active = true
+                actionChangeAlterDns.name =
+                    ctx.getString(R.string.networks_action_use_alter_dns, alterDns.label)
+                actionChangeAlterDns.icon = if (alterDns.isDnsOverHttps())
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_use_dns)
+                else
+                    ContextCompat.getDrawable(ctx, R.drawable.ic_unlock)
 
                 actionEncrypt.setOnClickListener {
                     viewModel.actionEncryptDns(cfg.network, !actionEncrypt.active)
@@ -136,6 +137,21 @@ class NetworksDetailFragment : Fragment() {
                     fragment.useBlockaDnsInPlusMode = cfg.useBlockaDnsInPlusMode
                     fragment.onDnsSelected = { dns ->
                         viewModel.actionUseDns(cfg.network, dns, fragment.useBlockaDnsInPlusMode)
+                    }
+                    fragment.show(parentFragmentManager, null)
+                }
+
+                actionChangeAlterDns.setOnClickListener {
+                    val fragment = DnsChoiceFragment.newInstance()
+                    fragment.selectedDns = cfg.alterDns
+                    fragment.useBlockaDnsInPlusMode = cfg.useBlockaDnsInPlusMode
+                    fragment.isAlterDns = true
+                    fragment.onDnsSelected = { dns ->
+                        viewModel.actionUseAlterDns(
+                            cfg.network,
+                            dns,
+                            fragment.useBlockaDnsInPlusMode
+                        )
                     }
                     fragment.show(parentFragmentManager, null)
                 }
@@ -158,12 +174,16 @@ class NetworksDetailFragment : Fragment() {
                     else -> ctx.getString(R.string.networks_summary_network_dns_and_plus_mode)
                 }
                 summaryUseDns.text = when {
-                    cfg.useNetworkDns -> ctx.getString(R.string.networks_summary_network_dns, dns.label)
+                    cfg.useNetworkDns -> ctx.getString(
+                        R.string.networks_summary_network_dns,
+                        dns.label
+                    )
                     else -> ctx.getString(R.string.networks_summary_use_dns, dns.label)
                 }
                 summaryForceLibre.visibility = if (cfg.forceLibreMode) View.VISIBLE else View.GONE
+                summaryAlterDns.visibility = View.VISIBLE
             }
-        })
+        }
 
         return root
     }

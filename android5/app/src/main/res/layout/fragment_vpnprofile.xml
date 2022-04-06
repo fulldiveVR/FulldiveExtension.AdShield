@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -90,8 +89,9 @@
                         android:alpha="0"
                         android:background="@android:color/white" />
 
-                    <Button
+                    <TextView
                         android:id="@+id/vpnperm_continue"
+                        style="@style/accentButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/universal_action_continue" />

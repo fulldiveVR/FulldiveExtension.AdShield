@@ -19,7 +19,7 @@ import ui.utils.now
 
 object Defaults {
 
-    val PACKS_VERSION = 25
+    val PACKS_VERSION = 26
 
     fun stats() = StatsPersisted(entries = emptyMap())
     fun allowed() = Allowed(value = listOf())
@@ -76,7 +76,7 @@ object Defaults {
         useBlockaDnsInPlusMode = true,
         forceLibreMode = false,
         enabled = false,
-        createdAt = now()
+        createdAt = now(),
+        alterDns = DnsDataSource.fullDiveDNS.id
     )
-
 }

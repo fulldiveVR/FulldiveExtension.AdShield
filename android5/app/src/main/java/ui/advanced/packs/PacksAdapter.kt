@@ -72,7 +72,8 @@ class PacksAdapter(private val interaction: Interaction? = null) :
         fun bind(item: Pack) = with(itemView) {
             thumb.setImageResource(getThumb(item))
             title.text = item.meta.title
-            slugline.text = item.meta.slugline.tr()
+//            slugline.text = item.meta.slugline.tr()
+            slugline.text = item.meta.slugline
             switch.isChecked = item.status.installed
             switch.isEnabled = !item.status.installing
             Unit

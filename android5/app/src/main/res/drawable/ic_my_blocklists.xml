@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M11,12.6278L20.0043,10L29,12.6278V18.0169C29,23.6811 25.3751,28.2097 20.0013,30.0002C14.626,28.2097 11,23.68 11,18.0143V12.6278Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M20,19.5C21.3807,19.5 22.5,18.3807 22.5,17C22.5,15.6193 21.3807,14.5 20,14.5C18.6193,14.5 17.5,15.6193 17.5,17C17.5,18.3807 18.6193,19.5 20,19.5Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M24,23.5C24,21.2908 22.2092,19.5 20,19.5C17.7908,19.5 16,21.2908 16,23.5"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+</vector>

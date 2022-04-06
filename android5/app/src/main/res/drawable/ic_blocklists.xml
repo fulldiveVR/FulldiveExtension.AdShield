@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+
+  <path
+      android:pathData="M11.1836,12.5332L20.0041,9.959L28.8162,12.5332V17.8122C28.8162,23.3609 25.2653,28.2869 20.0012,30.0409C14.7356,28.2869 11.1836,23.3598 11.1836,17.8098V12.5332Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="1.95918"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"/>
+  <path
+      android:pathData="M15.5918,19.2654L19.0204,22.694L24.8979,16.8164"
+      android:strokeLineJoin="round"
+      android:strokeWidth="1.95918"
+      android:fillColor="#00000000"
+      android:strokeColor="?attr/colorAccent"
+      android:strokeLineCap="round"/>
+</vector>

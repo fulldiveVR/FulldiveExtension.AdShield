@@ -14,10 +14,15 @@ package engine
 
 import android.system.ErrnoException
 import android.system.OsConstants
-import model.*
+import model.ex
+import android.util.Log
+import model.ex
 import org.pcap4j.packet.*
 import org.pcap4j.packet.namednumber.UdpPort
-import org.xbill.DNS.*
+import org.xbill.DNS.ARecord
+import org.xbill.DNS.DClass
+import org.xbill.DNS.Message
+import org.xbill.DNS.Name
 import ui.utils.cause
 import utils.Logger
 import java.io.IOException
@@ -47,14 +52,17 @@ internal class PacketRewriter(
     }
 
     fun handleToDevice(destination: ByteBuffer, length: Int): Boolean {
-        if (isUdp (destination) && (
-                    srcAddress4(destination, dns.externalForIndex(0).address) ||
-                            (dns.count() > 1 && srcAddress4(destination, dns.externalForIndex(1).address))
+        return if (isUdp(destination) && (
+                    srcAddress4(destination, dns.dstDnsAlter().address)
+                            || srcAddress4(destination, dns.externalForIndex(0).address)
+                            || (dns.count() > 1 && srcAddress4(
+                        destination, dns.externalForIndex(1).address
+                    ))
                     )
         ) {
             rewriteSrcDns4(destination, length)
-            return true
-        } else return false
+            true
+        } else false
     }
 
     private val ipv4Version = (1 shl 6).toByte()
@@ -77,7 +85,7 @@ internal class PacketRewriter(
         } catch (e: Exception) {
             return false
         }
-
+        Log.d("fftf", "parseDns: " + length + " originEnvelope.payload: " + originEnvelope.payload)
         if (originEnvelope.payload !is UdpPacket) return false
 
         val udp = originEnvelope.payload as UdpPacket
@@ -95,39 +103,41 @@ internal class PacketRewriter(
         if (dnsMessage.question == null) return false
 
         val host = dnsMessage.question.name.toString(true).toLowerCase(Locale.ENGLISH)
-        return if (!filter || filtering.allowed(host) || !filtering.denied(host)) {
-            val dnsIndex = packetBytes[19].toInt() - 1
-            val dnsAddress = dns.externalForIndex(dnsIndex)
-
-            val udpForward = UdpPacket.Builder(udp)
-                .srcAddr(originEnvelope.header.srcAddr)
-                .dstAddr(dnsAddress)
-                .srcPort(udp.header.srcPort)
-                .dstPort(dns.dstDnsPort())
-                .correctChecksumAtBuild(true)
-                .correctLengthAtBuild(true)
-                .payloadBuilder(UnknownPacket.Builder().rawData(udpRaw))
-
-            val envelope = IpV4Packet.Builder(originEnvelope as IpV4Packet)
-                .srcAddr(originEnvelope.header.srcAddr as Inet4Address)
-                .dstAddr(dnsAddress as Inet4Address)
-                .correctChecksumAtBuild(true)
-                .correctLengthAtBuild(true)
-                .payloadBuilder(udpForward)
-                .build()
-
-            envelope.rawData.copyInto(packetBytes)
-
-            metrics.onDnsQueryStarted(udp.header.srcPort.value())
-
-            false
+        Log.d("fftf", "parseDns, host: $host")
+        val dnsAddress: InetAddress
+        val dnsPort: UdpPort
+        if (filter && !filtering.allowed(host) && filtering.denied(host)) {
+            dnsAddress = dns.dstDnsAlter()
+            dnsPort = dns.dstDnsAlterPort()
         } else {
-            dnsMessage.header.setFlag(Flags.QR.toInt())
-            dnsMessage.header.rcode = Rcode.NOERROR
-            dnsMessage.addRecord(generateDenyResponse(host), Section.ANSWER)
-            toDeviceFakeDnsResponse(dnsMessage.toWire(), originEnvelope)
-            true
+            val dnsIndex = packetBytes[19].toInt() - 1
+            dnsAddress = dns.externalForIndex(dnsIndex)
+            dnsPort = dns.dstDnsPort()
         }
+        Log.d("fftf", "parseDns, dnsAddress: $dnsAddress, dnsPort: $dnsPort")
+
+        val udpForward = UdpPacket.Builder(udp)
+            .srcAddr(originEnvelope.header.srcAddr)
+            .dstAddr(dnsAddress)
+            .srcPort(udp.header.srcPort)
+            .dstPort(dnsPort)
+            .correctChecksumAtBuild(true)
+            .correctLengthAtBuild(true)
+            .payloadBuilder(UnknownPacket.Builder().rawData(udpRaw))
+
+        val envelope = IpV4Packet.Builder(originEnvelope as IpV4Packet)
+            .srcAddr(originEnvelope.header.srcAddr as Inet4Address)
+            .dstAddr(dnsAddress as Inet4Address)
+            .correctChecksumAtBuild(true)
+            .correctLengthAtBuild(true)
+            .payloadBuilder(udpForward)
+            .build()
+
+        envelope.rawData.copyInto(packetBytes)
+
+        metrics.onDnsQueryStarted(udp.header.srcPort.value())
+
+        return false
     }
 
     private fun rewriteSrcDns4(packet: ByteBuffer, length: Int) {
@@ -230,7 +240,10 @@ fun handleForwardException(ex: Exception): Boolean {
             true
         }
         c is SocketException && c.message == "Pending connect failure" -> {
-            Logger.v("Rewriter", "Got pending connect failure, reconnecting socket (probably switching network)")
+            Logger.v(
+                "Rewriter",
+                "Got pending connect failure, reconnecting socket (probably switching network)"
+            )
             true
         }
         c is ErrnoException && c.errno == OsConstants.EPERM -> {

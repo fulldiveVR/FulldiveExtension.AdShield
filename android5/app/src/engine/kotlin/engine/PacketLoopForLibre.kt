@@ -12,30 +12,35 @@
 
 package engine
 
-import model.BlokadaException
 import ui.utils.cause
 import utils.Logger
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import android.system.StructPollfd
+import android.util.Log
 import engine.MetricsService.PACKET_BUFFER_SIZE
 import org.pcap4j.packet.*
 import org.pcap4j.packet.factory.PacketFactoryPropertiesLoader
 import org.pcap4j.util.PropertiesLoader
-import java.io.*
-import java.net.*
+import java.io.FileDescriptor
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.Inet4Address
+import java.net.Inet6Address
 import java.nio.ByteBuffer
-import kotlin.experimental.xor
 
 
-internal class PacketLoopForLibre (
+internal class PacketLoopForLibre(
     private val deviceIn: FileInputStream,
     private val deviceOut: FileOutputStream,
     private val createSocket: () -> DatagramSocket,
     private val stoppedUnexpectedly: () -> Unit,
     filter: Boolean = true
-): Thread("PacketLoopForLibre") {
+) : Thread("PacketLoopForLibre") {
 
     private val log = Logger("PLLibre")
     private val metrics = MetricsService
@@ -82,6 +87,7 @@ internal class PacketLoopForLibre (
     }
 
     private fun fromDevice(fromDevice: ByteArray, length: Int) {
+        Log.d("fftf", "libre fromDevice: $length")
         if (rewriter.handleFromDevice(fromDevice, length)) return
 
         val originEnvelope = try {
@@ -108,13 +114,17 @@ internal class PacketLoopForLibre (
 
         val udp = originEnvelope.payload as UdpPacket
 
-        val proxiedDns = DatagramPacket(udp.payload.rawData, 0, udp.payload.length(),
+        val proxiedDns = DatagramPacket(
+            udp.payload.rawData, 0, udp.payload.length(),
             originEnvelope.header.dstAddr,
-            udp.header.dstPort.valueAsInt())
+            udp.header.dstPort.valueAsInt()
+        )
+        Log.d("fftf", "libre fromDevice, proxiedDns: $proxiedDns")
         forward(proxiedDns, originEnvelope)
     }
 
     private fun toDevice(source: ByteArray, length: Int, originEnvelope: Packet) {
+        Log.d("fftf", "libre toDevice, length: $length, originEnvelope: $originEnvelope")
         originEnvelope as IpPacket
 
         val udp = originEnvelope.payload as UdpPacket
@@ -161,9 +171,15 @@ internal class PacketLoopForLibre (
         try {
             socket.send(udp)
             if (originEnvelope != null) forwarder.add(socket, originEnvelope)
-            else try { socket.close() } catch (ex: Exception) {}
+            else try {
+                socket.close()
+            } catch (ex: Exception) {
+            }
         } catch (ex: Exception) {
-            try { socket.close() } catch (ex: Exception) {}
+            try {
+                socket.close()
+            } catch (ex: Exception) {
+            }
             handleForwardException(ex)
         }
     }
@@ -189,18 +205,16 @@ internal class PacketLoopForLibre (
         device
     }()
 
-    private fun setupPolls(errors: StructPollfd, device: StructPollfd) = {
+    private fun setupPolls(errors: StructPollfd, device: StructPollfd):  Array<StructPollfd> = {
         val polls = arrayOfNulls<StructPollfd>(2 + forwarder.size()) as Array<StructPollfd>
         polls[0] = errors
         polls[1] = device
-
         var i = 0
         while (i < forwarder.size()) {
             polls[2 + i] = forwarder[i].pipe
             i++
         }
-
-        polls
+         polls
     }()
 
     private fun poll(polls: Array<StructPollfd>) {
@@ -260,7 +274,10 @@ internal class PacketLoopForLibre (
         log.v("Cleaning up resources: $this")
         forwarder.closeAll()
 
-        try { Os.close(errorPipe) } catch (ex: Exception) {}
+        try {
+            Os.close(errorPipe)
+        } catch (ex: Exception) {
+        }
         errorPipe = null
 
         // This is managed by the SystemTunnel
@@ -277,7 +294,8 @@ internal class PacketLoopForLibre (
                 field.isAccessible = true
                 val loader = field.get(l) as PropertiesLoader
                 loader.clearCache()
-            } catch (e: Exception) {}
+            } catch (e: Exception) {
+            }
         }
     }
 

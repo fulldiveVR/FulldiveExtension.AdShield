@@ -68,6 +68,11 @@ class AppsViewModel : ViewModel() {
         updateLiveData()
     }
 
+    fun clear() {
+      //  statistics.clear()
+        refresh()
+    }
+
     fun showGroup(group: Group) {
         this.group = group
         updateLiveData()

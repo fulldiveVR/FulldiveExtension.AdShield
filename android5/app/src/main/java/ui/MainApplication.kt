@@ -14,26 +14,26 @@ package ui
 
 import android.app.Activity
 import android.app.Service
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
+import engine.ABPService
 import engine.EngineService
+import engine.FilteringService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
-import engine.FilteringService
-import model.BlockaConfig
 import service.*
 import ui.advanced.packs.PacksViewModel
 import ui.utils.cause
 import utils.Logger
 import java.util.*
 
-class MainApplication: LocalizationApplication(), ViewModelStoreOwner {
+class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
 
     companion object {
         /**
@@ -41,7 +41,7 @@ class MainApplication: LocalizationApplication(), ViewModelStoreOwner {
          * application, since they are relevant for when the app is started by the SystemTunnel
          * (as apposed to MainActivity). This probably would be solved better if some LiveData
          * objects within some of the ViewModels would not be owned by them.
-          */
+         */
         val viewModelStore = ViewModelStore()
     }
 
@@ -63,6 +63,10 @@ class MainApplication: LocalizationApplication(), ViewModelStoreOwner {
         DozeService.setup(this)
         setupEvents()
         MonitorService.setup(settingsVM.getUseForegroundService())
+
+        ABPService.initABP(ContextService.requireContext())
+        ABPService.setAdblockState(true)
+        ABPService.retainAdblockProvider()
     }
 
     private fun setupEvents() {
@@ -108,7 +112,10 @@ class MainApplication: LocalizationApplication(), ViewModelStoreOwner {
 
         networksVM.activeConfig.observeForever {
             GlobalScope.launch {
-                try { EngineService.updateConfig(network = it) } catch (ex: Exception) {}
+                try {
+                    EngineService.updateConfig(network = it)
+                } catch (ex: Exception) {
+                }
 
                 // Without the foreground service, we will get killed while switching the VPN.
                 // The simplest solution is to force the flag (which will apply from the next
@@ -122,7 +129,7 @@ class MainApplication: LocalizationApplication(), ViewModelStoreOwner {
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
-            FilteringService.reload()
+            FilteringService.reload(packsVM.getActiveUrls())
         }
     }
 

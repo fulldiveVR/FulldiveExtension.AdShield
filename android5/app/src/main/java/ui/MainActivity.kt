@@ -19,6 +19,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -31,7 +32,6 @@ import androidx.preference.PreferenceFragmentCompat
 import appextension.*
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.R
 import service.*
@@ -39,17 +39,18 @@ import ui.home.FirstTimeFragment
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
-import utils.Links
 import utils.Logger
 
 
-class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+class MainActivity : LocalizationActivity(),
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private lateinit var accountVM: AccountViewModel
     private lateinit var tunnelVM: TunnelViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var statsVM: StatsViewModel
-//    private lateinit var blockaRepoVM: BlockaRepoViewModel
+
+    //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,7 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
 
         setContentView(R.layout.activity_main)
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        val navigationView: BottomNavigationView = findViewById(R.id.nav_view)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
 
         setSupportActionBar(toolbar)
@@ -79,7 +80,7 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navigationView.setupWithNavController(navController)
 
         // Hide the bottom navigation bar, unless we are top level
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -90,7 +91,7 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
                 R.id.navigation_settings -> true
                 else -> isScreenBigEnough()
             }
-            navView.visibility = if (showNavBar) View.VISIBLE else View.GONE
+            navigationView.visibility = if (showNavBar) View.VISIBLE else View.GONE
         }
 
         // Needed for dynamic translation of the bottom bar
@@ -105,7 +106,7 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
             item.title = title
             true
         }
-        navView.setOnNavigationItemSelectedListener(selectionListener)
+        navigationView.setOnNavigationItemSelectedListener(selectionListener)
 
         // Needed for dynamic translation of the top bar
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -132,6 +133,12 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
                 if (it is Int) getString(it)
                 else it.toString()
             } ?: run { toolbar.title }
+
+            if (destination.id == R.id.navigation_home) {
+                toolbar.setLogo(R.drawable.ic_adshield)
+            } else {
+                toolbar.logo = null
+            }
         }
 
         val workType: String? = intent?.action
@@ -203,7 +210,10 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
         NetworkMonitorPermissionService.resultReturned(grantResults)
     }
 
-    override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
+    override fun onPreferenceStartFragment(
+        caller: PreferenceFragmentCompat,
+        pref: Preference
+    ): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         SettingsNavigation.handle(navController, pref.key, accountVM.account.value?.id)
         return true
@@ -243,7 +253,6 @@ class MainActivity : LocalizationActivity(), PreferenceFragmentCompat.OnPreferen
     }
 
     companion object {
-        val ACTION = "action"
+        const val ACTION = "action"
     }
-
 }

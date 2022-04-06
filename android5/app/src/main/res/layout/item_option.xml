@@ -23,9 +23,7 @@
         android:id="@+id/pack_icon"
         android:layout_width="@dimen/icon_bigger"
         android:layout_height="@dimen/icon_bigger"
-        android:padding="@dimen/half"
-        android:tint="?android:attr/colorPrimary"
-        app:srcCompat="@drawable/ic_package_variant_closed" />
+        app:srcCompat="@drawable/ic_encrypted_dns" />
 
     <TextView
         android:id="@+id/pack_name"
@@ -37,9 +35,9 @@
 
     <ImageView
         android:id="@+id/pack_checkmark"
-        android:layout_width="@dimen/icon"
-        android:layout_height="@dimen/icon"
+        android:layout_width="@dimen/icon_bigger"
+        android:layout_height="@dimen/icon_bigger"
         android:padding="@dimen/half"
-        android:tint="?android:attr/colorPrimary"
-        app:srcCompat="@drawable/ic_baseline_check_24" />
+        app:srcCompat="@drawable/ic_check_24"
+        app:tint="?android:attr/colorPrimary" />
 </LinearLayout>

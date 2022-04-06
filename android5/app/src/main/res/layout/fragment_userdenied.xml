@@ -46,15 +46,29 @@
             android:src="@drawable/ic_baseline_filter_list_24" />
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout
+    <ui.utils.TabLayout
         android:id="@+id/activity_tabs"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:background="?android:attr/colorBackground"
+        android:fontFamily="@font/roboto_regular"
+        android:minHeight="?attr/actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/activity_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_searchgroup">
+        app:layout_constraintTop_toBottomOf="@id/activity_searchgroup"
+        app:tabGravity="center"
+        app:tabIndicator="@drawable/tab_indicator_0"
+        app:tabMaxWidth="0dp"
+        app:tabMinWidth="@dimen/tab_layout_min_width"
+        app:tabMode="fixed"
+        app:tabPadding="0dp"
+        app:tabPaddingEnd="@dimen/size_8dp"
+        app:tabPaddingStart="@dimen/size_8dp"
+        app:tabSelectedTextColor="@color/textColorPrimary"
+        app:tabTextAppearance="@style/FlatTheme.TabLayoutTabText"
+        app:tabTextColor="@color/textColorSecondary">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -66,7 +80,7 @@
             android:layout_height="wrap_content"
             android:text="@string/activity_category_top" />
 
-    </com.google.android.material.tabs.TabLayout>
+    </ui.utils.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_recyclerview"

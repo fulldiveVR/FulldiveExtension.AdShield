@@ -1,22 +1,44 @@
 <!--
-  ~ This file is part of Blokada.
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
   ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
   ~
-  ~ Copyright © 2022 Blocka AB. All rights reserved.
-  ~
-  ~ @author Karol Gusak (karol@blocka.net)
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="?attr/colorControlNormal">
+    android:viewportHeight="24">
   <path
-      android:fillColor="@android:color/white"
-      android:pathData="M21.81,12.74l-0.82,-0.63v-0.22l0.8,-0.63c0.16,-0.12 0.2,-0.34 0.1,-0.51l-0.85,-1.48c-0.07,-0.13 -0.21,-0.2 -0.35,-0.2 -0.05,0 -0.1,0.01 -0.15,0.03l-0.95,0.38c-0.08,-0.05 -0.11,-0.07 -0.19,-0.11l-0.15,-1.01c-0.03,-0.21 -0.2,-0.36 -0.4,-0.36h-1.71c-0.2,0 -0.37,0.15 -0.4,0.34l-0.14,1.01c-0.03,0.02 -0.07,0.03 -0.1,0.05l-0.09,0.06 -0.95,-0.38c-0.05,-0.02 -0.1,-0.03 -0.15,-0.03 -0.14,0 -0.27,0.07 -0.35,0.2l-0.85,1.48c-0.1,0.17 -0.06,0.39 0.1,0.51l0.8,0.63v0.23l-0.8,0.63c-0.16,0.12 -0.2,0.34 -0.1,0.51l0.85,1.48c0.07,0.13 0.21,0.2 0.35,0.2 0.05,0 0.1,-0.01 0.15,-0.03l0.95,-0.37c0.08,0.05 0.12,0.07 0.2,0.11l0.15,1.01c0.03,0.2 0.2,0.34 0.4,0.34h1.71c0.2,0 0.37,-0.15 0.4,-0.34l0.15,-1.01c0.03,-0.02 0.07,-0.03 0.1,-0.05l0.09,-0.06 0.95,0.38c0.05,0.02 0.1,0.03 0.15,0.03 0.14,0 0.27,-0.07 0.35,-0.2l0.85,-1.48c0.1,-0.17 0.06,-0.39 -0.1,-0.51zM18,13.5c-0.83,0 -1.5,-0.67 -1.5,-1.5s0.67,-1.5 1.5,-1.5 1.5,0.67 1.5,1.5 -0.67,1.5 -1.5,1.5zM17,17h2v4c0,1.1 -0.9,2 -2,2H7c-1.1,0 -2,-0.9 -2,-2V3c0,-1.1 0.9,-2 2,-2h10c1.1,0 2,0.9 2,2v4h-2V6H7v12h10v-1z"/>
+      android:pathData="M24,0H0V24H24V0Z"
+      android:fillColor="#ffffff"
+      android:fillAlpha="0.01"/>
+  <path
+      android:pathData="M4,15H20V21C20,21.5523 19.5523,22 19,22H5C4.4477,22 4,21.5523 4,21V15Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#616972"/>
+  <path
+      android:pathData="M20,15V3C20,2.4477 19.5523,2 19,2H5C4.4477,2 4,2.4477 4,3V15"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#616972"/>
+  <path
+      android:pathData="M11,18.5H13"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#616972"
+      android:strokeLineCap="round"/>
 </vector>
