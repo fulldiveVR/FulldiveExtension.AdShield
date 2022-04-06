@@ -22,19 +22,29 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import model.Pack
 import org.adshield.R
 import ui.app
+import ui.utils.Tab
+import ui.utils.TabLayout
 
 class PacksFragment : Fragment() {
 
     private lateinit var vm: PacksViewModel
+    private lateinit var tabLayout: TabLayout
+
+    private val indicators by lazy {
+        listOf(
+            R.drawable.tab_indicator_0,
+            R.drawable.tab_indicator_1,
+            R.drawable.tab_indicator_2
+        )
+    }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         activity?.let {
             vm = ViewModelProvider(it.app()).get(PacksViewModel::class.java)
@@ -42,7 +52,7 @@ class PacksFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_packs, container, false)
         val recycler: RecyclerView = root.findViewById(R.id.pack_recyclerview)
-        val tabs: TabLayout = root.findViewById(R.id.pack_tabs)
+        tabLayout = root.findViewById(R.id.tabLayout)
 
         val adapter = PacksAdapter(interaction = object : PacksAdapter.Interaction {
 
@@ -69,23 +79,28 @@ class PacksFragment : Fragment() {
         })
 
         // Needed for dynamic translation
-        tabs.getTabAt(0)?.text = getString(R.string.pack_category_highlights)
-        tabs.getTabAt(1)?.text = getString(R.string.pack_category_active)
-        tabs.getTabAt(2)?.text = getString(R.string.pack_category_all)
+        tabLayout.getTabAt(0)?.setTabText(getString(R.string.pack_category_highlights))
+        tabLayout.getTabAt(1)?.setTabText(getString(R.string.pack_category_active))
+        tabLayout.getTabAt(2)?.setTabText(getString(R.string.pack_category_all))
 
-        when(vm.getFilter()) {
-            PacksViewModel.Filter.ACTIVE -> tabs.selectTab(tabs.getTabAt(1))
-            PacksViewModel.Filter.ALL -> tabs.selectTab(tabs.getTabAt(2))
-            else -> tabs.selectTab(tabs.getTabAt(0))
+        when (vm.getFilter()) {
+            PacksViewModel.Filter.ACTIVE -> tabLayout.selectTab(tabLayout.getTabAt(1))
+            PacksViewModel.Filter.ALL -> tabLayout.selectTab(tabLayout.getTabAt(2))
+            else -> tabLayout.selectTab(tabLayout.getTabAt(0))
         }
 
-        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: Tab) {
+                tab.updateSize()
+                tab.updateFont()
+            }
 
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val filtering = when(tab.position) {
+            override fun onTabSelected(tab: Tab) {
+                tabLayout.setSelectedTabIndicator(indicators[tab.position % indicators.size])
+                tab.updateSize()
+                tab.updateFont()
+                val filtering = when (tab.position) {
                     0 -> PacksViewModel.Filter.HIGHLIGHTS
                     1 -> PacksViewModel.Filter.ACTIVE
                     else -> PacksViewModel.Filter.ALL
@@ -93,6 +108,7 @@ class PacksFragment : Fragment() {
                 vm.filter(filtering)
             }
 
+            override fun onTabReselected(tab: Tab) = Unit
         })
 
         return root

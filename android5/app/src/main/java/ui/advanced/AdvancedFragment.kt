@@ -46,7 +46,7 @@ class AdvancedFragment : Fragment() {
     )
 
     private val sections by lazy {
-        listOf(
+        listOfNotNull(
             if (EnvironmentService.isSlim()) null
             else {
                 Section(
@@ -83,7 +83,7 @@ class AdvancedFragment : Fragment() {
                 iconResId = R.drawable.ic_networks,
                 destination = AdvancedFragmentDirections.actionAdvancedFragmentToSettingsNetworksFragment()
             )
-        ).filterNotNull()
+        )
     }
 
     override fun onCreateView(

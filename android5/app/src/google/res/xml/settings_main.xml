@@ -36,9 +36,8 @@
             app:title="@string/homepage_action_faq" />
 
         <Preference
-            android:fragment="ui.web.WebFragment"
             android:icon="@drawable/ic_email_us"
-            app:key="main_kb"
+            app:key="email_us"
             app:title="@string/settings_action_email" />
 
         <Preference
