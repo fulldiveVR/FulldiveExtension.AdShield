@@ -17,7 +17,6 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/colorBackgroundFloating"
     android:orientation="vertical"
-    android:padding="@dimen/half"
     tools:context="ui.home.LocationFragment">
 
     <ImageView
@@ -29,14 +28,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/icon">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/size_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -46,6 +45,8 @@
                 style="@style/Text.H3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_16dp"
+                android:paddingStart="@dimen/size_16dp"
                 android:text="@string/activity_filter_header" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,9 +57,6 @@
                     android:id="@+id/radioGroup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/normal"
-                    android:paddingEnd="@dimen/normal"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -67,65 +65,71 @@
                         android:id="@+id/activity_filterall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:buttonTint="?android:attr/colorPrimary"
                         android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
                         android:text="@string/activity_filter_show_all"
                         android:textAlignment="textStart" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/normal"
-                        android:layout_marginBottom="@dimen/normal"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:background="?android:attr/shadowColor"
-                        android:layoutDirection="rtl"
                         android:textAlignment="textStart" />
 
                     <RadioButton
                         android:id="@+id/activity_filterblocked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:buttonTint="?android:attr/colorPrimary"
                         android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
                         android:text="@string/activity_filter_show_blocked"
                         android:textAlignment="textStart" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/normal"
-                        android:layout_marginBottom="@dimen/normal"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:background="?android:attr/shadowColor"
-                        android:layoutDirection="rtl"
                         android:textAlignment="textStart" />
 
                     <RadioButton
                         android:id="@+id/activity_filterallowed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:buttonTint="?android:attr/colorPrimary"
                         android:layoutDirection="rtl"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_16dp"
                         android:text="@string/activity_filter_show_allowed"
                         android:textAlignment="textStart" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginTop="@dimen/normal"
-                        android:layout_marginBottom="@dimen/normal"
+                        android:layout_marginStart="@dimen/size_16dp"
                         android:background="?android:attr/shadowColor"
-                        android:layoutDirection="rtl"
                         android:textAlignment="textStart" />
                 </RadioGroup>
 
-                <Button
-                    android:id="@+id/cancel"
+                <TextView
+                    android:id="@+id/cancelButton"
                     style="@style/accentButton"
-                    android:layout_marginStart="@dimen/doubled"
-                    android:layout_marginEnd="@dimen/doubled"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/doubled"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:layout_marginEnd="@dimen/doubled"
                     android:text="@string/flat_set"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

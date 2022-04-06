@@ -354,7 +354,7 @@
   <string name="app_settings_section_advanced">Advanced</string>
   <string name="app_settings_section_use_foreground">Keep alive</string>
   <string name="intro_header">Full AdShield is Active!</string>
-  <string name="intro_text">A blue ring means that Full AdShield is working.\n\nRemember, some ads, like YouTube, cannot be blocked. However, you will notice a difference in many other apps.\n\nWe recommend you activate Always on VPN / Connect on Demand in your system settings.</string>
+  <string name="intro_text">An active coloured button means that Full AdShield is working.\n\nMind that some ads and popups can still not be blocked. However, you will notice a significant difference.\n\nWe recommend you activate Always on VPN / Connect on Demand in your system settings.</string>
   <string name="location_region_worldwide">Everywhere</string>
   <string name="location_region_america">America</string>
   <string name="location_region_europe">Europe</string>
@@ -455,4 +455,6 @@
   <string name="support_submit">Send</string>
   <string name="support_title">Contact us</string>
   <string name="flat_set">Set</string>
+  <string name="status_connected">Connected</string>
+  <string name="status_disconnected">Disconnected</string>
 </resources>

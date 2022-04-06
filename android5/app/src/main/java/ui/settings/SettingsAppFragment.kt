@@ -68,12 +68,12 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         }
 
         val theme: ListPreference = findPreference("app_theme")!!
-        theme.entryValues = listOf(
+        theme.entryValues = listOfNotNull(
             getString(R.string.app_settings_status_default),
             getString(R.string.app_settings_theme_dark),
             getString(R.string.app_settings_theme_light),
             if (vm.syncableConfig.value?.rated == true) THEME_RETRO_NAME else null
-        ).filterNotNull().toTypedArray()
+        ).toTypedArray()
         theme.entries = theme.entryValues
         theme.setOnPreferenceChangeListener { _, newValue ->
             when (newValue) {

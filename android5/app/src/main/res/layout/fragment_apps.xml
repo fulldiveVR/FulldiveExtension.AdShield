@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -33,27 +32,40 @@
 
         <SearchView
             android:id="@+id/app_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        <ImageView
-            android:id="@+id/app_filter"
-            android:layout_width="@dimen/icon"
-            android:layout_height="@dimen/icon"
-            android:padding="@dimen/half"
-            android:src="@drawable/ic_baseline_filter_list_24" />
+<!--        <ImageView-->
+<!--            android:id="@+id/app_filter"-->
+<!--            android:layout_width="@dimen/icon"-->
+<!--            android:layout_height="@dimen/icon"-->
+<!--            android:padding="@dimen/half"-->
+<!--            android:src="@drawable/ic_baseline_filter_list_24" />-->
     </LinearLayout>
 
-    <com.google.android.material.tabs.TabLayout
+    <ui.utils.TabLayout
         android:id="@+id/app_tabs"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:background="?android:attr/colorBackground"
+        android:fontFamily="@font/roboto_regular"
+        android:minHeight="?attr/actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/app_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_searchgroup">
+        app:layout_constraintTop_toBottomOf="@id/app_searchgroup"
+        app:tabGravity="center"
+        app:tabIndicator="@drawable/tab_indicator_0"
+        app:tabMaxWidth="0dp"
+        app:tabMinWidth="@dimen/tab_layout_min_width"
+        app:tabMode="fixed"
+        app:tabPadding="0dp"
+        app:tabPaddingEnd="@dimen/size_8dp"
+        app:tabPaddingStart="@dimen/size_8dp"
+        app:tabSelectedTextColor="@color/textColorPrimary"
+        app:tabTextAppearance="@style/FlatTheme.TabLayoutTabText"
+        app:tabTextColor="@color/textColorSecondary">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -65,7 +77,7 @@
             android:layout_height="wrap_content"
             android:text="@string/apps_label_system" />
 
-    </com.google.android.material.tabs.TabLayout>
+    </ui.utils.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/app_recyclerview"

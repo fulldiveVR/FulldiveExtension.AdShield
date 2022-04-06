@@ -43,7 +43,7 @@ class AppsFilterFragment : BottomSheetFragment() {
             dismiss()
         }
 
-        val cancel: View = root.findViewById(R.id.cancel)
+        val cancel: View = root.findViewById(R.id.cancelButton)
         cancel.setOnClickListener {
             dismiss()
         }

@@ -17,9 +17,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.adshield.R
 import ui.AccountViewModel
 import ui.BottomSheetFragment
@@ -50,7 +48,7 @@ class PaymentTermsFragment : BottomSheetFragment() {
             dismiss()
         }
 
-        val cancel: View = root.findViewById(R.id.cancel)
+        val cancel: View = root.findViewById(R.id.cancelButton)
         cancel.setOnClickListener {
             dismiss()
         }

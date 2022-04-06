@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,73 +17,66 @@
     android:layout_height="match_parent"
     tools:context="ui.home.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/home_headergroup"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/home_powergroup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/home_header"
-            android:layout_width="@dimen/header_width"
-            android:layout_height="@dimen/header_height"
-            android:src="@drawable/header"
-            app:tint="?android:attr/textColorPrimary" />
-
-        <TextView
-            android:id="@+id/home_status"
-            style="@style/Text.Plus.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/half"
-            android:text="@string/home_status_deactivated"
-            android:textAlignment="center" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/home_powergroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_headergroup">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
 
-        <ui.home.PowerView
-            android:id="@+id/home_powerview"
+        <ui.home.ActivateView
+            android:id="@+id/activateButton"
             android:layout_width="@dimen/powerview"
             android:layout_height="@dimen/powerview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:powerIcon="@drawable/ic_power_button" />
 
         <TextView
+            android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/statusTextView"
-            android:padding="4dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/textColorAccent"
+            android:layout_marginTop="@dimen/size_24dp"
             android:background="@drawable/background_button_connected"
-            tools:text="Connected"/>
+            android:paddingStart="@dimen/size_24dp"
+            android:paddingTop="@dimen/size_8dp"
+            android:paddingEnd="@dimen/size_24dp"
+            android:paddingBottom="@dimen/size_8dp"
+            android:textColor="@color/textColorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activateButton"
+            tools:text="Connected" />
 
-        <TextView
-            android:id="@+id/home_longstatus"
-            android:layout_width="@dimen/sheet_maxwidth"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/statusDescriprionCardView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/half"
-            android:layout_marginTop="@dimen/powerview_below"
-            android:layout_marginEnd="@dimen/half"
-            android:layout_marginBottom="@dimen/plusbutton_above"
-            android:lines="2"
-            android:text="@string/home_action_tap_to_activate"
-            android:textAlignment="center" />
+            android:layout_marginStart="@dimen/size_16dp"
+            android:layout_marginTop="@dimen/size_24dp"
+            android:layout_marginEnd="@dimen/size_16dp"
+            android:layout_marginBottom="@dimen/size_24dp"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            app:cardCornerRadius="@dimen/size_8dp"
+            app:cardElevation="@dimen/size_4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusTextView">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/statusDescriptionTextView"
+                android:layout_width="@dimen/sheet_maxwidth"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_16dp"
+                android:text="@string/home_action_tap_to_activate"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorIconPrimary" />
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
