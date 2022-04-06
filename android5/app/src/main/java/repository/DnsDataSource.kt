@@ -43,6 +43,15 @@ object DnsDataSource {
         label = "Cloudflare"
     )
 
+    val fdadblock = Dns(
+        id = "fdadblock",
+        ips = listOf("34.69.133.34"),
+        port = 53,
+        name = "fdadblock",
+        path = "dns-query",
+        label = "FD Adblock DNS"
+    )
+
     fun getDns() = listOf(
         Dns.plaintextDns(
             id = "adguard",

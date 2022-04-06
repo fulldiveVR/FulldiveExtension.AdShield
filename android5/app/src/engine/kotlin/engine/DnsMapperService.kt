@@ -12,7 +12,10 @@
 
 package engine
 
-import model.*
+import model.BlokadaException
+import model.Dns
+import model.ipv4
+import model.isDnsOverHttps
 import newengine.BlockaDnsService
 import org.pcap4j.packet.namednumber.UdpPort
 import repository.DnsDataSource
@@ -27,12 +30,16 @@ object DnsMapperService {
     private val log = Logger("DnsMapper")
 
     private var servers = emptyList<InetAddress>()
+    private var serversAlter = emptyList<InetAddress>()
+    private var proxyDnsAlterPort = UdpPort(443, "dns alter port")
     private var useProxyDns = false
 
-    fun setDns(dns: Dns, doh: Boolean, plusMode: Boolean = false) {
+    fun setDns(dns: Dns, dnsAlter: Dns, doh: Boolean, plusMode: Boolean = false) {
         log.v("Using DNS configuration [DoH/PlusMode: $doh/$plusMode]: $dns")
 
         servers = decideDns(dns, plusMode)
+        serversAlter = dnsAlter.ips.ipv4().map { Inet4Address.getByName(it) }
+        proxyDnsAlterPort = UdpPort(dnsAlter.port!!.toShort(), dnsAlter.name)
 
         if (servers.isEmpty()) throw BlokadaException("No DNS servers found")
         else log.v("Using DNS: $servers")
@@ -80,6 +87,14 @@ object DnsMapperService {
 
     fun dstDnsPort(): UdpPort {
         return if (useProxyDns) proxyDnsPort else UdpPort.DOMAIN
+    }
+
+    fun dstDnsAlter(): InetAddress {
+        return serversAlter[0]
+    }
+
+    fun dstDnsAlterPort(): UdpPort {
+        return proxyDnsAlterPort
     }
 
     val proxyDnsIpBytes = byteArrayOf(127, 0, 0, 1)

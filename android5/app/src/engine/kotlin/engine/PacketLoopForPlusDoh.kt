@@ -17,6 +17,7 @@ import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import android.system.StructPollfd
+import android.util.Log
 import com.cloudflare.app.boringtun.BoringTunJNI
 import engine.MetricsService.PACKET_BUFFER_SIZE
 import model.BlokadaException
@@ -124,6 +125,7 @@ internal class PacketLoopForPlusDoh (
     }
 
     private fun fromDevice(fromDevice: ByteArray, length: Int) {
+        Log.d("fftf", "doh fromDevice, length: $length")
         if (rewriter.handleFromDevice(fromDevice, length)) return
 
         if (dstAddress4(fromDevice, length, DnsMapperService.proxyDnsIpBytes)) {
@@ -214,6 +216,7 @@ internal class PacketLoopForPlusDoh (
     }
 
     private fun toDeviceFromProxy(source: ByteArray, length: Int, originEnvelope: Packet) {
+        Log.d("fftf", "doh toDeviceFromProxy, length: $length, originEnvelope: $originEnvelope")
         originEnvelope as IpPacket
 
         val udp = originEnvelope.payload as UdpPacket
