@@ -43,28 +43,13 @@ object DnsDataSource {
         label = "Cloudflare"
     )
 
-    val fullDiveDNS = Dns(
-        id = "fulldive",
+    val fdadblock = Dns(
+        id = "fdadblock",
         ips = listOf("34.69.133.34"),
         port = 53,
         name = "fdadblock",
         path = "dns-query",
         label = "FD Adblock DNS"
-    )
-
-    val googleDNS = Dns(
-        id = "google",
-        ips = listOf("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"),
-        port = 443,
-        name = "dns.google",
-        path = "resolve",
-        label = "Google"
-    )
-
-    fun getAlterDNS() = listOf(
-        fullDiveDNS,
-        cloudflare,
-        googleDNS
     )
 
     fun getDns() = listOf(
@@ -130,7 +115,14 @@ object DnsDataSource {
             canUseInCleartext = false,
             region = "europe"
         ),
-        googleDNS,
+        Dns(
+            id = "google",
+            ips = listOf("8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"),
+            port = 443,
+            name = "dns.google",
+            path = "resolve",
+            label = "Google"
+        ),
         Dns.plaintextDns(
             id = "opendns",
             ips = listOf("208.67.222.222", "208.67.220.220"),
@@ -167,9 +159,5 @@ object DnsDataSource {
     fun byId(dnsId: DnsId) = when(dnsId) {
         network.id -> network
         else -> getDns().firstOrNull { it.id == dnsId } ?: cloudflare // Fallback for previously selected removed DNS
-    }
-
-    fun alterById(dnsId: DnsId): Dns {
-        return getAlterDNS().firstOrNull { it.id == dnsId } ?: fullDiveDNS
     }
 }
