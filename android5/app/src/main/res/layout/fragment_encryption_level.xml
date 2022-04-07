@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -129,8 +128,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/doubled"
                             android:alpha="0.3"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/encryption_everything_icon"
@@ -243,9 +242,10 @@
 
                         <Button
                             android:id="@+id/encryption_continue"
-                            android:layout_width="match_parent"
                             style="@style/accentButton"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/size_8dp"
                             android:text="@string/universal_action_close" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

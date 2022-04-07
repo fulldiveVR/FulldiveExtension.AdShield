@@ -39,7 +39,8 @@
         <entry key="app/src/main/res/layout/fragment_stats.xml" value="0.264945652173913" />
         <entry key="app/src/main/res/layout/fragment_stats_detail.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/fragment_stats_filter.xml" value="0.45" />
-        <entry key="app/src/main/res/layout/fragment_vpnprofile.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/fragment_under_construction.xml" value="0.11484375" />
+        <entry key="app/src/main/res/layout/fragment_vpnprofile.xml" value="0.45" />
         <entry key="app/src/main/res/layout/layout_activate_view.xml" value="0.165" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.265625" />
         <entry key="app/src/main/res/menu/help_menu.xml" value="0.22291666666666668" />
