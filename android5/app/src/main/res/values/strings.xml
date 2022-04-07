@@ -145,7 +145,7 @@
   <string name="advanced_section_slugline_packs">Activate for more restrictive forwarding</string>
   <string name="advanced_section_slugline_apps">Choose apps that should never be forwarded</string>
   <string name="advanced_section_slugline_encryption">Adjust your encryption level and DNS</string>
-  <string name="advanced_action_slim_migrate_to_full">You are using AdShield. Learn more</string>
+  <string name="advanced_action_slim_migrate_to_full">Advanced features will be developed soon. Sit tight, we are improving the AdShield experience for you!</string>
   <string name="location_choice_header">Choose a Location</string>
   <string name="activity_section_header">Activity</string>
   <string name="activity_section_header_details">Activity Details</string>

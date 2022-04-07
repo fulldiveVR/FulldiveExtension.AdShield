@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.preference.PreferenceFragmentCompat
+import appextension.EmailHelper
+import appextension.PopupManager
 import model.Account
 import model.AccountId
 import org.adshield.R
@@ -73,6 +75,11 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
 
 object SettingsNavigation {
     fun handle(nav: NavController, key: String, accountId: AccountId?) {
+        if (key == "email_us") {
+            PopupManager.showContactSupportDialog(ContextService.requireContext()) {
+                EmailHelper.sendEmailToSupport(ContextService.requireContext())
+            }
+        }
         val path = when (key) {
             "main_account" -> SettingsFragmentDirections.actionNavigationSettingsToNavigationSettingsAccount()
             "main_logout" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsLogoutFragment()

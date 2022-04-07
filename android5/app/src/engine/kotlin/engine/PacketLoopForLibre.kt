@@ -12,17 +12,16 @@
 
 package engine
 
-import ui.utils.cause
-import utils.Logger
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import android.system.StructPollfd
-import android.util.Log
 import engine.MetricsService.PACKET_BUFFER_SIZE
 import org.pcap4j.packet.*
 import org.pcap4j.packet.factory.PacketFactoryPropertiesLoader
 import org.pcap4j.util.PropertiesLoader
+import ui.utils.cause
+import utils.Logger
 import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -87,7 +86,6 @@ internal class PacketLoopForLibre(
     }
 
     private fun fromDevice(fromDevice: ByteArray, length: Int) {
-        Log.d("fftf", "libre fromDevice: $length")
         if (rewriter.handleFromDevice(fromDevice, length)) return
 
         val originEnvelope = try {
@@ -119,12 +117,10 @@ internal class PacketLoopForLibre(
             originEnvelope.header.dstAddr,
             udp.header.dstPort.valueAsInt()
         )
-        Log.d("fftf", "libre fromDevice, proxiedDns: $proxiedDns")
         forward(proxiedDns, originEnvelope)
     }
 
     private fun toDevice(source: ByteArray, length: Int, originEnvelope: Packet) {
-        Log.d("fftf", "libre toDevice, length: $length, originEnvelope: $originEnvelope")
         originEnvelope as IpPacket
 
         val udp = originEnvelope.payload as UdpPacket
@@ -205,7 +201,7 @@ internal class PacketLoopForLibre(
         device
     }()
 
-    private fun setupPolls(errors: StructPollfd, device: StructPollfd):  Array<StructPollfd> = {
+    private fun setupPolls(errors: StructPollfd, device: StructPollfd): Array<StructPollfd> = {
         val polls = arrayOfNulls<StructPollfd>(2 + forwarder.size()) as Array<StructPollfd>
         polls[0] = errors
         polls[1] = device
@@ -214,7 +210,7 @@ internal class PacketLoopForLibre(
             polls[2 + i] = forwarder[i].pipe
             i++
         }
-         polls
+        polls
     }()
 
     private fun poll(polls: Array<StructPollfd>) {

@@ -243,9 +243,10 @@
 
                         <Button
                             android:id="@+id/encryption_continue"
-                            android:layout_width="match_parent"
                             style="@style/accentButton"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/size_8dp"
                             android:text="@string/universal_action_close" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

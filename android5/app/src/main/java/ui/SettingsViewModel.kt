@@ -109,16 +109,17 @@ class SettingsViewModel : ViewModel() {
     }
 
     fun getTheme(): Int? {
-        return _localConfig.value?.let {
-            when (it.themeName) {
-                THEME_RETRO_KEY -> R.style.Theme_Blokada_Retro
-                else -> when (it.useDarkTheme) {
-                    true -> R.style.Theme_Blokada_Dark
-                    false -> R.style.Theme_Blokada_Light
-                    else -> null
-                }
-            }
-        }
+        return R.style.Theme_Blokada_Light
+//        return _localConfig.value?.let {
+//            when (it.themeName) {
+//                THEME_RETRO_KEY -> R.style.Theme_Blokada_Retro
+//                else -> when (it.useDarkTheme) {
+//                    true -> R.style.Theme_Blokada_Dark
+//                    false -> R.style.Theme_Blokada_Light
+//                    else -> null
+//                }
+//            }
+//        }
     }
 
     fun setUseDarkTheme(useDarkTheme: Boolean?) {
