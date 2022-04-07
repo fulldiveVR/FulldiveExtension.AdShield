@@ -36,6 +36,8 @@ import utils.Links
 
 class SettingsAppFragment : PreferenceFragmentCompat() {
 
+    private val isThemeAvailable = false
+
     private lateinit var vm: SettingsViewModel
 //    private lateinit var blockaRepoVM: BlockaRepoViewModel
 
@@ -67,23 +69,25 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             true
         }
 
-        val theme: ListPreference = findPreference("app_theme")!!
-        theme.entryValues = listOfNotNull(
-            getString(R.string.app_settings_status_default),
-            getString(R.string.app_settings_theme_dark),
-            getString(R.string.app_settings_theme_light),
-            if (vm.syncableConfig.value?.rated == true) THEME_RETRO_NAME else null
-        ).toTypedArray()
-        theme.entries = theme.entryValues
-        theme.setOnPreferenceChangeListener { _, newValue ->
-            when (newValue) {
-                getString(R.string.app_settings_theme_dark) -> vm.setUseDarkTheme(true)
-                getString(R.string.app_settings_theme_light) -> vm.setUseDarkTheme(false)
-                THEME_RETRO_NAME -> vm.setUseTheme(THEME_RETRO_KEY)
-                else -> vm.setUseDarkTheme(null)
+        val theme: ListPreference? = findPreference("app_theme")
+        if (isThemeAvailable) {
+            theme?.entryValues = listOfNotNull(
+                getString(R.string.app_settings_status_default),
+                getString(R.string.app_settings_theme_dark),
+                getString(R.string.app_settings_theme_light),
+                if (vm.syncableConfig.value?.rated == true) THEME_RETRO_NAME else null
+            ).toTypedArray()
+            theme?.entries = theme?.entryValues
+            theme?.setOnPreferenceChangeListener { _, newValue ->
+                when (newValue) {
+                    getString(R.string.app_settings_theme_dark) -> vm.setUseDarkTheme(true)
+                    getString(R.string.app_settings_theme_light) -> vm.setUseDarkTheme(false)
+                    THEME_RETRO_NAME -> vm.setUseTheme(THEME_RETRO_KEY)
+                    else -> vm.setUseDarkTheme(null)
+                }
+                showRestartRequired()
+                true
             }
-            showRestartRequired()
-            true
         }
 
         val browser: ListPreference? = findPreference("app_browser")
@@ -150,8 +154,10 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
                     else -> getString(R.string.app_settings_status_default)
                 }
             }
-            theme.setDefaultValue(value)
-            theme.value = value
+            if (isThemeAvailable) {
+                theme?.setDefaultValue(value)
+                theme?.value = value
+            }
 
             val locale = it.locale
             val selected = locale ?: "root"

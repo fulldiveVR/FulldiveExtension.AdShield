@@ -32,6 +32,7 @@
 
     <color name="textColorPrimary">#0D1826</color>
     <color name="textColorSecondary">#BABDC1</color>
+    <color name="textColorTertiary">#616972</color>
     <color name="textColorAccent">#FF9900</color>
     <color name="textColorForwarded">#63CAC6</color>
     <color name="textColorDenied">#8E83FF</color>
