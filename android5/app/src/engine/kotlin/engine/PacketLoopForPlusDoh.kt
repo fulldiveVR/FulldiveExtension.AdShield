@@ -17,7 +17,6 @@ import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import android.system.StructPollfd
-import android.util.Log
 import com.cloudflare.app.boringtun.BoringTunJNI
 import engine.MetricsService.PACKET_BUFFER_SIZE
 import model.BlokadaException
@@ -40,7 +39,7 @@ import java.net.InetAddress
 import java.nio.ByteBuffer
 
 
-internal class PacketLoopForPlusDoh (
+internal class PacketLoopForPlusDoh(
     private val deviceIn: FileInputStream,
     private val deviceOut: FileOutputStream,
     private val userBoringtunPrivateKey: String,
@@ -49,7 +48,7 @@ internal class PacketLoopForPlusDoh (
     private val gatewayPort: Int,
     private val createSocket: () -> DatagramSocket,
     private val stoppedUnexpectedly: () -> Unit
-): Thread("PacketLoopForPlusDoh") {
+) : Thread("PacketLoopForPlusDoh") {
 
     private val log = Logger("PLPlusDoh")
     private val metrics = MetricsService
@@ -125,7 +124,6 @@ internal class PacketLoopForPlusDoh (
     }
 
     private fun fromDevice(fromDevice: ByteArray, length: Int) {
-        Log.d("fftf", "doh fromDevice, length: $length")
         if (rewriter.handleFromDevice(fromDevice, length)) return
 
         if (dstAddress4(fromDevice, length, DnsMapperService.proxyDnsIpBytes)) {
@@ -152,8 +150,10 @@ internal class PacketLoopForPlusDoh (
         val destination = buffer
         destination.rewind()
         destination.limit(destination.capacity())
-        val response = BoringTunJNI.wireguard_write(boringtunHandle, fromDevice, length, destination,
-            destination.capacity(), op)
+        val response = BoringTunJNI.wireguard_write(
+            boringtunHandle, fromDevice, length, destination,
+            destination.capacity(), op
+        )
         destination.limit(response)
         val opCode = op[0].toInt()
         when (opCode) {
@@ -216,7 +216,6 @@ internal class PacketLoopForPlusDoh (
     }
 
     private fun toDeviceFromProxy(source: ByteArray, length: Int, originEnvelope: Packet) {
-        Log.d("fftf", "doh toDeviceFromProxy, length: $length, originEnvelope: $originEnvelope")
         originEnvelope as IpPacket
 
         val udp = originEnvelope.payload as UdpPacket
@@ -281,7 +280,10 @@ internal class PacketLoopForPlusDoh (
             socket.send(udp)
             forwarder.add(socket, originEnvelope)
         } catch (ex: Exception) {
-            try { socket.close() } catch (ex: Exception) {}
+            try {
+                socket.close()
+            } catch (ex: Exception) {
+            }
             handleForwardException(ex)
         }
     }
@@ -299,8 +301,14 @@ internal class PacketLoopForPlusDoh (
 
     private fun closeGatewaySocket() {
         log.w("Closing gateway socket")
-        try { gatewayParcelFileDescriptor?.close() }  catch (ex: Exception) {}
-        try { gatewaySocket?.close() } catch (ex: Exception) {}
+        try {
+            gatewayParcelFileDescriptor?.close()
+        } catch (ex: Exception) {
+        }
+        try {
+            gatewaySocket?.close()
+        } catch (ex: Exception) {
+        }
         gatewayParcelFileDescriptor = null
         gatewaySocket = null
     }
@@ -421,7 +429,8 @@ internal class PacketLoopForPlusDoh (
         val destination = buffer
         destination.rewind()
         destination.limit(destination.capacity())
-        val response = BoringTunJNI.wireguard_tick(boringtunHandle, destination, destination.capacity(), op)
+        val response =
+            BoringTunJNI.wireguard_tick(boringtunHandle, destination, destination.capacity(), op)
         destination.limit(response)
         val opCode = op[0].toInt()
         when (opCode) {
@@ -444,7 +453,10 @@ internal class PacketLoopForPlusDoh (
     private fun cleanup() {
         log.v("Cleaning up resources: $this")
         closeGatewaySocket()
-        try { Os.close(errorPipe) } catch (ex: Exception) {}
+        try {
+            Os.close(errorPipe)
+        } catch (ex: Exception) {
+        }
         errorPipe = null
 
         // This is managed by the SystemTunnel
@@ -461,7 +473,8 @@ internal class PacketLoopForPlusDoh (
                 field.isAccessible = true
                 val loader = field.get(l) as PropertiesLoader
                 loader.clearCache()
-            } catch (e: Exception) {}
+            } catch (e: Exception) {
+            }
         }
     }
 
