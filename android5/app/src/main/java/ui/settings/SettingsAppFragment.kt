@@ -12,49 +12,34 @@
 
 package ui.settings
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
-import model.AppTheme
-import model.LocalConfig
-import model.ThemeHelper
-import org.adshield.BuildConfig
 import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
-import service.AppSettingsService
 import service.EnvironmentService
-import ui.AppSettingsViewModel
 import ui.SettingsViewModel
+import ui.THEME_RETRO_KEY
+import ui.THEME_RETRO_NAME
 import ui.app
 import utils.Links
-import java.util.*
-
 
 class SettingsAppFragment : PreferenceFragmentCompat() {
 
-    private lateinit var vm: SettingsViewModel
-    private lateinit var appSettingsVm: AppSettingsViewModel
-//    private lateinit var blockaRepoVM: BlockaRepoViewModel
+    private val isThemeAvailable = false
 
-    private val yesNoChoice by lazy {
-        listOf(
-            getString(R.string.universal_action_yes),
-            getString(R.string.universal_action_no)
-        ).toTypedArray()
-    }
+    private lateinit var vm: SettingsViewModel
+//    private lateinit var blockaRepoVM: BlockaRepoViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_app, rootKey)
@@ -62,186 +47,140 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initViewModel()
 
-        val languagePreference = initLanguagePreference()
-        val themePreference = initThemePreference()
-        val browserPreference = initAppBrowserPreference()
-        val backupPreference = initBackUpPreference()
-        val useForegroundPreference = initUseForegroundPreference()
-        initAppDetailsPreference()
-
-        vm.localConfig.observe(viewLifecycleOwner) { localConfig ->
-            languagePreference?.let { setLanguagePreference(it, localConfig) }
-            browserPreference?.let { setAppBrowserPreference(it, localConfig) }
-            backupPreference?.let { setBackUpPreference(it, localConfig) }
-            useForegroundPreference?.let { setUseForegroundPreference(it, localConfig) }
-        }
-
-        appSettingsVm.currentTheme.observe(viewLifecycleOwner) { theme ->
-            themePreference?.let { setAppThemePreference(it, theme) }
-        }
-
-        initPreferences()
-    }
-
-    private fun initViewModel() {
         activity?.let {
             vm = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
-            appSettingsVm = ViewModelProvider(it.app()).get(AppSettingsViewModel::class.java)
 //            blockaRepoVM = ViewModelProvider(it.app()).get(BlockaRepoViewModel::class.java)
         }
-    }
 
-    private fun initThemePreference(): ListPreference? {
-        return (findPreference("app_theme") as? ListPreference)?.also { theme ->
-            theme.entryValues = ThemeHelper.generateAppThemes()
-                .map { context?.getString(it.titleRes).orEmpty() }
-                .toTypedArray()
-            theme.entries = theme.entryValues
-            theme.setOnPreferenceChangeListener { _, newValue ->
-                appSettingsVm.setCurrentAppTheme(
-                    AppTheme.getThemeByTitle(
-                        requireContext(),
-                        newValue.toString()
-                    ).type
-                )
-                true
-            }
+        val language: ListPreference? = findPreference("app_language")
+        val languages = mutableMapOf(
+            "root" to getString(R.string.app_settings_status_default)
+        ).also {
+            it.putAll(LANGUAGE_NICE_NAMES.toSortedMap())
         }
-    }
-
-    private fun setAppThemePreference(themePreference: ListPreference, theme: AppTheme) {
-        val value = getString(theme.titleRes)
-        themePreference.setDefaultValue(value)
-        themePreference.value = value
-    }
-
-    private fun initLanguagePreference(): ListPreference? {
-        return (findPreference("app_language") as? ListPreference)?.also { language ->
-            val languages = mutableMapOf(
-                "root" to getString(R.string.app_settings_status_default)
-            ).also {
-                it.putAll(LANGUAGE_NICE_NAMES.toSortedMap())
+        language?.entryValues = languages.keys.toTypedArray()
+        language?.entries = languages.map { it.value }.toTypedArray()
+        language?.setOnPreferenceChangeListener { _, newValue ->
+            when (newValue) {
+                "root" -> vm.setLocale(null)
+                else -> vm.setLocale(newValue as String)
             }
-            language.entryValues = languages.keys.toTypedArray()
-            language.entries = languages.map { it.value }.toTypedArray()
-            language.setOnPreferenceChangeListener { _, newValue ->
-                when (newValue) {
-                    "root" -> vm.setLocale(null)
-                    else -> vm.setLocale(newValue as String)
-                }
-                true
-            }
+            true
         }
-    }
 
-    private fun setLanguagePreference(
-        languagePreference: ListPreference,
-        localConfig: LocalConfig
-    ) {
-        val locale = localConfig.locale
-        val selected = locale ?: "root"
-        languagePreference.setDefaultValue(selected)
-        languagePreference.value = selected
-    }
-
-    private fun initAppDetailsPreference(): Preference? {
-        return (findPreference("app_details") as? Preference)?.also { details ->
-            details.summary = EnvironmentService.getUserAgent()
-            var clicks = 0
-            details.setOnPreferenceClickListener {
-                if (clicks++ == 21) {
-                    vm.setRatedApp()
-                    Toast.makeText(requireContext(), "( ͡° ͜ʖ ͡°)", Toast.LENGTH_SHORT).show()
-                }
-                true
-            }
-        }
-    }
-
-    private fun initAppBrowserPreference(): ListPreference? {
-        return (findPreference("app_browser") as? ListPreference)?.also { browser ->
-            browser.entryValues = listOf(
-                getString(R.string.app_settings_browser_internal),
-                getString(R.string.app_settings_browser_external)
+        val theme: ListPreference? = findPreference("app_theme")
+        if (isThemeAvailable) {
+            theme?.entryValues = listOfNotNull(
+                getString(R.string.app_settings_status_default),
+                getString(R.string.app_settings_theme_dark),
+                getString(R.string.app_settings_theme_light),
+                if (vm.syncableConfig.value?.rated == true) THEME_RETRO_NAME else null
             ).toTypedArray()
-            browser.entries = browser.entryValues
-            browser.setOnPreferenceChangeListener { _, newValue ->
+            theme?.entries = theme?.entryValues
+            theme?.setOnPreferenceChangeListener { _, newValue ->
                 when (newValue) {
-                    getString(R.string.app_settings_browser_internal) -> vm.setUseChromeTabs(false)
-                    else -> vm.setUseChromeTabs(true)
-                }
-                true
-            }
-        }
-    }
-
-    private fun setAppBrowserPreference(
-        browserPreference: ListPreference,
-        localConfig: LocalConfig
-    ) {
-        val b = if (localConfig.useChromeTabs) getString(R.string.app_settings_browser_external)
-        else getString(R.string.app_settings_browser_internal)
-        browserPreference.setDefaultValue(b)
-        browserPreference.value = b
-    }
-
-    private fun initUseForegroundPreference(): ListPreference? {
-        return (findPreference("app_useforeground") as? ListPreference)?.also { useForeground ->
-            useForeground.entryValues = yesNoChoice
-            useForeground.entries = useForeground.entryValues
-            useForeground.setOnPreferenceChangeListener { _, newValue ->
-                when (newValue) {
-                    getString(R.string.universal_action_yes) -> vm.setUseForegroundService(true)
-                    else -> vm.setUseForegroundService(false)
+                    getString(R.string.app_settings_theme_dark) -> vm.setUseDarkTheme(true)
+                    getString(R.string.app_settings_theme_light) -> vm.setUseDarkTheme(false)
+                    THEME_RETRO_NAME -> vm.setUseTheme(THEME_RETRO_KEY)
+                    else -> vm.setUseDarkTheme(null)
                 }
                 showRestartRequired()
                 true
             }
         }
-    }
 
-    private fun setUseForegroundPreference(
-        useForegroundPreference: ListPreference,
-        localConfig: LocalConfig
-    ) {
-        val useFg = if (localConfig.useForegroundService) {
-            getString(R.string.universal_action_yes)
-        } else {
+        val browser: ListPreference? = findPreference("app_browser")
+        browser?.entryValues = listOf(
+            getString(R.string.app_settings_browser_internal),
+            getString(R.string.app_settings_browser_external)
+        ).toTypedArray()
+        browser?.entries = browser?.entryValues
+        browser?.setOnPreferenceChangeListener { _, newValue ->
+            when (newValue) {
+                getString(R.string.app_settings_browser_internal) -> vm.setUseChromeTabs(false)
+                else -> vm.setUseChromeTabs(true)
+            }
+            true
+        }
+
+        val yesNoChoice = listOf(
+            getString(R.string.universal_action_yes),
             getString(R.string.universal_action_no)
-        }
-        useForegroundPreference.setDefaultValue(useFg)
-        useForegroundPreference.value = useFg
-    }
+        ).toTypedArray()
 
-    private fun initBackUpPreference(): ListPreference? {
-        return (findPreference("app_backup") as? ListPreference)?.also { backup ->
-            backup.entryValues = yesNoChoice
-            backup.entries = backup.entryValues
-            backup.setOnPreferenceChangeListener { _, newValue ->
-                when (newValue) {
-                    getString(R.string.universal_action_yes) -> vm.setUseBackup(true)
-                    else -> vm.setUseBackup(false)
-                }
-                showRestartRequired()
-                true
+        val backup: ListPreference? = findPreference("app_backup")
+        backup?.entryValues = yesNoChoice
+        backup?.entries = backup?.entryValues
+        backup?.setOnPreferenceChangeListener { _, newValue ->
+            when (newValue) {
+                getString(R.string.universal_action_yes) -> vm.setUseBackup(true)
+                else -> vm.setUseBackup(false)
             }
+            showRestartRequired()
+            true
         }
-    }
 
-    private fun setBackUpPreference(
-        backupPreference: ListPreference,
-        localConfig: LocalConfig
-    ) {
-        val useBackup = if (localConfig.backup) getString(R.string.universal_action_yes)
-        else getString(R.string.universal_action_no)
-        backupPreference.setDefaultValue(useBackup)
-        backupPreference.value = useBackup
-    }
+        val useForeground: ListPreference = findPreference("app_useforeground")!!
+        useForeground.entryValues = yesNoChoice
+        useForeground.entries = useForeground.entryValues
+        useForeground.setOnPreferenceChangeListener { _, newValue ->
+            when (newValue) {
+                getString(R.string.universal_action_yes) -> vm.setUseForegroundService(true)
+                else -> vm.setUseForegroundService(false)
+            }
+            showRestartRequired()
+            true
+        }
 
-    private fun initPreferences() {
-        //        val config: Preference = findPreference("app_config")!!
+        val details: Preference = findPreference("app_details")!!
+        details.summary = EnvironmentService.getUserAgent()
+
+        var clicks = 0
+        details.setOnPreferenceClickListener {
+            if (clicks++ == 21) {
+                vm.setRatedApp()
+                Toast.makeText(requireContext(), "( ͡° ͜ʖ ͡°)", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
+
+        vm.localConfig.observe(viewLifecycleOwner, Observer {
+            val value = when (it.useDarkTheme) {
+                true -> getString(R.string.app_settings_theme_dark)
+                false -> getString(R.string.app_settings_theme_light)
+                else -> when (it.themeName) {
+                    THEME_RETRO_KEY -> THEME_RETRO_NAME
+                    else -> getString(R.string.app_settings_status_default)
+                }
+            }
+            if (isThemeAvailable) {
+                theme?.setDefaultValue(value)
+                theme?.value = value
+            }
+
+            val locale = it.locale
+            val selected = locale ?: "root"
+            language?.setDefaultValue(selected)
+            language?.value = selected
+
+            val b = if (it.useChromeTabs) getString(R.string.app_settings_browser_external)
+            else getString(R.string.app_settings_browser_internal)
+            browser?.setDefaultValue(b)
+            browser?.value = b
+
+            val useBackup = if (it.backup) getString(R.string.universal_action_yes)
+            else getString(R.string.universal_action_no)
+            backup?.setDefaultValue(useBackup)
+            backup?.value = useBackup
+
+            val useFg = if (it.useForegroundService) getString(R.string.universal_action_yes)
+            else getString(R.string.universal_action_no)
+            useForeground.setDefaultValue(useFg)
+            useForeground.value = useFg
+        })
+
+//        val config: Preference = findPreference("app_config")!!
 //        config.setOnPreferenceClickListener {
 //            UpdateService.resetSeenUpdate()
 //            blockaRepoVM.refreshRepo()
@@ -283,39 +222,6 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             ctx.startActivity(getIntentForNotificationChannelsSettings(ctx))
             true
         }
-
-        val isMeizu = Build.MANUFACTURER.lowercase(Locale.ENGLISH) == "meizu"
-
-        val battery: Preference? = findPreference("app_battery")
-        battery?.isVisible = !isMeizu
-        battery?.setOnPreferenceClickListener {
-            checkDoze()
-            true
-        }
-
-        val dataUsage: Preference? = findPreference("app_data")
-        dataUsage?.isVisible = !isMeizu
-        dataUsage?.setOnPreferenceClickListener {
-            checkDataSaving()
-            true
-        }
-
-        val workAtBackground: Preference? = findPreference("app_background")
-        workAtBackground?.isVisible = isMeizu
-        workAtBackground?.setOnPreferenceClickListener {
-            activity?.let { activity -> openFlymeSecurityApp(activity) }
-            true
-        }
-
-        var isChecked = AppSettingsService.getIsBlockHistoryAtNotification()
-        val hideHistoryFromNotification: SwitchPreference? = findPreference("app_hide_history_from_notification")
-        hideHistoryFromNotification?.isChecked = isChecked
-        hideHistoryFromNotification?.setOnPreferenceClickListener {
-            isChecked = !isChecked
-            AppSettingsService.setIsBlockHistoryAtNotification(isChecked)
-            hideHistoryFromNotification.isEnabled = isChecked
-            true
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -345,46 +251,6 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         putExtra("app_package", ctx.packageName)
         putExtra("app_uid", ctx.applicationInfo.uid)
         putExtra("android.provider.extra.APP_PACKAGE", ctx.packageName)
-    }
-
-    private fun checkDoze() {
-        val settings = Intent(
-            Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
-        )
-        if (context?.packageManager?.resolveActivity(
-                settings,
-                0
-            ) != null
-        ) try {
-            startActivity(settings)
-        } catch (ex: Throwable) {
-        }
-    }
-
-    private fun checkDataSaving() {
-        val settings = Intent(
-            Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
-            Uri.parse("package:" + context?.packageName)
-        )
-        if (context?.packageManager?.resolveActivity(
-                settings,
-                0
-            ) != null
-        ) try {
-            startActivity(settings)
-        } catch (ex: Throwable) {
-        }
-    }
-
-    private fun openFlymeSecurityApp(context: Activity) {
-        val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
-        intent.addCategory(Intent.CATEGORY_DEFAULT)
-        intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
-        try {
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 }
 

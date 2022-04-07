@@ -12,145 +12,74 @@
 
 <resources>
 
-    <style name="AppTheme" parent="V7.AppTheme">
-        <item name="appBarLayoutStyle">@style/AppTheme.AppBar</item>
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
-    <style name="V7.AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@drawable/splash</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu</item>
-        <item name="dialogTheme">@style/AppTheme.DialogStyle</item>
-        <item name="android:itemBackground">@color/backgroundTabsAndNavBars</item>
-        <item name="android:actionOverflowButtonStyle">@style/OverFlow</item>
-        <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
-        <item name="android:textViewStyle">@style/TextViewStyle</item>
-        <item name="editTextStyle">@style/EditTextStyle</item>
+    <style name="Text.Link" parent="">
+        <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
-    <style name="V7.AppTheme.AppBar" parent="Widget.Design.AppBarLayout">
-        <item name="android:background">@color/backgroundTabsAndNavBars</item>
+    <style name="Text.Header" parent="">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.AppBar" parent="V7.AppTheme.AppBar" />
-
-    <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="tint">@color/colorIconPrimary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="TextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="EditTextStyle" parent="android:Widget.EditText">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="RadioButton" parent="Theme.AppCompat.Light">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="colorControlNormal">@color/colorIconPrimary</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-    </style>
-
-    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:popupBackground">@color/backgroundTabsAndNavBars</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <!--        <item name="android:itemBackground">@color/colorPrimary</item>-->
-    </style>
-
-    <style name="AppTheme.DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/textColorSecondary</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="Theme.Translucent" parent="AppTheme">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="Theme.StealthTheme" parent="AppTheme">
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowContentTransitions">true</item>
-    </style>
-
-    <style name="AppTheme.Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:tint">@color/colorIconPrimary</item>
-        <item name="android:textColorSecondary">@color/colorIconPrimary</item>
-        <item name="android:background">@color/backgroundTabsAndNavBars</item>
-        <item name="android:minHeight">?attr/actionBarSize</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="titleTextAppearance">@style/AppTheme.Toolbar.TitleText</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="AppTheme.Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="Text.H2" parent="">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="AccentButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:layout_height">@dimen/size_48dp</item>
-        <item name="android:paddingStart">@dimen/size_24dp</item>
-        <item name="android:paddingEnd">@dimen/size_24dp</item>
-        <item name="android:background">@drawable/background_colored_button</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_normal</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="Text.H3" parent="">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AccentTextButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:layout_height">@dimen/size_48dp</item>
-        <item name="android:paddingStart">@dimen/size_24dp</item>
-        <item name="android:paddingEnd">@dimen/size_24dp</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">@dimen/text_size_normal</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textAllCaps">false</item>
+    <style name="Text.H4" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
-    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+    <style name="Text.Small" parent="">
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?android:attr/textColorTertiary</item>
+    </style>
+
+    <style name="Text.Small.Primary" parent="">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Plus.Primary" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?android:attr/textColor</item>
+    </style>
+
+    <style name="Text.Plus" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.2</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:attr/colorPrimary</item>
     </style>
 
     <style name="Widget.Design.BottomNavigationView.Blokada" parent="">
         <item name="elevation">0dp</item>
-        <item name="itemTextColor">@color/colorAccent</item>
-        <item name="background">@color/backgroundTabsAndNavBars</item>
-        <item name="itemIconTint">@drawable/selector_bottom_navigation_view</item>
-        <item name="backgroundTint">@color/backgroundTabsAndNavBars</item>
+        <item name="colorPrimary">?android:attr/colorBackground</item>
+        <item name="background">?android:attr/colorBackground</item>
+        <item name="android:colorBackground">?android:attr/colorBackground</item>
+        <item name="android:textColorPrimary">?android:attr/textColor</item>
+        <item name="backgroundTint">?android:attr/colorBackgroundFloating</item>
     </style>
 
-    <style name="AppTheme.TabLayoutTabText" parent="TextAppearance.Design.Tab">
+    <style name="Widget.ActionBar.Blokada" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="FlatTheme.TabLayoutTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/textsize_xlarge</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:ellipsize">end</item>
@@ -160,110 +89,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="FlatTheme.SmallButtonWithBorder" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:background">@drawable/selector_medium_secondary_button</item>
-        <item name="android:paddingStart">@dimen/size_16dp</item>
-        <item name="android:paddingEnd">@dimen/size_16dp</item>
-        <item name="android:textSize">@dimen/text_size_xsmall</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:minHeight">@dimen/size_16dp</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
 
-
-    <style name="roundedImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
-    </style>
-
-    <style name="OverFlow">
-        <item name="android:src">@drawable/ic_menu</item>
-    </style>
-
-    <style name="Text.Link" parent="">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="Text.Header" parent="">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text.H2" parent="">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="Text.H3" parent="">
-        <item name="android:textColor">@color/textColorPrimary</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text.H4" parent="">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <style name="Text.Small" parent="">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <style name="Text.Small.Primary" parent="">
-        <item name="android:textColor">@color/textColorTertiary</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="Text.Plus.Primary" parent="">
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:letterSpacing">0.2</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <style name="Text.Plus" parent="">
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:letterSpacing">0.2</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
-    </style>
-
-    <declare-styleable name="SettingsItem">
-        <attr name="settingsItemTitle" format="string" />
-        <attr name="settingsItemDescription" format="string" />
-        <attr name="settingsItemTitleColor" format="color" />
-        <attr name="settingsItemDescriptionColor" format="color" />
-        <attr name="settingsItemShowTopSeparator" format="boolean" />
-        <attr name="settingsItemShowBottomSeparator" format="boolean" />
-        <attr name="settingsItemShowArrow" format="boolean" />
-    </declare-styleable>
-
-    <style name="HintOutlinedTextInputStyle" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/textColorSecondary</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <style name="FlatTheme.ColoredButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:paddingStart">@dimen/size_24dp</item>
-        <item name="android:paddingEnd">@dimen/size_24dp</item>
-        <item name="android:background">@drawable/selector_colored_button</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">@drawable/selector_text_color</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
+    <dimen name="textsize_xlarge">20sp</dimen>
 </resources>

@@ -19,17 +19,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.isVisible
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
 import org.adshield.R
 import service.EnvironmentService
-import service.RemoteConfigService
 import ui.TunnelViewModel
+import ui.home.ProtectionLevelFragment
 import ui.app
+import ui.utils.getColorFromAttr
 import utils.Links
 
 class AdvancedFragment : Fragment() {
@@ -43,34 +45,47 @@ class AdvancedFragment : Fragment() {
         val destination: NavDirections
     )
 
-    private val isSlimMode = EnvironmentService.isSlim()
+    //       private val isSlimMode = EnvironmentService.isSlim()
+    private val isSlimMode = true // temp solution.
 
     private val sections by lazy {
         listOfNotNull(
+            if (isSlimMode) null
+            else {
+                Section(
+                    name = getString(R.string.advanced_section_header_packs),
+                    slugline = getString(R.string.advanced_section_slugline_packs),
+                    iconResId = R.drawable.ic_blocklists,
+                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToNavigationPacks()
+                )
+            },
+
+            if (isSlimMode) null
+            else {
+                Section(
+                    name = getString(R.string.userdenied_section_header),
+                    slugline = getString(R.string.userdenied_section_slugline),
+                    iconResId = R.drawable.ic_my_blocklists,
+                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToUserDeniedFragment()
+                )
+            },
+
+            if (isSlimMode) null
+            else {
+                Section(
+                    name = getString(R.string.apps_section_header),
+                    slugline = getString(R.string.advanced_section_slugline_apps),
+                    iconResId = R.drawable.ic_apps,
+                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
+                )
+            },
+
             Section(
                 name = getString(R.string.networks_section_header),
                 slugline = getString(R.string.networks_section_label),
                 iconResId = R.drawable.ic_networks,
                 destination = AdvancedFragmentDirections.actionAdvancedFragmentToSettingsNetworksFragment()
-            ),
-            if (isSlimMode) {
-                null
-            } else {
-                Section(
-                    name = getString(R.string.str_dns_settings),
-                    slugline = getString(R.string.dns_forwarding_lists_description),
-                    iconResId = R.drawable.ic_forwarding_lists,
-                    destination = AdvancedFragmentDirections.actionNavigationSettingsToWebFragment(
-                        Links.dnsSettings, getString(R.string.str_dns_settings)
-                    )
-                )
-            },
-            Section(
-                name = getString(R.string.str_presets_settings),
-                slugline = getString(R.string.str_presets_settings_description),
-                iconResId = R.drawable.ic_my_blocklists,
-                destination = AdvancedFragmentDirections.actionAdvancedFragmentToPresetsFragment()
-            ),
+            )
         )
     }
 
@@ -90,8 +105,7 @@ class AdvancedFragment : Fragment() {
         for (section in sections) {
             val (name, slugline, iconResId, destination) = section
 
-            val sectionView =
-                inflater.inflate(R.layout.item_advanced_section, sectionsContainer, false)
+            val sectionView = inflater.inflate(R.layout.item_advanced_section, sectionsContainer, false)
             sectionView.setOnClickListener {
                 val nav = findNavController()
                 nav.navigate(destination)
@@ -108,14 +122,45 @@ class AdvancedFragment : Fragment() {
             iconView.setImageResource(iconResId)
         }
 
-        val developImageView = root.findViewById<ImageView>(R.id.developImageView)
-        val developTextView = root.findViewById<TextView>(R.id.advanced_migrateslim)
-        val isDevelopVisible = RemoteConfigService.getIsWebAppsSettingsLimited()
-                || RemoteConfigService.getIsWebCustomSettingsEnabled()
-        developImageView.isVisible = isDevelopVisible
-        developTextView.isVisible = isDevelopVisible
+//        val encryptionView = root.findViewById<View>(R.id.advanced_level)
+//        val encryptionIcon = root.findViewById<ImageView>(R.id.advanced_level_icon)
+//        val encryptionLevel = root.findViewById<TextView>(R.id.advanced_level_status)
+//
+//        tunnelVM.tunnelStatus.observe(viewLifecycleOwner, Observer { status ->
+//            val level = statusToLevel(status)
+//            val ctx = requireContext()
+//            val color = when (level) {
+//                -1 -> ctx.getColorFromAttr(android.R.attr.textColorSecondary)
+//                1 -> ctx.getColor(R.color.orange)
+//                2 -> ctx.getColor(R.color.green)
+//                else -> ctx.getColor(R.color.red)
+//            }
+//
+//            encryptionIcon.setColorFilter(color)
+//            encryptionIcon.setImageResource(when (level) {
+//                2 -> R.drawable.ic_baseline_lock_24
+//                1 -> R.drawable.ic_baseline_lock_open_24
+//                else -> R.drawable.ic_baseline_no_encryption_24
+//            })
+//
+//            encryptionLevel.setTextColor(color)
+//            encryptionLevel.text = ctx.levelToText(level)
+//        })
+
+        val migrateSlim = root.findViewById<View>(R.id.advanced_migrateslim)
+        migrateSlim.visibility = if (isSlimMode) View.VISIBLE else View.GONE
+//        migrateSlim.setOnClickListener {
+//            val nav = findNavController()
+//            nav.navigate(
+//                AdvancedFragmentDirections.actionAdvancedFragmentToWebFragment(
+//                    Links.updated, getString(R.string.universal_action_learn_more)
+//                )
+//            )
+//        }
+
         return root
     }
+
 }
 
 internal fun statusToLevel(status: TunnelStatus): Int {

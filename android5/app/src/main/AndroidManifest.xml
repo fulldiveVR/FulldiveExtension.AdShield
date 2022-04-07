@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -21,22 +22,16 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-        </intent>
-    </queries>
+<!--    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"-->
+<!--        tools:ignore="QueryAllPackagesPermission" />-->
 
     <permission
         android:name="com.fulldive.extension.adshield.access.read"
@@ -48,17 +43,15 @@
         android:backupAgent="service.BackupAgent"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Blokada.Default">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="@string/backup_key" />
 
         <activity
             android:name="ui.MainActivity"
-            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -92,11 +85,10 @@
         <activity
             android:name="ui.CommandActivity"
             android:excludeFromRecents="true"
-            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:taskAffinity=""
-            android:theme="@style/Theme.Translucent">
+            android:theme="@style/Theme.Blokada.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -134,65 +126,17 @@
         <activity
             android:name="appextension.StealthActivity"
             android:exported="true"
-            android:theme="@style/Theme.StealthTheme">
+            android:theme="@style/stealthTheme">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ui.MainActivity" />
         </activity>
 
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.password.PasswordActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.privatekey.RestorePrivateKeyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.RestoreMnemonicActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="portrait"
-            tools:replace="screenOrientation" />
-
         <receiver android:name="service.DozeReceiver" />
 
         <service
             android:name="engine.SystemTunnel"
-            android:exported="true"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
@@ -205,11 +149,10 @@
 
         <service android:name="service.ForegroundService" />
 
-        <!--        <service android:name="ui.CommandService" />-->
+        <service android:name="ui.CommandService" />
 
         <service
             android:name="ui.QuickSettingsToggle"
-            android:exported="true"
             android:icon="@drawable/full_adshield_logo"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -233,11 +176,6 @@
             android:authorities="com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
             android:exported="true"
             android:permission="com.fulldive.extension.adshield.access.read" />
-
-        <receiver
-            android:name="ui.CommandReceiver"
-            android:enabled="true"
-            android:exported="false" />
 
     </application>
 
