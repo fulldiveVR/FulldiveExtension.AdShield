@@ -45,9 +45,12 @@ class AdvancedFragment : Fragment() {
         val destination: NavDirections
     )
 
+    //       private val isSlimMode = EnvironmentService.isSlim()
+    private val isSlimMode = true // temp solution.
+
     private val sections by lazy {
         listOfNotNull(
-            if (EnvironmentService.isSlim()) null
+            if (isSlimMode) null
             else {
                 Section(
                     name = getString(R.string.advanced_section_header_packs),
@@ -57,7 +60,7 @@ class AdvancedFragment : Fragment() {
                 )
             },
 
-            if (EnvironmentService.isSlim()) null
+            if (isSlimMode) null
             else {
                 Section(
                     name = getString(R.string.userdenied_section_header),
@@ -67,7 +70,7 @@ class AdvancedFragment : Fragment() {
                 )
             },
 
-            if (EnvironmentService.isSlim()) null
+            if (isSlimMode) null
             else {
                 Section(
                     name = getString(R.string.apps_section_header),
@@ -145,15 +148,15 @@ class AdvancedFragment : Fragment() {
 //        })
 
         val migrateSlim = root.findViewById<View>(R.id.advanced_migrateslim)
-        migrateSlim.visibility = if (EnvironmentService.isSlim()) View.VISIBLE else View.GONE
-        migrateSlim.setOnClickListener {
-            val nav = findNavController()
-            nav.navigate(
-                AdvancedFragmentDirections.actionAdvancedFragmentToWebFragment(
-                    Links.updated, getString(R.string.universal_action_learn_more)
-                )
-            )
-        }
+        migrateSlim.visibility = if (isSlimMode) View.VISIBLE else View.GONE
+//        migrateSlim.setOnClickListener {
+//            val nav = findNavController()
+//            nav.navigate(
+//                AdvancedFragmentDirections.actionAdvancedFragmentToWebFragment(
+//                    Links.updated, getString(R.string.universal_action_learn_more)
+//                )
+//            )
+//        }
 
         return root
     }

@@ -28,7 +28,7 @@
         <item name="android:textColor">@color/light_text</item>
         <item name="android:textColorPrimary">@color/light_text</item>
         <item name="android:textColorSecondary">@color/light_textSecondary</item>
-        <item name="android:textColorTertiary">@color/light_inactive</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
         <item name="android:shadowColor">@color/light_bar_background</item>
         <item name="font">@font/roboto_medium</item>
         <item name="actionBarStyle">@style/Widget.ActionBar.Blokada</item>

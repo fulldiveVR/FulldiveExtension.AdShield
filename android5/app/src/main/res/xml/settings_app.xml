@@ -13,9 +13,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        app:key="app_category"
-        app:title="@string/account_section_header_general">
+<!--    <PreferenceCategory-->
+<!--        app:key="app_category"-->
+<!--        app:title="@string/account_section_header_general">-->
 
 <!--        <ListPreference-->
 <!--            app:icon="@drawable/ic_baseline_color_lens_24"-->
@@ -23,18 +23,18 @@
 <!--            app:title="@string/app_settings_theme_label"-->
 <!--            app:useSimpleSummaryProvider="true" />-->
 
-        <!--        <ListPreference-->
-        <!--            app:icon="@drawable/ic_baseline_backup_24"-->
-        <!--            app:key="app_backup"-->
-        <!--            app:title="@string/app_settings_backup"-->
-        <!--            app:useSimpleSummaryProvider="true" />-->
+<!--        &lt;!&ndash;        <ListPreference&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:icon="@drawable/ic_baseline_backup_24"&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:key="app_backup"&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:title="@string/app_settings_backup"&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:useSimpleSummaryProvider="true" />&ndash;&gt;-->
 
-        <!--        <Preference-->
-        <!--            app:icon="@drawable/ic_baseline_refresh_24"-->
-        <!--            app:key="app_startonboot"-->
-        <!--            app:title="@string/app_settings_start_on_boot" />-->
+<!--        &lt;!&ndash;        <Preference&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:icon="@drawable/ic_baseline_refresh_24"&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:key="app_startonboot"&ndash;&gt;-->
+<!--        &lt;!&ndash;            app:title="@string/app_settings_start_on_boot" />&ndash;&gt;-->
 
-    </PreferenceCategory>
+<!--    </PreferenceCategory>-->
 
     <PreferenceCategory
         app:key="app_category_advanced"

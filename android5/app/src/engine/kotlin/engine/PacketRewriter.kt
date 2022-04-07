@@ -14,6 +14,7 @@ package engine
 
 import android.system.ErrnoException
 import android.system.OsConstants
+import model.ex
 import android.util.Log
 import model.ex
 import org.pcap4j.packet.*

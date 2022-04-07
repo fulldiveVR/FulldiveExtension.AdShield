@@ -86,7 +86,7 @@ object PackDataSource {
             )
         )
             .changeStatus(config = "General (Wildcards)")
-            .changeStatus(installed = false) // Default config. Will auto download.
+            .changeStatus(installed = true) // Default config. Will auto download.
             .withSource(
                 PackSource.new(
                     urls = listOf("https://easylist-downloads.adblockplus.org/easylist.txt"),

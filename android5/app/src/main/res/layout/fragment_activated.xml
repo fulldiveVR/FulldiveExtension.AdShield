@@ -72,7 +72,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="@dimen/normal"
+                        android:paddingStart="@dimen/normal"
+                        android:paddingTop="@dimen/normal"
+                        android:paddingEnd="@dimen/normal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
@@ -97,6 +99,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/size_16dp"
                             android:text="@string/payment_action_choose_location" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
