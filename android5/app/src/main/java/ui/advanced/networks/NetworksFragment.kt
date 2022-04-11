@@ -68,7 +68,7 @@ class NetworksFragment : Fragment() {
 
         val showPermsGrantedInfo = {
             permsText.text = getString(R.string.networks_permission_request_granted)
-            permsText.setTextColor(getColor(R.color.green))
+            permsText.setTextColor(getColor(R.color.colorGreen))
             permsButton.setOnClickListener {
                 dialog.showAlert(
                     message = getString(R.string.networks_permission_dialog),
@@ -125,14 +125,14 @@ class NetworksFragment : Fragment() {
         root.findViewById<View>(R.id.network_switch).visibility = View.GONE
         root.findViewById<View>(R.id.network_divider).visibility = View.GONE
 
-        vm.activeConfig.observe(viewLifecycleOwner, {
+        vm.activeConfig.observe(viewLifecycleOwner) {
             adapter.notifyDataSetChanged()
 //            root.findViewById<ImageView>(R.id.network_icon).setColorFilter(
 //                if (it.network.isFallback()) {
 //                    requireContext().getColor(R.color.green)
 //                } else requireContext().getColorFromAttr(android.R.attr.textColor)
 //            )
-        })
+        }
 
         return root
     }

@@ -17,7 +17,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
-import androidx.core.content.ContextCompat
+import appextension.getColorCompat
 import org.adshield.R
 import ui.utils.getColorFromAttr
 import utils.toBlokadaPlusText
@@ -81,7 +81,11 @@ class PlusButton : FrameLayout {
         init(attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
         init(attrs, defStyle)
     }
 
@@ -135,18 +139,20 @@ class PlusButton : FrameLayout {
     private fun refresh() {
         when {
             upgrade -> {
-                plusText.text = context.getString(R.string.universal_action_upgrade).toBlokadaPlusText()
+                plusText.text =
+                    context.getString(R.string.universal_action_upgrade).toBlokadaPlusText()
                 plusText.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 switch.visibility = View.GONE
 
                 if (animate) plusButtonBg.animate().alpha(1.0f)
                 else plusButtonBg.alpha = 1.0f
-                plusText.setTextColor(ContextCompat.getColor(context, R.color.white))
+                plusText.setTextColor(context.getColorCompat(R.color.colorPermanentWhite))
                 refreshBackground(false)
             }
             location != null && plusActive -> {
-                plusText.text = String.format(context.getString(R.string.home_plus_button_location), location)
-                    .withBoldSections(context.getColorFromAttr(android.R.attr.textColor))
+                plusText.text =
+                    String.format(context.getString(R.string.home_plus_button_location), location)
+                        .withBoldSections(context.getColorFromAttr(android.R.attr.textColor))
                 plusText.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
                 switch.visibility = View.VISIBLE
                 refreshBackground(true)
@@ -159,7 +165,8 @@ class PlusButton : FrameLayout {
                 refreshBackground(true)
             }
             else -> {
-                val text = context.getString(R.string.home_plus_button_deactivated).toBlokadaPlusText()
+                val text =
+                    context.getString(R.string.home_plus_button_deactivated).toBlokadaPlusText()
                 plusText.text = text
                 plusText.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
                 switch.visibility = View.VISIBLE
@@ -185,7 +192,7 @@ class PlusButton : FrameLayout {
         } else {
             if (animate) plusButtonBg.animate().alpha(1.0f)
             else plusButtonBg.alpha = 1.0f
-            plusText.setTextColor(ContextCompat.getColor(context, R.color.white))
+            plusText.setTextColor(context.getColorCompat(R.color.colorPermanentWhite))
         }
     }
 }

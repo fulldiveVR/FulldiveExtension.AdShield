@@ -66,10 +66,10 @@ class UserDeniedAdapter(
             name.text = item
             if (allowed) {
                 icon.setImageResource(R.drawable.ic_shield_outline)
-                icon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.green))
+                icon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorGreen))
             } else {
                 icon.setImageResource(R.drawable.ic_shield_off_outline)
-                icon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.red))
+                icon.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAlert))
             }
         }
     }

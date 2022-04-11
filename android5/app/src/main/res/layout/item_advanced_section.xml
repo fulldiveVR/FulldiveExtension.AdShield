@@ -44,7 +44,7 @@
                 android:layout_width="@dimen/icon"
                 android:layout_height="@dimen/icon"
                 android:layout_gravity="center"
-                app:tint="@color/textColorAccent"
+                app:tint="@color/colorAccent"
                 android:src="@drawable/ic_baseline_apps_24" />
         </FrameLayout>
 
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/apps_status_bypassed"
-                    android:textColor="@color/green"
+                    android:textColor="@color/colorGreen"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
@@ -91,11 +91,11 @@
             android:layout_height="@dimen/icon"
             android:padding="@dimen/half"
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24"
-            app:tint="?android:attr/textColorSecondary" />
+            app:tint="@color/textColorSecondary" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/shadowColor" />
+        android:background="@color/shadowColor" />
 </LinearLayout>

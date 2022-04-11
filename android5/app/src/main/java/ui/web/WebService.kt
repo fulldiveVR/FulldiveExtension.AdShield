@@ -12,7 +12,6 @@
 
 package ui.web
 
-import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.webkit.WebSettingsCompat
@@ -72,7 +71,8 @@ object WebService {
         //web.settings.userAgentString = blokadaUserAgent(ctx, viewer = false)
 
         // A "normal" mobile user agent to make some websites load correctly and not assume we are a crawler
-        web.settings.userAgentString = "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36."
+        web.settings.userAgentString =
+            "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36."
         web.webChromeClient = WebChromeClient()
         val cookie = CookieManager.getInstance()
         cookie.setAcceptCookie(true)
@@ -106,14 +106,18 @@ object WebService {
                 }
             }
 
-            override fun onReceivedError(view: WebView?, request: WebResourceRequest?,
-                                         err: WebResourceError?) {
+            override fun onReceivedError(
+                view: WebView?, request: WebResourceRequest?,
+                err: WebResourceError?
+            ) {
                 val url = request?.url?.toString() ?: ""
                 handleError(url, err?.errorCode ?: 0, err?.description.toString())
             }
 
-            override fun onReceivedError(view: WebView?, errorCode: Int,
-                                         description: String?, failingUrl: String?) {
+            override fun onReceivedError(
+                view: WebView?, errorCode: Int,
+                description: String?, failingUrl: String?
+            ) {
                 handleError(failingUrl ?: "", errorCode, description)
             }
 
@@ -145,7 +149,7 @@ object WebService {
 
     private fun isDarkMode(): Boolean {
         val attr = context.requireContext().theme.obtainStyledAttributes(
-            R.style.Theme_Blokada_Default,
+            R.style.AppTheme,
             intArrayOf(android.R.attr.windowLightStatusBar)
         )
 
@@ -154,5 +158,4 @@ object WebService {
         attr.recycle();
         return isDarkMode
     }
-
 }

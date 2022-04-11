@@ -12,7 +12,6 @@
 
 package repository
 
-import model.Account
 import model.AccountId
 import model.Lease
 import model.LeaseRequest
@@ -35,5 +34,4 @@ object BlockaRepository {
             alias = lease.alias ?: ""
         )
     )
-
 }

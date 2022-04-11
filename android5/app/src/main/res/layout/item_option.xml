@@ -39,5 +39,5 @@
         android:layout_height="@dimen/icon_bigger"
         android:padding="@dimen/half"
         app:srcCompat="@drawable/ic_check_24"
-        app:tint="?android:attr/colorPrimary" />
+        app:tint="@color/colorPrimary" />
 </LinearLayout>

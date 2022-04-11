@@ -34,7 +34,8 @@ object ContextService {
     }
 
     fun requireContext(): Context {
-        return activityContext.get() ?: context ?: throw Exception("No context set in ContextService")
+        return activityContext.get() ?: context
+        ?: throw Exception("No context set in ContextService")
     }
 
     fun requireAppContext(): Context {
@@ -44,5 +45,4 @@ object ContextService {
     fun hasActivityContext(): Boolean {
         return activityContext.get() != null
     }
-
 }

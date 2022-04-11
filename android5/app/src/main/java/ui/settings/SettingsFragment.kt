@@ -29,6 +29,7 @@ import org.adshield.R
 import service.ContextService
 import ui.AccountViewModel
 import ui.app
+import ui.home.HomeFragmentDirections
 import utils.Links
 import utils.toBlokadaText
 import utils.toSimpleString
@@ -89,9 +90,14 @@ object SettingsNavigation {
                 Links.kb,
                 getString(R.string.universal_action_help)
             )
-            "main_discord" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+            "join_discord" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
                 Links.discordInvite,
                 getString(R.string.settings_action_discord)
+            )
+            //TODO: MOCKED
+            "support_earn" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+                Links.community,
+                "MOCKED"
             )
             "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
                 Links.donate,

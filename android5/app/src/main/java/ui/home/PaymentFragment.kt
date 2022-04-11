@@ -18,7 +18,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import org.adshield.R
 import ui.AccountViewModel
@@ -56,25 +55,30 @@ class PaymentFragment : BottomSheetFragment() {
             requireContext().getColorFromAttr(android.R.attr.textColor)
         )
 
-        vm.account.observe(viewLifecycleOwner, { account ->
+        vm.account.observe(viewLifecycleOwner) { account ->
             val proceed: View = root.findViewById(R.id.payment_continue)
             proceed.setOnClickListener {
                 dismiss()
                 val nav = findNavController()
-                nav.navigate(HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.manageSubscriptions(account.id), getString(R.string.universal_action_upgrade)
-                ))
+                nav.navigate(
+                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                        Links.manageSubscriptions(account.id),
+                        getString(R.string.universal_action_upgrade)
+                    )
+                )
             }
 
             val restore: View = root.findViewById(R.id.payment_restore)
             restore.setOnClickListener {
                 dismiss()
                 val nav = findNavController()
-                nav.navigate(HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.howToRestore, getString(R.string.payment_action_restore)
-                ))
+                nav.navigate(
+                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                        Links.howToRestore, getString(R.string.payment_action_restore)
+                    )
+                )
             }
-        })
+        }
 
         val terms: View = root.findViewById(R.id.payment_terms)
         terms.setOnClickListener {
@@ -100,5 +104,4 @@ class PaymentFragment : BottomSheetFragment() {
 
         return root
     }
-
 }

@@ -30,7 +30,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
 
         <include
             layout="@layout/item_network"
@@ -44,7 +44,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +89,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="@dimen/half"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

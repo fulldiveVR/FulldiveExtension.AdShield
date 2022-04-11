@@ -1,19 +1,3 @@
-<!--
-  ~ Copyright (c) 2022 FullDive
-  ~  This program is free software: you can redistribute it and/or modify
-  ~  it under the terms of the GNU General Public License as published by
-  ~  the Free Software Foundation, either version 3 of the License, or
-  ~  (at your option) any later version.
-  ~
-  ~  This program is distributed in the hope that it will be useful,
-  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~  GNU General Public License for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="134dp"
@@ -21,11 +5,12 @@
     android:viewportWidth="134"
     android:viewportHeight="134">
   <path
-      android:pathData="M67,63m-59,0a59,59 0,1 1,118 0a59,59 0,1 1,-118 0"
-      android:fillColor="#ffffff"
-      android:fillAlpha="0.6"/>
+      android:pathData="M67,63m-57,0a57,57 0,1 1,114 0a57,57 0,1 1,-114 0"
+      android:strokeWidth="4"
+      android:fillColor="#00000000"
+      android:strokeColor="#5E656E"/>
   <path
-      android:pathData="M67,63m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0">
+      android:pathData="M122,63C122,93.376 97.376,118 67,118C36.624,118 12,93.376 12,63C12,32.624 36.624,8 67,8C97.376,8 122,32.624 122,63Z">
     <aapt:attr name="android:fillColor">
       <gradient 
           android:startY="16"
@@ -33,8 +18,8 @@
           android:endY="110.5"
           android:endX="87"
           android:type="linear">
-        <item android:offset="0" android:color="#3FFF9900"/>
-        <item android:offset="1" android:color="#FFFF9900"/>
+        <item android:offset="0" android:color="#1E616972"/>
+        <item android:offset="1" android:color="#EF616972"/>
       </gradient>
     </aapt:attr>
   </path>

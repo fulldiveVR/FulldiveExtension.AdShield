@@ -22,14 +22,14 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground" />
+        android:background="@color/colorPrimary" />
 
     <FrameLayout
         android:id="@+id/web_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="1.0"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:padding="@dimen/normal">
 
@@ -48,7 +48,7 @@
             android:layout_height="1dp"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="@dimen/oneandhalf"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
 
         <TextView
             android:id="@+id/web_openinbrowser"
@@ -57,7 +57,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="@dimen/doubled"
             android:text="Tap to open in browser"
-            android:textColor="?android:attr/colorPrimary" />
+            android:textColor="@color/colorPrimary" />
     </FrameLayout>
 
 </FrameLayout>

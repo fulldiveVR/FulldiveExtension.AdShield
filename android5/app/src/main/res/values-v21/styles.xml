@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="V7.AppTheme">
+        <item name="appBarLayoutStyle">@style/AppTheme.AppBar</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/statusBarColor</item>
+    </style>
+
+    <style name="AppTheme.AppBar" parent="V7.AppTheme.AppBar">
+        <item name="elevation">0dp</item>
+        <item name="android:translationZ">0dp</item>
+    </style>
+</resources>

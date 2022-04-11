@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context="ui.home.LocationFragment">
 
@@ -64,63 +64,66 @@
                         android:id="@+id/activity_filterall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/size_16dp"
-                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layout_margin="@dimen/size_12dp"
                         android:layoutDirection="rtl"
                         android:paddingStart="@dimen/size_16dp"
-                        android:paddingEnd="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_8dp"
                         android:text="@string/activity_filter_show_all"
-                        android:textAlignment="textStart" />
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColorPrimary"
+                        android:theme="@style/RadioButton" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/size_16dp"
-                        android:background="?android:attr/shadowColor"
+                        android:background="@color/shadowColor"
                         android:textAlignment="textStart" />
 
                     <RadioButton
                         android:id="@+id/activity_filterblocked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/size_16dp"
-                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layout_margin="@dimen/size_12dp"
                         android:layoutDirection="rtl"
                         android:paddingStart="@dimen/size_16dp"
-                        android:paddingEnd="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_8dp"
                         android:text="@string/activity_filter_show_blocked"
-                        android:textAlignment="textStart" />
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColorPrimary"
+                        android:theme="@style/RadioButton" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/size_16dp"
-                        android:background="?android:attr/shadowColor"
+                        android:background="@color/shadowColor"
                         android:textAlignment="textStart" />
 
                     <RadioButton
                         android:id="@+id/activity_filterallowed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/size_16dp"
-                        android:buttonTint="?android:attr/colorPrimary"
+                        android:layout_margin="@dimen/size_12dp"
                         android:layoutDirection="rtl"
                         android:paddingStart="@dimen/size_16dp"
-                        android:paddingEnd="@dimen/size_16dp"
+                        android:paddingEnd="@dimen/size_8dp"
                         android:text="@string/activity_filter_show_allowed"
-                        android:textAlignment="textStart" />
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColorPrimary"
+                        android:theme="@style/RadioButton" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginStart="@dimen/size_16dp"
-                        android:background="?android:attr/shadowColor"
+                        android:background="@color/shadowColor"
                         android:textAlignment="textStart" />
                 </RadioGroup>
 
                 <TextView
                     android:id="@+id/cancelButton"
-                    style="@style/accentButton"
+                    style="@style/AccentButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

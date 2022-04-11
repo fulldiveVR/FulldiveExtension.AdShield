@@ -27,6 +27,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
+import org.adshield.R
 import ui.utils.cause
 import utils.Logger
 import java.io.File
@@ -57,7 +58,7 @@ object LogService {
     fun showLog() {
         val log = file.load(handle)
 
-        val builder = AlertDialog.Builder(context.requireContext())
+        val builder = AlertDialog.Builder(context.requireContext(), R.style.AppTheme_DialogStyle)
         builder.setTitle("Log")
         builder.setMessage(log.takeLast(500).reversed().joinToString("\n"))
         builder.setPositiveButton("Close") { dialog, _ ->
@@ -118,9 +119,13 @@ object LogService {
         openFileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         openFileIntent.type = "plain/*"
-        openFileIntent.putExtra(Intent.EXTRA_STREAM,
-            FileProvider.getUriForFile(ctx, "${ctx.packageName}.files",
-                uri))
+        openFileIntent.putExtra(
+            Intent.EXTRA_STREAM,
+            FileProvider.getUriForFile(
+                ctx, "${ctx.packageName}.files",
+                uri
+            )
+        )
         ctx.startActivity(openFileIntent)
     }
 

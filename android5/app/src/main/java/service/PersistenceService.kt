@@ -32,6 +32,22 @@ object PersistenceService {
     private val prefs = SharedPreferencesStorageService
     private val file = FileStorageService
 
+    const val KEY_STATS = "stats"
+    const val KEY_PACKS = "packs"
+    const val KEY_BLOCKA_CONFIG = "blockaConfig"
+    const val KEY_LOCAL_CONFIG = "localConfig"
+    const val KEY_SYNCABLE_CONFIG = "syncableConfig"
+    const val KEY_DNS = "dns"
+    const val KEY_ACTIVATION_STATE = "activationState"
+    const val KEY_ACCOUNT = "account"
+    const val KEY_ADS_COUNTER = "adsCounter"
+    const val KEY_BY_PASSED_APPS = "bypassedApps"
+    const val KEY_BLOCKA_REPO_CONFIG = "blockaRepoConfig"
+    const val KEY_BLOCKA_REPO_UPDATE = "blockaRepoUpdate"
+    const val KEY_BLOCKA_REPO_PAYLOAD = "blockaRepoPayload"
+    const val KEY_BLOCKA_AFTER_UPDATE = "blockaAfterUpdate"
+    const val KEY_NETWORK_SPECIFIC_CONFIGS = "networkSpecificConfigs"
+
     fun save(obj: Any) {
         try {
             when (obj) {
@@ -50,7 +66,7 @@ object PersistenceService {
         }
     }
 
-    fun <T: Any> load(type: KClass<T>): T {
+    fun <T : Any> load(type: KClass<T>): T {
         try {
             val (string, deserializer) = when (type) {
                 Denied::class -> {
@@ -79,8 +95,7 @@ object PersistenceService {
                     if (legacy != null) {
                         save(legacy) // To save in the current format
                         legacy to PassthroughSerializationService
-                    }
-                    else prefs.load(getPrefsKey(type)) to json
+                    } else prefs.load(getPrefsKey(type)) to json
                 }
                 else -> prefs.load(getPrefsKey(type)) to json
             }
@@ -104,25 +119,25 @@ object PersistenceService {
     }
 
     private fun getPrefsKey(type: KClass<*>) = when (type) {
-        StatsPersisted::class -> "stats"
-        Packs::class -> "packs"
-        BlockaConfig::class -> "blockaConfig"
-        LocalConfig::class -> "localConfig"
-        SyncableConfig::class -> "syncableConfig"
-        DnsWrapper::class -> "dns"
-        ActivationViewModel.ActivationState::class -> "activationState"
-        Account::class -> "account"
-        AdsCounter::class -> "adsCounter"
-        BypassedAppIds::class -> "bypassedApps"
-        BlockaRepoConfig::class -> "blockaRepoConfig"
-        BlockaRepoUpdate::class -> "blockaRepoUpdate"
-        BlockaRepoPayload::class -> "blockaRepoPayload"
-        BlockaAfterUpdate::class -> "blockaAfterUpdate"
-        NetworkSpecificConfigs::class -> "networkSpecificConfigs"
+        StatsPersisted::class -> KEY_STATS
+        Packs::class -> KEY_PACKS
+        BlockaConfig::class -> KEY_BLOCKA_CONFIG
+        LocalConfig::class -> KEY_LOCAL_CONFIG
+        SyncableConfig::class -> KEY_SYNCABLE_CONFIG
+        DnsWrapper::class -> KEY_DNS
+        ActivationViewModel.ActivationState::class -> KEY_ACTIVATION_STATE
+        Account::class -> KEY_ACCOUNT
+        AdsCounter::class -> KEY_ADS_COUNTER
+        BypassedAppIds::class -> KEY_BY_PASSED_APPS
+        BlockaRepoConfig::class -> KEY_BLOCKA_REPO_CONFIG
+        BlockaRepoUpdate::class -> KEY_BLOCKA_REPO_UPDATE
+        BlockaRepoPayload::class -> KEY_BLOCKA_REPO_PAYLOAD
+        BlockaAfterUpdate::class -> KEY_BLOCKA_AFTER_UPDATE
+        NetworkSpecificConfigs::class -> KEY_NETWORK_SPECIFIC_CONFIGS
         else -> throw BlokadaException("Unsupported type for persistence: $type")
     }
 
-    private fun <T: Any> getDefault(type: KClass<T>) = when (type) {
+    private fun <T : Any> getDefault(type: KClass<T>) = when (type) {
         StatsPersisted::class -> Defaults.stats() as T
         Allowed::class -> Defaults.allowed() as T
         Denied::class -> Defaults.denied() as T
@@ -142,5 +157,4 @@ object PersistenceService {
         NetworkSpecificConfigs::class -> Defaults.noNetworkSpecificConfigs() as T
         else -> throw BlokadaException("No default for persisted type: $type")
     }
-
 }

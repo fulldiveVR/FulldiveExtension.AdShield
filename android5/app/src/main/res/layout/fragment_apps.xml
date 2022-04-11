@@ -21,7 +21,7 @@
         android:id="@+id/app_searchgroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:paddingStart="@dimen/half"
         android:paddingEnd="@dimen/half"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/colorPrimary"
         android:fontFamily="@font/roboto_regular"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/app_recyclerview"
@@ -64,7 +64,7 @@
         app:tabPaddingEnd="@dimen/size_8dp"
         app:tabPaddingStart="@dimen/size_8dp"
         app:tabSelectedTextColor="@color/textColorPrimary"
-        app:tabTextAppearance="@style/FlatTheme.TabLayoutTabText"
+        app:tabTextAppearance="@style/AppTheme.TabLayoutTabText"
         app:tabTextColor="@color/textColorSecondary">
 
         <com.google.android.material.tabs.TabItem

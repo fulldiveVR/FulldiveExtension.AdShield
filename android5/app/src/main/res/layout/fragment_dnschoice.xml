@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:padding="@dimen/half"
     tools:context="ui.home.LocationFragment">
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/normal"
-                    android:background="?android:attr/shadowColor" />
+                    android:background="@color/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -143,7 +143,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/dnschoice_useblocka"
@@ -159,12 +159,12 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor"
+                            android:background="@color/shadowColor"
                             android:visibility="gone" />
 
                         <Button
                             android:id="@+id/done"
-                            style="@style/accentButton"
+                            style="@style/AccentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/universal_action_done" />
@@ -175,7 +175,7 @@
                         android:id="@+id/spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?android:attr/colorBackgroundFloating"
+                        android:background="@color/colorPrimary"
                         android:orientation="vertical"
                         android:padding="@dimen/quad"
                         app:layout_constraintBottom_toBottomOf="parent"

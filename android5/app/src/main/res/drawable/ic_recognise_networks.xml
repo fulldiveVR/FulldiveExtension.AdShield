@@ -27,16 +27,16 @@
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="#FF9900"/>
+      android:strokeColor="@color/colorAccent"/>
   <path
       android:pathData="M20,22.3125V20.3125C21.6568,20.3125 23,18.9694 23,17.3125C23,15.6557 21.6568,14.3125 20,14.3125C18.3432,14.3125 17,15.6557 17,17.3125"
       android:strokeLineJoin="round"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="#FF9900"
+      android:strokeColor="@color/colorAccent"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M20,26.8125C20.6904,26.8125 21.25,26.2529 21.25,25.5625C21.25,24.8722 20.6904,24.3125 20,24.3125C19.3097,24.3125 18.75,24.8722 18.75,25.5625C18.75,26.2529 19.3097,26.8125 20,26.8125Z"
-      android:fillColor="#FF9900"
+      android:fillColor="@color/colorAccent"
       android:fillType="evenOdd"/>
 </vector>

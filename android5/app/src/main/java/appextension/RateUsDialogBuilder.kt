@@ -35,7 +35,7 @@ object RateUsDialogBuilder {
             }
         }
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
             .setView(view)
             .setTitle(R.string.rate_us_title)
             .setPositiveButton(R.string.rate_submit) { _, _ ->
@@ -45,8 +45,10 @@ object RateUsDialogBuilder {
             .create()
 
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(context.getColor(R.color.textColorPrimary))
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(context.getColor(R.color.textColorSecondary))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                ?.setTextColor(context.getColor(R.color.textColorPrimary))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                ?.setTextColor(context.getColor(R.color.textColorSecondary))
         }
         dialog.show()
     }

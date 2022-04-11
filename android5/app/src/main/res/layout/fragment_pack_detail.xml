@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/doubled"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
 
         <TextView
             style="@style/Text.H3"
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/half"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
 
         <LinearLayout
             android:id="@+id/packs_authorgroup"
@@ -86,14 +86,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Jim Teris"
-                    android:textColor="?android:attr/colorPrimary" />
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="@dimen/icon"
                 android:layout_height="@dimen/icon"
                 android:padding="@dimen/half"
-                android:tint="?android:attr/textColorSecondary"
+                app:tint="@color/textColorSecondary"
                 app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
         </LinearLayout>
 

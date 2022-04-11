@@ -13,13 +13,15 @@
 package ui
 
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -45,21 +47,27 @@ import utils.Logger
 class MainActivity : LocalizationActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    private lateinit var accountVM: AccountViewModel
-    private lateinit var tunnelVM: TunnelViewModel
-    private lateinit var settingsVM: SettingsViewModel
     private lateinit var statsVM: StatsViewModel
+    private lateinit var tunnelVM: TunnelViewModel
+    private lateinit var accountVM: AccountViewModel
+    private lateinit var settingsVM: SettingsViewModel
+    private lateinit var appSettingsVm: AppSettingsViewModel
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
+
+    fun Drawable.colored(color: Int, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_ATOP) =
+        this.mutate().apply {
+            colorFilter = PorterDuffColorFilter(color, mode)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ContextService.setActivityContext(this)
         TranslationService.setup()
-        setupEvents()
+        initViewModel()
 
-        settingsVM.getTheme()?.let { setTheme(it) }
+        appSettingsVm.initAppTheme()
 
         setContentView(R.layout.activity_main)
 
@@ -149,13 +157,13 @@ class MainActivity : LocalizationActivity(),
         PopupManager.onAppStarted(this)
     }
 
-    private fun setupEvents() {
+    private fun initViewModel() {
         accountVM = ViewModelProvider(app()).get(AccountViewModel::class.java)
         tunnelVM = ViewModelProvider(app()).get(TunnelViewModel::class.java)
         settingsVM = ViewModelProvider(app()).get(SettingsViewModel::class.java)
         statsVM = ViewModelProvider(app()).get(StatsViewModel::class.java)
         activationVM = ViewModelProvider(this).get(ActivationViewModel::class.java)
-
+        appSettingsVm = ViewModelProvider(this).get(AppSettingsViewModel::class.java)
 
         tunnelVM.tunnelStatus.observe(this, Observer { status ->
             if (status.active) {

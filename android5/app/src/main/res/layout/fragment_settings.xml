@@ -21,7 +21,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/shadowColor" />
+        android:background="@color/shadowColor" />
 
     <LinearLayout
         android:id="@+id/settings_header"
@@ -58,7 +58,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/shadowColor" />
+        android:background="@color/shadowColor" />
 
     <fragment
         android:id="@+id/settings_fragment"

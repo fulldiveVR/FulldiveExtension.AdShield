@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ This file is part of Blokada.
+  ~
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  ~
+  ~ Copyright © 2022 Blocka AB. All rights reserved.
+  ~
+  ~ @author Karol Gusak (karol@blocka.net)
+  -->
+
+<resources>
+    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorSecondary">#000000</color>
+
+    <color name="colorAccent">#FCC475</color>
+    <color name="colorAlert">#FF9797</color>
+
+    <color name="colorBar">#303038</color>
+    <color name="colorIconPrimary">#616972</color>
+    <color name="statusBarColor">#1C1C1E</color>
+
+    <color name="textColorPrimary">#F3F3F3</color>
+    <color name="textColorSecondary">#676B71</color>
+    <color name="textColorTertiary">#676B71</color>
+
+    <color name="textColorForwarded">#76C5C1</color>
+    <color name="textColorDenied">#B7B0FF</color>
+
+    <color name="colorAccentAlpha5">#0CFCC475</color>
+    <color name="colorAccentAlpha30">#4CFCC475</color>
+
+    <color name="colorTransparent">#00ffffff</color>
+    <color name="backgroundTabsAndNavBars">#1C1C1E</color>
+
+    <color name="shadowColor">#1C1C1E</color>
+
+    <color name="colorPermanentWhite">#FFFFFF</color>
+    <color name="colorGreen">#33C75A</color>
+
+    <color name="colorConnected">#1C1C1E</color>
+</resources>

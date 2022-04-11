@@ -16,7 +16,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:padding="@dimen/half"
     tools:context="ui.home.PaymentFragment">
 
@@ -52,7 +52,7 @@
                     android:layout_width="@dimen/header_width_payment"
                     android:layout_height="@dimen/header_height"
                     android:src="@drawable/header"
-                    android:tint="?android:attr/textColor" />
+                    app:tint="@color/textColorPrimary" />
 
                 <TextView
                     style="@style/Text.Plus"
@@ -75,7 +75,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/doubled"
                 android:layout_marginBottom="@dimen/normal"
-                android:background="?android:attr/shadowColor" />
+                android:background="@color/shadowColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                         android:layout_width="@dimen/icon_small"
                         android:layout_height="@dimen/icon_small"
                         android:src="@drawable/ic_baseline_location_on_24"
-                        android:tint="?android:attr/textColor" />
+                        app:tint="@color/textColorPrimary" />
 
                     <TextView
                         style="@style/Text.Small.Primary"
@@ -117,7 +117,7 @@
                         android:layout_width="@dimen/icon_small"
                         android:layout_height="@dimen/icon_small"
                         android:src="@drawable/ic_baseline_lock_24"
-                        android:tint="?android:attr/textColor" />
+                        app:tint="@color/textColorPrimary" />
 
                     <TextView
                         style="@style/Text.Small.Primary"
@@ -141,7 +141,7 @@
                         android:layout_width="@dimen/icon_small"
                         android:layout_height="@dimen/icon_small"
                         android:src="@drawable/ic_baseline_devices_24"
-                        android:tint="?android:attr/textColor" />
+                        app:tint="@color/textColorPrimary" />
 
                     <TextView
                         style="@style/Text.Small.Primary"
@@ -162,14 +162,14 @@
                 android:gravity="center"
                 android:padding="@dimen/half"
                 android:text="@string/payment_action_see_all_features"
-                android:textColor="?android:attr/colorPrimary" />
+                android:textColor="@color/colorPrimary" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/half"
                 android:layout_marginBottom="@dimen/normal"
-                android:background="?android:attr/shadowColor" />
+                android:background="@color/shadowColor" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -200,7 +200,7 @@
                         android:gravity="center"
                         android:padding="@dimen/half"
                         android:text="@string/payment_action_see_locations"
-                        android:textColor="?android:attr/colorPrimary" />
+                        android:textColor="@color/colorPrimary" />
 
                     <TextView
                         android:id="@+id/payment_restore"
@@ -209,7 +209,7 @@
                         android:layout_marginBottom="@dimen/half"
                         android:gravity="center"
                         android:text="@string/payment_action_restore"
-                        android:textColor="?android:attr/colorPrimary" />
+                        android:textColor="@color/colorPrimary" />
 
                     <TextView
                         android:id="@+id/payment_terms"
@@ -217,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/payment_action_terms_and_privacy"
-                        android:textColor="?android:attr/colorPrimary" />
+                        android:textColor="@color/colorPrimary" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
