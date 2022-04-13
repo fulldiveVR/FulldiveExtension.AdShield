@@ -470,4 +470,7 @@
   <string name="theme_light">Light</string>
   <string name="theme_auto">Auto</string>
   <string name="theme_dark">Dark</string>
+  <string name="connecting_title">Connecting…</string>
+  <string name="all_networks_title">All networks</string>
+  <string name="recognize_networks">Recognise network</string>
 </resources>

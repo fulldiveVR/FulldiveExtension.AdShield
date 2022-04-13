@@ -9,73 +9,71 @@
   ~
   ~ @author Karol Gusak (karol@blocka.net)
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingStart="@dimen/half"
-    android:paddingEnd="@dimen/half">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/network_icon"
+        android:layout_width="@dimen/icon_bigger"
+        android:layout_height="@dimen/icon_bigger"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:src="@drawable/ic_all_networks"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/network_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/half"
-        android:paddingBottom="@dimen/half">
+        android:layout_marginStart="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        android:singleLine="true"
+        android:text="@string/networks_label_all_networks"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toStartOf="@+id/network_switch"
+        app:layout_constraintStart_toEndOf="@+id/network_icon"
+        app:layout_constraintTop_toTopOf="@+id/network_icon" />
 
-        <FrameLayout
-            android:layout_width="@dimen/icon_bigger"
-            android:layout_height="@dimen/icon_bigger">
+    <TextView
+        android:id="@+id/network_config"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:text="@string/networks_label_configuration_enabled"
+        android:textColor="@color/textColorTertiary"
+        android:textSize="@dimen/text_size_xsmall"
+        app:layout_constraintEnd_toStartOf="@+id/network_switch"
+        app:layout_constraintStart_toEndOf="@+id/network_icon"
+        app:layout_constraintTop_toBottomOf="@+id/network_name" />
 
-            <ImageView
-                android:id="@+id/network_icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_all_networks" />
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/network_switch"
+        android:layout_width="@dimen/quad"
+        android:layout_height="@dimen/quad"
+        android:layout_marginStart="@dimen/size_16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        </FrameLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingStart="@dimen/normal">
-
-            <TextView
-                android:id="@+id/network_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="middle"
-                android:singleLine="true"
-                android:text="@string/networks_label_all_networks" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/network_config"
-                    style="@style/Text.Small"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/networks_label_configuration_enabled" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/network_switch"
-            android:layout_width="@dimen/quad"
-            android:layout_height="@dimen/quad" />
-    </LinearLayout>
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="network_icon,network_config" />
 
     <View
         android:id="@+id/network_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/shadowColor" />
-</LinearLayout>
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:background="@color/shadowColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrier" />
+</androidx.constraintlayout.widget.ConstraintLayout>

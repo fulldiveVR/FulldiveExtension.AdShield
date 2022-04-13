@@ -123,7 +123,6 @@ class NetworksFragment : Fragment() {
         root.findViewById<TextView>(R.id.network_config).text =
             requireContext().getString(R.string.networks_action_network_specific)
         root.findViewById<View>(R.id.network_switch).visibility = View.GONE
-        root.findViewById<View>(R.id.network_divider).visibility = View.GONE
 
         vm.activeConfig.observe(viewLifecycleOwner) {
             adapter.notifyDataSetChanged()

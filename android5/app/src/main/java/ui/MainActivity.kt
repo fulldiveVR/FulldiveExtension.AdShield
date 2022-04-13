@@ -128,7 +128,7 @@ class MainActivity : LocalizationActivity(),
                 R.id.advancedFragment -> R.string.main_tab_advanced
                 R.id.userDeniedFragment -> R.string.userdenied_section_header
                 R.id.settingsNetworksFragment -> R.string.networks_section_header
-                R.id.networksDetailFragment -> R.string.networks_section_header
+                R.id.networksDetailFragment -> R.string.all_networks_title
                 R.id.appsFragment -> R.string.apps_section_header
                 R.id.navigation_settings -> R.string.main_tab_settings
                 R.id.navigation_settings_account -> R.string.account_action_my_account

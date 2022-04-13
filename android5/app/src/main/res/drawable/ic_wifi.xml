@@ -21,7 +21,7 @@
     android:viewportHeight="40">
   <path
       android:pathData="M8,0L32,0A8,8 0,0 1,40 8L40,32A8,8 0,0 1,32 40L8,40A8,8 0,0 1,0 32L0,8A8,8 0,0 1,8 0z"
-      android:fillColor="#F2F3F4"/>
+      android:fillColor="@color/colorBar"/>
   <path
       android:pathData="M10,17.4826C10.2944,17.2036 10.5976,16.9393 10.9087,16.6896C16.5185,12.1871 24.691,12.4515 30,17.4826"
       android:strokeLineJoin="round"

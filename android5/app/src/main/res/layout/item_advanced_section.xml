@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -13,7 +12,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -23,10 +21,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/oneandhalf"
-        android:paddingEnd="@dimen/normal"
-        android:paddingTop="@dimen/normal"
-        android:paddingBottom="@dimen/normal">
+        android:padding="@dimen/size_16dp">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -44,8 +39,8 @@
                 android:layout_width="@dimen/icon"
                 android:layout_height="@dimen/icon"
                 android:layout_gravity="center"
-                app:tint="@color/colorAccent"
-                android:src="@drawable/ic_baseline_apps_24" />
+                android:src="@drawable/ic_baseline_apps_24"
+                app:tint="@color/colorAccent" />
         </FrameLayout>
 
         <LinearLayout
@@ -53,15 +48,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="@dimen/oneandhalf">
+            android:paddingStart="@dimen/size_12dp">
 
             <TextView
                 android:id="@+id/advanced_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
+                android:fontFamily="@font/roboto_medium"
                 android:singleLine="true"
-                android:text="@string/apps_section_header" />
+                android:text="@string/apps_section_header"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_small" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,12 +68,13 @@
 
                 <TextView
                     android:id="@+id/advanced_slugline"
-                    style="@style/Text.Small"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/half"
                     android:layout_weight="1"
-                    android:text="@string/advanced_section_slugline_apps" />
+                    android:text="@string/advanced_section_slugline_apps"
+                    android:textColor="@color/textColorTertiary"
+                    android:textSize="@dimen/text_size_xsmall" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,9 +86,9 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="@dimen/icon"
-            android:layout_height="@dimen/icon"
-            android:padding="@dimen/half"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/half"
             app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24"
             app:tint="@color/textColorSecondary" />
     </LinearLayout>
@@ -97,5 +96,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
         android:background="@color/shadowColor" />
 </LinearLayout>

@@ -166,7 +166,7 @@ class HomeFragment : Fragment() {
             }
 
             when {
-                status.inProgress -> statusTextView.text = "..."
+                status.inProgress -> statusTextView.text = getString(R.string.connecting_title)
                 status.active -> setStatusConnected()
                 else -> setStatusDisconnected()
             }
@@ -195,7 +195,7 @@ class HomeFragment : Fragment() {
         }
 
         appSettingsVm.isIdoAnnouncementClicked.observe(viewLifecycleOwner) { isIdoAnnouncementClicked ->
-            idoAnnouncementLayout.isVisible = !isIdoAnnouncementClicked
+            idoAnnouncementLayout.isVisible = false//TODO MOCKED!isIdoAnnouncementClicked
         }
 
         lifecycleScope.launchWhenCreated {

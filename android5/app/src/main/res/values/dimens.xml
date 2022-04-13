@@ -37,12 +37,13 @@
     <dimen name="sheet_maxwidth">300dp</dimen>
     <dimen name="tab_layout_min_width">56dp</dimen>
 
-
+    <dimen name="text_size_xsmall">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_medium">12sp</dimen>
     <dimen name="textsize_xlarge">20sp</dimen>
 
-
+    <dimen name="size_1dp">1dp</dimen>
     <dimen name="size_4dp">4dp</dimen>
     <dimen name="size_8dp">8dp</dimen>
     <dimen name="size_12dp">12dp</dimen>

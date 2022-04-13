@@ -47,11 +47,12 @@
             app:key="join_discord"
             app:title="@string/settings_action_discord" />
 
-        <Preference
-            android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_support_and_earn"
-            app:key="support_earn"
-            app:title="@string/setting_ido_announcement" />
+        <!--TODO MOCKED-->
+        <!--        <Preference-->
+        <!--            android:fragment="ui.web.WebFragment"-->
+        <!--            android:icon="@drawable/ic_support_and_earn"-->
+        <!--            app:key="support_earn"-->
+        <!--            app:title="@string/setting_ido_announcement" />-->
 
     </PreferenceCategory>
 </PreferenceScreen>

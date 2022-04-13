@@ -85,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/intro_text"
-                            android:textColor="@color/textColorSecondary" />
+                            android:textColor="@color/textColorPrimary" />
 
                         <TextView
                             android:id="@+id/firsttime_more"
