@@ -29,7 +29,6 @@
 
             <ImageView
                 android:id="@+id/network_icon"
-                android:layout_marginStart="@dimen/normal"
                 android:layout_width="@dimen/icon_bigger"
                 android:layout_height="@dimen/icon_bigger"
                 android:src="@drawable/ic_all_networks" />
@@ -43,19 +42,22 @@
 
                 <TextView
                     android:id="@+id/network_name"
-                    style="@style/Text.H2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="middle"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto_medium"
                     android:singleLine="true"
-                    android:text="My Super Long Little Home WiFi 5G Network" />
+                    android:text="My Super Long Little Home WiFi 5G Network"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/text_size_small" />
 
                 <TextView
                     android:id="@+id/network_desc"
-                    style="@style/Text.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/networks_label_specific_network" />
+                    android:text="@string/networks_label_specific_network"
+                    android:textColor="@color/textColorTertiary"
+                    android:textSize="@dimen/text_size_xsmall" />
 
             </LinearLayout>
         </LinearLayout>
@@ -64,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/normal"
-            android:background="?android:attr/shadowColor" />
+            android:background="@color/shadowColor" />
 
         <TextView
             style="@style/Text.H3"
@@ -126,7 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/normal"
-                android:background="?android:attr/shadowColor" />
+                android:background="@color/shadowColor" />
 
             <TextView
                 style="@style/Text.H3"

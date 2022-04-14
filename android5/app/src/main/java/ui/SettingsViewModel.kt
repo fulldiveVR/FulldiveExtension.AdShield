@@ -16,14 +16,9 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.*
-import model.Defaults
-import engine.EngineService
 import service.PersistenceService
 import ui.utils.cause
 import utils.Logger
-import java.lang.Exception
-import org.adshield.R
-import repository.DnsDataSource
 
 class SettingsViewModel : ViewModel() {
 
@@ -108,47 +103,7 @@ class SettingsViewModel : ViewModel() {
         }
     }
 
-    fun getTheme(): Int? {
-        return R.style.Theme_Blokada_Light
-//        return _localConfig.value?.let {
-//            when (it.themeName) {
-//                THEME_RETRO_KEY -> R.style.Theme_Blokada_Retro
-//                else -> when (it.useDarkTheme) {
-//                    true -> R.style.Theme_Blokada_Dark
-//                    false -> R.style.Theme_Blokada_Light
-//                    else -> null
-//                }
-//            }
-//        }
-    }
 
-    fun setUseDarkTheme(useDarkTheme: Boolean?) {
-        log.v("Setting useDarkTheme: $useDarkTheme")
-        _localConfig.value?.let { current ->
-            viewModelScope.launch {
-                val new = current.copy(
-                    useDarkTheme = useDarkTheme,
-                    themeName = null
-                )
-                persistence.save(new)
-                _localConfig.value = new
-            }
-        }
-    }
-
-    fun setUseTheme(name: String) {
-        log.v("Setting useTheme: $name")
-        _localConfig.value?.let { current ->
-            viewModelScope.launch {
-                val new = current.copy(
-                    useDarkTheme = null,
-                    themeName = name
-                )
-                persistence.save(new)
-                _localConfig.value = new
-            }
-        }
-    }
 
     fun getLocale(): String? {
         return _localConfig.value?.locale
@@ -201,8 +156,4 @@ class SettingsViewModel : ViewModel() {
     fun getUseForegroundService(): Boolean {
         return _localConfig.value?.useForegroundService ?: false
     }
-
 }
-
-const val THEME_RETRO_KEY = "retro"
-const val THEME_RETRO_NAME = "Retro"

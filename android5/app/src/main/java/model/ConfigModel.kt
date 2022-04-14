@@ -36,8 +36,6 @@ data class BlockaConfig(
 data class LocalConfig(
     val dnsChoice: DnsId, // Deprecated
     val useChromeTabs: Boolean = false,
-    val useDarkTheme: Boolean? = null,
-    val themeName: String? = null,
     val locale: String? = null,
     val ipv6: Boolean = true, // Deprecated
     val backup: Boolean = true,

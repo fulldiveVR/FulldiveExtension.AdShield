@@ -14,22 +14,22 @@ package ui.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import appextension.getColorCompat
+import appextension.getDrawableCompat
 import kotlinx.coroutines.delay
 import model.*
 import org.adshield.R
 import service.AlertDialogService
 import service.EnvironmentService
 import service.UpdateService
-import ui.AccountViewModel
-import ui.AdsCounterViewModel
-import ui.TunnelViewModel
-import ui.app
+import ui.*
 import ui.settings.SettingsFragmentDirections
 import ui.utils.getColorFromAttr
 import utils.Links
@@ -41,34 +41,17 @@ class HomeFragment : Fragment() {
     private lateinit var vm: TunnelViewModel
     private lateinit var accountVM: AccountViewModel
     private lateinit var adsCounterVm: AdsCounterViewModel
+    private lateinit var appSettingsVm: AppSettingsViewModel
 
     private lateinit var activateView: ActivateView
     private lateinit var statusTextView: TextView
+    private lateinit var longStatusTextView: TextView
+    private lateinit var idoAnnouncementLayout: FrameLayout
 
-    private val colorConnected by lazy {
-        ContextCompat.getColor(
-            requireContext(),
-            R.color.textColorAccent
-        )
-    }
-    private val colorDisconnected by lazy {
-        ContextCompat.getColor(
-            requireContext(),
-            R.color.textColorPrimary
-        )
-    }
-    private val backgroundConnected by lazy {
-        ContextCompat.getDrawable(
-            requireContext(),
-            R.drawable.background_button_connected
-        )
-    }
-    private val backgroundDisconnected by lazy {
-        ContextCompat.getDrawable(
-            requireContext(),
-            R.drawable.background_button_disconnected
-        )
-    }
+    private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
+    private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
+    private val backgroundConnected by lazy { requireContext().getDrawableCompat(R.drawable.background_button_connected) }
+    private val backgroundDisconnected by lazy { requireContext().getDrawableCompat(R.drawable.background_button_disconnected) }
 
     private fun setStatusConnected() {
         statusTextView.setTextColor(colorConnected)
@@ -87,18 +70,24 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.let {
-            vm = ViewModelProvider(it.app()).get(TunnelViewModel::class.java)
-            accountVM = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
-            adsCounterVm = ViewModelProvider(it.app()).get(AdsCounterViewModel::class.java)
-        }
-
+        iniViewModel()
         val root = inflater.inflate(R.layout.fragment_home, container, false)
+        initViews(root)
 
-        activateView = root.findViewById(R.id.activateButton)
-
-        val longStatusTextView: TextView = root.findViewById(R.id.statusDescriptionTextView)
-        statusTextView = root.findViewById(R.id.statusTextView)
+        //TODO: MOCKED
+        idoAnnouncementLayout.setOnClickListener {
+            appSettingsVm.setIdoAnnouncementClicked()
+            findNavController()
+                .apply {
+                    navigate(R.id.navigation_home)
+                    navigate(
+                        HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                            Links.community,
+                            "MOCKED"
+                        )
+                    )
+                }
+        }
 
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
             when {
@@ -107,8 +96,7 @@ class HomeFragment : Fragment() {
                 status.active && status.gatewayId != null && counter == null -> {
                     setStatusConnected()
                     longStatusTextView.text = (
-                            getString(R.string.home_status_detail_active) + "\n" +
-                                    getString(R.string.home_status_detail_plus)
+                            "${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}"
                             ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 status.active && EnvironmentService.isSlim() -> {
@@ -122,13 +110,14 @@ class HomeFragment : Fragment() {
                 }
                 status.active && status.gatewayId != null -> {
                     setStatusConnected()
-                    longStatusTextView.text = (
-                            getString(
-                                R.string.home_status_detail_active_with_counter,
-                                counter.toString()
-                            ) + "\n" +
-                                    getString(R.string.home_status_detail_plus)
-                            ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                    val statusString = "${
+                        getString(
+                            R.string.home_status_detail_active_with_counter,
+                            counter.toString()
+                        )
+                    }\n ${getString(R.string.home_status_detail_plus)}"
+                    longStatusTextView.text =
+                        statusString.withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 status.active -> {
                     setStatusConnected()
@@ -177,7 +166,7 @@ class HomeFragment : Fragment() {
             }
 
             when {
-                status.inProgress -> statusTextView.text = "..."
+                status.inProgress -> statusTextView.text = getString(R.string.connecting_title)
                 status.active -> setStatusConnected()
                 else -> setStatusDisconnected()
             }
@@ -205,27 +194,35 @@ class HomeFragment : Fragment() {
             }
         }
 
+        appSettingsVm.isIdoAnnouncementClicked.observe(viewLifecycleOwner) { isIdoAnnouncementClicked ->
+            idoAnnouncementLayout.isVisible = false//TODO MOCKED!isIdoAnnouncementClicked
+        }
+
         lifecycleScope.launchWhenCreated {
             delay(1000)
             UpdateService.handleUpdateFlow(
                 onOpenDonate = {
-                    val nav = findNavController()
-                    nav.navigate(R.id.navigation_home)
-                    nav.navigate(
-                        HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                            Links.donate, getString(R.string.universal_action_donate)
-                        )
-                    )
+                    findNavController()
+                        .apply {
+                            navigate(R.id.navigation_home)
+                            navigate(
+                                HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                                    Links.donate, getString(R.string.universal_action_donate)
+                                )
+                            )
+                        }
                 },
                 onOpenMore = {
                     // Display the thank you page
-                    val nav = findNavController()
-                    nav.navigate(R.id.navigation_home)
-                    nav.navigate(
-                        HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                            Links.updated, getString(R.string.update_label_updated)
-                        )
-                    )
+                    findNavController()
+                        .apply {
+                            navigate(R.id.navigation_home)
+                            navigate(
+                                HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                                    Links.updated, getString(R.string.update_label_updated)
+                                )
+                            )
+                        }
                 }
             )
         }
@@ -250,12 +247,14 @@ class HomeFragment : Fragment() {
     private fun showFailureDialog(ex: BlokadaException) {
         val additional: Pair<String, () -> Unit>? =
             if (shouldShowKbLink(ex)) getString(R.string.universal_action_learn_more) to {
-                val nav = findNavController()
-                nav.navigate(
-                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                        Links.tunnelFailure, getString(R.string.universal_action_learn_more)
-                    )
-                )
+                findNavController()
+                    .apply {
+                        navigate(
+                            HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                                Links.tunnelFailure, getString(R.string.universal_action_learn_more)
+                            )
+                        )
+                    }
             }
             else null
 
@@ -266,6 +265,22 @@ class HomeFragment : Fragment() {
         )
     }
 
+    private fun iniViewModel() {
+        activity?.let {
+            vm = ViewModelProvider(it.app()).get(TunnelViewModel::class.java)
+            accountVM = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
+            adsCounterVm = ViewModelProvider(it.app()).get(AdsCounterViewModel::class.java)
+            appSettingsVm = ViewModelProvider(it.app()).get(AppSettingsViewModel::class.java)
+        }
+    }
+
+    private fun initViews(root: View) {
+        activateView = root.findViewById(R.id.activateButton)
+        statusTextView = root.findViewById(R.id.statusTextView)
+        idoAnnouncementLayout = root.findViewById(R.id.idoAnnouncementLayout)
+        longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -274,13 +289,16 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.home_donate -> {
-                val nav = findNavController()
-                nav.navigate(R.id.navigation_settings)
-                nav.navigate(
-                    SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                        Links.donate, getString(R.string.universal_action_donate)
-                    )
-                )
+                findNavController()
+                    .apply {
+                        navigate(R.id.navigation_settings)
+                        navigate(
+                            SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
+                                Links.donate, getString(R.string.universal_action_donate)
+                            )
+                        )
+                    }
+
                 true
             }
             else -> false

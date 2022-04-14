@@ -17,22 +17,19 @@
 package appextension
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.adshield.BuildConfig
+import service.AppSettingsService
+import utils.Logger
 import java.io.IOException
 
 object PopupManager {
 
     private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
-    private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
-    private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
-    private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
     private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"
     private const val SUCCESS_RATING_VALUE = 4
 
@@ -52,13 +49,13 @@ object PopupManager {
         StartAppDialog.Empty
     )
 
-    fun onAppStarted(context: Context) {
-        val sharedPreferences = context.getPrivateSharedPreferences()
-        val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
-        sharedPreferences.setProperty(KEY_START_APP_COUNTER, startCounter + 1)
+    private val log = Logger("PopupManager")
 
-        val rateUsDone = sharedPreferences.getProperty(KEY_RATE_US_DONE, false)
-        val installBrowserDone = sharedPreferences.getProperty(KEY_INSTALL_BROWSER_DONE, false)
+    fun onAppStarted(context: Context) {
+        val startCounter = AppSettingsService.updateAndGetCurrentStartUpCount()
+
+        val rateUsDone = AppSettingsService.isRateUsDone()
+        val installBrowserDone = AppSettingsService.isInstallBrowserDone()
 
         if (!rateUsDone || !installBrowserDone) {
             when (getShowingPopup(startCounter)) {
@@ -67,7 +64,6 @@ object PopupManager {
                         showRateUsDialog(context) {
                             onRateUsPositiveClicked(
                                 context,
-                                sharedPreferences,
                                 it
                             )
                         }
@@ -76,7 +72,7 @@ object PopupManager {
                 StartAppDialog.InstallBrowser -> {
                     if ((!installBrowserDone) && !isBrowserInstalled(context)) {
                         showInstallBrowserDialog(context) {
-                            onInstallAppPositiveClicked(context, sharedPreferences)
+                            onInstallAppPositiveClicked(context)
                         }
                     }
                 }
@@ -107,36 +103,34 @@ object PopupManager {
 
     private fun onRateUsPositiveClicked(
         context: Context,
-        sharedPreferences: SharedPreferences,
         rating: Int
     ) {
         if (rating < SUCCESS_RATING_VALUE) {
             showRateReportDialog(context) { message ->
                 sendMessage(message)
-                sharedPreferences.setProperty(KEY_RATE_US_DONE, true)
+                AppSettingsService.setRateUsDone()
             }
         } else {
             context.openAppInGooglePlay(BuildConfig.APPLICATION_ID)
-            sharedPreferences.setProperty(KEY_RATE_US_DONE, true)
+            AppSettingsService.setRateUsDone()
         }
     }
 
     private fun onInstallAppPositiveClicked(
-        context: Context,
-        sharedPreferences: SharedPreferences
+        context: Context
     ) {
         context.openAppInGooglePlay(BROWSER_PACKAGE_NAME)
-        sharedPreferences.setProperty(KEY_INSTALL_BROWSER_DONE, true)
+        AppSettingsService.setInstallBrowserDone()
     }
 
     private fun sendMessage(message: String) {
         Thread {
             try {
                 val res = post(INBOX_URL, getJSON(message))
-                Log.d("sendMessageTest", res)
+                log.v("sendMessageTest $res")
             } catch (ex: java.lang.Exception) {
                 ex.printStackTrace()
-                Log.d("sendMessageTest", "$ex.message")
+                log.e("sendMessageTest ${ex.message}")
             }
         }
             .start()

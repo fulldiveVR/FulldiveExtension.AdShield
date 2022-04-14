@@ -12,6 +12,7 @@
 
 package service
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -32,7 +33,7 @@ interface StorageService {
 }
 
 object SharedPreferencesStorageService : StorageService {
-
+    @SuppressLint("StaticFieldLeak")
     private val context = ContextService
 
     private val useBackup by lazy {
@@ -67,10 +68,10 @@ object SharedPreferencesStorageService : StorageService {
 
     // Always use local source for some settings, or always backed up source for others
     private fun getSharedPreferences(key: String) = when (key) {
-        "localConfig" -> localSharedPreferences
-        "syncableConfig" -> backedUpSharedPreferences
-        "account" -> backedUpSharedPreferences
-        "networkSpecificConfigs" -> localSharedPreferences // Not send network names anywhere
+        PersistenceService.KEY_LOCAL_CONFIG -> localSharedPreferences
+        PersistenceService.KEY_SYNCABLE_CONFIG -> backedUpSharedPreferences
+        PersistenceService.KEY_ACCOUNT -> backedUpSharedPreferences
+        PersistenceService.KEY_NETWORK_SPECIFIC_CONFIGS -> localSharedPreferences // Not send network names anywhere
         else -> if (useBackup) backedUpSharedPreferences else localSharedPreferences
     }
 
@@ -79,7 +80,6 @@ object SharedPreferencesStorageService : StorageService {
         edit.putString(key, value)
         edit.commit() || throw BlokadaException("Could not save $key to SharedPreferences")
     }
-
 }
 
 
@@ -99,14 +99,13 @@ object FileStorageService : StorageService {
         val path = file.commonDir().file(key)
         val source = FileInputStream(path)
         val inputStreamReader = InputStreamReader(source)
-        try {
-            return inputStreamReader.readText()
+        return try {
+            inputStreamReader.readText()
         } catch (ex: Exception) {
             Logger.e("Storage", "Could not read file: $key".cause(ex))
-            return null
+            null
         } finally {
             inputStreamReader.close()
         }
     }
-
 }

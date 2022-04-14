@@ -67,7 +67,7 @@
             android:layout_width="@dimen/icon"
             android:layout_height="@dimen/icon"
             android:padding="@dimen/half"
-            android:tint="?android:attr/colorPrimary"
+            app:tint="@color/colorPrimary"
             android:src="@drawable/ic_baseline_backspace_24"
             />
     </LinearLayout>
@@ -75,5 +75,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/shadowColor" />
+        android:background="@color/shadowColor" />
 </LinearLayout>

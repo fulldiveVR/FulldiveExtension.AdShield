@@ -18,46 +18,14 @@ package appextension
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 
-fun Context.getPrivateSharedPreferences(): SharedPreferences {
-    return this.getSharedPreferences(packageName + "_preference", Context.MODE_PRIVATE)
-}
+fun Context.getColorCompat(@ColorRes resId: Int) = ContextCompat.getColor(this, resId)
+fun Context.getDrawableCompat(resId: Int) = ContextCompat.getDrawable(this, resId)
 
-fun SharedPreferences.setProperty(tag: String, value: Int) {
-    try {
-        val spe = edit()
-        spe.putInt(tag, value).apply()
-    } catch (ex: Exception) {
-    }
-}
-
-fun SharedPreferences.setProperty(tag: String, value: Boolean) {
-    try {
-        val spe = edit()
-        spe.putBoolean(tag, value).apply()
-    } catch (ex: Exception) {
-    }
-}
-
-fun SharedPreferences.getProperty(tag: String, default_value: Int): Int {
-    var result = default_value
-    try {
-        result = getInt(tag, default_value)
-    } catch (ex: Exception) {
-    }
-    return result
-}
-
-fun SharedPreferences.getProperty(tag: String, default_value: Boolean): Boolean {
-    var result = default_value
-    try {
-        result = getBoolean(tag, default_value)
-    } catch (ex: Exception) {
-    }
-    return result
-}
+inline fun <T> T?.or(block: () -> T) = this ?: block.invoke()
 
 fun Context.openAppInGooglePlay(appPackageName: String? = null) {
     val packName = appPackageName ?: packageName

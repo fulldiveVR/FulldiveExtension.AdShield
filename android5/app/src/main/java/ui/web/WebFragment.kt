@@ -28,11 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.R
 import service.AlertDialogService
-import ui.AccountViewModel
-import ui.ActivationViewModel
-import ui.BottomSheetFragment
-import ui.app
-import ui.SettingsViewModel
+import ui.*
 import ui.utils.openInBrowser
 import utils.Links
 
@@ -80,8 +76,7 @@ class WebFragment : BottomSheetFragment() {
         }
 
         if ((settingsVM.getUseChromeTabs() ||
-                    Links.isSubscriptionLink(args.url) ||
-                    Links.isDiscordLink(args.url))
+                    Links.isSubscriptionLink(args.url))
             && (tabsServiceBound || bindChromeTabs())
         ) {
             launchInCustomTabs(args.url)

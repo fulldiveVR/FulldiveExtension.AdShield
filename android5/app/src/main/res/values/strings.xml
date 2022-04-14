@@ -480,6 +480,15 @@
   <string name="settings_action_email">Email us</string>
   <string name="activity_forwarded">Forwarded to alter DNS</string>
   <string name="activity_regular">Used main DNS</string>
+  <string name="ido_announcement_description">Join our Discord server and get free coins!</string>
+  <string name="ido_announcement_title">Support us</string>
+  <string name="setting_ido_announcement">Support us and get free coins</string>
+  <string name="theme_light">Light</string>
+  <string name="theme_auto">Auto</string>
+  <string name="theme_dark">Dark</string>
+  <string name="connecting_title">Connecting…</string>
+  <string name="all_networks_title">All networks</string>
+  <string name="recognize_networks">Recognise network</string>
   <string name="league_handline_addressograph">Bankrupt marital wildlife obstacle bagatelle</string>
   <string name="supremum_geminid_corduroy_quintus">Harken coincident wheat eighty…</string>
   <string name="casbah_guilford_operable">Breakneck entropy wakeup pantaloon day fortiori… Acetate abramson parry furlong hearken?</string>

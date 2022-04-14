@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/apps_status_bypassed"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/colorGreen" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -83,5 +83,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/shadowColor" />
+        android:background="@color/shadowColor" />
 </LinearLayout>

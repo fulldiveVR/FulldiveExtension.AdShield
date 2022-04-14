@@ -21,9 +21,10 @@
     android:viewportWidth="134"
     android:viewportHeight="134">
   <path
-      android:pathData="M67,63m-59,0a59,59 0,1 1,118 0a59,59 0,1 1,-118 0"
+      android:pathData="M67,63m-57,0a57,57 0,1 1,114 0a57,57 0,1 1,-114 0"
+      android:strokeWidth="4"
       android:fillColor="#ffffff"
-      android:fillAlpha="0.6"/>
+      android:strokeColor="#FCC475"/>
   <path
       android:pathData="M67,63m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0">
     <aapt:attr name="android:fillColor">

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -16,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:padding="@dimen/half"
     tools:context="ui.home.LocationFragment">
@@ -64,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/account_encrypt_level_low"
-                        android:textColor="?android:attr/textColor" />
+                        android:textColor="@color/textColorPrimary" />
 
                 </LinearLayout>
 
@@ -73,7 +72,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/doubled"
                     android:layout_marginBottom="@dimen/normal"
-                    android:background="?android:attr/shadowColor" />
+                    android:background="@color/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -119,7 +118,8 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/account_encrypt_desc_dns_only" />
+                                    android:text="@string/account_encrypt_desc_dns_only"
+                                    android:textColor="@color/textColorSecondary" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -129,8 +129,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/doubled"
                             android:alpha="0.3"
-                            android:visibility="gone"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/encryption_everything_icon"
@@ -138,7 +138,7 @@
                                 android:layout_height="@dimen/icon"
                                 android:layout_marginEnd="@dimen/normal"
                                 android:src="@drawable/ic_baseline_close_24"
-                                app:tint="?android:attr/colorPrimary" />
+                                app:tint="@color/colorPrimary" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -153,9 +153,11 @@
                                     android:text="@string/account_encrypt_label_everything" />
 
                                 <TextView
+
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/account_encrypt_desc_everything" />
+                                    android:text="@string/account_encrypt_desc_everything"
+                                    android:textColor="@color/textColorSecondary" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -164,7 +166,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <TextView
                             style="@style/Text.H3"
@@ -191,7 +193,8 @@
                                 android:id="@+id/home_detail_dns"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Blokada DNS" />
+                                android:text="Blokada DNS"
+                                android:textColor="@color/textColorSecondary" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -211,7 +214,8 @@
                                 android:id="@+id/home_detail_dns_doh"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/universal_action_no" />
+                                android:text="@string/universal_action_no"
+                                android:textColor="@color/textColorSecondary" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -231,7 +235,8 @@
                                 android:id="@+id/home_detail_vpn"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/universal_label_none" />
+                                android:text="@string/universal_label_none"
+                                android:textColor="@color/textColorSecondary" />
                         </LinearLayout>
 
                         <View
@@ -239,11 +244,11 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <Button
                             android:id="@+id/encryption_continue"
-                            style="@style/accentButton"
+                            style="@style/AccentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/size_8dp"

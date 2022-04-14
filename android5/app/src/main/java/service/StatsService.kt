@@ -12,7 +12,6 @@
 
 package service
 
-import android.util.Log
 import kotlinx.coroutines.coroutineScope
 import engine.Host
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ import model.*
 import utils.Logger
 import java.util.*
 
-object StatsService: PrintsDebugInfo {
+object StatsService : PrintsDebugInfo {
 
     private var runtimeAllowed = 0
     private var runtimeDenied = 0
@@ -79,9 +78,9 @@ object StatsService: PrintsDebugInfo {
     private suspend fun increment(host: Host, type: HistoryEntryType) {
         coroutineScope {
             val key = statsPersistedKey(host, type)
-            val entry = internalStats.getOrElse(key, {
+            val entry = internalStats.getOrElse(key) {
                 StatsPersistedEntry(lastEncounter = System.currentTimeMillis(), occurrences = 0)
-            })
+            }
             entry.lastEncounter = System.currentTimeMillis()
             entry.occurrences += 1
             internalStats[key] = entry

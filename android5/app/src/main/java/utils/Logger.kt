@@ -61,5 +61,4 @@ class Logger(private val component: String) {
             LogService.logToFile(line)
         }
     }
-
 }

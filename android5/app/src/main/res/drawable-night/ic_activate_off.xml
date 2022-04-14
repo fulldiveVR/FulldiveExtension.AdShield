@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="134dp"
+    android:height="134dp"
+    android:viewportWidth="134"
+    android:viewportHeight="134">
+  <path
+      android:pathData="M67,63m-57,0a57,57 0,1 1,114 0a57,57 0,1 1,-114 0"
+      android:strokeWidth="4"
+      android:fillColor="#00000000"
+      android:strokeColor="#5E656E"/>
+  <path
+      android:pathData="M122,63C122,93.376 97.376,118 67,118C36.624,118 12,93.376 12,63C12,32.624 36.624,8 67,8C97.376,8 122,32.624 122,63Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startY="16"
+          android:startX="49"
+          android:endY="110.5"
+          android:endX="87"
+          android:type="linear">
+        <item android:offset="0" android:color="#1E616972"/>
+        <item android:offset="1" android:color="#EF616972"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M59.875,51C59.381,51.282 58.905,51.593 58.45,51.93C57.672,52.507 56.956,53.161 56.313,53.88C54.095,56.36 52.75,59.617 52.75,63.184C52.75,70.952 59.13,77.25 67,77.25C74.87,77.25 81.25,70.952 81.25,63.184C81.25,59.617 79.905,56.36 77.688,53.88C77.044,53.161 76.328,52.507 75.55,51.93C75.095,51.593 74.619,51.282 74.125,51"
+      android:strokeLineJoin="round"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#ffffff"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M67,48V63"
+      android:strokeLineJoin="round"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#ffffff"
+      android:strokeLineCap="round"/>
+</vector>

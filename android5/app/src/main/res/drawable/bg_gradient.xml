@@ -12,6 +12,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="?android:attr/shadowColor" />
+    <solid android:color="@color/shadowColor" />
     <corners android:radius="0dp" />
 </shape>

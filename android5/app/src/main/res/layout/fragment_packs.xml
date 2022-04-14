@@ -22,9 +22,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="?android:attr/colorBackground"
+        android:background="@color/colorPrimary"
         android:fontFamily="@font/roboto_regular"
-        android:minHeight="?attr/actionBarSize"
+        android:minHeight="@dimen/actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/pack_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
         app:tabPaddingEnd="@dimen/size_8dp"
         app:tabPaddingStart="@dimen/size_8dp"
         app:tabSelectedTextColor="@color/textColorPrimary"
-        app:tabTextAppearance="@style/FlatTheme.TabLayoutTabText"
+        app:tabTextAppearance="@style/AppTheme.TabLayoutTabText"
         app:tabTextColor="@color/textColorSecondary">
 
         <com.google.android.material.tabs.TabItem

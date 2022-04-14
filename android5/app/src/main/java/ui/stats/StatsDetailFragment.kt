@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import appextension.getColorCompat
 import model.HistoryEntryType
 import org.adshield.R
 import ui.StatsViewModel
@@ -65,33 +66,38 @@ class StatsDetailFragment : Fragment() {
                 when (this.type) {
                     HistoryEntryType.passed_allowed -> {
                         icon.setImageResource(R.drawable.ic_shield_off_outline)
-                        icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                        icon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorGreen
+                            )
+                        )
                         comment.text = getString(R.string.activity_request_allowed_whitelisted)
                         context?.let { context ->
-                            comment.setTextColor(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.textColorForwarded
-                                )
-                            )
+                            comment.setTextColor(context.getColorCompat(R.color.textColorForwarded))
                         }
                     }
                     HistoryEntryType.blocked_denied -> {
                         icon.setImageResource(R.drawable.ic_shield_off_outline)
-                        icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.red))
+                        icon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorAlert
+                            )
+                        )
                         comment.text = getString(R.string.activity_request_blocked_blacklisted)
                         context?.let { context ->
-                            comment.setTextColor(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.textColorDenied
-                                )
-                            )
+                            comment.setTextColor(context.getColorCompat(R.color.textColorDenied))
                         }
                     }
                     HistoryEntryType.passed -> {
                         icon.setImageResource(R.drawable.ic_shield_outline)
-                        icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))
+                        icon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorGreen
+                            )
+                        )
                         comment.text = getString(R.string.activity_request_allowed)
                         context?.let { context ->
                             comment.setTextColor(
@@ -104,14 +110,16 @@ class StatsDetailFragment : Fragment() {
                     }
                     else -> {
                         icon.setImageResource(R.drawable.ic_shield_outline)
-                        icon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.red))
+                        icon.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorAlert
+                            )
+                        )
                         comment.text = getString(R.string.activity_request_blocked)
                         context?.let { context ->
                             comment.setTextColor(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.textColorForwarded
-                                )
+                                context.getColorCompat(R.color.textColorForwarded)
                             )
                         }
                     }

@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:padding="@dimen/half"
     tools:context="ui.home.HelpFragment">
 
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/normal"
-                    android:background="?android:attr/shadowColor" />
+                    android:background="@color/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -84,18 +84,19 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/payment_activated_description" />
+                            android:text="@string/payment_activated_description"
+                            android:textColor="@color/textColorSecondary" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <TextView
                             android:id="@+id/activated_continue"
-                            style="@style/accentButton"
+                            style="@style/AccentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"

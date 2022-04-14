@@ -15,89 +15,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/size_16dp"
+    android:layout_marginEnd="@dimen/size_16dp"
     tools:context="ui.stats.StatsFragment">
 
-    <LinearLayout
+    <include
         android:id="@+id/network_all"
-        android:layout_width="match_parent"
+        layout="@layout/item_network"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/half"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/shadowColor" />
-
-        <include
-            layout="@layout/item_network"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/normal"
-            android:layout_marginTop="@dimen/half"
-            android:layout_marginEnd="@dimen/normal"
-            android:layout_marginBottom="@dimen/half" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/shadowColor" />
-    </LinearLayout>
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/network_perms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/half"
+        android:layout_marginTop="@dimen/size_16dp"
         app:layout_constraintTop_toBottomOf="@id/network_all">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="@dimen/icon_bigger"
+            android:layout_height="@dimen/icon_bigger"
+            android:src="@drawable/ic_recognise_networks"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/network_perms_title"
+            style="@style/Text.Small"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/half"
-            android:layout_marginTop="@dimen/half"
-            android:layout_marginBottom="@dimen/half"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/half"
-            android:paddingEnd="@dimen/half"
-            android:paddingBottom="@dimen/half">
+            android:layout_marginStart="@dimen/size_16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto_medium"
+            android:singleLine="true"
+            android:text="@string/recognize_networks"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iconImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:layout_width="@dimen/icon_bigger"
-                android:layout_height="@dimen/icon_bigger"
-                android:layout_marginStart="@dimen/normal"
-                android:src="@drawable/ic_recognise_networks" />
-
-            <TextView
-                android:id="@+id/network_perms_text"
-                style="@style/Text.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/half"
-                android:paddingStart="@dimen/half"
-                android:text="@string/networks_permission_request" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/network_perms_text"
+            style="@style/Text.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_16dp"
+            android:layout_marginBottom="@dimen/size_8dp"
+            android:text="@string/networks_permission_request"
+            android:textColor="@color/textColorTertiary"
+            android:textSize="@dimen/text_size_xsmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iconImageView"
+            app:layout_constraintTop_toBottomOf="@+id/network_perms_title" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="@dimen/half"
-            android:background="?android:attr/shadowColor" />
-    </LinearLayout>
+            android:layout_height="@dimen/size_1dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:background="@color/shadowColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/network_perms_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/network_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingStart="@dimen/oneandhalf"
-        android:paddingEnd="@dimen/oneandhalf"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
