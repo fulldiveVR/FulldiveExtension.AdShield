@@ -62,7 +62,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
         LogService.setup()
         DozeService.setup(this)
         setupEvents()
-        MonitorService.setup(settingsVM.getUseForegroundService())
+//        MonitorService.setup(settingsVM.getUseForegroundService())
 
         ABPService.initABP(ContextService.requireContext())
         ABPService.setAdblockState(true)
@@ -100,11 +100,9 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
                 adsCounterVM.setRuntimeCounter(stats.denied.toLong())
             }
         }
-
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
-
         tunnelVM.tunnelStatus.observeForever {
             MonitorService.setTunnelStatus(it)
         }

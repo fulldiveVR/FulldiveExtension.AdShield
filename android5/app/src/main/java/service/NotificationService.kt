@@ -62,6 +62,10 @@ object NotificationService {
         notificationManager.cancel(notification.id)
     }
 
+    fun cancel(id: Int) {
+        notificationManager.cancel(id)
+    }
+
     @TargetApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channel: NotificationChannels) {
         val mChannel = NotificationChannel(
