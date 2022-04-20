@@ -12,27 +12,30 @@
 
 package ui
 
-import android.app.IntentService
-import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.*
+import appextension.or
+import engine.EngineService
 import model.BlokadaException
-import service.AlertDialogService
+import org.adshield.R
 import service.ContextService
 import service.EnvironmentService
 import service.LogService
+import service.NotificationService
 import ui.utils.cause
 import utils.Logger
+import utils.MonitorNotification.Companion.STATUS_NOTIFICATION_ID
 
 enum class Command {
-    OFF, ON, DNS, LOG, ACC, ESCAPE, TOAST, DOH
+    OFF, ON, DNS, LOG, ACC, ESCAPE, TOAST, DOH, HIDE
 }
 
 const val ACC_MANAGE = "manage_account"
@@ -96,6 +99,21 @@ class CommandActivity : AppCompatActivity() {
                     }
                 }
             }
+            Command.HIDE -> {
+                val status = EngineService.getTunnelStatus()
+                if (!status.inProgress && !status.active) {
+                    tunnelVM.turnOff()
+                    NotificationService.cancel(STATUS_NOTIFICATION_ID)
+                } else {
+                    Toast
+                        .makeText(
+                            this,
+                            getText(R.string.cant_hide_toast),
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                }
+            }
             Command.TOAST -> {
                 Toast.makeText(this, param, Toast.LENGTH_LONG).show()
             }
@@ -111,7 +129,9 @@ class CommandActivity : AppCompatActivity() {
                     .let {
                         try {
                             Command.valueOf(it[0].toUpperCase()) to it.getOrNull(1)
-                        } catch (ex: Exception) { null }
+                        } catch (ex: Exception) {
+                            null
+                        }
                     }
             }
             // Legacy commands to be removed in the future
@@ -127,22 +147,48 @@ class CommandActivity : AppCompatActivity() {
 
 }
 
-class CommandService : IntentService("cmd") {
+//class CommandService : IntentService("cmd") {
+//
+//    override fun onHandleIntent(intent: Intent?) {
+//        intent?.let {
+//            val ctx = ContextService.requireContext()
+//            ctx.startActivity(Intent(ACTION_VIEW, it.data).apply {
+//                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//            })
+//        }
+//    }
+//
+//}
 
-    override fun onHandleIntent(intent: Intent?) {
-        intent?.let {
-            val ctx = ContextService.requireContext()
-            ctx.startActivity(Intent(ACTION_VIEW, it.data).apply {
+class CommandWorker constructor(
+    private val context: Context,
+    workerParameters: WorkerParameters
+) : Worker(context, workerParameters) {
+    override fun doWork(): Result {
+        return try {
+            val command = inputData.getString("serviceCommand")?.or { "" }
+            context.startActivity(Intent(ACTION_VIEW, Uri.parse(command)).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
+            Result.success()
+        } catch (ex: Exception) {
+            Result.failure()
         }
-    }
 
+    }
+}
+
+class CommandReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        context.startActivity(Intent(ACTION_VIEW, intent.data).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+    }
 }
 
 fun getIntentForCommand(command: Command, param: Param? = null): Intent {
     val ctx = ContextService.requireContext()
-    return Intent(ctx, CommandService::class.java).apply {
+    return Intent(ctx, CommandReceiver::class.java).apply {
         if (param == null) {
             data = Uri.parse("blocka://cmd/${command.name}")
         } else {
@@ -153,13 +199,53 @@ fun getIntentForCommand(command: Command, param: Param? = null): Intent {
 
 fun getIntentForCommand(cmd: String): Intent {
     val ctx = ContextService.requireContext()
-    return Intent(ctx, CommandService::class.java).apply {
+    return Intent(ctx, CommandReceiver::class.java).apply {
         data = Uri.parse("blocka://cmd/$cmd")
     }
 }
 
+fun getWorkerRequestForCommand(command: Command): WorkRequest {
+    val data = Data.Builder()
+    val stringCommand = "blocka://cmd/$command"
+    data.putString("serviceCommand", stringCommand)
+    return OneTimeWorkRequest
+        .Builder(CommandWorker::class.java)
+        .addTag(stringCommand)
+        .setInputData(data.build())
+        .build()
+}
+
+fun getWorkerRequestForCommand(command: Command, param: Param? = null): WorkRequest {
+    val data = Data.Builder()
+    val stringCommand = if (param == null) {
+        "blocka://cmd/${command.name}"
+    } else {
+        "blocka://cmd/${command.name}/$param"
+    }
+    data.putString("serviceCommand", stringCommand)
+    return OneTimeWorkRequest
+        .Builder(CommandWorker::class.java)
+        .addTag(stringCommand)
+        .setInputData(data.build())
+        .build()
+}
+
 fun executeCommand(cmd: Command, param: Param? = null) {
-    val ctx = ContextService.requireContext()
-    val intent = getIntentForCommand(cmd, param)
-    ctx.startService(intent)
+    val context = ContextService.requireContext()
+//    val intent = getIntentForCommand(cmd, param)
+//    ctx.startService(intent)
+    try {
+        val command = "blocka://cmd/$cmd"
+        val workManager = WorkManager.getInstance(context)
+        val data = Data.Builder()
+        data.putString("serviceCommand", command)
+        OneTimeWorkRequest
+            .Builder(CommandWorker::class.java)
+            .addTag(command)
+            .setInputData(data.build())
+            .build()
+            .let(workManager::enqueue)
+    } catch (e: Throwable) {
+//        Log.e(cmd, "Error while UpdateWidgetJob with work manager:", e)
+    }
 }

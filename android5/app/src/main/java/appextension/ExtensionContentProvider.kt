@@ -44,7 +44,6 @@ class ExtensionContentProvider : ContentProvider() {
             AppExtensionWorkType.STOP.id -> {
                 if (!isChangingState()) {
                     context?.let { context ->
-//                        LaunchHelper.stopVPN(context)
                         LaunchHelper.stop(context)
                     }
                 }
