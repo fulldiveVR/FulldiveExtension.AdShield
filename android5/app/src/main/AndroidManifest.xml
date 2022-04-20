@@ -132,6 +132,11 @@
                 android:value="ui.MainActivity" />
         </activity>
 
+        <activity
+            android:name="ui.DifferLeaseHonkActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
         <receiver android:name="service.DozeReceiver" />
 
         <service
