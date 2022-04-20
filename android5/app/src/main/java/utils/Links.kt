@@ -33,6 +33,7 @@ object Links {
     const val terms = FULLDIVE_URL
     const val credits = FULLDIVE_URL
     const val community = FULLDIVE_URL
+    const val idoAnnouncement = "https://www.fulldive.com/fulladshield"
 
     val updated = if (EnvironmentService.isSlim()) FULLDIVE_URL else FULLDIVE_URL
 
