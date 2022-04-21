@@ -14,13 +14,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package com.fulldive.wallet.presentation.main
 
-data class Account(
-    val uuid: String,
-    var address: String,
-    var hasPrivateKey: Boolean,
-    var resource: String? = null,
-    var spec: String? = null,
-    var fromMnemonic: Boolean,
-)
+import com.fulldive.wallet.presentation.base.BaseMoxyView
+import moxy.viewstate.strategy.alias.OneExecution
+
+interface MainMoxyView : BaseMoxyView {
+
+    @OneExecution
+    fun doSomething()
+}

@@ -12,39 +12,32 @@
 
 package ui.home
 
-import analytics.TrackerConstants
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import appextension.StatisticHelper
 import appextension.getColorCompat
 import appextension.getDrawableCompat
-import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
-import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
+import com.fulldive.wallet.presentation.main.MainDialogFragment
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 import model.*
-import org.adshield.MobileNavigationDirections
 import org.adshield.R
-import service.*
+import service.AlertDialogService
+import service.ContextService
+import service.EnvironmentService
+import service.UpdateService
 import ui.*
 import ui.settings.SettingsFragmentDirections
+import ui.utils.getColorFromAttr
 import utils.Links
-import utils.getColorFromAttr
 import utils.withBoldSections
-import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -53,15 +46,11 @@ class HomeFragment : Fragment() {
     private lateinit var accountVM: AccountViewModel
     private lateinit var adsCounterVm: AdsCounterViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
-    private lateinit var settingsVM: SettingsViewModel
 
     private lateinit var activateView: ActivateView
     private lateinit var statusTextView: TextView
     private lateinit var longStatusTextView: TextView
-    private lateinit var limitedOfferLayout: FrameLayout
-    private lateinit var closePopupButton: ImageView
-    private lateinit var legalStateDescriptionTextView: TextView
-    private lateinit var stopWorkingLayout: CardView
+    private lateinit var idoAnnouncementLayout: FrameLayout
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -89,49 +78,9 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         initViews(root)
 
-        lifecycleScope.launch {
-            SubscriptionService.isProStatusPurchasedState
-                .collect { isPurchased ->
-                    if (isPurchased) {
-                        if (!AppSettingsService.isSubscribeSuccessShow()) {
-                            val fragment = SubscriptionSuccessDialogFragment.newInstance()
-                            fragment.show(parentFragmentManager, null)
-                            appSettingsVm.setSubscribeSuccessShow(true)
-                        }
-                    }
-                }
-        }
-
-        legalStateDescriptionTextView.isVisible = RemoteConfigService
-            .getIsLegalStateDescriptionEnabled()
-
-        context?.let { SubscriptionService.updateIsProLimited(it) }
-        lifecycleScope.launch {
-            SubscriptionService.isProStatusPurchasedState
-                .combine(SubscriptionService.isPopupShowState)
-                { isPurchased, isShow ->
-                    !isPurchased && isShow
-                }.collect { isVisible ->
-                    limitedOfferLayout.isVisible = isVisible
-                    if (limitedOfferLayout.isVisible) {
-                        StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_PRO_POPUP_SHOWN)
-                    }
-                }
-        }
-
-        limitedOfferLayout.setOnClickListener {
-            findNavController()
-                .apply {
-                    StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_PRO_POPUP)
-                    navigate(
-                        MobileNavigationDirections.activityToSubscriptionTutorial()
-                    )
-                }
-        }
-
-        closePopupButton.setOnClickListener {
-            StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_CLOSE_PRO_POPUP)
-            SubscriptionService.setClosePopup(true)
+        idoAnnouncementLayout.setOnClickListener {
+            appSettingsVm.setIdoAnnouncementClicked()
+            openUrlInBrowser(Links.idoAnnouncement)
         }
 
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
@@ -140,16 +89,9 @@ class HomeFragment : Fragment() {
                     getString(R.string.home_status_detail_progress)
                 status.active && status.gatewayId != null && counter == null -> {
                     setStatusConnected()
-                    longStatusTextView.text =
-                        if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
-                            getString(R.string.home_status_detail_active_slim)
-                        } else {
-                            ("${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}")
-                                .withBoldSections(
-                                    requireContext()
-                                        .getColorFromAttr(R.attr.colorAccent)
-                                )
-                        }
+                    longStatusTextView.text = (
+                            "${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}"
+                            ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 status.active && EnvironmentService.isSlim() -> {
                     setStatusConnected()
@@ -162,31 +104,22 @@ class HomeFragment : Fragment() {
                 }
                 status.active && status.gatewayId != null -> {
                     setStatusConnected()
-                    val statusString = if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
-                        getString(R.string.home_status_detail_active_slim)
-                    } else {
-                        "${
-                            getString(
-                                R.string.home_status_detail_active_with_counter,
-                                counter.toString()
-                            )
-                        }\n ${getString(R.string.home_status_detail_plus)}"
-                    }
+                    val statusString = "${
+                        getString(
+                            R.string.home_status_detail_active_with_counter,
+                            counter.toString()
+                        )
+                    }\n ${getString(R.string.home_status_detail_plus)}"
                     longStatusTextView.text =
                         statusString.withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 status.active -> {
                     setStatusConnected()
-                    longStatusTextView.text =
-                        if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
-                            getString(R.string.home_status_detail_active_slim)
-                        } else {
-                            getString(
-                                R.string.home_status_detail_active_with_counter,
-                                counter.toString()
-                            )
-                                .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
-                        }
+                    longStatusTextView.text = getString(
+                        R.string.home_status_detail_active_with_counter,
+                        counter.toString()
+                    )
+                        .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 else -> {
                     setStatusDisconnected()
@@ -196,29 +129,26 @@ class HomeFragment : Fragment() {
             }
 
             longStatusTextView.setOnClickListener {
-                when {
-                    status.inProgress -> Unit
-                    status.error != null -> Unit
-                    status.active -> {
-                        val fragment = ProtectionLevelFragment.newInstance()
-                        fragment.show(parentFragmentManager, null)
-                    }
-                    else -> vm.turnOn()
-                }
+                parentFragmentManager
+                    .beginTransaction()
+                    .add(MainDialogFragment(), "main")
+                    .addToBackStack("main")
+                    .commit()
+
+//                // todo
+//                when {
+//                    status.inProgress -> Unit
+//                    status.error != null -> Unit
+//                    status.active -> {
+//                        val fragment = ProtectionLevelFragment.newInstance()
+//                        fragment.show(parentFragmentManager, null)
+//                    }
+//                    else -> vm.turnOn()
+//                }
             }
         }
 
-        stopWorkingLayout.setOnClickListener {
-            openUrlInBrowser("${RemoteConfigService.getAdblockTutorialUrl()}#${Build.MANUFACTURER.toLowerCase()}")
-        }
-
-        vm.isAdblockWork.observe(viewLifecycleOwner) { isAdshieldWork ->
-            stopWorkingLayout.isVisible = activateView.activeMode && !isAdshieldWork
-        }
-
         vm.tunnelStatus.observe(viewLifecycleOwner) { status ->
-            stopWorkingLayout.isVisible = stopWorkingLayout.isVisible && status.active
-
             activateView.inactiveMode = !status.inProgress && !status.active
             activateView.activeMode = status.active
             activateView.isEnabled = !status.inProgress
@@ -237,8 +167,7 @@ class HomeFragment : Fragment() {
             }
 
             when {
-                status.inProgress -> statusTextView.text =
-                    getString(R.string.home_status_detail_progress)
+                status.inProgress -> statusTextView.text = getString(R.string.connecting_title)
                 status.active -> setStatusConnected()
                 else -> setStatusDisconnected()
             }
@@ -264,6 +193,10 @@ class HomeFragment : Fragment() {
             if (!account.isActive()) {
                 setHasOptionsMenu(true)
             }
+        }
+
+        appSettingsVm.isIdoAnnouncementClicked.observe(viewLifecycleOwner) { isIdoAnnouncementClicked ->
+            idoAnnouncementLayout.isVisible = !isIdoAnnouncementClicked
         }
 
         lifecycleScope.launchWhenCreated {
@@ -295,12 +228,6 @@ class HomeFragment : Fragment() {
             )
         }
         return root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        vm.checkAppVersion()
-        vm.checkIfAdblockWork()
     }
 
     private fun showVpnPermsSheet() {
@@ -345,18 +272,14 @@ class HomeFragment : Fragment() {
             accountVM = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
             adsCounterVm = ViewModelProvider(it.app()).get(AdsCounterViewModel::class.java)
             appSettingsVm = ViewModelProvider(it.app()).get(AppSettingsViewModel::class.java)
-            settingsVM = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
         }
     }
 
     private fun initViews(root: View) {
         activateView = root.findViewById(R.id.activateButton)
         statusTextView = root.findViewById(R.id.statusTextView)
-        limitedOfferLayout = root.findViewById(R.id.limitedOfferLayout)
-        closePopupButton = root.findViewById(R.id.closePopupButton)
+        idoAnnouncementLayout = root.findViewById(R.id.idoAnnouncementLayout)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
-        legalStateDescriptionTextView = root.findViewById(R.id.legalStateDescriptionTextView)
-        stopWorkingLayout = root.findViewById(R.id.stopWorkingLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -381,11 +304,6 @@ class HomeFragment : Fragment() {
             }
             else -> false
         }
-    }
-
-    override fun onDestroy() {
-        SubscriptionService.onDestroy()
-        super.onDestroy()
     }
 
     private fun openUrlInBrowser(url: String) {

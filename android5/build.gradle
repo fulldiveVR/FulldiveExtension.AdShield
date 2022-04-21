@@ -1,3 +1,5 @@
+
+
 /*
  * This file is part of Blokada.
  *
@@ -12,11 +14,7 @@
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext{
-        kotlin_version = '1.7.0'
-        kotlin_coroutines_version = '1.6.2'
-        compose_version = '1.2.0-beta03'
-    }
+    ext.kotlin_version = "1.6.10"
     repositories {
         google()
         jcenter()
@@ -34,7 +32,6 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2"
         classpath 'gradle.plugin.org.mozilla.rust-android-gradle:plugin:0.8.3'
         classpath 'com.joom.lightsaber:lightsaber-gradle-plugin:1.0.0-alpha13'
-        classpath 'com.google.gms:google-services:4.3.13'
     }
 }
 
@@ -51,11 +48,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    libsVersions = [
-            room  : '2.4.0',
-            roomRx: '2.4.0'
-    ]
 }

@@ -16,17 +16,11 @@
 
 package com.fulldive.wallet.models
 
-import org.adshield.BuildConfig
-
 object Chain {
     const val chainName = "imversed-canary"
     const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
+    const val mainDenom = "nimv"
     const val fullNameCoin = "Imversed Staking Coin"
     const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
+    val grpcApiHost = ApiHost.from("qc.imversed.com")
 }
