@@ -17,23 +17,100 @@
 package com.fulldive.wallet.presentation.main
 
 import com.fulldive.wallet.di.modules.DefaultPresentersModule
+import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.withDefaults
-import com.fulldive.wallet.interactors.accounts.AccountsInteractor
+import com.fulldive.wallet.interactors.accounts.WalletInteractor
+import com.fulldive.wallet.models.Account
+import com.fulldive.wallet.models.Balance
+import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
+import com.fulldive.wallet.utils.WalletHelper
 import com.joom.lightsaber.ProvidedBy
+import java.math.BigDecimal
+import java.util.*
 import javax.inject.Inject
 
 @ProvidedBy(DefaultPresentersModule::class)
 class MainPresenter @Inject constructor(
-    private val accountsInteractor: AccountsInteractor
+    private val accountsInteractor: WalletInteractor
 ) : BaseMoxyPresenter<MainMoxyView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.doSomething()
+        requestAccount()
+    }
+
+    fun onCreateWalletClicked() {
+        accountsInteractor
+            .setAccount(
+                Account(
+                    uuid = UUID.randomUUID().toString(),
+                    address = "imv1x5e0ur9ht457cs07gqpunfwm0ntwkk5wpcn89s",
+                    hasPrivateKey = false,
+                    resource = null,
+                    spec = null,
+                    fromMnemonic = false
+                )
+            )
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = {
+                    requestAccount()
+                }
+            )
+    }
+
+    fun onDeleteWalletClicked() {
+        accountsInteractor
+            .deleteAccount()
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = {
+                    viewState.showCreateWalletButton()
+                }
+            )
+    }
+
+    private fun requestAccount() {
         accountsInteractor
             .getAccount()
             .withDefaults()
-            .compositeSubscribe()
+            .compositeSubscribe(
+                onSuccess = { account ->
+                    viewState.showAccount(account)
+                    requestBalance(account)
+                },
+                onError = {
+                    viewState.showCreateWalletButton()
+                }
+            )
+    }
+
+    private fun requestBalance(account: Account) {
+        accountsInteractor
+            .getBalances(account.address)
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = { balances ->
+                    val balance = balances.find { balance ->
+                        balance.denom == Chain.mainDenom
+                    }.or {
+                        Balance(BigDecimal.ZERO, Chain.mainDenom)
+                    }
+                    onBalanceReceived(balance)
+                },
+                onError = { error ->
+                    onBalanceReceived(Balance(BigDecimal.ZERO, Chain.mainDenom))
+                }
+            )
+    }
+
+    private fun onBalanceReceived(balance: Balance) {
+        val spannableString = WalletHelper.getReadableBalance(
+            balance.amount,
+            Chain.divideDecimal,
+            Chain.displayDecimal
+        )
+        viewState.showBalance(spannableString, Chain.symbolTitle)
     }
 }

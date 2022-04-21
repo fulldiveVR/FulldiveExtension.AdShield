@@ -14,21 +14,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.presentation.main
+package com.fulldive.wallet.models
 
-import android.text.SpannableString
-import com.fulldive.wallet.models.Account
-import com.fulldive.wallet.presentation.base.BaseMoxyView
-import moxy.viewstate.strategy.alias.AddToEndSingle
+import java.math.BigDecimal
 
-interface MainMoxyView : BaseMoxyView {
-
-    @AddToEndSingle
-    fun showCreateWalletButton()
-
-    @AddToEndSingle
-    fun showAccount(account: Account)
-
-    @AddToEndSingle
-    fun showBalance(spannableString: SpannableString, denom: String)
-}
+data class Balance(
+    val amount: BigDecimal,
+    val denom: String
+)

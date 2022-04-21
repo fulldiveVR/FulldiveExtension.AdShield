@@ -22,5 +22,7 @@ object Chain {
     const val mainDenom = "nimv"
     const val fullNameCoin = "Imversed Staking Coin"
     const val symbolTitle = "IMV"
+    const val divideDecimal = 6
+    const val displayDecimal = 6
     val grpcApiHost = ApiHost.from("qc.imversed.com")
 }
