@@ -33,10 +33,15 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import appextension.*
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
+import com.fulldive.wallet.di.IEnrichableActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
 import org.adshield.R
-import service.*
+import service.ContextService
+import service.NetworkMonitorPermissionService
+import service.TranslationService
+import service.VpnPermissionService
 import ui.home.FirstTimeFragment
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
@@ -45,13 +50,15 @@ import utils.Logger
 
 
 class MainActivity : LocalizationActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
+    IEnrichableActivity {
 
     private lateinit var statsVM: StatsViewModel
     private lateinit var tunnelVM: TunnelViewModel
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
+    override lateinit var appInjector: Injector
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel

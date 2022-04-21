@@ -17,6 +17,8 @@ plugins {
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: "kotlin-kapt"
+apply plugin: 'kotlin-android'
+apply plugin: 'com.joom.lightsaber.android'
 
 def versionMajor = 1
 def versionMinor = 1
@@ -110,6 +112,10 @@ android {
         jvmTarget = '1.8'
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/legacy/kotlin'
 
@@ -184,6 +190,18 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:2.6.4'
 
     implementation "org.adblockplus:adblock-android-settings:4.4.0"
+
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+
+    implementation 'com.joom.lightsaber:lightsaber-core-kotlin:1.0.0-alpha13'
+
+    implementation "com.github.moxy-community:moxy:2.2.2"
+    implementation "com.github.moxy-community:moxy-android:2.2.2"
+    implementation "com.github.moxy-community:moxy-androidx:2.2.2"
+    implementation "com.github.moxy-community:moxy-ktx:2.2.2"
+    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
+
 
     // test deps
     testImplementation 'junit:junit:4.+'
