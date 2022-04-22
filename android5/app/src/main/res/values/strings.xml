@@ -479,4 +479,16 @@
   <string name="experience_description">&lt;font color=\"%experienceTextColor%\" face=\"sans-serif-medium\"&gt;XP %currentExperience%&lt;/font&gt;/%maxLevelExperience%</string>
   <string name="rewards_toolbar_title">AdShield Rewards</string>
   <string name="menu_item_about_rewards">About Rewards</string>
+  <string name="str_create_account">Create</string>
+  <string name="str_restore_private_key">Restore with Private Key</string>
+  <string name="str_restore_mnemonic">Restore with Mnemonic</string>
+  <string name="str_show_mnemonic">Show Mnemonic</string>
+  <string name="str_create_warning">Please copy and write down your mnemonic key. This is the only way to restore your wallet later.</string>
+  <string name="str_create_wallet">Create Wallet</string>
+  <string name="str_wallet_address">Wallet address</string>
+  <string name="str_mnemonic_key">Mnemonic key</string>
+  <string name="str_your_wallet">Your Wallet</string>
+  <string name="str_your_wallet_hint">Create or Restore your wallet to exchange the XP Rewards into Tokens.</string>
+  <string name="str_copied">Copied to clipboard</string>
+  <string name="str_mnemonic_template">%02d. %s</string>
 </resources>

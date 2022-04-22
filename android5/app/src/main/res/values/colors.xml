@@ -50,4 +50,6 @@
     <color name="colorGamificationPrimary">#80D789</color>
     <color name="colorGamificationSecondary">#63CAC6</color>
     <color name="colorLevelReward">#FFC63E</color>
+
+    <color name="colorDivider">#C6C6C8B2</color>
 </resources>

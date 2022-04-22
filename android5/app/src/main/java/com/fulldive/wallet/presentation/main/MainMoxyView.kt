@@ -16,11 +16,28 @@
 
 package com.fulldive.wallet.presentation.main
 
+import android.text.SpannableString
+import androidx.fragment.app.DialogFragment
+import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.presentation.base.BaseMoxyView
+import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.OneExecution
 
 interface MainMoxyView : BaseMoxyView {
 
+    @AddToEndSingle
+    fun showCreateWalletButton()
+
+    @AddToEndSingle
+    fun showAccount(account: Account)
+
+    @AddToEndSingle
+    fun showBalance(spannableString: SpannableString, denom: String)
+
     @OneExecution
-    fun doSomething()
+    fun showDialog(
+        dialogFragment: DialogFragment,
+        tag: String,
+        cancelable: Boolean
+    )
 }

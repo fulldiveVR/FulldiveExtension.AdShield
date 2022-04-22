@@ -39,6 +39,7 @@
     <dimen name="divider_width_xsmall">0.5dp</dimen>
 
     <dimen name="text_size_xxxsmall">8sp</dimen>
+    <dimen name="text_size_xxsmall">10sp</dimen>
     <dimen name="text_size_xsmall">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
@@ -54,6 +55,8 @@
     <dimen name="size_24dp">24dp</dimen>
     <dimen name="size_30dp">30dp</dimen>
     <dimen name="size_36dp">36dp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_45dp">45dp</dimen>
     <dimen name="size_48dp">48dp</dimen>
     <dimen name="actionBarSize">56dp</dimen>
 </resources>

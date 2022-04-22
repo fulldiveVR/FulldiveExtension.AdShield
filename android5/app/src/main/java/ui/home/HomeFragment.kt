@@ -25,7 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import appextension.getColorCompat
 import appextension.getDrawableCompat
-import com.fulldive.wallet.presentation.main.MainDialogFragment
+import com.fulldive.wallet.presentation.main.MainCryptoFragment
 import kotlinx.coroutines.delay
 import model.*
 import org.adshield.R
@@ -131,7 +131,7 @@ class HomeFragment : Fragment() {
             longStatusTextView.setOnClickListener {
                 parentFragmentManager
                     .beginTransaction()
-                    .add(MainDialogFragment(), "main")
+                    .replace(R.id.nav_host_fragment, MainCryptoFragment(), "main")
                     .addToBackStack("main")
                     .commit()
 
