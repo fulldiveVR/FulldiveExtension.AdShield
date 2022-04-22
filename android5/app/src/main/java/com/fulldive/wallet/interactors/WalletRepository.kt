@@ -14,7 +14,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.interactors.accounts
+package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultRepositoryModule
 import com.fulldive.wallet.models.Account
@@ -35,6 +35,17 @@ class WalletRepository @Inject constructor(
 
     fun setAccount(account: Account): Completable {
         return walletLocalSource.setAccount(account)
+    }
+
+    fun hasPassword(): Single<Boolean> {
+        return walletLocalSource
+            .getPassword()
+            .map { true }
+            .onErrorReturnItem(false)
+    }
+
+    fun setPassword(password: String): Completable {
+        return walletLocalSource.setPassword(password)
     }
 
     fun deleteAccount(): Completable {

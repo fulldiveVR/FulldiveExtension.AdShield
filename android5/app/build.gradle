@@ -206,6 +206,7 @@ dependencies {
     implementation 'io.grpc:grpc-okhttp:1.45.0'
     implementation 'io.grpc:grpc-stub:1.45.0'
     implementation 'io.grpc:grpc-kotlin-stub:1.2.1'
+    implementation 'org.bitcoinj:bitcoinj-core:0.15.2'
     implementation "com.github.moxy-community:moxy:2.2.2"
     implementation "com.github.moxy-community:moxy-android:2.2.2"
     implementation "com.github.moxy-community:moxy-androidx:2.2.2"

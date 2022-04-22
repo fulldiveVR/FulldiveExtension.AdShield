@@ -20,6 +20,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import com.fulldive.wallet.di.IEnrichableActivity
 import com.fulldive.wallet.di.IInjectorHolder
@@ -46,6 +47,7 @@ abstract class BaseMvpDialogFragment<VB : ViewBinding> : MvpAppCompatDialogFragm
         return AlertDialog.Builder(activity)
             .setView(view)
             .create()
+            .also(::onDialogCreated)
     }
 
     override fun onDestroyView() {
@@ -58,11 +60,26 @@ abstract class BaseMvpDialogFragment<VB : ViewBinding> : MvpAppCompatDialogFragm
         binding?.apply { viewBinding() }
     }
 
+    open fun onDialogCreated(alertDialog: AlertDialog) {
+    }
+
     open fun showMessage(@StringRes resourceId: Int) {
         context?.toast(resourceId)
     }
 
     open fun showMessage(message: String) {
         context?.toast(message)
+    }
+
+    open fun showDialog(
+        dialogFragment: DialogFragment,
+        tag: String = "dialog",
+        cancelable: Boolean = true
+    ) {
+        dialogFragment.isCancelable = cancelable
+        childFragmentManager
+            .beginTransaction()
+            .add(dialogFragment, tag)
+            .commitNowAllowingStateLoss()
     }
 }

@@ -14,7 +14,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.interactors.accounts
+package com.fulldive.wallet.interactors
 
 import android.content.Context
 import appextension.getPrivateSharedPreferences
@@ -56,6 +56,39 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
+    fun getPassword(): Single<String> {
+        return safeSingle {
+            sharedPreferences
+                .getString(KEY_PASSWORD, null)
+                ?.let { encodedJson ->
+                    gson.fromJson(encodedJson, EncodedData::class.java)
+                }
+                ?.let { encodedData ->
+                    CryptoHelper.decryptData(
+                        KEY_CRYPTO,
+                        encodedData.resource,
+                        encodedData.spec
+                    )
+                }
+        }
+    }
+
+    fun setPassword(password: String): Completable {
+        return safeCompletable {
+            CryptoHelper.encryptData(
+                KEY_CRYPTO_PASSWORD,
+                password,
+                false
+            )
+                .let { encResult ->
+                    gson.toJson(EncodedData(encResult.encDataString, encResult.ivDataString))
+                }
+                .let { encodedJson ->
+                    sharedPreferences.edit().putString(KEY_PASSWORD, encodedJson).apply()
+                }
+        }
+    }
+
     fun deleteAccount(): Completable {
         return safeCompletable {
             currentAccount = null
@@ -73,7 +106,7 @@ class WalletLocalSource @Inject constructor(
                 .getString(KEY_BALANCES, null)
                 ?.let { json ->
                     val type = object : TypeToken<List<Balance>>() {}.type
-                    gson.fromJson(json, type )
+                    gson.fromJson(json, type)
                 }
         }
     }
@@ -133,8 +166,10 @@ class WalletLocalSource @Inject constructor(
 
     companion object {
         private const val KEY_CRYPTO = "crypto_wallet"
+        private const val KEY_CRYPTO_PASSWORD = "crypto_password"
 
         private const val KEY_ACCOUNT = "account"
         private const val KEY_BALANCES = "balances"
+        private const val KEY_PASSWORD = "password"
     }
 }

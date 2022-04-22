@@ -42,4 +42,6 @@
     <color name="colorGreen">#33C75A</color>
 
     <color name="colorConnected">#0CFF9900</color>
+
+    <color name="colorDivider">#C6C6C8B2</color>
 </resources>

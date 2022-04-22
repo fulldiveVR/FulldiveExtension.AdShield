@@ -133,6 +133,13 @@
                 android:value="ui.MainActivity" />
         </activity>
 
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
         <receiver android:name="service.DozeReceiver" />
 
         <service

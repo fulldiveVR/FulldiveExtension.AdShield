@@ -14,7 +14,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.interactors.accounts
+package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultLocalStorageModule
 import com.fulldive.wallet.extensions.safeSingle
