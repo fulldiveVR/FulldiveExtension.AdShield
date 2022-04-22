@@ -22,7 +22,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fulldive.wallet.extensions.unsafeLazy
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.HistoryEntry
@@ -30,8 +29,10 @@ import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app
+import ui.home.HomeFragmentDirections
 import ui.utils.Tab
 import ui.utils.TabLayout
+import utils.unsafeLazy
 
 class StatsFragment : Fragment() {
 
@@ -65,11 +66,12 @@ class StatsFragment : Fragment() {
         val adapter = StatsAdapter(vm, interaction = object : StatsAdapter.Interaction {
             override fun onClick(item: HistoryEntry) {
                 val nav = findNavController()
-                nav.navigate(
-                    StatsFragmentDirections.actionNavigationStatsToActivityDetailFragment(
-                        item.name
-                    )
-                )
+                //todo !!!
+//                nav.navigate(
+//                    HomeFragmentDirections.actionNavigationActivityToActivityDetailFragment(
+//                        item.name
+//                    )
+//                )
             }
         })
 

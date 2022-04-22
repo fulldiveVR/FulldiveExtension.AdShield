@@ -14,11 +14,32 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package utils
 
-import java.math.BigDecimal
+import android.content.Context
+import android.os.Build
+import android.text.Html
+import android.text.Spanned
+import android.view.View
+import androidx.annotation.ColorRes
+import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat
 
-data class Balance(
-    val amount: BigDecimal,
-    val denom: String
-)
+inline fun <reified T> unsafeLazy(noinline initializer: () -> T): Lazy<T> =
+    lazy(LazyThreadSafetyMode.NONE, initializer)
+
+inline fun <reified T : View> View.find(@IdRes id: Int): T = findViewById(id)
+
+fun fromHtmlToSpanned(html: String?): Spanned {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html.orEmpty(), Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(html.orEmpty())
+    }
+}
+
+fun <T> T?.or(value: T) = this ?: value
+
+fun Context.getHexColor(@ColorRes id: Int): String {
+    return String.format("#%06x", ContextCompat.getColor(this, id).and(0xffffff))
+}

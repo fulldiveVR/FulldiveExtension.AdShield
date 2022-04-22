@@ -16,40 +16,9 @@
 
 package ui.rewards
 
-import android.text.SpannableString
-import androidx.fragment.app.DialogFragment
-import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.presentation.base.BaseMoxyView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
-import moxy.viewstate.strategy.alias.AddToEndSingle
-import moxy.viewstate.strategy.alias.OneExecution
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface RewardsView : BaseMoxyView{
-
-    @AddToEndSingle
-    fun showCreateWalletLayout()
-
-    @AddToEndSingle
-    fun showAccount(account: Account)
-
-    @AddToEndSingle
-    fun showBalance(spannableString: SpannableString, denom: String)
-
-    @OneExecution
-    fun showDialog(
-        dialogFragment: DialogFragment,
-        tag: String,
-        cancelable: Boolean
-    )
-
-    @OneExecution
-    fun showCheckPassword()
-
-    @OneExecution
-    fun showMnemonic()
-
-    @OneExecution
-    fun showPrivateKey()
-}
+interface RewardsView : BaseMoxyView
