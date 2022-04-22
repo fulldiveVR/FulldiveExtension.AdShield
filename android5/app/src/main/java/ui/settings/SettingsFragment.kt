@@ -84,15 +84,9 @@ object SettingsNavigation {
                     EmailHelper.sendEmailToSupport(ContextService.requireContext())
                 }
             }
-            "join_discord" -> {
-                openUrlInBrowser(Links.discordInvite)
-            }
-            "main_kb" -> {
-                openUrlInBrowser(Links.kb)
-            }
-            //TODO: MOCKED
-//            "support_earn" ->  openUrlInBrowser(mocked)
-//            )
+            "join_discord" -> openUrlInBrowser(Links.discordInvite)
+            "main_kb" -> openUrlInBrowser(Links.kb)
+            "support_earn" -> openUrlInBrowser(Links.idoAnnouncement)
             else -> {
                 val path = when (key) {
                     "main_account" -> SettingsFragmentDirections.actionNavigationSettingsToNavigationSettingsAccount()

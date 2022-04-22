@@ -41,8 +41,7 @@ class AppSettingsViewModel : ViewModel() {
     fun setIdoAnnouncementClicked() {
         viewModelScope.launch {
             AppSettingsService.setIdoAnnouncementClicked()
-            currentThemeLd.value = AppSettingsService
-                .getCurrentAppTheme().let { AppTheme.getThemeByType(it) }
+            updateLiveData()
         }
     }
 
