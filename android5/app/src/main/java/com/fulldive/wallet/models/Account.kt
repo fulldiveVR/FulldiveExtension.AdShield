@@ -23,4 +23,5 @@ data class Account(
     var resource: String? = null,
     var spec: String? = null,
     var fromMnemonic: Boolean,
+    var path: Int = 0
 )

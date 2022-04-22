@@ -1,31 +1,13 @@
-/*
- * Copyright (c) 2022 FullDive
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package com.fulldive.wallet.presentation.accounts.create
 
-import android.content.Intent
+//import com.fulldive.wallet.presentation.security.password.CheckPasswordActivity
+//import com.fulldive.wallet.presentation.security.password.SetPasswordActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.isVisible
-import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
 import com.fulldive.wallet.presentation.base.BaseMvpActivity
 import com.joom.lightsaber.getInstance
 import moxy.ktx.moxyPresenter
@@ -63,8 +45,6 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
             copyMnemonicButton.setOnClickListener {
                 presenter.onMnemonicCopyClicked()
             }
-
-            copyMnemonicButton.isVisible = false
         }
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
@@ -93,7 +73,6 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
             nextButton.setOnClickListener {
                 presenter.onCreateAccountClicked()
             }
-            copyMnemonicButton.isVisible = true
             mnemonicsLayout.setMnemonicWords(mnemonicWords)
         }
     }
@@ -108,13 +87,23 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
         }
     }
 
-    override fun requestPassword(checkPassword: Boolean) {
-        launcher.launch(
-            Intent(this, PasswordActivity::class.java).putExtra(
-                PasswordActivity.KEY_JUST_CHECK,
-                checkPassword
-            ),
-            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
-        )
+    override fun requestCheckPassword() {
+//        launcher.launch(
+//            Intent(this, CheckPasswordActivity::class.java),
+//            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
+//        )
+    }
+
+    override fun requestCreatePassword() {
+//        launcher.launch(
+//            Intent(this, SetPasswordActivity::class.java),
+//            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
+//        )
+    }
+
+    override fun showMainActivity() {
+//        Intent(this, MainActivity::class.java)
+//            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//            .let(::startActivity)
     }
 }

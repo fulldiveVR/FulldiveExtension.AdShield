@@ -19,7 +19,6 @@ package com.fulldive.wallet.interactors
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
 import com.fulldive.wallet.extensions.safeSingle
 import com.fulldive.wallet.extensions.singleCallable
-import com.fulldive.wallet.extensions.toSingle
 import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.models.AccountSecrets
 import com.fulldive.wallet.models.Balance
@@ -28,18 +27,15 @@ import com.fulldive.wallet.utils.CryptoHelper
 import com.fulldive.wallet.utils.MnemonicUtils
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
-import org.bitcoinj.crypto.DeterministicKey
 import org.bitcoinj.crypto.MnemonicCode
 import java.security.SecureRandom
 import java.util.*
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @ProvidedBy(DefaultInteractorsModule::class)
 class WalletInteractor @Inject constructor(
-    private val walletRepository: WalletRepository,
+    private val accountsRepository: WalletRepository,
 ) {
 
     fun createSecrets(path: Int = 0): Single<AccountSecrets> {
@@ -59,7 +55,7 @@ class WalletInteractor @Inject constructor(
     fun createAccount(accountSecrets: AccountSecrets): Completable {
         return singleCallable { UUID.randomUUID().toString() }
             .flatMap { uuid ->
-                encryptFromMnemonic(uuid, accountSecrets.entropy)
+                entropyFromMnemonic(uuid, accountSecrets.entropy)
                     .map { encryptData ->
                         Account(
                             uuid,
@@ -72,148 +68,29 @@ class WalletInteractor @Inject constructor(
                         )
                     }
             }
-            .flatMapCompletable(walletRepository::setAccount)
-    }
-
-    fun createAccount(
-        address: String,
-        entropy: String,
-        path: Int = 0,
-        fromMnemonic: Boolean
-    ): Completable {
-        return singleCallable { UUID.randomUUID().toString() }
-            .flatMap { uuid ->
-                if (fromMnemonic) {
-                    encryptFromMnemonic(uuid, entropy)
-                } else {
-                    encryptFromPrivateKey(uuid, entropy)
-                }
-                    .map { encryptData ->
-                        Account(
-                            uuid,
-                            address,
-                            true,
-                            encryptData.encDataString,
-                            encryptData.ivDataString,
-                            fromMnemonic,
-                            path
-                        )
-                    }
-            }
-            .flatMapCompletable(walletRepository::setAccount)
-    }
-
-    fun setPassword(password: String): Completable {
-        return walletRepository.setPassword(password)
-    }
-
-    fun checkPassword(password: String): Single<Boolean> {
-        return walletRepository.checkPassword(password)
+            .flatMapCompletable(accountsRepository::setAccount)
     }
 
     fun hasPassword(): Single<Boolean> {
-        return walletRepository.hasPassword()
+        return accountsRepository.hasPassword()
     }
 
     fun getAccount(): Single<Account> {
-        return walletRepository.getAccount()
+        return accountsRepository.getAccount()
     }
 
-    fun getCurrentAccount() = walletRepository.getCurrentAccount()
-
-    fun observeAccount(): Observable<Account> = walletRepository.observeAccount()
-
     fun setAccount(account: Account): Completable {
-        return walletRepository.setAccount(account)
+        return accountsRepository.setAccount(account)
     }
 
     fun deleteAccount(): Completable {
-        return walletRepository.deleteAccount()
+        return accountsRepository.deleteAccount()
     }
 
     fun getBalances(address: String): Single<List<Balance>> {
-        return walletRepository
+        return accountsRepository
             .requestBalances(address)
-            .onErrorResumeNext(walletRepository.getBalances())
-    }
-
-    fun isPasswordValid(text: String): Boolean {
-        var result = false
-        if (text.length == 5) {
-            result = Pattern
-                .compile("^\\d{4}+[A-Z]$")
-                .matcher(text)
-                .matches()
-        }
-        return result
-    }
-
-    fun isPrivateKeyValid(text: String): Boolean {
-        return Pattern
-            .compile("^(0x|0X)?[a-fA-F0-9]{64}")
-            .matcher(text)
-            .matches()
-    }
-
-    fun getRandomMnemonic(entropy: String): Single<List<String>> {
-        return safeSingle {
-            MnemonicCode.INSTANCE.toMnemonic(
-                MnemonicUtils.hexStringToByteArray(entropy)
-            )
-        }
-    }
-
-    fun decryptFromMnemonic(uuid: String, resource: String, spec: String): Single<String> {
-        return decryptText(MNEMONIC_KEY + uuid, resource, spec)
-    }
-
-    fun encryptFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
-        return encryptText(MNEMONIC_KEY + uuid, entropy)
-    }
-
-    fun decryptFromPrivateKey(uuid: String, resource: String, spec: String): Single<String> {
-        return decryptText(PRIVATE_KEY + uuid, resource, spec)
-    }
-
-    fun encryptFromPrivateKey(uuid: String, entropy: String): Single<EncResult> {
-        return encryptText(PRIVATE_KEY + uuid, entropy)
-    }
-
-    fun createKeyWithPathFromEntropy(
-        entropy: String,
-        path: Int
-    ): Single<DeterministicKey> {
-        return safeSingle {
-            MnemonicUtils.createKeyWithPathFromEntropy(
-                entropy, path
-            )
-        }
-    }
-
-    fun entropyHexFromMnemonicWords(words: List<String>): String {
-        return MnemonicUtils.byteArrayToHexString(MnemonicCode.INSTANCE.toEntropy(words))
-    }
-
-    fun isValidMnemonicArray(words: Array<String>): Boolean {
-        return words.size == 24 && isValidMnemonicWords(words)
-    }
-
-    fun isValidMnemonicWords(words: Array<String>): Boolean {
-        val mnemonics = MnemonicCode.INSTANCE.wordList
-        return words.all(mnemonics::contains)
-    }
-
-    fun checkMnemonicWords(words: Array<String>): List<Boolean> {
-        val mnemonics = MnemonicCode.INSTANCE.wordList
-        return words.map { word -> !mnemonics.contains(word) }
-    }
-
-    fun isValidMnemonicWord(word: String): Boolean {
-        return word.isNotEmpty() && MnemonicCode.INSTANCE.wordList.contains(word)
-    }
-
-    fun getMnemonicDictionary(): Single<List<String>> {
-        return MnemonicCode.INSTANCE.wordList.toSingle()
+            .onErrorResumeNext(accountsRepository.getBalances())
     }
 
     private fun getEntropy(): ByteArray {
@@ -222,15 +99,13 @@ class WalletInteractor @Inject constructor(
         }
     }
 
+    private fun entropyFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
+        return encryptText(MNEMONIC_KEY + uuid, entropy)
+    }
+
     private fun encryptText(key: String, text: String): Single<EncResult> {
         return safeSingle {
             CryptoHelper.encryptData(key, text, false)
-        }
-    }
-
-    private fun decryptText(alias: String, resource: String, spec: String): Single<String> {
-        return safeSingle {
-            CryptoHelper.decryptData(alias, resource, spec)
         }
     }
 
@@ -238,6 +113,7 @@ class WalletInteractor @Inject constructor(
         const val PRIVATE_KEY_PREFIX = "0x"
         private const val ENTROPY_SIZE = 32
 
+        private const val PASSWORD_KEY = "PASSWORD_KEY"
         private const val PRIVATE_KEY = "PRIVATE_KEY"
         private const val MNEMONIC_KEY = "MNEMONIC_KEY"
     }

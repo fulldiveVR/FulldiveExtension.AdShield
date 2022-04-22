@@ -18,16 +18,16 @@ package com.fulldive.wallet.utils
 
 import com.fulldive.wallet.extensions.safe
 import com.fulldive.wallet.models.Chain
-import org.bitcoinj.core.Bech32
 import org.bitcoinj.core.ECKey
 import org.bitcoinj.crypto.*
-import org.bouncycastle.util.encoders.Hex
-import org.web3j.crypto.Keys
+import org.bouncycastle.crypto.digests.RIPEMD160Digest
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 
 object MnemonicUtils {
     const val MNEMONIC_WORDS_COUNT = 24
+    private val GENERATORS = intArrayOf(0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3)
+    private val CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l".toByteArray()
     private val HEX_CHARSET = "0123456789abcdef".toCharArray()
 
     @Throws(Exception::class)
@@ -36,14 +36,14 @@ object MnemonicUtils {
         path: Int
     ): String {
         val childKey = createKeyWithPathFromEntropy(entropy, path)
-        return generateAddressFromPrivateKey(Chain.chainAddressPrefix, childKey.privateKeyAsHex)
+        return getDpAddress(Chain.chainAddressPrefix, childKey.publicKeyAsHex)
     }
 
     @Throws(Exception::class)
     fun createAddress(
         privateKey: String
     ): String {
-        return generateAddressFromPrivateKey(Chain.chainAddressPrefix, privateKey)
+        return getDpAddress(Chain.chainAddressPrefix, hexPublicKeyFromPrivateKey(privateKey))
     }
 
     fun byteArrayToHexString(bytes: ByteArray): String {
@@ -103,17 +103,6 @@ object MnemonicUtils {
         return result
     }
 
-    // Ethermint Style Key gen (OKex)
-    @Throws(java.lang.Exception::class)
-    fun createNewAddressSecp256k1(mainPrefix: String, publickKey: ByteArray): String {
-        val uncompressedPubKey = ECKey.CURVE.curve.decodePoint(publickKey).getEncoded(false)
-        val pub = ByteArray(64)
-        System.arraycopy(uncompressedPubKey, 1, pub, 0, 64)
-        val address = Keys.getAddress(pub)
-        val bytes = convertBits(address, 8, 5, true)
-        return Bech32.encode(mainPrefix, bytes)
-    }
-
     @Throws(Exception::class)
     private fun getHDSeed(entropy: ByteArray): ByteArray {
         return MnemonicCode.toSeed(MnemonicCode.INSTANCE.toMnemonic(entropy), "")
@@ -123,13 +112,33 @@ object MnemonicUtils {
         return ECKey.fromPrivate(BigInteger(privateKey, 16)).publicKeyAsHex
     }
 
-    private fun generateAddressFromPublicKey(prefix: String, publicKey: String): String {
-        return createNewAddressSecp256k1(prefix, Hex.decode(publicKey))
+    private fun getDpAddress(prefix: String, publicHexKey: String): String {
+        val result: String
+        val digest = Sha256.getSha256Digest()
+        val hash = digest.digest(hexStringToByteArray(publicHexKey))
+        val digest2 = RIPEMD160Digest()
+        digest2.update(hash, 0, hash.size)
+        val hash3 = ByteArray(digest2.digestSize)
+        digest2.doFinal(hash3, 0)
+        val converted = convertBits(hash3, 8, 5, true)
+        result = bech32Encode(prefix.toByteArray(), converted)
+        return result
     }
 
-    private fun generateAddressFromPrivateKey(prefix: String, privateKey: String): String {
-        val publicKey = hexPublicKeyFromPrivateKey(privateKey)
-        return generateAddressFromPublicKey(prefix, publicKey)
+    private fun bech32Encode(hrp: ByteArray, data: ByteArray): String {
+        val chk = createChecksum(hrp, data)
+        val combined = ByteArray(chk.size + data.size)
+        System.arraycopy(data, 0, combined, 0, data.size)
+        System.arraycopy(chk, 0, combined, data.size, chk.size)
+        val xlat = ByteArray(combined.size)
+        for (i in combined.indices) {
+            xlat[i] = CHARSET[combined[i].toInt()]
+        }
+        val ret = ByteArray(hrp.size + xlat.size + 1)
+        System.arraycopy(hrp, 0, ret, 0, hrp.size)
+        System.arraycopy(byteArrayOf(0x31), 0, ret, hrp.size, 1)
+        System.arraycopy(xlat, 0, ret, hrp.size + 1, xlat.size)
+        return String(ret)
     }
 
     @Throws(java.lang.Exception::class)
@@ -162,10 +171,55 @@ object MnemonicUtils {
         return baos.toByteArray()
     }
 
+    private fun createChecksum(hrp: ByteArray, data: ByteArray): ByteArray {
+        val zeroes = byteArrayOf(0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+        val expanded = hrpExpand(hrp)
+        val values = ByteArray(zeroes.size + expanded.size + data.size)
+        System.arraycopy(expanded, 0, values, 0, expanded.size)
+        System.arraycopy(data, 0, values, expanded.size, data.size)
+        System.arraycopy(zeroes, 0, values, expanded.size + data.size, zeroes.size)
+        val polymod = polymod(values) xor 1
+        val ret = ByteArray(6)
+        for (i in ret.indices) {
+            ret[i] = (polymod shr 5 * (5 - i) and 0x1f).toByte()
+        }
+        return ret
+    }
+
+    private fun polymod(values: ByteArray): Int {
+        var chk = 1
+        for (b in values) {
+            val top = (chk shr 0x19).toByte()
+            chk = b.toInt() xor (chk and 0x1ffffff shl 5)
+            for (i in 0..4) {
+                chk = chk xor if (top.toInt() shr i and 1 == 1) GENERATORS[i] else 0
+            }
+        }
+        return chk
+    }
+
+    private fun hrpExpand(hrp: ByteArray): ByteArray {
+        val buf1 = ByteArray(hrp.size)
+        val buf2 = ByteArray(hrp.size)
+        val mid = ByteArray(1)
+        for (i in hrp.indices) {
+            buf1[i] = (hrp[i].toInt() shr 5).toByte()
+        }
+        mid[0] = 0x00
+        for (i in hrp.indices) {
+            buf2[i] = (hrp[i].toInt() and 0x1f).toByte()
+        }
+        val ret = ByteArray(hrp.size * 2 + 1)
+        System.arraycopy(buf1, 0, ret, 0, buf1.size)
+        System.arraycopy(mid, 0, ret, buf1.size, mid.size)
+        System.arraycopy(buf2, 0, ret, buf1.size + mid.size, buf2.size)
+        return ret
+    }
+
     private fun getPath(): List<ChildNumber> {
         return mutableListOf(
             ChildNumber(44, true),
-            ChildNumber(60, true),
+            ChildNumber(118, true),
             ChildNumber.ZERO_HARDENED,
             ChildNumber.ZERO
         )

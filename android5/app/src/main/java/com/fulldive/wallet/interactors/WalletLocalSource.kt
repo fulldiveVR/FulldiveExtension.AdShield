@@ -19,7 +19,6 @@ package com.fulldive.wallet.interactors
 import android.content.Context
 import appextension.getPrivateSharedPreferences
 import com.fulldive.wallet.di.modules.DefaultLocalStorageModule
-import com.fulldive.wallet.extensions.completeCallable
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.safeCompletable
 import com.fulldive.wallet.extensions.safeSingle
@@ -31,9 +30,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,7 +40,6 @@ class WalletLocalSource @Inject constructor(
     context: Context
 ) {
     private val gson = Gson()
-    private val accountObserver = BehaviorSubject.create<Account>()
     private var currentAccount: Account? = null
 
     private var sharedPreferences = context.getPrivateSharedPreferences(KEY_CRYPTO)
@@ -54,61 +50,43 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
-    fun observeAccount(): Observable<Account> {
-        return if (currentAccount == null) {
-            getAccount()
-                .flatMapObservable { accountObserver.distinctUntilChanged() }
-        } else {
-            accountObserver.distinctUntilChanged()
-        }
-    }
-
     fun setAccount(account: Account): Completable {
         return safeCompletable {
             setCurrentAccount(account)
         }
     }
 
-    fun checkPassword(password: String): Single<Boolean> {
-        return getPassword()
-            .flatMap { encodedData ->
-                safeSingle {
-                    CryptoHelper.verifyData(
-                        password,
-                        encodedData,
-                        KEY_CRYPTO_PASSWORD
-                    )
-                }
-            }
-    }
-
     fun getPassword(): Single<String> {
         return safeSingle {
-            sharedPreferences.getString(KEY_CRYPTO, null)
+            sharedPreferences
+                .getString(KEY_PASSWORD, null)
+                ?.let { encodedJson ->
+                    gson.fromJson(encodedJson, EncodedData::class.java)
+                }
+                ?.let { encodedData ->
+                    CryptoHelper.decryptData(
+                        KEY_CRYPTO,
+                        encodedData.resource,
+                        encodedData.spec
+                    )
+                }
         }
     }
 
     fun setPassword(password: String): Completable {
-        return safeSingle {
-            CryptoHelper.signData(
+        return safeCompletable {
+            CryptoHelper.encryptData(
+                KEY_CRYPTO_PASSWORD,
                 password,
-                KEY_CRYPTO_PASSWORD
+                false
             )
+                .let { encResult ->
+                    gson.toJson(EncodedData(encResult.encDataString, encResult.ivDataString))
+                }
+                .let { encodedJson ->
+                    sharedPreferences.edit().putString(KEY_PASSWORD, encodedJson).apply()
+                }
         }
-            .onErrorResumeNext {
-                safeSingle {
-                    CryptoHelper.deleteKey(KEY_CRYPTO_PASSWORD)
-                    CryptoHelper.signData(
-                        password,
-                        KEY_CRYPTO_PASSWORD
-                    )
-                }
-            }
-            .flatMapCompletable { encodedData ->
-                completeCallable {
-                    sharedPreferences.edit().putString(KEY_CRYPTO, encodedData).apply()
-                }
-            }
     }
 
     fun deleteAccount(): Completable {
@@ -142,7 +120,7 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
-    fun getCurrentAccount(): Account? {
+    private fun getCurrentAccount(): Account? {
         return currentAccount
             .or {
                 sharedPreferences
@@ -162,14 +140,12 @@ class WalletLocalSource @Inject constructor(
                     }
                     ?.also { account ->
                         currentAccount = account
-                        accountObserver.onNext(account)
                     }
             }
     }
 
     private fun setCurrentAccount(account: Account) {
         currentAccount = account
-        accountObserver.onNext(account)
         gson
             .toJson(account)
             .let { json ->
@@ -194,5 +170,6 @@ class WalletLocalSource @Inject constructor(
 
         private const val KEY_ACCOUNT = "account"
         private const val KEY_BALANCES = "balances"
+        private const val KEY_PASSWORD = "password"
     }
 }
