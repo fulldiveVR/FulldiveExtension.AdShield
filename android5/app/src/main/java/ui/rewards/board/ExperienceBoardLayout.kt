@@ -35,8 +35,4 @@ class ExperienceBoardLayout :
 
     override fun getViewBinding() = LayoutExperienceBoardBinding
         .inflate(LayoutInflater.from(context), this, true)
-
-
-    override fun showMessage(message: String) = Unit
-    override fun showMessage(resourceId: Int) = Unit
 }

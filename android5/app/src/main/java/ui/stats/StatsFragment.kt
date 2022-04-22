@@ -29,7 +29,6 @@ import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app
-import ui.home.HomeFragmentDirections
 import ui.utils.Tab
 import ui.utils.TabLayout
 import utils.unsafeLazy

@@ -254,8 +254,7 @@ class MainActivity : LocalizationActivity(),
                         navigate(R.id.navigation_home)
                         navigate(HomeFragmentDirections.actionNavigationActivityToActivityStatsFragment())
                     }
-                toolbar.title =
-                    getString(R.string.activity_section_header) //todo replace to fragment
+                toolbar.title = getString(R.string.activity_section_header)
             }
             R.id.help_help -> {
                 PopupManager.showContactSupportDialog(this) {

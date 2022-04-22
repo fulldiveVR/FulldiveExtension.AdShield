@@ -21,7 +21,6 @@ import com.joom.lightsaber.getInstance
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import org.adshield.databinding.FragmentRewardsBinding
-import ui.StatsViewModel
 
 class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
 
