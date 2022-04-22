@@ -12,6 +12,8 @@
 
 package ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
@@ -28,6 +30,7 @@ import kotlinx.coroutines.delay
 import model.*
 import org.adshield.R
 import service.AlertDialogService
+import service.ContextService
 import service.EnvironmentService
 import service.UpdateService
 import ui.*
@@ -75,19 +78,9 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         initViews(root)
 
-        //TODO: MOCKED
         idoAnnouncementLayout.setOnClickListener {
             appSettingsVm.setIdoAnnouncementClicked()
-            findNavController()
-                .apply {
-                    navigate(R.id.navigation_home)
-                    navigate(
-                        HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                            Links.community,
-                            "MOCKED"
-                        )
-                    )
-                }
+            openUrlInBrowser(Links.idoAnnouncement)
         }
 
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
@@ -203,7 +196,7 @@ class HomeFragment : Fragment() {
         }
 
         appSettingsVm.isIdoAnnouncementClicked.observe(viewLifecycleOwner) { isIdoAnnouncementClicked ->
-            idoAnnouncementLayout.isVisible = false//TODO MOCKED!isIdoAnnouncementClicked
+            idoAnnouncementLayout.isVisible = !isIdoAnnouncementClicked
         }
 
         lifecycleScope.launchWhenCreated {
@@ -310,6 +303,13 @@ class HomeFragment : Fragment() {
                 true
             }
             else -> false
+        }
+    }
+
+    private fun openUrlInBrowser(url: String) {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+            ContextService.requireContext().startActivity(this)
         }
     }
 }
