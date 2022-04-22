@@ -29,20 +29,38 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/navigation_home" />
+
+            <action
+                android:id="@+id/action_navigation_activity_to_activityStatsFragment"
+                app:destination="@id/statsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_enter_anim"
+                app:popExitAnim="@anim/nav_default_exit_anim"
+                app:popUpTo="@id/navigation_home" />
+
+<!--        <action-->
+<!--            android:id="@+id/action_navigation_activity_to_activityDetailFragment"-->
+<!--            app:destination="@id/activityDetailFragment"-->
+<!--            app:enterAnim="@anim/nav_default_enter_anim"-->
+<!--            app:exitAnim="@anim/nav_default_exit_anim"-->
+<!--            app:popEnterAnim="@anim/nav_default_enter_anim"-->
+<!--            app:popExitAnim="@anim/nav_default_exit_anim"-->
+<!--            app:popUpTo="@id/navigation_home" />-->
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_activity"
-        android:name="ui.stats.StatsFragment"
+        android:id="@+id/navigation_rewards"
+        android:name="ui.rewards.RewardsFragment"
         tools:layout="@layout/fragment_stats">
         <action
-            android:id="@+id/action_navigation_activity_to_activityDetailFragment"
+            android:id="@+id/action_navigation_rewards_to_activityDetailFragment"
             app:destination="@id/activityDetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@id/navigation_activity" />
+            app:popUpTo="@id/navigation_rewards" />
     </fragment>
 
     <fragment
@@ -175,6 +193,11 @@
         android:id="@+id/leasesFragment"
         android:name="ui.settings.leases.LeasesFragment"
         tools:layout="@layout/fragment_leases" />
+
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="ui.stats.StatsFragment"
+        tools:layout="@layout/fragment_stats" />
     <fragment
         android:id="@+id/webFragment"
         android:name="ui.web.WebFragment"

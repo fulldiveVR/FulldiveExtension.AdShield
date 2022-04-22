@@ -17,7 +17,7 @@ import timber.log.Timber
 
 abstract class BaseMvpFragment<VB : ViewBinding> : MvpAppCompatFragment(), IInjectorHolder {
 
-    private val appInjector: Injector
+    val appInjector: Injector
         get() = (activity as IEnrichableActivity).appInjector
 
     protected var binding: VB? = null

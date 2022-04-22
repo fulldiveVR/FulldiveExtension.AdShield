@@ -20,6 +20,9 @@
 
     <color name="colorBar">#303038</color>
     <color name="colorIconPrimary">#616972</color>
+    <color name="colorIconSecondary">#676B71</color>
+    <color name="colorIconTertiary">#ffffff</color>
+
     <color name="statusBarColor">#1C1C1E</color>
 
     <color name="textColorPrimary">#F3F3F3</color>
@@ -41,4 +44,9 @@
     <color name="colorGreen">#33C75A</color>
 
     <color name="colorConnected">#1C1C1E</color>
+
+    <!-- gamification-->
+    <color name="colorGamificationPrimary">#80D789</color>
+    <color name="colorGamificationSecondary">#76C4C1</color>
+    <color name="colorLevelReward">#F9D37C</color>
 </resources>

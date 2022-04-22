@@ -12,8 +12,6 @@
 
 package model
 
-import androidx.lifecycle.GeneratedAdapter
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import engine.Host
 import java.util.*

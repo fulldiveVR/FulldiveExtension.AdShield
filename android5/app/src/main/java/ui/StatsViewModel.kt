@@ -241,7 +241,7 @@ class StatsViewModel : ViewModel() {
             }
             PacksViewModel.Filter.ALL -> {
                 allPacks.filter { pack ->
-                    activeTags.intersect(pack.tags).isEmpty() != true
+                    !activeTags.intersect(pack.tags).isEmpty()
                 }
             }
             else -> {

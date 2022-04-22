@@ -474,4 +474,9 @@
   <string name="all_networks_title">All networks</string>
   <string name="recognize_networks">Recognise network</string>
   <string name="cant_hide_toast">Stop AdShield before Hide notification</string>
+  <string name="main_tab_rewards">Rewards</string>
+  <string name="exchange_button_title">Exchange</string>
+  <string name="experience_description">&lt;font color=\"%experienceTextColor%\" face=\"sans-serif-medium\"&gt;XP %currentExperience%&lt;/font&gt;/%maxLevelExperience%</string>
+  <string name="rewards_toolbar_title">AdShield Rewards</string>
+  <string name="menu_item_about_rewards">About Rewards</string>
 </resources>
