@@ -91,7 +91,21 @@ object AppSettingsService {
     }
 
     fun setExperience(adsCount: Long) {
-58    }
+        val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
+        val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
+
+        val experience = when {
+            previousExperience >= EXCHANGE_CURRENCY -> previousExperience
+            previousExperience + newExperience >= EXCHANGE_CURRENCY -> EXCHANGE_CURRENCY
+            else -> previousExperience + newExperience
+        }
+
+        Log.d(
+            "TestB",
+            "time@@@: ${experience} --- adsCount: $adsCount new: ${(adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()}"
+        )
+        sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
+    }
 
     fun observeExperience(): Observable<Pair<Int, Int>> {
         return sharedPreferences
