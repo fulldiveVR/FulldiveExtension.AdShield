@@ -9,14 +9,14 @@ import android.view.animation.RotateAnimation
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
-import com.fulldive.wallet.presentation.base.BaseMoxyFrameLayout
+import com.fulldive.wallet.presentation.base.BaseMvpFrameLayout
 import org.adshield.R
 import ui.rewards.board.ExperienceProgressViewLayout
 import utils.fromHtmlToSpanned
 import utils.getHexColor
 import utils.unsafeLazy
 
-abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMoxyFrameLayout<V>,
+abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     ExperienceView where P : BaseExperiencePresenter<out ExperienceView> {
 
     abstract val experienceProgressViewLayout: ExperienceProgressViewLayout?
