@@ -43,8 +43,6 @@ import service.NetworkMonitorPermissionService
 import service.TranslationService
 import service.VpnPermissionService
 import ui.home.FirstTimeFragment
-import ui.home.HomeFragmentDirections
-import ui.rewards.ExchangeExperienceInfoFragment
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
@@ -60,10 +58,7 @@ class MainActivity : LocalizationActivity(),
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
-    private lateinit var toolbar: Toolbar
-
     override lateinit var appInjector: Injector
-
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
@@ -84,7 +79,8 @@ class MainActivity : LocalizationActivity(),
         setContentView(R.layout.activity_main)
 
         val navigationView: BottomNavigationView = findViewById(R.id.nav_view)
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
         setSupportActionBar(toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -93,7 +89,7 @@ class MainActivity : LocalizationActivity(),
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_rewards,
+                R.id.navigation_activity,
                 R.id.advancedFragment,
                 R.id.navigation_settings
             )
@@ -105,7 +101,7 @@ class MainActivity : LocalizationActivity(),
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showNavBar = when (destination.id) {
                 R.id.navigation_home -> true
-                R.id.navigation_rewards -> true
+                R.id.navigation_activity -> true
                 R.id.advancedFragment -> true
                 R.id.navigation_settings -> true
                 else -> isScreenBigEnough()
@@ -116,7 +112,7 @@ class MainActivity : LocalizationActivity(),
         // Needed for dynamic translation of the bottom bar
         val selectionListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val (nav, title) = when (item.itemId) {
-                R.id.navigation_rewards -> R.id.navigation_rewards to getString(R.string.main_tab_rewards)
+                R.id.navigation_activity -> R.id.navigation_activity to getString(R.string.main_tab_activity)
                 R.id.advancedFragment -> R.id.advancedFragment to getString(R.string.main_tab_advanced)
                 R.id.navigation_settings -> R.id.navigation_settings to getString(R.string.main_tab_settings)
                 else -> R.id.navigation_home to getString(R.string.main_tab_home)
@@ -132,7 +128,7 @@ class MainActivity : LocalizationActivity(),
             Logger.v("Navigation", destination.toString())
 
             val translationId = when (destination.id) {
-                R.id.navigation_rewards -> R.string.rewards_toolbar_title
+                R.id.navigation_activity -> R.string.main_tab_activity
                 R.id.activityDetailFragment -> R.string.main_tab_activity
                 R.id.navigation_packs -> getString(R.string.advanced_section_header_packs)
                 R.id.packDetailFragment -> R.string.advanced_section_header_packs
@@ -246,14 +242,6 @@ class MainActivity : LocalizationActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.help_activity -> {
-                findNavController(R.id.nav_host_fragment)
-                    .apply {
-                        navigate(R.id.navigation_home)
-                        navigate(HomeFragmentDirections.actionNavigationActivityToActivityStatsFragment())
-                    }
-                toolbar.title = getString(R.string.activity_section_header)
-            }
             R.id.help_help -> {
                 PopupManager.showContactSupportDialog(this) {
                     EmailHelper.sendEmailToSupport(this)
@@ -262,15 +250,12 @@ class MainActivity : LocalizationActivity(),
 //            R.id.help_logs -> LogService.showLog()
 //            R.id.help_sharelog -> LogService.shareLog()
             R.id.help_settings -> {
-                findNavController(R.id.nav_host_fragment)
-                    .apply {
-                        navigate(R.id.navigation_settings)
-                        navigate(
-                            SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
-                        )
-                    }
+                val nav = findNavController(R.id.nav_host_fragment)
+                nav.navigate(R.id.navigation_settings)
+                nav.navigate(
+                    SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
+                )
             }
-            R.id.help_about_rewards -> showExchangeExperienceInfoDialog()
             else -> return false
         }
         return true
@@ -280,13 +265,6 @@ class MainActivity : LocalizationActivity(),
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels / displayMetrics.density > 650
-    }
-
-    private fun showExchangeExperienceInfoDialog() {
-        findNavController(R.id.nav_host_fragment)
-            .apply {
-                navigate(R.id.exchange_experience_info_dialog)
-            }
     }
 
     companion object {

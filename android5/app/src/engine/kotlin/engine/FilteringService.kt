@@ -12,6 +12,7 @@
 
 package engine
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import service.BlocklistService
 import service.EnvironmentService
 import service.StatsService
 import utils.Logger
+import java.util.regex.Pattern.matches
 
 internal object FilteringService {
 

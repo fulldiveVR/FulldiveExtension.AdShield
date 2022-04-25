@@ -40,8 +40,4 @@
         <attr name="location" format="string" />
         <attr name="upgrade" format="boolean" />
     </declare-styleable>
-
-    <declare-styleable name="ExperienceProgressLayout">
-        <attr name="progressViewHeight" format="reference" />
-    </declare-styleable>
 </resources>

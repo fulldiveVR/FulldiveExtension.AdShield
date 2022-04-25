@@ -15,15 +15,13 @@ package ui
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.AdsCounter
-import service.AppSettingsService
 import service.PersistenceService
 import utils.Logger
 
-class AdsCounterViewModel : ViewModel() {
+class AdsCounterViewModel: ViewModel() {
 
     private val log = Logger("AdsCounter")
     private val persistence = PersistenceService
-    private val appSettingsService = AppSettingsService
 
     private val _counter = MutableLiveData<AdsCounter>()
     val counter: LiveData<Long> = _counter.distinctUntilChanged().map { it.get() }
@@ -45,7 +43,6 @@ class AdsCounterViewModel : ViewModel() {
                 val new = it.copy(runtimeValue = counter)
                 persistence.save(new)
                 _counter.value = new
-                appSettingsService.setExperience(counter)
             }
         }
     }
@@ -60,4 +57,5 @@ class AdsCounterViewModel : ViewModel() {
             }
         }
     }
+
 }
