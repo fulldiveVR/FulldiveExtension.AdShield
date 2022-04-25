@@ -108,12 +108,20 @@ class ExperienceProgressViewLayout : FrameLayout {
     ) {
         experienceProgressBarView.max = maxProgress
         maxProgress
-            .takeIf { it > 0 }
+            .takeIf { it > experienceProgressBarView.progress }
             ?.let { max ->
                 animateProgress(
                     progress,
                     EXPERIENCE_PROGRESS_ANIMATION_DELAY,
                     (animationDuration * (progress - getProgress())) / max,
+                    endAction
+                )
+            }.or {
+                experienceProgressBarView.progress = 0
+                animateProgress(
+                    progress,
+                    EXPERIENCE_PROGRESS_ANIMATION_DELAY,
+                    (animationDuration * (progress - getProgress())) / maxProgress,
                     endAction
                 )
             }

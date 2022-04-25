@@ -29,6 +29,7 @@ import org.adshield.R
 import service.AlertDialogService
 import ui.StatsViewModel
 import ui.app
+import ui.home.HomeFragmentDirections
 import ui.utils.Tab
 import ui.utils.TabLayout
 import utils.unsafeLazy
@@ -65,12 +66,11 @@ class StatsFragment : Fragment() {
         val adapter = StatsAdapter(vm, interaction = object : StatsAdapter.Interaction {
             override fun onClick(item: HistoryEntry) {
                 val nav = findNavController()
-                //todo !!!
-//                nav.navigate(
-//                    HomeFragmentDirections.actionNavigationActivityToActivityDetailFragment(
-//                        item.name
-//                    )
-//                )
+                nav.navigate(
+                    StatsFragmentDirections.actionNavigationStatsToActivityDetailFragment(
+                        item.name
+                    )
+                )
             }
         })
 
