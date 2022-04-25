@@ -94,7 +94,7 @@ class MainActivity : LocalizationActivity(),
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_rewards,
+                R.id.rewardsFragment,
                 R.id.advancedFragment,
                 R.id.navigation_settings
             )
@@ -106,7 +106,7 @@ class MainActivity : LocalizationActivity(),
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showNavBar = when (destination.id) {
                 R.id.navigation_home -> true
-                R.id.navigation_rewards -> true
+                R.id.rewardsFragment -> true
                 R.id.advancedFragment -> true
                 R.id.navigation_settings -> true
                 else -> isScreenBigEnough()
@@ -117,7 +117,7 @@ class MainActivity : LocalizationActivity(),
         // Needed for dynamic translation of the bottom bar
         val selectionListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val (nav, title) = when (item.itemId) {
-                R.id.navigation_rewards -> R.id.navigation_rewards to getString(R.string.main_tab_rewards)
+                R.id.rewardsFragment -> R.id.rewardsFragment to getString(R.string.main_tab_rewards)
                 R.id.advancedFragment -> R.id.advancedFragment to getString(R.string.main_tab_advanced)
                 R.id.navigation_settings -> R.id.navigation_settings to getString(R.string.main_tab_settings)
                 else -> R.id.navigation_home to getString(R.string.main_tab_home)
@@ -133,7 +133,7 @@ class MainActivity : LocalizationActivity(),
             Logger.v("Navigation", destination.toString())
 
             val translationId = when (destination.id) {
-                R.id.navigation_rewards -> R.string.rewards_toolbar_title
+                R.id.rewardsFragment -> R.string.rewards_toolbar_title
                 R.id.activityDetailFragment -> R.string.main_tab_activity
                 R.id.navigation_packs -> getString(R.string.advanced_section_header_packs)
                 R.id.packDetailFragment -> R.string.advanced_section_header_packs

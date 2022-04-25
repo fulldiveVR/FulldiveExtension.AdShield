@@ -19,7 +19,7 @@
         android:title="@string/main_tab_home" />
 
     <item
-        android:id="@+id/navigation_rewards"
+        android:id="@+id/rewardsFragment"
         android:icon="@drawable/ic_rewards"
         android:title="@string/main_tab_rewards" />
 

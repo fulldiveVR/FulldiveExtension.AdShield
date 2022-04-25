@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/Text.H3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/size_4dp"
+        android:text="@string/str_your_wallet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/enterExperienceTextLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        app:counterEnabled="true"
+        app:hintTextColor="@color/textColorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/enterExperienceTextEditText"
+            style="@style/HintOutlinedTextInputStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransparent"
+            android:drawablePadding="@dimen/size_8dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="top"
+            android:imeOptions="actionNext"
+            android:inputType="textAutoCorrect|textMultiLine|textAutoComplete"
+            android:paddingStart="@dimen/size_8dp"
+            android:paddingTop="@dimen/size_8dp"
+            android:paddingEnd="@dimen/size_8dp"
+            android:textColor="@color/textColorPrimary"
+            android:textColorHint="@color/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/coinsTextView"
+        style="@style/Text.H3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/size_4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/enterExperienceTextLayout"
+        tools:text="1 FD Token" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,38 +34,51 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:padding="@dimen/size_4dp"
-                android:text="@string/str_your_wallet"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@string/str_your_wallet" />
 
             <TextView
                 android:id="@+id/balanceTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/size_16dp"
                 android:drawablePadding="@dimen/size_8dp"
+                android:fontFamily="@font/roboto_medium"
                 android:textSize="@dimen/textsize_xlarge"
                 app:drawableStartCompat="@drawable/ic_fd_token"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addressTextView"
                 tools:text="1000" />
 
-            <TextView
-                android:id="@+id/addressTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_16dp"
-                android:textSize="@dimen/text_size_normal"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Account address: imv1...."
-                tools:visibility="visible" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/addressTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_16dp"
+                    android:layout_marginEnd="@dimen/size_16dp"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintEnd_toStartOf="@+id/copyAddressButton"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="cfdvdfvfd434568970" />
+
+                <ImageButton
+                    android:id="@+id/copyAddressButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_8dp"
+                    android:background="?selectableItemBackground"
+                    android:minWidth="@dimen/size_36dp"
+                    android:minHeight="@dimen/size_36dp"
+                    android:src="@drawable/ic_copy"
+                    app:layout_constraintBottom_toBottomOf="@id/addressTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/addressTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ui.base.SettingsItem
                 android:id="@+id/viewPrivatKeyItem"
