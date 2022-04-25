@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import org.adshield.R
 import service.AlertDialogService
 import ui.*
-import ui.utils.openInBrowser
+import utils.openInBrowser
 import utils.Links
 
 class WebFragment : BottomSheetFragment() {

@@ -17,11 +17,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.*
 import org.adshield.R
-import service.tr
 import ui.AccountViewModel
 import ui.app
-import ui.utils.AndroidUtils
-import utils.Links
 
 class SettingsLogoutFragment : PreferenceFragmentCompat() {
 

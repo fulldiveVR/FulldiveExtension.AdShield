@@ -18,8 +18,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.BlokadaException
 import model.Uri
-import model.ex
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 
 object BlocklistService {

@@ -15,7 +15,7 @@ package model
 import repository.DnsDataSource
 import repository.PackDataSource
 import service.EnvironmentService
-import ui.utils.now
+import utils.now
 
 object Defaults {
 

@@ -19,7 +19,7 @@ import android.view.View
 import android.widget.*
 import appextension.getColorCompat
 import org.adshield.R
-import ui.utils.getColorFromAttr
+import utils.getColorFromAttr
 import utils.toBlokadaPlusText
 import utils.withBoldSections
 

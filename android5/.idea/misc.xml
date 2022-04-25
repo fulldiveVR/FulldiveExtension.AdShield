@@ -30,6 +30,7 @@
         <entry key="app/src/main/res/drawable/ic_all_networks.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_any_mobile.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_apps.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_arrow.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_admin_panel_settings_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_android_24.xml" value="0.1" />
@@ -112,6 +113,7 @@
         <entry key="app/src/main/res/layout/fragment_apps.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/fragment_apps_filter.xml" value="0.23854166666666668" />
         <entry key="app/src/main/res/layout/fragment_bottomsheet.xml" value="0.2015625" />
+        <entry key="app/src/main/res/layout/fragment_crypto_main.xml" value="0.28541666666666665" />
         <entry key="app/src/main/res/layout/fragment_dnschoice.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_encryption_level.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.16510416666666666" />
@@ -141,8 +143,11 @@
         <entry key="app/src/main/res/layout/item_pack.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/item_userdenied.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/layout_activate_view.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/layout_add_account.xml" value="0.2234375" />
+        <entry key="app/src/main/res/layout/layout_crypto_main.xml" value="0.28541666666666665" />
         <entry key="app/src/main/res/layout/layout_experience_board.xml" value="0.5" />
         <entry key="app/src/main/res/layout/layout_experience_progress_view.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/layout_settings_item.xml" value="0.32382246376811596" />
         <entry key="app/src/main/res/layout/layout_tab_text.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/plusbutton.xml" value="0.375" />
         <entry key="app/src/main/res/layout/rate_report_dialog_layout.xml" value="0.3098958333333333" />

@@ -21,7 +21,7 @@ import android.telephony.SubscriptionManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.*
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.net.InetAddress
 

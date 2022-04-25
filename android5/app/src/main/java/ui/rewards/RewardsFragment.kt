@@ -16,6 +16,14 @@
 
 package ui.rewards
 
+import android.content.Intent
+import android.os.Bundle
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.view.View
+import androidx.core.view.isVisible
+import com.fulldive.wallet.models.Account
+import com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity
 import com.fulldive.wallet.presentation.base.BaseMvpFragment
 import com.joom.lightsaber.getInstance
 import moxy.presenter.InjectPresenter
@@ -31,4 +39,51 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
 
     @ProvidePresenter
     fun providePresenter(): RewardsPresenter = appInjector.getInstance()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding {
+            cryptoMainLayout.viewPrivatKeyItem.setOnClickListener { presenter.onViewPrivateKeyClicked() }
+            cryptoMainLayout.viewMnemonicItem.setOnClickListener { presenter.onViewMnemonicClicked() }
+            addAccountLayout.restoreWithPrivateKey.setOnClickListener {
+//        showActivity(packageContext, PrivateKeyRestoreActivity::class.java)
+            }
+            addAccountLayout.restoreWithMnemonic.setOnClickListener {
+//        showActivity(packageContext, MnemonicRestoreActivity::class.java)
+            }
+            addAccountLayout.createButton.setOnClickListener {
+                showActivity(CreateAccountActivity::class.java)
+            }
+        }
+    }
+
+    override fun showCreateWalletLayout() {
+        binding {
+            cryptoMainLayout.containerLayout.isVisible = false
+            addAccountLayout.containerLayout.isVisible = true
+        }
+    }
+
+    override fun showAccount(account: Account) {
+        binding {
+            addAccountLayout.containerLayout.isVisible = false
+            cryptoMainLayout.containerLayout.isVisible = true
+            cryptoMainLayout.addressTextView.text = account.address
+        }
+    }
+
+    override fun showBalance(spannableString: SpannableString, denom: String) {
+        binding {
+            cryptoMainLayout.balanceTextView.isVisible = true
+            cryptoMainLayout.balanceTextView.text = SpannableStringBuilder(spannableString)
+                .append(" ")
+                .append(denom)
+        }
+    }
+
+    private fun showActivity(clazz: Class<*>) {
+        val activity = requireActivity()
+        val intent = Intent(activity, clazz)
+        activity.startActivity(intent)
+    }
 }

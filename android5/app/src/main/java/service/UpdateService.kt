@@ -19,8 +19,8 @@ import model.*
 import org.adshield.R
 import ui.Command
 import ui.executeCommand
-import ui.utils.cause
-import ui.utils.openInBrowser
+import utils.cause
+import utils.openInBrowser
 import utils.Logger
 import utils.UpdateNotification
 

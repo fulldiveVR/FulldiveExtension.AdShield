@@ -13,9 +13,9 @@ import android.widget.ProgressBar
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import appextension.or
+import com.fulldive.wallet.extensions.find
+import com.fulldive.wallet.extensions.unsafeLazy
 import org.adshield.R
-import utils.find
-import utils.unsafeLazy
 
 class ExperienceProgressViewLayout : FrameLayout {
 

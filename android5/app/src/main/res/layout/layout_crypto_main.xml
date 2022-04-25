@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPermanentWhite"
+    android:minHeight="400dp">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
+
+        <LinearLayout
+            android:id="@+id/topSettingsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                style="@style/Text.H3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_16dp"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_marginEnd="@dimen/size_16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:padding="@dimen/size_4dp"
+                android:text="@string/str_your_wallet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/balanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_16dp"
+                android:drawablePadding="@dimen/size_8dp"
+                android:textSize="@dimen/textsize_xlarge"
+                app:drawableStartCompat="@drawable/ic_fd_token"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addressTextView"
+                tools:text="1000" />
+
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_16dp"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Account address: imv1...."
+                tools:visibility="visible" />
+
+            <ui.base.SettingsItem
+                android:id="@+id/viewPrivatKeyItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:settingsItemShowBottomSeparator="false"
+                app:settingsItemShowTopSeparator="false"
+                app:settingsItemTitle="@string/str_view_private_key" />
+
+            <ui.base.SettingsItem
+                android:id="@+id/viewMnemonicItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:settingsItemShowBottomSeparator="false"
+                app:settingsItemShowTopSeparator="false"
+                app:settingsItemTitle="@string/str_view_mnemonic" />
+
+            <ui.base.SettingsItem
+                android:id="@+id/openFdWalletItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:settingsItemShowBottomSeparator="false"
+                app:settingsItemShowTopSeparator="false"
+                app:settingsItemTitle="@string/str_open_fd_wallet" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

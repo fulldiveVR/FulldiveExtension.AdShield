@@ -1,12 +1,22 @@
 package com.fulldive.wallet.extensions
 
 import android.app.Activity
+import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
+import android.os.Build
+import android.text.Html
+import android.text.Spanned
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ImageView
+import androidx.annotation.ColorRes
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fulldive.wallet.presentation.base.BaseMvpFrameLayout
@@ -58,5 +68,23 @@ fun ViewGroup.clear() {
         } catch (ex: Exception) {
             Timber.e(ex)
         }
+    }
+}
+
+fun Context.getHexColor(@ColorRes id: Int): String {
+    return String.format("#%06x", ContextCompat.getColor(this, id).and(0xffffff))
+}
+
+fun Drawable.setColor(color: Int, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_ATOP) {
+    this.mutate().colorFilter = PorterDuffColorFilter(color, mode)
+}
+
+inline fun <reified T : View> View.find(@IdRes id: Int): T = findViewById(id)
+
+fun fromHtmlToSpanned(html: String?): Spanned {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html.orEmptyString(), Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(html.orEmptyString())
     }
 }

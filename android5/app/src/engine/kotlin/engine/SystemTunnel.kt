@@ -23,7 +23,7 @@ import model.SystemTunnelRevoked
 import service.ContextService
 import ui.TunnelViewModel
 import ui.app
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.io.FileInputStream
 import java.io.FileOutputStream

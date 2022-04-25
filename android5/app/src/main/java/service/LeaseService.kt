@@ -14,7 +14,7 @@ package service
 
 import model.*
 import repository.BlockaRepository
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 
 object LeaseService {

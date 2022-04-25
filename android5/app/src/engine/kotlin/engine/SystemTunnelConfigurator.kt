@@ -17,12 +17,9 @@ import android.os.Build
 import android.system.OsConstants
 import model.*
 import repository.AppRepository
-import repository.DnsDataSource
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.net.Inet4Address
-import java.net.Inet6Address
-import java.net.InetAddress
 
 object SystemTunnelConfigurator {
 

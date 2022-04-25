@@ -26,7 +26,7 @@ import model.BlokadaException
 import model.Stats
 import model.TunnelStatus
 import engine.*
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import utils.MonitorNotification
 

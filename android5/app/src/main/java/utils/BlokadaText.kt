@@ -19,8 +19,6 @@ import android.text.style.TextAppearanceSpan
 import androidx.core.text.*
 import org.adshield.R
 import service.ContextService
-import ui.utils.cause
-import ui.utils.getColorFromAttr
 
 fun String.toBlokadaPlusText(): Spannable {
     val text = "BLOKADA+"

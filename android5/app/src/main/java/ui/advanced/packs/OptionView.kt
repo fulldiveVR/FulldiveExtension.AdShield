@@ -22,7 +22,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import org.adshield.R
-import ui.utils.getColorFromAttr
 
 class OptionView : FrameLayout {
 
