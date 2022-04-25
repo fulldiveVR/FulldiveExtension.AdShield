@@ -116,8 +116,9 @@ public class CryptoHelper {
             s.update(data);
             byte[] signature = s.sign();
             result = Base64.encodeToString(signature, Base64.DEFAULT);
-
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Timber.e(ex);
+            ex.printStackTrace();
         }
         return result;
     }

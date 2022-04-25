@@ -140,6 +140,13 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.password.PasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
         <receiver android:name="service.DozeReceiver" />
 
         <service
@@ -157,7 +164,7 @@
 
         <service android:name="service.ForegroundService" />
 
-<!--        <service android:name="ui.CommandService" />-->
+        <!--        <service android:name="ui.CommandService" />-->
 
         <service
             android:name="ui.QuickSettingsToggle"
