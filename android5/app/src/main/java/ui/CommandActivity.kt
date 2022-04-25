@@ -30,9 +30,9 @@ import service.ContextService
 import service.EnvironmentService
 import service.LogService
 import service.NotificationService
+import utils.cause
 import utils.Logger
 import utils.MonitorNotification.Companion.STATUS_NOTIFICATION_ID
-import utils.cause
 
 enum class Command {
     OFF, ON, DNS, LOG, ACC, ESCAPE, TOAST, DOH, HIDE
@@ -117,7 +117,6 @@ class CommandActivity : AppCompatActivity() {
             Command.TOAST -> {
                 Toast.makeText(this, param, Toast.LENGTH_LONG).show()
             }
-            else -> {}
         }
     }
 

@@ -12,107 +12,179 @@
 
 package ui.web
 
-import android.annotation.SuppressLint
-import android.app.SearchManager
-import android.database.Cursor
-import android.database.MatrixCursor
-import android.graphics.Bitmap
+import android.content.ComponentName
+import android.net.Uri
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.view.*
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import android.widget.CursorAdapter
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
-import androidx.cursoradapter.widget.SimpleCursorAdapter
+import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsClient
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import appextension.dialogs.PopupManager
-import com.fulldive.wallet.extensions.or
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.adshield.R
-import service.RemoteConfigService
-import ui.BottomSheetFragment
-import ui.StatsViewModel
-import ui.advanced.apps.AppsViewModel
-import ui.advanced.packs.PacksViewModel
-import ui.app
-import ui.utils.CircleProgressBar
-import ui.web.appsettings.AppsSettingsExtension
-import ui.web.customsettings.CustomSettingsExtension
+import service.AlertDialogService
+import ui.*
+import utils.openInBrowser
 import utils.Links
 
 class WebFragment : BottomSheetFragment() {
 
-    private val suggestions = WebSettings.getWebSettings()
+    private lateinit var vm: AccountViewModel
+    private lateinit var activationVM: ActivationViewModel
+    private lateinit var settingsVM: SettingsViewModel
 
-    private lateinit var packsVM: PacksViewModel
-    private lateinit var appsVM: AppsViewModel
-    private lateinit var statsVM: StatsViewModel
-    private lateinit var webView: WebView
-    private lateinit var circleProgressView: CircleProgressBar
-    private lateinit var searchBar: SearchView
-    private lateinit var webBackButton: AppCompatImageView
-    private lateinit var webRefreshButton: AppCompatImageView
+    companion object {
+        fun newInstance() = WebFragment()
+    }
+
+    private val webService = WebService
+    private val alertService = AlertDialogService
 
     private val args: WebFragmentArgs by navArgs()
 
-    private var currentSettings: WebSettings = WebSettings.Empty
+    private var tabsServiceBound = false
+    private var waitingToComeBack = false
+    private lateinit var currentUrl: String
 
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        packsVM = ViewModelProvider(this)[PacksViewModel::class.java]
-        appsVM = ViewModelProvider(this)[AppsViewModel::class.java]
         activity?.let {
-            statsVM = ViewModelProvider(it.app())[StatsViewModel::class.java]
+            vm = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
+            settingsVM = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
+            activationVM = ViewModelProvider(it).get(ActivationViewModel::class.java)
         }
 
-        val root = inflater.inflate(R.layout.fragment_web_view, container, false)
-        webView = root.findViewById(R.id.webView)
-        circleProgressView = root.findViewById(R.id.circleProgressView)
-        searchBar = root.findViewById(R.id.searchBar)
-        webBackButton = root.findViewById(R.id.webBackButton)
-        webRefreshButton = root.findViewById(R.id.webRefreshButton)
+        currentUrl = args.url
 
-        webBackButton.setOnClickListener {
-            if (webView.canGoBack()) {
-                webView.goBack()
+        setHasOptionsMenu(true)
+
+        val root = inflater.inflate(R.layout.fragment_web, container, false)
+
+        val loading: View = root.findViewById(R.id.web_loading)
+        val loadingText: TextView = root.findViewById(R.id.web_loading_text)
+
+        val openBrowser: View = root.findViewById(R.id.web_openinbrowser)
+        openBrowser.setOnClickListener {
+            launchInBrowser(args.url)
+        }
+
+        if ((settingsVM.getUseChromeTabs() ||
+                    Links.isSubscriptionLink(args.url))
+            && (tabsServiceBound || bindChromeTabs())
+        ) {
+            launchInCustomTabs(args.url)
+        } else {
+            // Only instantiate WebView if we're not using custom tabs
+            lifecycleScope.launchWhenCreated {
+                val container: ViewGroup = root.findViewById(R.id.container)
+                val webView = webService.getWebView(object : WebService.Interaction {
+
+                    override fun onOpenInBrowser(url: String) = launchInBrowser(url)
+
+                    override fun onDownload(url: String) {
+                        alertService.showAlert(
+                            message = getString(R.string.alert_download_link_body),
+                            title = getString(R.string.universal_action_open_in_browser),
+                            positiveAction = getString(R.string.universal_action_open_in_browser) to {
+                                launchInBrowser(currentUrl)
+                            }
+                        )
+                    }
+
+                    override fun onLoaded(url: String) {
+                        loading.visibility = View.GONE
+                        performUrlSpecificActions(url)
+                    }
+
+                    override fun onLoadedWithError(url: String, error: String) {
+                        if (url == args.url) {
+                            context?.let { ctx ->
+                                loadingText.text = ctx.getString(R.string.error_fetching_data)
+                            }
+                        } else {
+                            loading.visibility = View.GONE
+                        }
+                    }
+
+                    override fun onWentBackToTheBeginning() {
+                        try {
+                            val nav = findNavController()
+                            nav.navigateUp()
+                        } catch (ex: Exception) {
+                            // It may happen if user navigated away from the app quickly. Ignore
+                        }
+                    }
+
+                })
+                container.addView(webView)
+                webView.loadUrl(args.url)
             }
-            webView.postDelayed(
-                { searchBar.setQuery(webView.url, false) },
-                200
-            )
         }
 
-        webRefreshButton.setOnClickListener {
-            webView.url?.let { it1 -> webView.loadUrl(it1) }
-        }
-
-        circleProgressView.isVisible = true
-        if (args.url == Links.dnsSettings) {
-            var isLoaded = false
-            packsVM.packs.observe(viewLifecycleOwner) { packs ->
-                if (!isLoaded) {
-                    webView.isVisible = true
-                    circleProgressView.isVisible = false
-                    searchBar.setQuery(args.url, false)
-                    webView.loadUrl(args.url)
-                    isLoaded = true
-                }
-            }
-        }
-
-        initSearchBar()
-        initWebView()
         return root
+    }
+
+    private fun launchInCustomTabs(url: String) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(requireContext(), Uri.parse(url))
+        requireContext().unbindService(connection)
+        waitToComeBack()
+        performActionsAfterExternalViewScenario(url)
+    }
+
+    private fun launchInBrowser(url: String) {
+        try {
+            openInBrowser(url)
+            waitToComeBack()
+            performActionsAfterExternalViewScenario(url)
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun performUrlSpecificActions(url: String) {
+        currentUrl = url
+        activationVM.maybeRefreshAccountAfterUrlVisited(url)
+    }
+
+    private fun performActionsAfterExternalViewScenario(url: String) {
+        lifecycleScope.launch {
+            delay(2000) // To not flag it before we get the onResume() call
+
+            // This is to refresh account after we are back from custom tabs or external browser
+            if (Links.isSubscriptionLink(url)) activationVM.setStartedPurchaseFlow()
+        }
+    }
+
+    private fun waitToComeBack() {
+        lifecycleScope.launch {
+            delay(2000) // To not flag it before we get the onResume() call
+            waitingToComeBack = true
+        }
+    }
+
+    private fun finishWhenCameBack() {
+        if (waitingToComeBack) {
+            lifecycleScope.launch {
+                delay(1000) // So that user sees we went back
+                val nav = findNavController()
+                nav.navigateUp()
+                waitingToComeBack = false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activationVM.maybeRefreshAccountAfterOnResume()
+        finishWhenCameBack()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -120,191 +192,30 @@ class WebFragment : BottomSheetFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun initSearchBar() {
-        val suggestionsAdapter = SimpleCursorAdapter(
-            requireContext(),
-            R.layout.layout_suggestion_list_item,
-            null,
-            arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1),
-            intArrayOf(R.id.titleTextView),
-            CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER
-        )
-        searchBar.suggestionsAdapter = suggestionsAdapter
-
-        searchBar.setOnSuggestionListener(object : SearchView.OnSuggestionListener {
-            override fun onSuggestionSelect(position: Int): Boolean {
-                return false
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.web_openinbrowser -> {
+                launchInBrowser(currentUrl)
+                true
             }
-
-            override fun onSuggestionClick(position: Int): Boolean {
-                val cursor = searchBar.suggestionsAdapter.getItem(position) as Cursor
-                val index = cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_2_URL)
-                return if (index >= 0) {
-                    val selection = cursor.getString(index)
-                    searchBar.setQuery(selection, true)
-                    true
-                } else {
-                    false
-                }
-            }
-        })
-
-        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                if (WebService.isUrl(query)) {
-                    webView.loadUrl(query)
-                } else {
-                    webView.loadUrl("https://www.google.com/search?q=$query")
-                }
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                val cursor = MatrixCursor(
-                    arrayOf(
-                        BaseColumns._ID,
-                        SearchManager.SUGGEST_COLUMN_TEXT_1,
-                        SearchManager.SUGGEST_COLUMN_TEXT_2_URL
-                    )
-                )
-                suggestions.forEach { suggestion ->
-                    cursor.addRow(
-                        arrayOf(
-                            suggestion.id,
-                            getString(suggestion.titleRes),
-                            suggestion.url
-                        )
-                    )
-                }
-
-                suggestionsAdapter.changeCursor(cursor)
-                return newText.isNotEmpty()
-            }
-        })
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun initWebView() {
-        val blocklistExtension = ForwardingListExtension().apply {
-            onBlocklistChangeListener = { jsonConfig ->
-                val type = object : TypeToken<List<PacksViewModel.PackEntity>>() {}.type
-                val config: List<PacksViewModel.PackEntity> = Gson().fromJson(jsonConfig, type)
-                packsVM.onPacksConfigChanged(config)
-            }
-        }
-        val appExtension = AppsSettingsExtension().apply {
-            onAppStateChangeListener = { appId, _ ->
-                appsVM.switchBypass(appId)
-            }
-        }
-
-        val customSettingsExtension = CustomSettingsExtension().apply {
-            onCustomSettingsStateChangeListener = { config ->
-                statsVM.onConfigUpdate(config)
-            }
-        }
-
-        webView.settings.javaScriptEnabled = true
-        webView.addJavascriptInterface(blocklistExtension, ForwardingListExtension.EXTENSION_NAME)
-        webView.addJavascriptInterface(appExtension, AppsSettingsExtension.EXTENSION_NAME)
-        webView.addJavascriptInterface(
-            customSettingsExtension,
-            CustomSettingsExtension.EXTENSION_NAME
-        )
-
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (url.isNotEmpty()) {
-                    searchBar.setQuery(url, false)
-                }
-                return super.shouldOverrideUrlLoading(view, url)
-            }
-
-            override fun onPageStarted(view: WebView?, url: String, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                currentSettings = suggestions
-                    .firstOrNull { it.url == url }
-                    .or { WebSettings.Empty }
-            }
-
-            override fun onPageFinished(view: WebView, url: String) {
-                processSettingsPage()
-                webBackButton.isGone = !webView.canGoBack()
-            }
+            else -> false
         }
     }
 
-    private fun processSettingsPage() {
-        packsVM.packs.removeObservers(viewLifecycleOwner)
-        appsVM.apps.removeObservers(viewLifecycleOwner)
-        statsVM.customBlocklistConfig.removeObservers(viewLifecycleOwner)
-        when (currentSettings) {
-            WebSettings.BlockListsSettings -> {
-                loadPacksConfig()
-            }
-            WebSettings.AppsListsSettings -> {
-                loadAppsConfig()
-            }
-            WebSettings.CustomBlockListsSettings -> {
-                loadCustomConfig()
-            }
-            else -> {}
+    var connection: CustomTabsServiceConnection = object : CustomTabsServiceConnection() {
+        override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
+            tabsServiceBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            tabsServiceBound = false
         }
     }
 
-    private fun loadPacksConfig() {
-        var isLoaded = false
-        packsVM.packs.observe(viewLifecycleOwner) { packs ->
-            if (!isLoaded && packs != null) {
-                val packsConfiguration = packsVM.mapPacksToEntities(packs)
-                val jsonConfig = Gson().toJson(packsConfiguration)
-                webView.isVisible = true
-                circleProgressView.isVisible = false
-                webView.loadUrl("javascript:loadConfig('$jsonConfig')")
-                isLoaded = true
-            }
-        }
-    }
-
-    private fun loadAppsConfig() {
-        var isLoaded = false
-        appsVM.apps.observe(viewLifecycleOwner) { apps ->
-            if (!isLoaded) {
-                val jsonConfig = Gson().toJson(apps)
-                webView.isVisible = true
-                circleProgressView.isVisible = false
-                PopupManager.showAppSettingsPermissionDialog(requireContext()) { isGranted ->
-                    if (isGranted) {
-                        webView.loadUrl("javascript:loadConfig('$jsonConfig')")
-                    } else {
-                        findNavController().popBackStack()
-                    }
-                }
-                isLoaded = true
-            }
-        }
-    }
-
-    private fun loadCustomConfig() {
-        var isLoaded = false
-        statsVM.customBlocklistConfig.observe(viewLifecycleOwner) { config ->
-            if (!isLoaded) {
-                val mappedConfig = config.copy(
-                    isDenied = config.isDenied
-                        .toMutableList()
-                        .minus(RemoteConfigService.getAdblockWorkCheckDomain())
-                )
-                val jsonConfig = Gson().toJson(mappedConfig)
-                webView.isVisible = true
-                circleProgressView.isVisible = false
-                webView.loadUrl("javascript:loadHosts('$jsonConfig')")
-                isLoaded = true
-            }
-        }
-    }
-
-    companion object {
-        fun newInstance() = WebFragment()
-    }
+    fun bindChromeTabs() = CustomTabsClient.bindCustomTabsService(
+        requireContext(),
+        CUSTOM_TAB_PACKAGE_NAME, connection
+    )
 }
+
+private const val CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome"

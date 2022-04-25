@@ -16,6 +16,7 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
@@ -44,10 +45,10 @@ import service.TranslationService
 import service.VpnPermissionService
 import ui.home.FirstTimeFragment
 import ui.home.HomeFragmentDirections
-import ui.rewards.ExchangeExperienceInfoFragment
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
+import utils.Links
 import utils.Logger
 
 
@@ -270,7 +271,7 @@ class MainActivity : LocalizationActivity(),
                         )
                     }
             }
-            R.id.help_about_rewards -> showExchangeExperienceInfoDialog()
+            R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }
         return true
@@ -282,11 +283,11 @@ class MainActivity : LocalizationActivity(),
         return displayMetrics.heightPixels / displayMetrics.density > 650
     }
 
-    private fun showExchangeExperienceInfoDialog() {
-        findNavController(R.id.nav_host_fragment)
-            .apply {
-                navigate(R.id.exchange_experience_info_dialog)
-            }
+    private fun openUrlInBrowser(url: String) {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+            ContextService.requireContext().startActivity(this)
+        }
     }
 
     companion object {

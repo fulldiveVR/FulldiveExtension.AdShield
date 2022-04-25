@@ -14,15 +14,12 @@ package ui
 
 import androidx.lifecycle.*
 import engine.EngineService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import model.*
-import remoteconfig.FulldiveRemoteConfigFetcher
 import service.*
+import utils.cause
 import utils.Logger
 import utils.MonitorNotification
-import utils.cause
 
 /**
  * This class is responsible for managing the tunnel state and reflecting it on the UI.
@@ -30,7 +27,7 @@ import utils.cause
  * Mainly used in HomeFragment, but also affecting other parts, like Settings.
  * Warning, this class has the highest chance to be the bloated point of the app.
  */
-class TunnelViewModel : ViewModel() {
+class TunnelViewModel: ViewModel() {
 
     private val log = Logger("Blocka")
     private val persistence = PersistenceService
@@ -40,9 +37,6 @@ class TunnelViewModel : ViewModel() {
 
     private val _config = MutableLiveData<BlockaConfig>()
     val config: LiveData<BlockaConfig> = _config
-
-    private val _isAdblockWork = MutableLiveData<Boolean>()
-    val isAdblockWork: LiveData<Boolean> = _isAdblockWork
 
     private val _tunnelStatus = MutableLiveData<TunnelStatus>()
     val tunnelStatus: LiveData<TunnelStatus> = _tunnelStatus.distinctUntilChanged()
@@ -60,22 +54,6 @@ class TunnelViewModel : ViewModel() {
             if (cfg.tunnelEnabled) {
                 log.w("Starting tunnel after app start, as it was active before")
                 turnOnWhenStartedBySystem()
-            }
-        }
-    }
-
-    fun checkAppVersion() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val currentAppVersion = FulldiveRemoteConfigFetcher.getCurrentAppVersion()
-            AppSettingsService.setCurrentAppVersion(currentAppVersion)
-        }
-    }
-
-    fun checkIfAdblockWork() {
-        viewModelScope.launch {
-            MonitorService.setInfo(0)
-            _isAdblockWork.value = withContext(Dispatchers.IO) {
-                CheckAdblockWorkService.isAdblockWork()
             }
         }
     }
@@ -114,8 +92,7 @@ class TunnelViewModel : ViewModel() {
                 val s = engine.getTunnelStatus()
                 if (!s.inProgress && !s.active) {
                     try {
-                        val cfg = _config.value?.copy(tunnelEnabled = true)
-                            ?: throw BlokadaException("Config not set")
+                        val cfg = _config.value?.copy(tunnelEnabled = true) ?: throw BlokadaException("Config not set")
                         engine.updateConfig(user = cfg)
                         if (cfg.vpnEnabled) lease.checkLease(cfg)
                         cfg.copy(tunnelEnabled = true).emit()
@@ -137,8 +114,7 @@ class TunnelViewModel : ViewModel() {
             val s = engine.getTunnelStatus()
             if (!s.inProgress && s.active) {
                 try {
-                    val cfg = _config.value?.copy(tunnelEnabled = false)
-                        ?: throw BlokadaException("Config not set")
+                    val cfg = _config.value?.copy(tunnelEnabled = false) ?: throw BlokadaException("Config not set")
                     engine.updateConfig(user = cfg)
                     cfg.emit()
                     NotificationService.cancel(MonitorNotification.STATUS_NOTIFICATION_ID)
@@ -146,7 +122,7 @@ class TunnelViewModel : ViewModel() {
                 } catch (ex: Exception) {
                     handleException(ex)
                 }
-            } else {
+        } else {
                 log.w("Tunnel busy or already stopped")
                 s.emit()
             }
@@ -327,4 +303,5 @@ class TunnelViewModel : ViewModel() {
         _config.value = this
         persistence.save(this)
     }
+
 }

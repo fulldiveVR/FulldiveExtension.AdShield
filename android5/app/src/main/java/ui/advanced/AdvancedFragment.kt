@@ -19,20 +19,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
 import org.adshield.R
-import service.EnvironmentService
 import ui.TunnelViewModel
-import ui.home.ProtectionLevelFragment
 import ui.app
-import ui.utils.getColorFromAttr
-import utils.Links
 
 class AdvancedFragment : Fragment() {
 

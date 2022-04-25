@@ -16,9 +16,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.fulldive.wallet.extensions.letOr
 import engine.EngineService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.*
@@ -26,10 +24,9 @@ import org.adshield.R
 import service.AlertDialogService
 import service.BlocklistService
 import service.PersistenceService
-import ui.advanced.presets.PacksPreset
-import utils.Logger
 import utils.cause
 import utils.now
+import utils.Logger
 import kotlin.random.Random
 
 class PacksViewModel : ViewModel() {
@@ -50,16 +47,9 @@ class PacksViewModel : ViewModel() {
     private val _packs = MutableLiveData<Packs>()
     val packs = _packs.map { applyFilters(it.packs) }
 
-    private val _packsPresets = MutableLiveData<List<PacksPreset>>()
-    val packsPresets = _packsPresets
-
-    private var allPacks: List<Pack> = emptyList()
-
     init {
         viewModelScope.launch {
-            val packs = persistence.load(Packs::class)
-            allPacks = packs.packs
-            _packs.value = packs
+            _packs.value = persistence.load(Packs::class)
         }
     }
 
@@ -67,28 +57,17 @@ class PacksViewModel : ViewModel() {
         viewModelScope.launch {
             delay(3000) // Let the app start up and not block our download
             // Refresh every 2-3 days but only on app fresh start
-            _packsPresets.value = PacksPreset.getPresets()
-
-            if (_packs.value?.lastRefreshMillis ?: 0 < (now() - (2 * 86400 + Random.nextInt(
-                    86400
-                )))
-            ) {
+            if (_packs.value?.lastRefreshMillis ?: 0 < (now() - (2 * 86400 + Random.nextInt(86400)))) {
                 try {
                     log.w("Packs are stale, re-downloading")
                     // Also include urls of any active pack
                     _packs.value?.let { packs ->
                         val urls =
-                            packs.packs.filter { it.status.installed }
-                                .flatMap { it.getUrls(PackFilterType.NonWildcards) }
+                            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.NonWildcards) }
                                 .distinct()
                         blocklist.downloadAll(urls, force = true)
                         blocklist.mergeAll(urls)
-                        // No need to update custom filters on blocklist change.
-                        engine.reloadBlockLists(
-                            getActiveUrls(),
-                            CustomBlocklistConfig.emptyConfig,
-                            CustomBlocklistConfig.emptyConfig
-                        )
+                        engine.reloadBlockLists(getActiveUrls())
                         persistence.save(packs.copy(lastRefreshMillis = now()))
                     }
                 } catch (ex: Throwable) {
@@ -124,19 +103,13 @@ class PacksViewModel : ViewModel() {
                 // Also include urls of any active pack
                 _packs.value?.let { packs ->
                     val moreUrls =
-                        packs.packs.filter { it.status.installed }
-                            .flatMap { it.getUrls(PackFilterType.NonWildcards) }
+                        packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.NonWildcards) }
                     urls = (urls + moreUrls).distinct()
                 }
 
                 blocklist.downloadAll(urls)
                 blocklist.mergeAll(urls)
-                // No need to update custom filters on blocklist change.
-                engine.reloadBlockLists(
-                    getActiveUrls(),
-                    CustomBlocklistConfig.emptyConfig,
-                    CustomBlocklistConfig.emptyConfig
-                )
+                engine.reloadBlockLists(getActiveUrls())
                 updatePack(pack.changeStatus(installing = false, installed = true))
             } catch (ex: Throwable) {
                 log.e("Could not install pack".cause(ex))
@@ -163,12 +136,7 @@ class PacksViewModel : ViewModel() {
                     blocklist.mergeAll(urls)
                 }
 
-                // No need to update custom filters on blocklist change.
-                engine.reloadBlockLists(
-                    getActiveUrls(),
-                    CustomBlocklistConfig.emptyConfig,
-                    CustomBlocklistConfig.emptyConfig
-                )
+                engine.reloadBlockLists(getActiveUrls())
                 updatePack(pack.changeStatus(installing = false, installed = false))
             } catch (ex: Throwable) {
                 log.e("Could not uninstall pack".cause(ex))
@@ -178,113 +146,11 @@ class PacksViewModel : ViewModel() {
         }
     }
 
-    fun onPacksConfigChanged(config: List<PackEntity>) {
-        applyPacksConfig(config)
-    }
-
-    fun applyPacksConfig(config: List<PackEntity>) {
-        val updatedPacks = config.mapNotNull { packEntity ->
-            allPacks.firstOrNull { pack ->
-                packEntity.id == pack.id
-            }
-        }
-        val installedPackIds = config
-            .filter { packEntity ->
-                packEntity.configs.any { it.isActive }
-            }.map { it.id }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val changedPacks = mutableListOf<Pack>()
-            updatedPacks.forEach { pack ->
-                changedPacks.add(
-                    pack.changeStatus(
-                        installing = true,
-                        installed = installedPackIds.any { it == pack.id },
-                        enabledConfig = config.firstOrNull { packEntity ->
-                            packEntity.id == pack.id
-                        }.letOr(
-                            { packEntity ->
-                                packEntity.configs.filter { entityConfig ->
-                                    entityConfig.isActive
-                                }
-                                    .map { it.name }
-                            }, {
-                                emptyList()
-                            }
-                        )
-                    )
-                )
-            }
-            changedPacks.forEach(::updatePack)
-
-            try {
-                var urls = emptyList<String>()
-
-                _packs.value?.let { packs ->
-                    val moreUrls =
-                        packs.packs.filter { it.status.installed }
-                            .flatMap { it.getUrls(PackFilterType.NonWildcards) }
-                    urls = moreUrls.distinct()
-                }
-
-                blocklist.downloadAll(urls)
-                blocklist.mergeAll(urls)
-                // No need to update custom filters on blocklist change.
-                engine.reloadBlockLists(
-                    getActiveUrls(),
-                    CustomBlocklistConfig.emptyConfig,
-                    CustomBlocklistConfig.emptyConfig
-                )
-                changedPacks
-                    .map { pack ->
-                        pack.changeStatus(
-                            installing = false,
-                            installed = installedPackIds.any { it == pack.id })
-                    }
-                    .forEach(::updatePack)
-            } catch (ex: Throwable) {
-                log.e("Could not install pack".cause(ex))
-                changedPacks
-                    .map { pack ->
-                        pack.changeStatus(installing = false, installed = false)
-                    }
-                    .forEach(::updatePack)
-                alert.showAlert(R.string.error_pack_install)
-            }
-            viewModelScope.launch {
-                _packs.value = persistence.load(Packs::class)
-            }
-        }
-    }
-
     fun getActiveUrls(): Set<String> {
         // Also include urls of any active pack
         return _packs.value?.let { packs ->
-            packs.packs.filter { it.status.installed }
-                .flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
+            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
         } ?: emptySet()
-    }
-
-    fun mapPacksToEntities(packs: List<Pack>): List<PackEntity> {
-        return packs.map { pack ->
-            PackEntity(
-                id = pack.id,
-                title = pack.meta.title,
-                slugline = pack.meta.slugline,
-                description = pack.meta.description,
-                configs = pack.configs.map { config ->
-                    PackEntityConfig(
-                        name = config,
-                        isActive = pack.status.installed && config in pack.status.config
-                    )
-                }
-            )
-        }
-    }
-
-    fun onPresetSelected(packs: List<Pack>, preset: PacksPreset) {
-        val config = mapPacksToEntities(packs)
-        onPacksConfigChanged(preset.updateConfig(config))
     }
 
     private fun updatePack(pack: Pack) {
@@ -313,7 +179,7 @@ class PacksViewModel : ViewModel() {
             }
             Filter.ALL -> {
                 allPacks.filter { pack ->
-                    activeTags.intersect(pack.tags).isNotEmpty()
+                    activeTags.intersect(pack.tags).isEmpty() != true
                 }
             }
             else -> {
@@ -324,16 +190,4 @@ class PacksViewModel : ViewModel() {
         }
     }
 
-    data class PackEntity(
-        val id: String,
-        val title: String,
-        val slugline: String,
-        val description: String,
-        val configs: List<PackEntityConfig>
-    )
-
-    data class PackEntityConfig(
-        val name: PackConfig,
-        val isActive: Boolean
-    )
 }

@@ -232,4 +232,14 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <declare-styleable name="SettingsItem">
+        <attr name="settingsItemTitle" format="string" />
+        <attr name="settingsItemDescription" format="string" />
+        <attr name="settingsItemTitleColor" format="color" />
+        <attr name="settingsItemDescriptionColor" format="color" />
+        <attr name="settingsItemShowTopSeparator" format="boolean" />
+        <attr name="settingsItemShowBottomSeparator" format="boolean" />
+        <attr name="settingsItemShowArrow" format="boolean" />
+    </declare-styleable>
+
 </resources>

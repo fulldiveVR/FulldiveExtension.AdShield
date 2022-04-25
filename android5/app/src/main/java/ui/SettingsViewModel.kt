@@ -19,7 +19,7 @@ import model.*
 import model.Defaults
 import engine.EngineService
 import service.PersistenceService
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.lang.Exception
 import org.adshield.R

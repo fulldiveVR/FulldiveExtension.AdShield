@@ -25,7 +25,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import appextension.getColorCompat
 import appextension.getDrawableCompat
-import com.fulldive.wallet.presentation.main.MainCryptoFragment
 import kotlinx.coroutines.delay
 import model.*
 import org.adshield.R
@@ -35,7 +34,7 @@ import service.EnvironmentService
 import service.UpdateService
 import ui.*
 import ui.settings.SettingsFragmentDirections
-import ui.utils.getColorFromAttr
+import utils.getColorFromAttr
 import utils.Links
 import utils.withBoldSections
 

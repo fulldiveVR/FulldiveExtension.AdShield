@@ -13,18 +13,15 @@
 package ui
 
 import androidx.lifecycle.*
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import engine.EngineService
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.*
+import engine.EngineService
 import service.PersistenceService
-import service.RemoteConfigService
 import service.StatsService
 import ui.advanced.packs.PacksViewModel
-import utils.Logger
 import utils.cause
+import utils.Logger
+import java.lang.Exception
 
 class StatsViewModel : ViewModel() {
 
@@ -61,11 +58,6 @@ class StatsViewModel : ViewModel() {
     private val _packs = MutableLiveData<Packs>()
     val packs = _packs.map { applyPacksFilters(it.packs) }
 
-    private val _customBlocklistConfig = MutableLiveData<CustomBlocklistConfig>()
-    val customBlocklistConfig = _customBlocklistConfig
-
-    private var currentCustomBlocklistConfig = CustomBlocklistConfig.emptyConfig
-
     private val activeTags = listOf("official")
 
     init {
@@ -73,8 +65,6 @@ class StatsViewModel : ViewModel() {
             _allowed.value = persistence.load(Allowed::class)
             _denied.value = persistence.load(Denied::class)
             _packs.value = persistence.load(Packs::class)
-            _customBlocklistConfig.value = getCustomBlocklistConfig()
-            currentCustomBlocklistConfig = getCustomBlocklistConfig()
             statistics.setup()
         }
     }
@@ -85,7 +75,6 @@ class StatsViewModel : ViewModel() {
                 _stats.value = statistics.getStats()
                 _allowed.value = _allowed.value
                 _denied.value = _denied.value
-                _customBlocklistConfig.value = getCustomBlocklistConfig()
             } catch (ex: Exception) {
                 log.e("Could not load stats".cause(ex))
             }
@@ -123,17 +112,11 @@ class StatsViewModel : ViewModel() {
         _allowed.value?.let { current ->
             viewModelScope.launch {
                 try {
-                    customBlocklistConfig.value?.let { currentCustomBlocklistConfig = it }
                     val new = current.allow(name)
                     persistence.save(new)
-                    _customBlocklistConfig.value = getCustomBlocklistConfig()
                     _allowed.value = new
                     updateLiveData()
-                    engine.reloadBlockLists(
-                        getActiveUrls(),
-                        getCustomBlocklistConfig(),
-                        currentCustomBlocklistConfig
-                    )
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not allow host $name".cause(ex))
                     persistence.save(current)
@@ -146,17 +129,11 @@ class StatsViewModel : ViewModel() {
         _allowed.value?.let { current ->
             viewModelScope.launch {
                 try {
-                    customBlocklistConfig.value?.let { currentCustomBlocklistConfig = it }
                     val new = current.unallow(name)
                     persistence.save(new)
-                    _customBlocklistConfig.value = getCustomBlocklistConfig()
                     _allowed.value = new
                     updateLiveData()
-                    engine.reloadBlockLists(
-                        getActiveUrls(),
-                        getCustomBlocklistConfig(),
-                        currentCustomBlocklistConfig
-                    )
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not unallow host $name".cause(ex))
                     persistence.save(current)
@@ -169,17 +146,11 @@ class StatsViewModel : ViewModel() {
         _denied.value?.let { current ->
             viewModelScope.launch {
                 try {
-                    customBlocklistConfig.value?.let { currentCustomBlocklistConfig = it }
                     val new = current.deny(name)
                     persistence.save(new)
-                    _customBlocklistConfig.value = getCustomBlocklistConfig()
                     _denied.value = new
                     updateLiveData()
-                    engine.reloadBlockLists(
-                        getActiveUrls(),
-                        getCustomBlocklistConfig(),
-                        currentCustomBlocklistConfig
-                    )
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not deny host $name".cause(ex))
                     persistence.save(current)
@@ -192,17 +163,11 @@ class StatsViewModel : ViewModel() {
         _denied.value?.let { current ->
             viewModelScope.launch {
                 try {
-                    customBlocklistConfig.value?.let { currentCustomBlocklistConfig = it }
                     val new = current.undeny(name)
                     persistence.save(new)
-                    _customBlocklistConfig.value = getCustomBlocklistConfig()
                     _denied.value = new
                     updateLiveData()
-                    engine.reloadBlockLists(
-                        getActiveUrls(),
-                        getCustomBlocklistConfig(),
-                        currentCustomBlocklistConfig
-                    )
+                    engine.reloadBlockLists(getActiveUrls())
                 } catch (ex: Exception) {
                     log.e("Could not undeny host $name".cause(ex))
                     persistence.save(current)
@@ -222,69 +187,8 @@ class StatsViewModel : ViewModel() {
     fun getActiveUrls(): Set<String> {
         // Also include urls of any active pack
         return _packs.value?.let { packs ->
-            packs.packs.filter { it.status.installed }
-                .flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
+            packs.packs.filter { it.status.installed }.flatMap { it.getUrls(PackFilterType.WildcardsOnly) }.toSet()
         } ?: emptySet()
-    }
-
-    fun getCustomBlocklistConfig(): CustomBlocklistConfig {
-        return CustomBlocklistConfig(
-            persistence.load(Allowed::class).value,
-            persistence.load(Denied::class).value
-        )
-    }
-
-    fun getCurrentCustomBlicklistConfig(): CustomBlocklistConfig {
-        return currentCustomBlocklistConfig
-    }
-
-    fun onConfigUpdate(jsonConfig: String) {
-        customBlocklistConfig.value?.let { currentCustomBlocklistConfig = it }
-        val type = object : TypeToken<CustomBlocklistConfig>() {}.type
-        val config: CustomBlocklistConfig = Gson().fromJson(jsonConfig, type)
-        persistence.save(Allowed(config.isAllowed))
-        persistence.save(
-            Denied(
-                config.isDenied.toSet()
-                    .plus(RemoteConfigService.getAdblockWorkCheckDomain())
-                    .toList()
-            )
-        )
-
-        viewModelScope.launch(Dispatchers.Main) {
-            engine.reloadBlockLists(
-                getActiveUrls(),
-                getCustomBlocklistConfig(),
-                currentCustomBlocklistConfig
-            )
-            // This will cause to emit new event and to refresh the public LiveData
-            _allowed.value = Allowed(config.isAllowed)
-            _denied.value = Denied(config.isDenied)
-            _customBlocklistConfig.value = getCustomBlocklistConfig()
-        }
-    }
-
-    fun updateBlockedDomains() {
-        val t = getCustomBlocklistConfig()
-        val config = t.copy(
-            isDenied = t.isDenied
-                .toSet()
-                .plus(RemoteConfigService.getAdblockWorkCheckDomain())
-                .toList()
-        )
-        persistence.save(Allowed(config.isAllowed))
-        persistence.save(Denied(config.isDenied))
-        viewModelScope.launch(Dispatchers.Main) {
-            engine.reloadBlockLists(
-                getActiveUrls(),
-                config,
-                getCustomBlocklistConfig()
-            )
-            // This will cause to emit new event and to refresh the public LiveData
-            _allowed.value = Allowed(getCustomBlocklistConfig().isAllowed)
-            _denied.value = Denied(getCustomBlocklistConfig().isDenied)
-            _customBlocklistConfig.value = getCustomBlocklistConfig()
-        }
     }
 
     private fun updateLiveData() {
@@ -306,19 +210,17 @@ class StatsViewModel : ViewModel() {
         when (filter) {
             Filter.BLOCKED -> {
                 // Show blocked and denied hosts only
-                entries =
-                    entries.filter { it.type == HistoryEntryType.blocked || it.type == HistoryEntryType.blocked_denied }
+                entries = entries.filter { it.type == HistoryEntryType.blocked || it.type == HistoryEntryType.blocked_denied }
             }
             Filter.ALLOWED -> {
                 // Show allowed and bypassed hosts only
-                entries =
-                    entries.filter { it.type != HistoryEntryType.blocked && it.type != HistoryEntryType.blocked_denied }
+                entries = entries.filter { it.type != HistoryEntryType.blocked && it.type != HistoryEntryType.blocked_denied }
             }
             else -> {}
         }
 
         // Apply sorting
-        return when (sorting) {
+        return when(sorting) {
             Sorting.TOP -> {
                 // Sorted by the number of requests
                 entries.sortedByDescending { it.requests }
@@ -349,4 +251,5 @@ class StatsViewModel : ViewModel() {
             }
         }
     }
+
 }

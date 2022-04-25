@@ -9,12 +9,12 @@ import android.view.animation.RotateAnimation
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
+import com.fulldive.wallet.extensions.fromHtmlToSpanned
+import com.fulldive.wallet.extensions.getHexColor
+import com.fulldive.wallet.extensions.unsafeLazy
 import com.fulldive.wallet.presentation.base.BaseMvpFrameLayout
 import org.adshield.R
 import ui.rewards.board.ExperienceProgressViewLayout
-import utils.fromHtmlToSpanned
-import utils.getHexColor
-import utils.unsafeLazy
 
 abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     ExperienceView where P : BaseExperiencePresenter<out ExperienceView> {
