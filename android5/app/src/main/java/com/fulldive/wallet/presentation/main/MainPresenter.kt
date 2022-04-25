@@ -35,6 +35,8 @@ class MainPresenter @Inject constructor(
     private val accountsInteractor: WalletInteractor
 ) : BaseMoxyPresenter<MainMoxyView>() {
 
+    private var checkForMnemonic = false
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         requestAccount()
@@ -57,6 +59,16 @@ class MainPresenter @Inject constructor(
                     viewState.showCreateWalletButton()
                 }
             )
+    }
+
+    fun onShowMnemonicClicked() {
+        checkForMnemonic = true
+        viewState.showCheckPassword()
+    }
+
+    fun onShowPrivateKeyClicked() {
+        checkForMnemonic = false
+        viewState.showCheckPassword()
     }
 
     private fun requestAccount() {
@@ -100,5 +112,13 @@ class MainPresenter @Inject constructor(
             Chain.displayDecimal
         )
         viewState.showBalance(spannableString, Chain.symbolTitle)
+    }
+
+    fun onCheckPasswordSuccessfully() {
+        if (checkForMnemonic) {
+            viewState.showMnemonic()
+        } else {
+            viewState.showPrivateKey()
+        }
     }
 }

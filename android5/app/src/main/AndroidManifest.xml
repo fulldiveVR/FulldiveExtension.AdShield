@@ -147,6 +147,20 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
         <receiver android:name="service.DozeReceiver" />
 
         <service

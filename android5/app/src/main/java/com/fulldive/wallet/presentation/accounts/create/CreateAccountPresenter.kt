@@ -43,7 +43,6 @@ class CreateAccountPresenter @Inject constructor(
                 }
                 .compositeSubscribe(
                     onSuccess = {
-                        viewState.showMainActivity()
                         viewState.finish()
                     }
                 )

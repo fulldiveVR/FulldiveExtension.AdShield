@@ -488,6 +488,7 @@
   <string name="str_create_wallet">Create Wallet</string>
   <string name="str_wallet_address">Wallet address</string>
   <string name="str_mnemonic_key">Mnemonic key</string>
+  <string name="str_private_key">Private Key</string>
   <string name="str_your_wallet">Your Wallet</string>
   <string name="str_your_wallet_hint">Create or Restore your wallet to exchange the XP Rewards into Tokens.</string>
   <string name="str_copied">Copied to clipboard</string>

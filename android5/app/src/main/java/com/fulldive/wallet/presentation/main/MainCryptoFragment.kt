@@ -16,18 +16,35 @@
 
 package com.fulldive.wallet.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import com.fulldive.wallet.models.Account
+import com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity
+import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
+import com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity
 import com.fulldive.wallet.presentation.base.BaseMvpFragment
 import com.joom.lightsaber.getInstance
+import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import org.adshield.R
 import org.adshield.databinding.FragmentCryptoMainBinding
 
 class MainCryptoFragment : BaseMvpFragment<FragmentCryptoMainBinding>(), MainMoxyView {
+
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == MvpAppCompatActivity.RESULT_OK) {
+            presenter.onCheckPasswordSuccessfully()
+        }
+    }
 
     private val presenter by moxyPresenter {
         getInjector().getInstance<MainPresenter>()
@@ -45,6 +62,12 @@ class MainCryptoFragment : BaseMvpFragment<FragmentCryptoMainBinding>(), MainMox
             }
             deleteWalletButton.setOnClickListener {
                 presenter.onDeleteWalletClicked()
+            }
+            showMnemonicButton.setOnClickListener {
+                presenter.onShowMnemonicClicked()
+            }
+            showPrivateKeyButton.setOnClickListener {
+                presenter.onShowPrivateKeyClicked()
             }
         }
     }
@@ -82,5 +105,31 @@ class MainCryptoFragment : BaseMvpFragment<FragmentCryptoMainBinding>(), MainMox
                 .append(denom)
             createWalletButton.isVisible = false
         }
+    }
+
+    override fun showCheckPassword() {
+        launcher.launch(
+            Intent(requireActivity(), PasswordActivity::class.java).putExtra(
+                PasswordActivity.KEY_JUST_CHECK,
+                true
+            ),
+            ActivityOptionsCompat.makeCustomAnimation(
+                requireContext(),
+                R.anim.slide_in_bottom,
+                R.anim.fade_out
+            )
+        )
+    }
+
+    override fun showMnemonic() {
+        startActivity(
+            Intent(requireActivity(), ShowMnemonicActivity::class.java)
+        )
+    }
+
+    override fun showPrivateKey() {
+        startActivity(
+            Intent(requireActivity(), ShowPrivateKeyActivity::class.java)
+        )
     }
 }
