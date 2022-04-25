@@ -133,7 +133,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/walletMnemonicTextView" />
 
-    <com.fulldive.wallet.presentation.mnemonic.MnemonicLayout
+    <com.fulldive.wallet.presentation.accounts.mnemonic.MnemonicLayout
         android:id="@+id/mnemonicsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

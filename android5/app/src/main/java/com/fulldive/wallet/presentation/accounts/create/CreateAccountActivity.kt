@@ -97,10 +97,4 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
             ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
         )
     }
-
-    override fun showMainActivity() {
-//        Intent(this, MainActivity::class.java)
-//            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//            .let(::startActivity)
-    }
 }
