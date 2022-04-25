@@ -30,37 +30,33 @@
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/navigation_home" />
 
-            <action
-                android:id="@+id/action_navigation_activity_to_activityStatsFragment"
-                app:destination="@id/statsFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"
-                app:popEnterAnim="@anim/nav_default_enter_anim"
-                app:popExitAnim="@anim/nav_default_exit_anim"
-                app:popUpTo="@id/navigation_home" />
-
-<!--        <action-->
-<!--            android:id="@+id/action_navigation_activity_to_activityDetailFragment"-->
-<!--            app:destination="@id/activityDetailFragment"-->
-<!--            app:enterAnim="@anim/nav_default_enter_anim"-->
-<!--            app:exitAnim="@anim/nav_default_exit_anim"-->
-<!--            app:popEnterAnim="@anim/nav_default_enter_anim"-->
-<!--            app:popExitAnim="@anim/nav_default_exit_anim"-->
-<!--            app:popUpTo="@id/navigation_home" />-->
+        <action
+            android:id="@+id/action_navigation_activity_to_activityStatsFragment"
+            app:destination="@id/navigation_stats"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_rewards"
         android:name="ui.rewards.RewardsFragment"
+        tools:layout="@layout/fragment_stats" />
+
+    <fragment
+        android:id="@+id/navigation_stats"
+        android:name="ui.stats.StatsFragment"
         tools:layout="@layout/fragment_stats">
         <action
-            android:id="@+id/action_navigation_rewards_to_activityDetailFragment"
+            android:id="@+id/action_navigation_stats_to_activityDetailFragment"
             app:destination="@id/activityDetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@id/navigation_rewards" />
+            app:popUpTo="@id/navigation_stats" />
     </fragment>
 
     <fragment
@@ -195,10 +191,6 @@
         tools:layout="@layout/fragment_leases" />
 
     <fragment
-        android:id="@+id/statsFragment"
-        android:name="ui.stats.StatsFragment"
-        tools:layout="@layout/fragment_stats" />
-    <fragment
         android:id="@+id/webFragment"
         android:name="ui.web.WebFragment"
         android:label="{name}"
@@ -273,4 +265,9 @@
     <fragment
         android:id="@+id/userDeniedFragment"
         android:name="ui.advanced.userdenied.UserDeniedFragment" />
+
+    <dialog
+        android:id="@+id/exchange_experience_info_dialog"
+        android:name="ui.rewards.ExchangeExperienceInfoFragment"
+        tools:layout="@layout/dialog_exchange_experience_info" />
 </navigation>

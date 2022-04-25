@@ -76,13 +76,18 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
         )
     }
 
-    override fun updateExperienceProgress(experience: Int, maxExperience: Int) {
+    override fun updateExperienceProgress(
+        experience: Int,
+        maxExperience: Int,
+        isExchangeAvailable: Boolean
+    ) {
         experienceProgressViewLayout?.animateExperience(
             progress = experience,
             maxProgress = maxExperience,
             animationDuration = ANIMATION_DURATION,
             endAction = { setExperienceProgressText(experience, maxExperience) }
         )
+        exchangeButton?.isVisible = isExchangeAvailable
     }
 
     private fun setExperienceProgressText(experience: Int, maxLevelExperience: Int) {

@@ -18,12 +18,9 @@ package service
 
 import android.annotation.SuppressLint
 import android.text.format.DateFormat
-import android.util.Log
 import appextension.*
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.safeCompletable
-import com.fulldive.wallet.extensions.unsafeLazy
-import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Observable
 import model.AppTheme
@@ -46,7 +43,7 @@ object AppSettingsService {
     private const val KEY_EXPERIENCE = "KEY_EXPERIENCE"
     private const val LAST_EXCHANGE_DATE = "LAST_EXCHANGE_DATE"
 
-    private const val EXCHANGE_CURRENCY = 10 //todo 1000
+    private const val EXCHANGE_CURRENCY = 1000
     private const val EXCHANGE_DAYS_INTERVAL = 1
     private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 2
 
@@ -99,11 +96,6 @@ object AppSettingsService {
             previousExperience + newExperience >= EXCHANGE_CURRENCY -> EXCHANGE_CURRENCY
             else -> previousExperience + newExperience
         }
-
-        Log.d(
-            "TestB",
-            "time@@@: ${experience} --- adsCount: $adsCount new: ${(adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()}"
-        )
         sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
     }
 

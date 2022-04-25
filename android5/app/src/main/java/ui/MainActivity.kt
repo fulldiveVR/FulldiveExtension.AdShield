@@ -18,13 +18,10 @@ import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -42,12 +39,12 @@ import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
 import org.adshield.R
 import service.ContextService
-import service.ContextService.requireContext
 import service.NetworkMonitorPermissionService
 import service.TranslationService
 import service.VpnPermissionService
 import ui.home.FirstTimeFragment
 import ui.home.HomeFragmentDirections
+import ui.rewards.ExchangeExperienceInfoFragment
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
@@ -63,9 +60,10 @@ class MainActivity : LocalizationActivity(),
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
+    private lateinit var toolbar: Toolbar
+
     override lateinit var appInjector: Injector
 
-    private lateinit var toolbar: Toolbar
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
@@ -272,6 +270,7 @@ class MainActivity : LocalizationActivity(),
                         )
                     }
             }
+            R.id.help_about_rewards -> showExchangeExperienceInfoDialog()
             else -> return false
         }
         return true
@@ -281,6 +280,13 @@ class MainActivity : LocalizationActivity(),
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels / displayMetrics.density > 650
+    }
+
+    private fun showExchangeExperienceInfoDialog() {
+        findNavController(R.id.nav_host_fragment)
+            .apply {
+                navigate(R.id.exchange_experience_info_dialog)
+            }
     }
 
     companion object {

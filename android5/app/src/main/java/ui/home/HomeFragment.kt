@@ -129,22 +129,15 @@ class HomeFragment : Fragment() {
             }
 
             longStatusTextView.setOnClickListener {
-                parentFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, MainCryptoFragment(), "main")
-                    .addToBackStack("main")
-                    .commit()
-
-//                // todo
-//                when {
-//                    status.inProgress -> Unit
-//                    status.error != null -> Unit
-//                    status.active -> {
-//                        val fragment = ProtectionLevelFragment.newInstance()
-//                        fragment.show(parentFragmentManager, null)
-//                    }
-//                    else -> vm.turnOn()
-//                }
+                when {
+                    status.inProgress -> Unit
+                    status.error != null -> Unit
+                    status.active -> {
+                        val fragment = ProtectionLevelFragment.newInstance()
+                        fragment.show(parentFragmentManager, null)
+                    }
+                    else -> vm.turnOn()
+                }
             }
         }
 

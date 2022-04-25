@@ -1,6 +1,5 @@
 package ui.rewards.board.base
 
-import android.util.Log
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
@@ -23,12 +22,15 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(private 
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, maxExperience, isExchangeAvailable) ->
-                    Log.d("TestB", "exp: $experience -- $maxExperience --$isExchangeAvailable")
                     if (isFirstAttach) {
                         isFirstAttach = false
                         viewState.setExperience(experience, maxExperience, isExchangeAvailable)
                     } else {
-                        viewState.updateExperienceProgress(experience, maxExperience)
+                        viewState.updateExperienceProgress(
+                            experience,
+                            maxExperience,
+                            isExchangeAvailable
+                        )
                     }
                 }
             )

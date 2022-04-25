@@ -491,4 +491,6 @@
   <string name="str_your_wallet_hint">Create or Restore your wallet to exchange the XP Rewards into Tokens.</string>
   <string name="str_copied">Copied to clipboard</string>
   <string name="str_mnemonic_template">%02d. %s</string>
+  <string name="str_exchange_xp_info_crypto">Exchange XP Rewards into CRYPTO!</string>
+  <string name="str_exchange_xp_info_crypto_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
 </resources>
