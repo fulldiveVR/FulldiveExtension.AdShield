@@ -56,6 +56,8 @@ class MainCryptoFragment : BaseMvpFragment<FragmentCryptoMainBinding>(), MainMox
             deleteWalletButton.isVisible = false
             addressTextView.isVisible = false
             balanceTextView.isVisible = false
+            showMnemonicButton.isVisible = false
+            showPrivateKeyButton.isVisible = false
         }
     }
 

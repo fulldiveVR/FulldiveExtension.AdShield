@@ -483,6 +483,7 @@
   <string name="str_restore_private_key">Restore with Private Key</string>
   <string name="str_restore_mnemonic">Restore with Mnemonic</string>
   <string name="str_show_mnemonic">Show Mnemonic</string>
+  <string name="str_show_private_key">Show Private Key</string>
   <string name="str_create_warning">Please copy and write down your mnemonic key. This is the only way to restore your wallet later.</string>
   <string name="str_create_wallet">Create Wallet</string>
   <string name="str_wallet_address">Wallet address</string>
@@ -491,4 +492,19 @@
   <string name="str_your_wallet_hint">Create or Restore your wallet to exchange the XP Rewards into Tokens.</string>
   <string name="str_copied">Copied to clipboard</string>
   <string name="str_mnemonic_template">%02d. %s</string>
+  <string name="str_unknown_error_msg">Oops! Something went wrong.\nPlease try again later.</string>
+  <string name="error_msg_password_not_same">Incorrect PIN code. Please enter your PIN again.</string>
+  <string name="error_invalid_address_pubkey">Invalid Address, please check again.</string>
+  <string name="str_password_init">Init your PIN code.</string>
+  <string name="str_password_confirm">Enter again for confirm.</string>
+  <string name="str_password_check">Enter your PIN code.</string>
+  <string name="str_set_pincode">Set Pin Code</string>
+  <string name="str_invalid_pincode">Incorrect PIN code.</string>
+  <string name="str_check_pincode">Check Pin Code</string>
+  <string name="str_exchange_xp_info_crypto">Exchange XP Rewards into CRYPTO!</string>
+  <string name="str_exchange_xp_info_crypto_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
+  <string name="str_view_private_key">View Private Key</string>
+  <string name="str_view_mnemonic">View Mnemonic</string>
+  <string name="str_open_fd_wallet">Open FD Wallet</string>
+  <string name="str_log_out">Log out</string>
 </resources>

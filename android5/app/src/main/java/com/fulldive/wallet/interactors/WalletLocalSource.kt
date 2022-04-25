@@ -19,6 +19,7 @@ package com.fulldive.wallet.interactors
 import android.content.Context
 import appextension.getPrivateSharedPreferences
 import com.fulldive.wallet.di.modules.DefaultLocalStorageModule
+import com.fulldive.wallet.extensions.completeCallable
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.safeCompletable
 import com.fulldive.wallet.extensions.safeSingle
@@ -56,37 +57,46 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
-    fun getPassword(): Single<String> {
-        return safeSingle {
-            sharedPreferences
-                .getString(KEY_PASSWORD, null)
-                ?.let { encodedJson ->
-                    gson.fromJson(encodedJson, EncodedData::class.java)
-                }
-                ?.let { encodedData ->
-                    CryptoHelper.decryptData(
-                        KEY_CRYPTO,
-                        encodedData.resource,
-                        encodedData.spec
+    fun checkPassword(password: String): Single<Boolean> {
+        return getPassword()
+            .flatMap { encodedData ->
+                safeSingle {
+                    CryptoHelper.verifyData(
+                        password,
+                        encodedData,
+                        KEY_CRYPTO_PASSWORD
                     )
                 }
+            }
+    }
+
+    fun getPassword(): Single<String> {
+        return safeSingle {
+            sharedPreferences.getString(KEY_CRYPTO, null)
         }
     }
 
     fun setPassword(password: String): Completable {
-        return safeCompletable {
-            CryptoHelper.encryptData(
-                KEY_CRYPTO_PASSWORD,
+        return safeSingle {
+            CryptoHelper.signData(
                 password,
-                false
+                KEY_CRYPTO_PASSWORD
             )
-                .let { encResult ->
-                    gson.toJson(EncodedData(encResult.encDataString, encResult.ivDataString))
-                }
-                .let { encodedJson ->
-                    sharedPreferences.edit().putString(KEY_PASSWORD, encodedJson).apply()
-                }
         }
+            .onErrorResumeNext {
+                safeSingle {
+                    CryptoHelper.deleteKey(KEY_CRYPTO_PASSWORD)
+                    CryptoHelper.signData(
+                        password,
+                        KEY_CRYPTO_PASSWORD
+                    )
+                }
+            }
+            .flatMapCompletable { encodedData ->
+                completeCallable {
+                    sharedPreferences.edit().putString(KEY_CRYPTO, encodedData).apply()
+                }
+            }
     }
 
     fun deleteAccount(): Completable {
@@ -170,6 +180,5 @@ class WalletLocalSource @Inject constructor(
 
         private const val KEY_ACCOUNT = "account"
         private const val KEY_BALANCES = "balances"
-        private const val KEY_PASSWORD = "password"
     }
 }

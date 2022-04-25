@@ -37,6 +37,10 @@ class WalletRepository @Inject constructor(
         return walletLocalSource.setAccount(account)
     }
 
+    fun checkPassword(password: String): Single<Boolean> {
+        return walletLocalSource.checkPassword(password)
+    }
+
     fun hasPassword(): Single<Boolean> {
         return walletLocalSource
             .getPassword()

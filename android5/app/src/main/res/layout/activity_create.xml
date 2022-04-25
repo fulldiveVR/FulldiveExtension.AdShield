@@ -16,12 +16,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/toolbarTitleTextView"
+            android:id="@+id/titleTextView"
             style="@style/Text.H3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_create_account" />
     </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/toolbarDividerView"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/walletAddressTextView"
@@ -30,13 +40,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_16dp"
         android:layout_marginEnd="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_16dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:padding="@dimen/size_4dp"
         android:text="@string/str_wallet_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbarDividerView" />
 
     <TextView
         android:id="@+id/addressTextView"

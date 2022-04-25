@@ -55,5 +55,7 @@
     <dimen name="size_40dp">40dp</dimen>
     <dimen name="size_45dp">45dp</dimen>
     <dimen name="size_48dp">48dp</dimen>
+
     <dimen name="actionBarSize">56dp</dimen>
+    <dimen name="keyboardMinHeight">240dp</dimen>
 </resources>
