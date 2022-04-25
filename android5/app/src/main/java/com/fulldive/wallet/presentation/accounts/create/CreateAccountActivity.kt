@@ -1,13 +1,14 @@
 package com.fulldive.wallet.presentation.accounts.create
 
-//import com.fulldive.wallet.presentation.security.password.CheckPasswordActivity
-//import com.fulldive.wallet.presentation.security.password.SetPasswordActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.app.ActivityOptionsCompat
+import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
 import com.fulldive.wallet.presentation.base.BaseMvpActivity
 import com.joom.lightsaber.getInstance
 import moxy.ktx.moxyPresenter
@@ -87,18 +88,14 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
         }
     }
 
-    override fun requestCheckPassword() {
-//        launcher.launch(
-//            Intent(this, CheckPasswordActivity::class.java),
-//            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
-//        )
-    }
-
-    override fun requestCreatePassword() {
-//        launcher.launch(
-//            Intent(this, SetPasswordActivity::class.java),
-//            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
-//        )
+    override fun requestPassword(checkPasword: Boolean) {
+        launcher.launch(
+            Intent(this, PasswordActivity::class.java).putExtra(
+                PasswordActivity.KEY_JUST_CHECK,
+                checkPasword
+            ),
+            ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
+        )
     }
 
     override fun showMainActivity() {

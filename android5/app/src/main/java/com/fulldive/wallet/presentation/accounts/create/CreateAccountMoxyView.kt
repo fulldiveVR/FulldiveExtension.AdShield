@@ -26,10 +26,7 @@ interface CreateAccountMoxyView : BaseMoxyView {
     )
 
     @OneExecution
-    fun requestCheckPassword()
-
-    @OneExecution
-    fun requestCreatePassword()
+    fun requestPassword(checkPasword: Boolean)
 
     @OneExecution
     fun showMainActivity()

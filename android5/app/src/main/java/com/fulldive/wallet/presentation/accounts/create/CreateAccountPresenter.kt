@@ -28,16 +28,8 @@ class CreateAccountPresenter @Inject constructor(
             .hasPassword()
             .withDefaults()
             .compositeSubscribe(
-                onSuccess = { hasPassword ->
-                    if (hasPassword) {
-                        viewState.requestCheckPassword()
-                    } else {
-                        viewState.requestCreatePassword()
-                    }
-                }
+                onSuccess = viewState::requestPassword
             )
-
-        onCheckPasswordSuccessfully()
     }
 
     fun onCreateAccountClicked() {

@@ -31,11 +31,12 @@ import io.reactivex.Single
 import org.bitcoinj.crypto.MnemonicCode
 import java.security.SecureRandom
 import java.util.*
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @ProvidedBy(DefaultInteractorsModule::class)
 class WalletInteractor @Inject constructor(
-    private val accountsRepository: WalletRepository,
+    private val walletRepository: WalletRepository,
 ) {
 
     fun createSecrets(path: Int = 0): Single<AccountSecrets> {
@@ -68,29 +69,48 @@ class WalletInteractor @Inject constructor(
                         )
                     }
             }
-            .flatMapCompletable(accountsRepository::setAccount)
+            .flatMapCompletable(walletRepository::setAccount)
+    }
+
+    fun setPassword(password: String): Completable {
+        return walletRepository.setPassword(password)
+    }
+
+    fun checkPassword(password: String): Single<Boolean> {
+        return walletRepository.checkPassword(password)
     }
 
     fun hasPassword(): Single<Boolean> {
-        return accountsRepository.hasPassword()
+        return walletRepository.hasPassword()
     }
 
     fun getAccount(): Single<Account> {
-        return accountsRepository.getAccount()
+        return walletRepository.getAccount()
     }
 
     fun setAccount(account: Account): Completable {
-        return accountsRepository.setAccount(account)
+        return walletRepository.setAccount(account)
     }
 
     fun deleteAccount(): Completable {
-        return accountsRepository.deleteAccount()
+        return walletRepository.deleteAccount()
     }
 
     fun getBalances(address: String): Single<List<Balance>> {
-        return accountsRepository
+        return walletRepository
             .requestBalances(address)
-            .onErrorResumeNext(accountsRepository.getBalances())
+            .onErrorResumeNext(walletRepository.getBalances())
+    }
+
+    fun isPasswordValid(text: String): Boolean {
+        var result = false
+        if (text.length == 5) {
+            result = Pattern
+                .compile("^\\d{4}+[A-Z]$")
+                .matcher(text)
+                .matches()
+        }
+        return result
     }
 
     private fun getEntropy(): ByteArray {
