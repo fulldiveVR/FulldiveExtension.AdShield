@@ -43,16 +43,24 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding {
-            cryptoMainLayout.viewPrivatKeyItem.setOnClickListener { presenter.onViewPrivateKeyClicked() }
-            cryptoMainLayout.viewMnemonicItem.setOnClickListener { presenter.onViewMnemonicClicked() }
-            addAccountLayout.restoreWithPrivateKey.setOnClickListener {
+            with(cryptoMainLayout) {
+                viewPrivatKeyItem.setOnClickListener { presenter.onViewPrivateKeyClicked() }
+                viewMnemonicItem.setOnClickListener { presenter.onViewMnemonicClicked() }
+                copyAddressButton.setOnClickListener {
+                    presenter.onWalletAddressCopyClicked(addressTextView.text.toString())
+                }
+            }
+
+            with(addAccountLayout) {
+                restoreWithPrivateKey.setOnClickListener {
 //        showActivity(packageContext, PrivateKeyRestoreActivity::class.java)
-            }
-            addAccountLayout.restoreWithMnemonic.setOnClickListener {
+                }
+                restoreWithMnemonic.setOnClickListener {
 //        showActivity(packageContext, MnemonicRestoreActivity::class.java)
-            }
-            addAccountLayout.createButton.setOnClickListener {
-                showActivity(CreateAccountActivity::class.java)
+                }
+                createButton.setOnClickListener {
+                    showActivity(CreateAccountActivity::class.java)
+                }
             }
         }
     }
@@ -68,6 +76,8 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
         binding {
             addAccountLayout.containerLayout.isVisible = false
             cryptoMainLayout.containerLayout.isVisible = true
+            cryptoMainLayout.viewMnemonicItem.isVisible = account.fromMnemonic
+            cryptoMainLayout.viewPrivatKeyItem.isVisible = account.hasPrivateKey
             cryptoMainLayout.addressTextView.text = account.address
         }
     }

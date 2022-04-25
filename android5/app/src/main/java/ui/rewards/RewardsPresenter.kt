@@ -19,20 +19,24 @@ package ui.rewards
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ClipboardInteractor
 import com.fulldive.wallet.interactors.WalletInteractor
 import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.models.Balance
 import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
+import com.fulldive.wallet.rx.AppSchedulers
 import com.fulldive.wallet.utils.WalletHelper
 import com.joom.lightsaber.ProvidedBy
 import moxy.InjectViewState
+import org.adshield.R
 import java.math.BigDecimal
 import javax.inject.Inject
 
 @InjectViewState
 @ProvidedBy(DefaultModule::class)
 class RewardsPresenter @Inject constructor(
+    private val clipboardInteractor: ClipboardInteractor,
     private val accountsInteractor: WalletInteractor
 ) : BaseMoxyPresenter<RewardsView>() {
 
@@ -47,6 +51,18 @@ class RewardsPresenter @Inject constructor(
 
     fun onViewMnemonicClicked() {
 
+    }
+
+    fun onWalletAddressCopyClicked(address: String) {
+            clipboardInteractor
+                .copyToClipboard(address)
+                .subscribeOn(AppSchedulers.ui())
+                .observeOn(AppSchedulers.ui())
+                .compositeSubscribe(
+                    onSuccess = {
+                        viewState.showMessage(R.string.str_copied)
+                    }
+                )
     }
 
     private fun requestAccount() {

@@ -8,13 +8,16 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
 import com.fulldive.wallet.extensions.fromHtmlToSpanned
 import com.fulldive.wallet.extensions.getHexColor
 import com.fulldive.wallet.extensions.unsafeLazy
 import com.fulldive.wallet.presentation.base.BaseMvpFrameLayout
 import org.adshield.R
+import ui.rewards.RewardsFragmentDirections
 import ui.rewards.board.ExperienceProgressViewLayout
+import ui.settings.SettingsFragmentDirections
 
 abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     ExperienceView where P : BaseExperiencePresenter<out ExperienceView> {
@@ -60,7 +63,17 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
 
     override fun initLayout() {
         super.initLayout()
-        exchangeButton?.setOnClickListener { presenter.onExchangeClicked() }
+        exchangeButton?.setOnClickListener {
+            //TODO Mocked
+            findNavController()
+                .apply {
+                    navigate(R.id.activityExchangeFragment)
+                    navigate(
+                        RewardsFragmentDirections.actionNavigationRewardsToActivityExchangeFragment()
+                    )
+                }
+          //  presenter.onExchangeClicked()
+        }
     }
 
     override fun setExperience(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean) {

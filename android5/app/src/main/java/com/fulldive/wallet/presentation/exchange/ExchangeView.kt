@@ -18,15 +18,9 @@ package com.fulldive.wallet.presentation.exchange
 
 import com.fulldive.wallet.presentation.base.BaseMoxyView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
-interface ExchangeView : BaseMoxyView {
-    fun showUserExperience(experience: Int, minExchangeExperience: Int, availableFdTokens: Int)
-    fun showAvailableFdTokens(availableFdTokens: Int)
-    fun experienceIsValid(isValid: Boolean)
+interface ExchangeView: BaseMoxyView {
 
-    @StateStrategyType(OneExecutionStateStrategy::class)
-    fun showSuccessExchange(experience: Int)
 }

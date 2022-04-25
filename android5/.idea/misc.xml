@@ -105,6 +105,7 @@
         <entry key="app/src/main/res/drawable/tab_indicator_1.xml" value="0.1105" />
         <entry key="app/src/main/res/drawable/tab_indicator_2.xml" value="0.104" />
         <entry key="app/src/main/res/drawable/user_experience_progress_bar.xml" value="0.2035" />
+        <entry key="app/src/main/res/layout/activity_create.xml" value="0.1171875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4932182490752158" />
         <entry key="app/src/main/res/layout/dialog_add_account.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/layout/dialog_exchange_experience_info.xml" value="0.26979166666666665" />
@@ -116,6 +117,7 @@
         <entry key="app/src/main/res/layout/fragment_crypto_main.xml" value="0.28541666666666665" />
         <entry key="app/src/main/res/layout/fragment_dnschoice.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_encryption_level.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/fragment_exchange.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_help.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />

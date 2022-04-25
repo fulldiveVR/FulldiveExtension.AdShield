@@ -242,4 +242,9 @@
         <attr name="settingsItemShowArrow" format="boolean" />
     </declare-styleable>
 
+    <style name="HintOutlinedTextInputStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
 </resources>

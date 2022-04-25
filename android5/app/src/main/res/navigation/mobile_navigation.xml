@@ -41,9 +41,22 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_rewards"
+        android:id="@+id/rewardsFragment"
         android:name="ui.rewards.RewardsFragment"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_rewards">
+        <action
+            android:id="@+id/action_navigation_rewards_to_activityExchangeFragment"
+            app:destination="@id/activityExchangeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/rewardsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/activityExchangeFragment"
+        android:name="com.fulldive.wallet.presentation.exchange.ExchangeFragment" />
 
     <fragment
         android:id="@+id/navigation_stats"
