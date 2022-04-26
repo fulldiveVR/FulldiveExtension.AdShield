@@ -11,13 +11,17 @@
         <entry key="app/src/main/res/drawable-night/ic_off_dark.xml" value="0.1725" />
         <entry key="app/src/main/res/drawable-night/ic_on_dark.xml" value="0.1725" />
         <entry key="app/src/main/res/drawable/activate_pulse_image_view.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_border_rounded_input.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_button_connected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_button_disconnected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_button_enable.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_circle_accent.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_circle_gray.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_circle_orange.xml" value="0.1105" />
+        <entry key="app/src/main/res/drawable/background_colored_button_disable.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_count.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_rounded_border_error.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_secondary_border_normal_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_user_level.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/background_user_level_in_progress.xml" value="0.18" />
@@ -117,7 +121,7 @@
         <entry key="app/src/main/res/layout/fragment_crypto_main.xml" value="0.28541666666666665" />
         <entry key="app/src/main/res/layout/fragment_dnschoice.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_encryption_level.xml" value="0.16510416666666666" />
-        <entry key="app/src/main/res/layout/fragment_exchange.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/fragment_exchange.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_help.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
@@ -130,7 +134,7 @@
         <entry key="app/src/main/res/layout/fragment_payment.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_payment_features.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_payment_terms.xml" value="0.1328125" />
-        <entry key="app/src/main/res/layout/fragment_rewards.xml" value="0.26856884057971014" />
+        <entry key="app/src/main/res/layout/fragment_rewards.xml" value="0.125" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.25677083333333334" />
         <entry key="app/src/main/res/layout/fragment_stats.xml" value="0.264945652173913" />
         <entry key="app/src/main/res/layout/fragment_stats_detail.xml" value="0.23229166666666667" />

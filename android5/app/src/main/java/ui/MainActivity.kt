@@ -61,10 +61,9 @@ class MainActivity : LocalizationActivity(),
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
-    private lateinit var toolbar: Toolbar
+     lateinit var toolbar: Toolbar
 
     override lateinit var appInjector: Injector
-
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel

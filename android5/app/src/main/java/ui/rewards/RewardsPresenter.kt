@@ -54,15 +54,15 @@ class RewardsPresenter @Inject constructor(
     }
 
     fun onWalletAddressCopyClicked(address: String) {
-            clipboardInteractor
-                .copyToClipboard(address)
-                .subscribeOn(AppSchedulers.ui())
-                .observeOn(AppSchedulers.ui())
-                .compositeSubscribe(
-                    onSuccess = {
-                        viewState.showMessage(R.string.str_copied)
-                    }
-                )
+        clipboardInteractor
+            .copyToClipboard(address)
+            .subscribeOn(AppSchedulers.ui())
+            .observeOn(AppSchedulers.ui())
+            .compositeSubscribe(
+                onSuccess = {
+                    viewState.showMessage(R.string.str_copied)
+                }
+            )
     }
 
     private fun requestAccount() {
