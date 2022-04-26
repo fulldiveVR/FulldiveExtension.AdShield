@@ -28,6 +28,7 @@ import com.fulldive.wallet.utils.MnemonicUtils
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
 import io.reactivex.Single
+import org.bitcoinj.crypto.DeterministicKey
 import org.bitcoinj.crypto.MnemonicCode
 import java.security.SecureRandom
 import java.util.*
@@ -113,14 +114,45 @@ class WalletInteractor @Inject constructor(
         return result
     }
 
+    fun getRandomMnemonic(entropy: String): Single<List<String>> {
+        return safeSingle {
+            MnemonicCode.INSTANCE.toMnemonic(
+                MnemonicUtils.hexStringToByteArray(entropy)
+            )
+        }
+    }
+
+    fun decryptFromMnemonic(uuid: String, resource: String, spec: String): Single<String> {
+        return decryptText(MNEMONIC_KEY + uuid, resource, spec)
+    }
+
+    fun entropyFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
+        return encryptText(MNEMONIC_KEY + uuid, entropy)
+    }
+
+    fun decryptFromPrivateKey(uuid: String, resource: String, spec: String): Single<String> {
+        return decryptText(PRIVATE_KEY + uuid, resource, spec)
+    }
+
+    fun encryptFromPrivateKey(uuid: String, entropy: String): Single<EncResult> {
+        return encryptText(PRIVATE_KEY + uuid, entropy)
+    }
+
+    fun createKeyWithPathFromEntropy(
+        entropy: String,
+        path: Int
+    ): Single<DeterministicKey> {
+        return safeSingle {
+            MnemonicUtils.createKeyWithPathFromEntropy(
+                entropy, path
+            )
+        }
+    }
+
     private fun getEntropy(): ByteArray {
         return ByteArray(ENTROPY_SIZE).also { seeds ->
             SecureRandom().nextBytes(seeds)
         }
-    }
-
-    private fun entropyFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
-        return encryptText(MNEMONIC_KEY + uuid, entropy)
     }
 
     private fun encryptText(key: String, text: String): Single<EncResult> {
@@ -129,11 +161,16 @@ class WalletInteractor @Inject constructor(
         }
     }
 
+    private fun decryptText(alias: String, resource: String, spec: String): Single<String> {
+        return safeSingle {
+            CryptoHelper.decryptData(alias, resource, spec)
+        }
+    }
+
     companion object {
         const val PRIVATE_KEY_PREFIX = "0x"
         private const val ENTROPY_SIZE = 32
 
-        private const val PASSWORD_KEY = "PASSWORD_KEY"
         private const val PRIVATE_KEY = "PRIVATE_KEY"
         private const val MNEMONIC_KEY = "MNEMONIC_KEY"
     }

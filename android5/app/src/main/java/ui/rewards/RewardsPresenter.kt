@@ -40,17 +40,40 @@ class RewardsPresenter @Inject constructor(
     private val accountsInteractor: WalletInteractor
 ) : BaseMoxyPresenter<RewardsView>() {
 
+    private var checkForMnemonic = false
+
+//    override fun showMnemonic() {
+//        startActivity(
+//            Intent(requireActivity(), ShowMnemonicActivity::class.java)
+//        )
+//    }
+//
+//    override fun showPrivateKey() {
+//        startActivity(
+//            Intent(requireActivity(), ShowPrivateKeyActivity::class.java)
+//        )
+//    }
     override fun attachView(view: RewardsView?) {
         super.attachView(view)
         requestAccount()
     }
 
-    fun onViewPrivateKeyClicked() {
-
+    fun onShowMnemonicClicked() {
+        checkForMnemonic = true
+        viewState.showCheckPassword()
     }
 
-    fun onViewMnemonicClicked() {
+    fun onShowPrivateKeyClicked() {
+        checkForMnemonic = false
+        viewState.showCheckPassword()
+    }
 
+    fun onCreateWalletClicked() {
+        viewState.showDialog(
+            AddAccountDialogFragment.newInstance(),
+            "dialog",
+            true
+        )
     }
 
     fun onWalletAddressCopyClicked(address: String) {
@@ -108,14 +131,11 @@ class RewardsPresenter @Inject constructor(
         viewState.showBalance(spannableString, Chain.symbolTitle)
     }
 
-    //    fun onDeleteWalletClicked() {
-//        accountsInteractor
-//            .deleteAccount()
-//            .withDefaults()
-//            .compositeSubscribe(
-//                onSuccess = {
-//                    viewState.showCreateWalletLayout()
-//                }
-//            )
-//    }
+    fun onCheckPasswordSuccessfully() {
+        if (checkForMnemonic) {
+            viewState.showMnemonic()
+        } else {
+            viewState.showPrivateKey()
+        }
+    }
 }
