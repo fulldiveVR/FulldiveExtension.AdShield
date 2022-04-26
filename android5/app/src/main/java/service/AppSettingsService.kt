@@ -21,8 +21,10 @@ import android.text.format.DateFormat
 import appextension.*
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.safeCompletable
+import com.fulldive.wallet.extensions.safeSingle
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import model.AppTheme
 import model.ThemeHelper
 import java.util.*
@@ -43,7 +45,7 @@ object AppSettingsService {
     private const val KEY_EXPERIENCE = "KEY_EXPERIENCE"
     private const val LAST_EXCHANGE_DATE = "LAST_EXCHANGE_DATE"
 
-    private const val EXCHANGE_CURRENCY = 1000
+    const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
     private const val EXCHANGE_DAYS_INTERVAL = 1
     private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 2
 
@@ -92,8 +94,8 @@ object AppSettingsService {
         val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
 
         val experience = when {
-            previousExperience >= EXCHANGE_CURRENCY -> previousExperience
-            previousExperience + newExperience >= EXCHANGE_CURRENCY -> EXCHANGE_CURRENCY
+            previousExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> previousExperience
+            previousExperience + newExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> EXPERIENCE_MIN_EXCHANGE_COUNT
             else -> previousExperience + newExperience
         }
         sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
@@ -103,8 +105,15 @@ object AppSettingsService {
         return sharedPreferences
             .observeSettingsInt(KEY_EXPERIENCE, 0)
             .map { experience ->
-                Pair(experience, EXCHANGE_CURRENCY)
+                Pair(experience, EXPERIENCE_MIN_EXCHANGE_COUNT)
             }
+    }
+
+    fun getExperience(): Single<Int> {
+        return safeSingle {
+            sharedPreferences
+                .getInt(KEY_EXPERIENCE, 0)
+        }
     }
 
     fun observeIfExchangeTimeIntervalPassed(): Observable<Boolean> {

@@ -17,7 +17,6 @@ import com.fulldive.wallet.presentation.base.BaseMvpFrameLayout
 import org.adshield.R
 import ui.rewards.RewardsFragmentDirections
 import ui.rewards.board.ExperienceProgressViewLayout
-import ui.settings.SettingsFragmentDirections
 
 abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     ExperienceView where P : BaseExperiencePresenter<out ExperienceView> {
@@ -67,12 +66,9 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
             //TODO Mocked
             findNavController()
                 .apply {
-                    navigate(R.id.activityExchangeFragment)
-                    navigate(
-                        RewardsFragmentDirections.actionNavigationRewardsToActivityExchangeFragment()
-                    )
+                    navigate(RewardsFragmentDirections.actionNavigationRewardsToExchangeFragment())
                 }
-          //  presenter.onExchangeClicked()
+            //  presenter.onExchangeClicked()
         }
     }
 

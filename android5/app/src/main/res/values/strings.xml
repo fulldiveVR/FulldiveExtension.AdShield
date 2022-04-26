@@ -511,4 +511,6 @@
   <string name="str_exchange_description">You can exchange the minimum of %d XP. Redeem is possible once in 24 hours.</string>
   <string name="str_exchange_title">Exchange</string>
   <string name="str_exchange_tokens_amount">%d FD Token</string>
+  <string name="str_from">From</string>
+  <string name="str_to">To</string>
 </resources>

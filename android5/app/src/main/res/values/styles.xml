@@ -120,7 +120,7 @@
         <item name="android:layout_height">@dimen/size_48dp</item>
         <item name="android:paddingStart">@dimen/size_24dp</item>
         <item name="android:paddingEnd">@dimen/size_24dp</item>
-        <item name="android:background">@drawable/background_button</item>
+        <item name="android:background">@drawable/background_colored_button</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
