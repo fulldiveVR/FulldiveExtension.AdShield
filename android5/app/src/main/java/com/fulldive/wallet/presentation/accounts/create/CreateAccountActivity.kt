@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.isVisible
 import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
 import com.fulldive.wallet.presentation.base.BaseMvpActivity
 import com.joom.lightsaber.getInstance
@@ -46,6 +47,8 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
             copyMnemonicButton.setOnClickListener {
                 presenter.onMnemonicCopyClicked()
             }
+
+            copyMnemonicButton.isVisible = false
         }
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(false)
@@ -74,6 +77,7 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
             nextButton.setOnClickListener {
                 presenter.onCreateAccountClicked()
             }
+            copyMnemonicButton.isVisible = true
             mnemonicsLayout.setMnemonicWords(mnemonicWords)
         }
     }
@@ -88,11 +92,11 @@ class CreateAccountActivity : BaseMvpActivity<ActivityCreateBinding>(), CreateAc
         }
     }
 
-    override fun requestPassword(checkPasword: Boolean) {
+    override fun requestPassword(checkPassword: Boolean) {
         launcher.launch(
             Intent(this, PasswordActivity::class.java).putExtra(
                 PasswordActivity.KEY_JUST_CHECK,
-                checkPasword
+                checkPassword
             ),
             ActivityOptionsCompat.makeCustomAnimation(this, R.anim.slide_in_bottom, R.anim.fade_out)
         )

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPermanentWhite">
+    android:background="@color/colorPrimary">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -39,8 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_16dp"
-        android:layout_marginEnd="@dimen/size_16dp"
         android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:padding="@dimen/size_4dp"
@@ -114,9 +114,11 @@
         android:minWidth="@dimen/size_36dp"
         android:minHeight="@dimen/size_36dp"
         android:src="@drawable/ic_copy"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/walletMnemonicTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/walletMnemonicTextView" />
+        app:layout_constraintTop_toTopOf="@id/walletMnemonicTextView"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/warningTextView"
