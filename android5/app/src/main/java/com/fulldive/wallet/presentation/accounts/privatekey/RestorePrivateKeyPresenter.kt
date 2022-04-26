@@ -37,7 +37,7 @@ class RestorePrivateKeyPresenter @Inject constructor(
     fun onCheckPasswordSuccessfully() {
         viewState.showWaitDialog()
         walletInteractor
-            .createAccount(address, privateKey)
+            .createAccount(address, privateKey, fromMnemonic = false)
             .withDefaults()
             .doAfterTerminate {
                 viewState.hideWaitDialog()
@@ -78,7 +78,6 @@ class RestorePrivateKeyPresenter @Inject constructor(
             else -> viewState.showWrongKey()
         }
     }
-
 
     fun onScanQRResultsReceived(text: String) {
         text

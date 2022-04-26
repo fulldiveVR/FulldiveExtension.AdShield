@@ -1,23 +1,10 @@
-/*
- * Copyright (c) 2022 FullDive
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package com.fulldive.wallet.presentation.accounts.mnemonic
 
 import com.fulldive.wallet.di.modules.DefaultPresentersModule
-import com.fulldive.wallet.extensions.*
+import com.fulldive.wallet.extensions.orNull
+import com.fulldive.wallet.extensions.safeSingle
+import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.extensions.withUiDefaults
 import com.fulldive.wallet.interactors.ClipboardInteractor
 import com.fulldive.wallet.interactors.WalletInteractor
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
@@ -92,7 +79,6 @@ class RestoreMnemonicPresenter @Inject constructor(
                     .split(" ")
                     .map { it.filter(Char::isLetter) }
                     .filter(String::isNotEmpty)
-                    .map { it.safeSubstring(endIndex = MAX_WORD_LENGTH) }
             }
             .withUiDefaults()
             .compositeSubscribe(
