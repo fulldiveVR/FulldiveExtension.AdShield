@@ -42,17 +42,6 @@ class RewardsPresenter @Inject constructor(
 
     private var checkForMnemonic = false
 
-//    override fun showMnemonic() {
-//        startActivity(
-//            Intent(requireActivity(), ShowMnemonicActivity::class.java)
-//        )
-//    }
-//
-//    override fun showPrivateKey() {
-//        startActivity(
-//            Intent(requireActivity(), ShowPrivateKeyActivity::class.java)
-//        )
-//    }
     override fun attachView(view: RewardsView?) {
         super.attachView(view)
         requestAccount()
@@ -66,14 +55,6 @@ class RewardsPresenter @Inject constructor(
     fun onShowPrivateKeyClicked() {
         checkForMnemonic = false
         viewState.showCheckPassword()
-    }
-
-    fun onCreateWalletClicked() {
-        viewState.showDialog(
-            AddAccountDialogFragment.newInstance(),
-            "dialog",
-            true
-        )
     }
 
     fun onWalletAddressCopyClicked(address: String) {
