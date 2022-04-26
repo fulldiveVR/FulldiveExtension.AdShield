@@ -73,6 +73,29 @@ class WalletInteractor @Inject constructor(
             .flatMapCompletable(walletRepository::setAccount)
     }
 
+    fun createAccount(
+        address: String,
+        privateKey: String,
+        path: Int = 0
+    ): Completable {
+        return singleCallable { UUID.randomUUID().toString() }
+            .flatMap { uuid ->
+                encryptFromPrivateKey(uuid, privateKey)
+                    .map { encryptData ->
+                        Account(
+                            uuid,
+                            address,
+                            true,
+                            encryptData.encDataString,
+                            encryptData.ivDataString,
+                            false,
+                            path
+                        )
+                    }
+            }
+            .flatMapCompletable(walletRepository::setAccount)
+    }
+
     fun setPassword(password: String): Completable {
         return walletRepository.setPassword(password)
     }
@@ -112,6 +135,13 @@ class WalletInteractor @Inject constructor(
                 .matches()
         }
         return result
+    }
+
+    fun isPrivateKeyValid(text: String): Boolean {
+        return Pattern
+            .compile("^(0x|0X)?[a-fA-F0-9]{64}")
+            .matcher(text)
+            .matches()
     }
 
     fun getRandomMnemonic(entropy: String): Single<List<String>> {
