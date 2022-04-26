@@ -170,6 +170,13 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
+            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.RestoreMnemonicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />

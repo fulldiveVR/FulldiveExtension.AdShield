@@ -37,8 +37,8 @@ class MainPresenter @Inject constructor(
 
     private var checkForMnemonic = false
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
+    override fun attachView(view: MainMoxyView?) {
+        super.attachView(view)
         requestAccount()
     }
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity
+import com.fulldive.wallet.presentation.accounts.mnemonic.RestoreMnemonicActivity
 import com.fulldive.wallet.presentation.accounts.privatekey.RestorePrivateKeyActivity
 import com.fulldive.wallet.presentation.base.BaseMvpDialogFragment
 import org.adshield.databinding.DialogAddAccountBinding
@@ -33,7 +34,7 @@ class AddAccountDialogFragment : BaseMvpDialogFragment<DialogAddAccountBinding>(
                 showActivity(RestorePrivateKeyActivity::class.java)
             }
             restoreWithMnemonic.setOnClickListener {
-//        showActivity(packageContext, MnemonicRestoreActivity::class.java)
+                showActivity(RestoreMnemonicActivity::class.java)
             }
             createButton.setOnClickListener {
                 showActivity(CreateAccountActivity::class.java)
