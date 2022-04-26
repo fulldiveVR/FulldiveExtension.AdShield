@@ -21,19 +21,35 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity
+import com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity
+import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
+import com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity
 import com.fulldive.wallet.presentation.base.BaseMvpFragment
 import com.joom.lightsaber.getInstance
+import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import org.adshield.R
 import org.adshield.databinding.FragmentRewardsBinding
 
 class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
 
     @InjectPresenter
     lateinit var presenter: RewardsPresenter
+
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == MvpAppCompatActivity.RESULT_OK) {
+            presenter.onCheckPasswordSuccessfully()
+        }
+    }
 
     override fun getViewBinding() = FragmentRewardsBinding.inflate(layoutInflater)
 
@@ -44,8 +60,8 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
         super.onViewCreated(view, savedInstanceState)
         binding {
             with(cryptoMainLayout) {
-                viewPrivatKeyItem.setOnClickListener { presenter.onViewPrivateKeyClicked() }
-                viewMnemonicItem.setOnClickListener { presenter.onViewMnemonicClicked() }
+                viewPrivatKeyItem.setOnClickListener { presenter.onShowPrivateKeyClicked() }
+                viewMnemonicItem.setOnClickListener { presenter.onShowMnemonicClicked() }
                 copyAddressButton.setOnClickListener {
                     presenter.onWalletAddressCopyClicked(addressTextView.text.toString())
                 }
@@ -89,6 +105,32 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
                 .append(" ")
                 .append(denom)
         }
+    }
+
+    override fun showCheckPassword() {
+        launcher.launch(
+            Intent(requireActivity(), PasswordActivity::class.java).putExtra(
+                PasswordActivity.KEY_JUST_CHECK,
+                true
+            ),
+            ActivityOptionsCompat.makeCustomAnimation(
+                requireContext(),
+                R.anim.slide_in_bottom,
+                R.anim.fade_out
+            )
+        )
+    }
+
+    override fun showMnemonic() {
+        startActivity(
+            Intent(requireActivity(), ShowMnemonicActivity::class.java)
+        )
+    }
+
+    override fun showPrivateKey() {
+        startActivity(
+            Intent(requireActivity(), ShowPrivateKeyActivity::class.java)
+        )
     }
 
     private fun showActivity(clazz: Class<*>) {
