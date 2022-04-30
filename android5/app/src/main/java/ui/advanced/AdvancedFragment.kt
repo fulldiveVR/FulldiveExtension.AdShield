@@ -46,7 +46,7 @@ class AdvancedFragment : Fragment() {
     )
 
     //       private val isSlimMode = EnvironmentService.isSlim()
-    private val isSlimMode = true // temp solution.
+    private val isSlimMode = false // temp solution.
 
     private val sections by lazy {
         listOfNotNull(
