@@ -19,6 +19,7 @@ package com.fulldive.wallet.interactors
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
 import com.fulldive.wallet.extensions.safeSingle
 import com.fulldive.wallet.extensions.singleCallable
+import com.fulldive.wallet.extensions.toSingle
 import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.models.AccountSecrets
 import com.fulldive.wallet.models.Balance
@@ -57,7 +58,7 @@ class WalletInteractor @Inject constructor(
     fun createAccount(accountSecrets: AccountSecrets): Completable {
         return singleCallable { UUID.randomUUID().toString() }
             .flatMap { uuid ->
-                entropyFromMnemonic(uuid, accountSecrets.entropy)
+                encryptFromMnemonic(uuid, accountSecrets.entropy)
                     .map { encryptData ->
                         Account(
                             uuid,
@@ -67,6 +68,34 @@ class WalletInteractor @Inject constructor(
                             encryptData.ivDataString,
                             true,
                             accountSecrets.path
+                        )
+                    }
+            }
+            .flatMapCompletable(walletRepository::setAccount)
+    }
+
+    fun createAccount(
+        address: String,
+        entropy: String,
+        path: Int = 0,
+        fromMnemonic: Boolean
+    ): Completable {
+        return singleCallable { UUID.randomUUID().toString() }
+            .flatMap { uuid ->
+                if(fromMnemonic) {
+                    encryptFromMnemonic(uuid, entropy)
+                } else {
+                    encryptFromPrivateKey(uuid, entropy)
+                }
+                    .map { encryptData ->
+                        Account(
+                            uuid,
+                            address,
+                            true,
+                            encryptData.encDataString,
+                            encryptData.ivDataString,
+                            fromMnemonic,
+                            path
                         )
                     }
             }
@@ -114,6 +143,13 @@ class WalletInteractor @Inject constructor(
         return result
     }
 
+    fun isPrivateKeyValid(text: String): Boolean {
+        return Pattern
+            .compile("^(0x|0X)?[a-fA-F0-9]{64}")
+            .matcher(text)
+            .matches()
+    }
+
     fun getRandomMnemonic(entropy: String): Single<List<String>> {
         return safeSingle {
             MnemonicCode.INSTANCE.toMnemonic(
@@ -126,7 +162,7 @@ class WalletInteractor @Inject constructor(
         return decryptText(MNEMONIC_KEY + uuid, resource, spec)
     }
 
-    fun entropyFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
+    fun encryptFromMnemonic(uuid: String, entropy: String): Single<EncResult> {
         return encryptText(MNEMONIC_KEY + uuid, entropy)
     }
 
@@ -147,6 +183,32 @@ class WalletInteractor @Inject constructor(
                 entropy, path
             )
         }
+    }
+
+    fun entropyHexFromMnemonicWords(words: List<String>): String {
+        return MnemonicUtils.byteArrayToHexString(MnemonicCode.INSTANCE.toEntropy(words))
+    }
+
+    fun isValidMnemonicArray(words: Array<String>): Boolean {
+        return words.size == 24 && isValidMnemonicWords(words)
+    }
+
+    fun isValidMnemonicWords(words: Array<String>): Boolean {
+        val mnemonics = MnemonicCode.INSTANCE.wordList
+        return words.all(mnemonics::contains)
+    }
+
+    fun checkMnemonicWords(words: Array<String>): List<Boolean> {
+        val mnemonics = MnemonicCode.INSTANCE.wordList
+        return words.map { word -> !mnemonics.contains(word) }
+    }
+
+    fun isValidMnemonicWord(word: String): Boolean {
+        return word.isNotEmpty() && MnemonicCode.INSTANCE.wordList.contains(word)
+    }
+
+    fun getMnemonicDictionary(): Single<List<String>> {
+        return MnemonicCode.INSTANCE.wordList.toSingle()
     }
 
     private fun getEntropy(): ByteArray {

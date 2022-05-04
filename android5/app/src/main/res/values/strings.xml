@@ -502,6 +502,17 @@
   <string name="str_set_pincode">Set Pin Code</string>
   <string name="str_invalid_pincode">Incorrect PIN code.</string>
   <string name="str_check_pincode">Check Pin Code</string>
+  <string name="str_restore_private_key_message">Please enter your private key. The private key is a 66-digit string starting with 0x.\n\n Kindly do not use one wallet on multiple devices.\n Your account might be blocked.</string>
+  <string name="str_restore_mnemonic_message">Please insert your existing mnemonic key in the field below.</string>
+  <string name="str_invalid_private_key">Wrong Key</string>
+  <string name="str_invalid_mnemonic">Invalid Mnemonic Key. Please try again.</string>
+  <string name="str_private_key_hint">Insert Private Key</string>
+  <string name="str_qrcode_scan">QR Scan</string>
+  <string name="str_paste">Paste</string>
+  <string name="str_next">Next</string>
+  <string name="str_confirm">Confirm</string>
+  <string name="str_mnemonic_counter_template" formatted="false">%02d.</string>
+  <string name="str_clipboard_no_data">No text from the clipboard.</string>
   <string name="str_exchange_xp_info_crypto">Exchange XP Rewards into CRYPTO!</string>
   <string name="str_exchange_xp_info_crypto_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
   <string name="str_view_private_key">View Private Key</string>
