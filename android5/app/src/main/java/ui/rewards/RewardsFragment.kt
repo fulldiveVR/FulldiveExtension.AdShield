@@ -27,8 +27,10 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity
+import com.fulldive.wallet.presentation.accounts.mnemonic.RestoreMnemonicActivity
 import com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity
 import com.fulldive.wallet.presentation.accounts.password.PasswordActivity
+import com.fulldive.wallet.presentation.accounts.privatekey.RestorePrivateKeyActivity
 import com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity
 import com.fulldive.wallet.presentation.base.BaseMvpFragment
 import com.joom.lightsaber.getInstance
@@ -69,10 +71,10 @@ class RewardsFragment : BaseMvpFragment<FragmentRewardsBinding>(), RewardsView {
 
             with(addAccountLayout) {
                 restoreWithPrivateKey.setOnClickListener {
-//        showActivity(packageContext, PrivateKeyRestoreActivity::class.java)
+                    showActivity(RestorePrivateKeyActivity::class.java)
                 }
                 restoreWithMnemonic.setOnClickListener {
-//        showActivity(packageContext, MnemonicRestoreActivity::class.java)
+                    showActivity(RestoreMnemonicActivity::class.java)
                 }
                 createButton.setOnClickListener {
                     showActivity(CreateAccountActivity::class.java)
