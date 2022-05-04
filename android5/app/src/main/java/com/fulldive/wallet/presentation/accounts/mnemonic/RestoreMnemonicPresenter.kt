@@ -1,10 +1,7 @@
 package com.fulldive.wallet.presentation.accounts.mnemonic
 
 import com.fulldive.wallet.di.modules.DefaultPresentersModule
-import com.fulldive.wallet.extensions.orNull
-import com.fulldive.wallet.extensions.safeSingle
-import com.fulldive.wallet.extensions.withDefaults
-import com.fulldive.wallet.extensions.withUiDefaults
+import com.fulldive.wallet.extensions.*
 import com.fulldive.wallet.interactors.ClipboardInteractor
 import com.fulldive.wallet.interactors.WalletInteractor
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
@@ -79,6 +76,7 @@ class RestoreMnemonicPresenter @Inject constructor(
                     .split(" ")
                     .map { it.filter(Char::isLetter) }
                     .filter(String::isNotEmpty)
+                    .map { it.safeSubstring(endIndex = MAX_WORD_LENGTH) }
             }
             .withUiDefaults()
             .compositeSubscribe(
