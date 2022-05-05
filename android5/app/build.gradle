@@ -202,8 +202,7 @@ dependencies {
 
     implementation 'com.joom.lightsaber:lightsaber-core-kotlin:1.0.0-alpha13'
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'com.imversed:client:1.0.0'
-    implementation 'com.imversed:client:1.0.0'
+    implementation 'com.imversed:client:1.0.1'
     implementation 'org.web3j:core:4.6.0-android'
     implementation 'io.grpc:grpc-api:1.45.0'
     implementation 'io.grpc:grpc-protobuf:1.45.0'
