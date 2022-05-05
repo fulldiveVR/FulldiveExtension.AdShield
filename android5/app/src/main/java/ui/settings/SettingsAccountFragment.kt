@@ -17,14 +17,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import org.adshield.R
 import service.AlertDialogService
 import ui.AccountViewModel
 import ui.SettingsViewModel
 import ui.app
-import ui.utils.AndroidUtils
+import utils.AndroidUtils
 
 class SettingsAccountFragment : PreferenceFragmentCompat() {
 

@@ -17,11 +17,18 @@
 package service
 
 import android.annotation.SuppressLint
-import appextension.getPrivateSharedPreferences
-import appextension.getProperty
-import appextension.setProperty
+import android.text.format.DateFormat
+import appextension.*
+import com.fulldive.wallet.extensions.or
+import com.fulldive.wallet.extensions.safeCompletable
+import com.fulldive.wallet.extensions.safeSingle
+import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 import model.AppTheme
 import model.ThemeHelper
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @SuppressLint("StaticFieldLeak")
 object AppSettingsService {
@@ -35,6 +42,12 @@ object AppSettingsService {
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
+    private const val KEY_EXPERIENCE = "KEY_EXPERIENCE"
+    private const val LAST_EXCHANGE_DATE = "LAST_EXCHANGE_DATE"
+
+    const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
+    private const val EXCHANGE_DAYS_INTERVAL = 1
+    private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 2
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -76,7 +89,63 @@ object AppSettingsService {
         initCurrentAppTheme(appTheme)
     }
 
+    fun setExperience(adsCount: Long) {
+        val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
+        val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
+
+        val experience = when {
+            previousExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> previousExperience
+            previousExperience + newExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> EXPERIENCE_MIN_EXCHANGE_COUNT
+            else -> previousExperience + newExperience
+        }
+        sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
+    }
+
+    fun observeExperience(): Observable<Pair<Int, Int>> {
+        return sharedPreferences
+            .observeSettingsInt(KEY_EXPERIENCE, 0)
+            .map { experience ->
+                Pair(experience, EXPERIENCE_MIN_EXCHANGE_COUNT)
+            }
+    }
+
+    fun getExperience(): Single<Int> {
+        return safeSingle {
+            sharedPreferences
+                .getInt(KEY_EXPERIENCE, 0)
+        }
+    }
+
+    fun observeIfExchangeTimeIntervalPassed(): Observable<Boolean> {
+        return sharedPreferences
+            .observeSettingsLong(LAST_EXCHANGE_DATE)
+            .map { exchangeDateTime ->
+                isDaysIntervalPassed(System.currentTimeMillis(), exchangeDateTime)
+            }
+    }
+
+    fun clearExchangedExperience(): Completable {
+        return safeCompletable {
+            sharedPreferences.setProperty(KEY_EXPERIENCE, 0)
+            sharedPreferences.setProperty(LAST_EXCHANGE_DATE, getDateWithoutHours().time)
+        }
+    }
+
     private fun initCurrentAppTheme(theme: AppTheme) {
         ThemeHelper.setCurrentAppTheme(theme.mode)
+    }
+
+    private fun getDateWithoutHours(): Date {
+        val dateFormat = DateFormat.getDateFormat(context)
+        return dateFormat.parse(dateFormat.format(Date())).or(Date())
+    }
+
+    private fun isDaysIntervalPassed(currentTime: Long, time: Long): Boolean {
+        val timeIntervalBetweenDays = (currentTime - time)
+        val daysIntervalBetweenDays = TimeUnit.DAYS.convert(
+            timeIntervalBetweenDays,
+            TimeUnit.MILLISECONDS
+        )
+        return daysIntervalBetweenDays >= EXCHANGE_DAYS_INTERVAL
     }
 }

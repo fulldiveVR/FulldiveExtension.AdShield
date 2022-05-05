@@ -29,7 +29,7 @@ import org.adshield.R
 import ui.StatsViewModel
 import ui.advanced.packs.OptionView
 import ui.app
-import ui.utils.AndroidUtils
+import utils.AndroidUtils
 
 
 class StatsDetailFragment : Fragment() {

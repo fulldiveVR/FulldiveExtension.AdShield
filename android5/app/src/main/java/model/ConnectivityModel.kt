@@ -16,7 +16,7 @@ import android.content.Context
 import com.squareup.moshi.JsonClass
 import org.adshield.R
 import repository.DnsDataSource
-import ui.utils.now
+import utils.now
 
 @JsonClass(generateAdapter = true)
 data class NetworkDescriptor(

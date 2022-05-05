@@ -24,7 +24,7 @@ import service.AlertDialogService
 import service.ConnectivityService
 import service.EnvironmentService
 import service.PersistenceService
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.util.*
 

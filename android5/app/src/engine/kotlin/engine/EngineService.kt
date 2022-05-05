@@ -23,7 +23,7 @@ import service.ConnectivityService
 import service.EnvironmentService
 import service.VpnPermissionService
 import utils.Logger
-import ui.utils.cause
+import utils.cause
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.Socket

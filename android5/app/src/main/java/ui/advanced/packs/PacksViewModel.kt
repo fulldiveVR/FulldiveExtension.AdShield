@@ -24,8 +24,8 @@ import org.adshield.R
 import service.AlertDialogService
 import service.BlocklistService
 import service.PersistenceService
-import ui.utils.cause
-import ui.utils.now
+import utils.cause
+import utils.now
 import utils.Logger
 import kotlin.random.Random
 

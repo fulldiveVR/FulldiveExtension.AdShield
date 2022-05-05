@@ -27,7 +27,7 @@
         android:text="99"
         android:textAlignment="center"
         android:textColor="@color/textColorTertiary"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_xsmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

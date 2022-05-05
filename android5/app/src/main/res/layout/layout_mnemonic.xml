@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mnemonicsContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_frame"
+    android:padding="@dimen/size_8dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView0"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView1"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView0"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView2"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1. test" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView0,mnemonicTextView1,mnemonicTextView2" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView3"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView4"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView5"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView3"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView5"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView4"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="1. test" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView3,mnemonicTextView4,mnemonicTextView5" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView6"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView7"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView8"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView6"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView8"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView7"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="1. test" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView6,mnemonicTextView7,mnemonicTextView8" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView9"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView10"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView11"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView9"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="1. test" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView11"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView10"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="1. test" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView8,mnemonicTextView9,mnemonicTextView10" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView12"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView13"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView14"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView12"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView14"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView13"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="1. test" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView12,mnemonicTextView13,mnemonicTextView14" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView15"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView16"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView17"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView15"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView17"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView16"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="1. test" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView15,mnemonicTextView16,mnemonicTextView17" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView18"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView19"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView20"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView18"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView20"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView19"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="1. test" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicTextView18,mnemonicTextView19,mnemonicTextView20" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView21"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView22"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView22"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicTextView23"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView21"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="1. test" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/mnemonicTextView23"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicTextView22"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="1. test" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
