@@ -19,13 +19,13 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Binder
 import android.os.IBinder
+import engine.Host
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlokadaException
 import model.Stats
 import model.TunnelStatus
-import engine.*
 import ui.utils.cause
 import utils.Logger
 import utils.MonitorNotification
@@ -56,7 +56,7 @@ private interface MonitorServiceStrategy {
 }
 
 // This strategy just shows the notification
-private class SimpleMonitorServiceStrategy: MonitorServiceStrategy {
+private class SimpleMonitorServiceStrategy : MonitorServiceStrategy {
 
     private val notification = NotificationService
 
@@ -83,14 +83,16 @@ private class SimpleMonitorServiceStrategy: MonitorServiceStrategy {
     }
 
     private fun updateNotification() {
-        val prototype = MonitorNotification(tunnelStatus, counter, lastDenied)
-        notification.show(prototype)
+        if (tunnelStatus.active) {
+            val prototype = MonitorNotification(tunnelStatus, counter, lastDenied)
+            notification.show(prototype)
+        }
     }
 
 }
 
 // This strategy keeps the app alive while showing the notification
-private class ForegroundMonitorServiceStrategy: MonitorServiceStrategy {
+private class ForegroundMonitorServiceStrategy : MonitorServiceStrategy {
 
     private val log = Logger("Monitor")
     private val context = ContextService
@@ -155,9 +157,11 @@ private class ForegroundMonitorServiceStrategy: MonitorServiceStrategy {
                 this.connection = null
             })
 
-        if (!ctx.bindService(intent, connection,
+        if (!ctx.bindService(
+                intent, connection,
                 Context.BIND_AUTO_CREATE or Context.BIND_ABOVE_CLIENT or Context.BIND_IMPORTANT
-            )) {
+            )
+        ) {
             deferred.completeExceptionally(BlokadaException("Could not bindService()"))
         }
         return connection
@@ -165,7 +169,7 @@ private class ForegroundMonitorServiceStrategy: MonitorServiceStrategy {
 
 }
 
-class ForegroundService: Service() {
+class ForegroundService : Service() {
 
     private val notification = NotificationService
     private var binder: ForegroundBinder? = null
@@ -211,7 +215,7 @@ const val FOREGROUND_BINDER_ACTION = "ForegroundBinder"
 private class ForegroundConnection(
     private val deferred: ConnectDeferred,
     val onConnectionClosed: () -> Unit
-): ServiceConnection {
+) : ServiceConnection {
 
     private val log = Logger("ForegroundConnection")
 
