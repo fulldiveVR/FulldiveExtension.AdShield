@@ -82,6 +82,7 @@
                         app:layout_constraintWidth_max="@dimen/sheet_maxwidth">
 
                         <TextView
+                            android:id="@+id/intro_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/intro_text"
@@ -91,10 +92,11 @@
                             android:id="@+id/firsttime_more"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/doubled"
-                            android:gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginTop="@dimen/normal"
                             android:text="@string/universal_action_learn_more"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/textColorPrimary" />
 
                         <View
                             android:layout_width="match_parent"

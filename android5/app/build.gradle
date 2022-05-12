@@ -20,7 +20,7 @@ apply plugin: "kotlin-kapt"
 
 def versionMajor = 1
 def versionMinor = 1
-def versionPatch = 4
+def versionPatch = 6
 
 android {
     compileSdkVersion 32

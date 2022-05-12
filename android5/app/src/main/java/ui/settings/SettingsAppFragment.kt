@@ -16,6 +16,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -275,6 +276,18 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             ctx.startActivity(getIntentForNotificationChannelsSettings(ctx))
             true
         }
+
+        val battery: Preference? = findPreference("app_battery")
+        battery?.setOnPreferenceClickListener {
+            checkDoze()
+            true
+        }
+
+        val dataUsage: Preference? = findPreference("app_data")
+        dataUsage?.setOnPreferenceClickListener {
+            checkDataSaving()
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -304,6 +317,35 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         putExtra("app_package", ctx.packageName)
         putExtra("app_uid", ctx.applicationInfo.uid)
         putExtra("android.provider.extra.APP_PACKAGE", ctx.packageName)
+    }
+
+    private fun checkDoze() {
+        val settings = Intent(
+            Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+        )
+        if (context?.packageManager?.resolveActivity(
+                settings,
+                0
+            ) != null
+        ) try {
+            startActivity(settings)
+        } catch (ex: Throwable) {
+        }
+    }
+
+    private fun checkDataSaving() {
+        val settings = Intent(
+            Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
+            Uri.parse("package:" + context?.packageName)
+        )
+        if (context?.packageManager?.resolveActivity(
+                settings,
+                0
+            ) != null
+        ) try {
+            startActivity(settings)
+        } catch (ex: Throwable) {
+        }
     }
 }
 
