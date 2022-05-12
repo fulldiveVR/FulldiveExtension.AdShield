@@ -12,9 +12,11 @@
 
 package ui.settings
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
@@ -25,9 +27,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.internal.ManufacturerUtils
 import model.AppTheme
 import model.LocalConfig
 import model.ThemeHelper
+import org.adshield.BuildConfig
 import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
 import service.EnvironmentService
@@ -35,6 +39,8 @@ import ui.AppSettingsViewModel
 import ui.SettingsViewModel
 import ui.app
 import utils.Links
+import java.util.*
+
 
 class SettingsAppFragment : PreferenceFragmentCompat() {
 
@@ -277,15 +283,26 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             true
         }
 
+        val isMeizu = Build.MANUFACTURER.lowercase(Locale.ENGLISH) == "meizu"
+
         val battery: Preference? = findPreference("app_battery")
+        battery?.isVisible = !isMeizu
         battery?.setOnPreferenceClickListener {
             checkDoze()
             true
         }
 
         val dataUsage: Preference? = findPreference("app_data")
+        dataUsage?.isVisible = !isMeizu
         dataUsage?.setOnPreferenceClickListener {
             checkDataSaving()
+            true
+        }
+
+        val workAtBackground: Preference? = findPreference("app_background")
+        workAtBackground?.isVisible = isMeizu
+        workAtBackground?.setOnPreferenceClickListener {
+            activity?.let { activity -> openFlymeSecurityApp(activity) }
             true
         }
     }
@@ -345,6 +362,17 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         ) try {
             startActivity(settings)
         } catch (ex: Throwable) {
+        }
+    }
+
+    private fun openFlymeSecurityApp(context: Activity) {
+        val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

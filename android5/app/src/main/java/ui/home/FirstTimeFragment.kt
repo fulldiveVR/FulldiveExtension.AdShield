@@ -12,8 +12,10 @@
 
 package ui.home
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.SpannableString
@@ -28,8 +30,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import org.adshield.BuildConfig
 import org.adshield.R
 import ui.BottomSheetFragment
+import java.util.*
 
 class FirstTimeFragment : BottomSheetFragment() {
 
@@ -56,9 +60,16 @@ class FirstTimeFragment : BottomSheetFragment() {
         intro.text = vpnStringSpanned
         intro.movementMethod = LinkMovementMethod.getInstance()
 
-        val batteryString = getString(R.string.first_start_battery_exception)
-        val batteryStringSpanned = getTextWithLink(batteryString) {
-            checkDoze()
+        val batteryStringSpanned = if (Build.MANUFACTURER.lowercase(Locale.ENGLISH) == "meizu") {
+            val batteryString = getString(R.string.first_start_battery_exception_meizu)
+            getTextWithLink(batteryString) {
+                activity?.let { openFlymeSecurityApp(it) }
+            }
+        } else {
+            val batteryString = getString(R.string.first_start_battery_exception)
+             getTextWithLink(batteryString) {
+                checkDoze()
+            }
         }
 
         val more: TextView = root.findViewById(R.id.firsttime_more)
@@ -155,6 +166,17 @@ class FirstTimeFragment : BottomSheetFragment() {
     private fun getIntentForVpnProfile() = Intent().apply {
         action = "android.net.vpn.SETTINGS"
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+
+    private fun openFlymeSecurityApp(context: Activity) {
+        val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     data class SubString(

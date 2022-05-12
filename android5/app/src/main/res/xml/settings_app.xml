@@ -72,6 +72,9 @@
         <Preference
             app:key="app_data"
             app:title="@string/settings_system_open_data_settings" />
+        <Preference
+            app:key="app_background"
+            app:title="@string/settings_system_open_background_settings" />
     </PreferenceCategory>
 
     <PreferenceCategory

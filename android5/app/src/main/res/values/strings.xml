@@ -529,4 +529,6 @@
   <string name="first_start_battery_exception">Also we kindly suggest &lt;u&gt;Add the app into exceptions&lt;/u&gt; to keep it active and provide its stable work on the background.</string>
   <string name="settings_system_open_battery_settings">Open battery settings</string>
   <string name="settings_system_open_data_settings">Open data usage settings</string>
+  <string name="first_start_battery_exception_meizu">Also we kindly suggest &lt;u&gt;Allow work at background&lt;/u&gt; to keep it active and provide its stable work on the background.</string>
+  <string name="settings_system_open_background_settings">Open background settings</string>
 </resources>
