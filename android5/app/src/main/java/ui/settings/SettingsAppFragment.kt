@@ -27,13 +27,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.google.android.material.internal.ManufacturerUtils
+import androidx.preference.SwitchPreference
 import model.AppTheme
 import model.LocalConfig
 import model.ThemeHelper
 import org.adshield.BuildConfig
 import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
+import service.AppSettingsService
 import service.EnvironmentService
 import ui.AppSettingsViewModel
 import ui.SettingsViewModel
@@ -303,6 +304,16 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         workAtBackground?.isVisible = isMeizu
         workAtBackground?.setOnPreferenceClickListener {
             activity?.let { activity -> openFlymeSecurityApp(activity) }
+            true
+        }
+
+        var isChecked = AppSettingsService.getIsBlockHistoryAtNotification()
+        val hideHistoryFromNotification: SwitchPreference? = findPreference("app_hide_history_from_notification")
+        hideHistoryFromNotification?.isChecked = isChecked
+        hideHistoryFromNotification?.setOnPreferenceClickListener {
+            isChecked = !isChecked
+            AppSettingsService.setIsBlockHistoryAtNotification(isChecked)
+            hideHistoryFromNotification.isEnabled = isChecked
             true
         }
     }

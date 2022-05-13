@@ -52,6 +52,10 @@
         <!--            app:title="@string/app_settings_browser_label"-->
         <!--            app:useSimpleSummaryProvider="true" />-->
 
+        <SwitchPreference
+            app:key="app_hide_history_from_notification"
+            app:title="@string/settings_advanced_hide_history_from_notifications"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
