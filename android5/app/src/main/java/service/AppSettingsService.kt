@@ -35,6 +35,7 @@ object AppSettingsService {
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
+    private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -74,6 +75,14 @@ object AppSettingsService {
         sharedPreferences.setProperty(KEY_APP_THEME, theme)
         val appTheme = AppTheme.getThemeByType(getCurrentAppTheme())
         initCurrentAppTheme(appTheme)
+    }
+
+    fun getIsBlockHistoryAtNotification(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS, false)
+    }
+
+    fun setIsBlockHistoryAtNotification(isBlock: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS, isBlock)
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {
