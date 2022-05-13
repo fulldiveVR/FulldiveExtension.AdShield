@@ -26,7 +26,7 @@ import ui.MainActivity
 import ui.getIntentForCommand
 import ui.getWorkerRequestForCommand
 
-private const val IMPORTANCE_NONE = 0
+private const val IMPORTANCE_NONE = 2
 private const val IMPORTANCE_DEFAULT = 3
 private const val IMPORTANCE_HIGH = 4
 
