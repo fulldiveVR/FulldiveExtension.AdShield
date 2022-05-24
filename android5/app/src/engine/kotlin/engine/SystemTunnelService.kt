@@ -20,10 +20,8 @@ import android.net.VpnService
 import android.os.IBinder
 import kotlinx.coroutines.CompletableDeferred
 import model.BlokadaException
-import model.Dns
-import model.TunnelStatus
 import service.ContextService
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.net.DatagramSocket
 import java.net.Socket

@@ -17,17 +17,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Environment
 import androidx.core.content.FileProvider
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.BlokadaException
 import model.Uri
-import ui.Command
-import ui.executeCommand
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.io.File
 

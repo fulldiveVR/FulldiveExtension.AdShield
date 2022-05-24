@@ -19,6 +19,11 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
+import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
+import com.fulldive.wallet.di.IInjectorHolder
+import com.fulldive.wallet.di.components.ApplicationComponent
+import com.joom.lightsaber.Injector
+import com.joom.lightsaber.Lightsaber
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
@@ -29,11 +34,11 @@ import model.BlockaRepoConfig
 import model.BlockaRepoPayload
 import service.*
 import ui.advanced.packs.PacksViewModel
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.util.*
 
-class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
+class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjectorHolder {
 
     companion object {
         /**
@@ -47,6 +52,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
 
     override fun getViewModelStore() = MainApplication.viewModelStore
 
+    override fun getInjector(): Injector {
+        return appInjector
+    }
+
+    private lateinit var appInjector: Injector
     private lateinit var accountVM: AccountViewModel
     private lateinit var tunnelVM: TunnelViewModel
     private lateinit var settingsVM: SettingsViewModel
@@ -57,12 +67,16 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
+        appInjector = Lightsaber.Builder().build().createInjector(
+            ApplicationComponent(applicationContext)
+        )
         ContextService.setContext(this)
         LegacyAccountImport.setup()
         LogService.setup()
         DozeService.setup(this)
         setupEvents()
 //        MonitorService.setup(settingsVM.getUseForegroundService())
+        registerActivityLifecycleCallbacks(EnrichableLifecycleCallbacks(this))
 
         ABPService.initABP(ContextService.requireContext())
         ABPService.setAdblockState(true)

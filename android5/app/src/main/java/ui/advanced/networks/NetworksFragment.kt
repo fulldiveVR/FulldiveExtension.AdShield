@@ -33,7 +33,7 @@ import service.NetworkMonitorPermissionService
 import ui.NetworksViewModel
 import ui.app
 import ui.settings.getIntentForAppInfo
-import ui.utils.getColor
+import utils.getColor
 
 class NetworksFragment : Fragment() {
 

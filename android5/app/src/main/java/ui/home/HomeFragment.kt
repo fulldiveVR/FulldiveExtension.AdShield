@@ -34,7 +34,7 @@ import service.EnvironmentService
 import service.UpdateService
 import ui.*
 import ui.settings.SettingsFragmentDirections
-import ui.utils.getColorFromAttr
+import utils.getColorFromAttr
 import utils.Links
 import utils.withBoldSections
 

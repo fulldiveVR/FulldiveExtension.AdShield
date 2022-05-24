@@ -25,7 +25,7 @@ import org.adshield.R
 import ui.BottomSheetFragment
 import ui.TunnelViewModel
 import ui.app
-import ui.utils.getColorFromAttr
+import utils.getColorFromAttr
 import utils.Logger
 
 class LocationFragment : BottomSheetFragment() {

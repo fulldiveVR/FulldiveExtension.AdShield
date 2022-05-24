@@ -10,7 +10,7 @@
  * @author Karol Gusak (karol@blocka.net)
  */
 
-package ui.utils
+package utils
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -27,10 +27,6 @@ import model.SystemTunnelRevoked
 import model.Uri
 import org.adshield.R
 import service.ContextService
-import service.tr
-import utils.Logger
-import java.text.SimpleDateFormat
-import java.util.*
 
 object AndroidUtils {
 

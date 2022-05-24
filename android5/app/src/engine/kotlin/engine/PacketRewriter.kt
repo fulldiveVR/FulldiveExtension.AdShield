@@ -21,7 +21,7 @@ import org.xbill.DNS.ARecord
 import org.xbill.DNS.DClass
 import org.xbill.DNS.Message
 import org.xbill.DNS.Name
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.io.IOException
 import java.net.Inet4Address

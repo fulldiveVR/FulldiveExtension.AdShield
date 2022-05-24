@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mnemonicsContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_frame"
+    android:padding="@dimen/size_8dp">
+
+    <EditText
+        android:id="@+id/mnemonicsEditText0"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView0"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText0"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText0"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText1"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText0"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView1"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText1"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText1"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText1"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText2"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView2"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText2"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText2"
+        tools:text="01." />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText0,mnemonicsEditText1,mnemonicsEditText2" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText3"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView3"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText3"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText3"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText3"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText4"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText5"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText3"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView4"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText4"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText4"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText4"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText5"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText4"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier1"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView5"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText5"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText5"
+        tools:text="01." />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText3,mnemonicsEditText4,mnemonicsEditText5" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText6"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView6"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText6"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText6"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText6"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText7"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText8"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText6"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView7"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText7"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText7"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText7"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText8"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText7"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier2"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView8"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText8"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText8"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText8"
+        tools:text="01." />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText6,mnemonicsEditText7,mnemonicsEditText8" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText9"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView9"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText9"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText9"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText9"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText10"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText11"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText9"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView10"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText10"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText10"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText10"
+        tools:text="01." />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText11"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText10"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier3"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView11"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText11"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText11"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText11"
+        tools:text="01." />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText8,mnemonicsEditText9,mnemonicsEditText10" />
+
+    <EditText
+        android:id="@+id/mnemonicsEditText12"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView12"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText12"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText12"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText12"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText13"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText14"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText12"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView13"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText13"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText13"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText13"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText14"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText13"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier4"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView14"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText14"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText14"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText14"
+        tools:text="01." />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText12,mnemonicsEditText13,mnemonicsEditText14" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText15"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView15"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText15"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText15"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText15"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText16"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText17"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText15"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView16"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText16"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText16"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText16"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText17"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText16"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier5"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView17"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText17"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText17"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText17"
+        tools:text="01." />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText15,mnemonicsEditText16,mnemonicsEditText17" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText18"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView18"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText18"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText18"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText18"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText19"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText20"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText18"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView19"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText19"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText19"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText19"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText20"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText19"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier6"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView20"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText20"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText20"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText20"
+        tools:text="01." />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/horizontalBarrier7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="mnemonicsEditText18,mnemonicsEditText19,mnemonicsEditText20" />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText21"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText22"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView21"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText21"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText21"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText21"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText22"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mnemonicsEditText23"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText21"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView22"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText22"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText22"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText22"
+        tools:text="01." />
+
+
+    <EditText
+        android:id="@+id/mnemonicsEditText23"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/colorTransparent"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mnemonicsEditText22"
+        app:layout_constraintTop_toBottomOf="@id/horizontalBarrier7"
+        tools:text="test" />
+
+    <TextView
+        android:id="@+id/mnemonicTextView23"
+        style="@style/Text.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_xsmall"
+        app:autoSizeMinTextSize="@dimen/text_size_xxsmall"
+        app:layout_constraintBottom_toBottomOf="@id/mnemonicsEditText23"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@id/mnemonicsEditText23"
+        app:layout_constraintTop_toTopOf="@id/mnemonicsEditText23"
+        tools:text="01." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@ import engine.EngineService
 import service.PersistenceService
 import service.StatsService
 import ui.advanced.packs.PacksViewModel
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.lang.Exception
 
@@ -241,7 +241,7 @@ class StatsViewModel : ViewModel() {
             }
             PacksViewModel.Filter.ALL -> {
                 allPacks.filter { pack ->
-                    activeTags.intersect(pack.tags).isEmpty() != true
+                    !activeTags.intersect(pack.tags).isEmpty()
                 }
             }
             else -> {

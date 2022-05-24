@@ -16,6 +16,7 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Menu
@@ -33,25 +34,36 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import appextension.*
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
+import com.fulldive.wallet.di.IEnrichableActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
 import org.adshield.R
-import service.*
+import service.ContextService
+import service.NetworkMonitorPermissionService
+import service.TranslationService
+import service.VpnPermissionService
 import ui.home.FirstTimeFragment
+import ui.home.HomeFragmentDirections
 import ui.settings.SettingsFragmentDirections
 import ui.settings.SettingsNavigation
 import ui.web.WebService
+import utils.Links
 import utils.Logger
 
 
 class MainActivity : LocalizationActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
+    IEnrichableActivity {
 
     private lateinit var statsVM: StatsViewModel
     private lateinit var tunnelVM: TunnelViewModel
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
+     lateinit var toolbar: Toolbar
+
+    override lateinit var appInjector: Injector
 
     //    private lateinit var blockaRepoVM: BlockaRepoViewModel
     private lateinit var activationVM: ActivationViewModel
@@ -72,8 +84,7 @@ class MainActivity : LocalizationActivity(),
         setContentView(R.layout.activity_main)
 
         val navigationView: BottomNavigationView = findViewById(R.id.nav_view)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-
+        toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -82,7 +93,7 @@ class MainActivity : LocalizationActivity(),
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
-                R.id.navigation_activity,
+                R.id.rewardsFragment,
                 R.id.advancedFragment,
                 R.id.navigation_settings
             )
@@ -94,7 +105,7 @@ class MainActivity : LocalizationActivity(),
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showNavBar = when (destination.id) {
                 R.id.navigation_home -> true
-                R.id.navigation_activity -> true
+                R.id.rewardsFragment -> true
                 R.id.advancedFragment -> true
                 R.id.navigation_settings -> true
                 else -> isScreenBigEnough()
@@ -105,7 +116,7 @@ class MainActivity : LocalizationActivity(),
         // Needed for dynamic translation of the bottom bar
         val selectionListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val (nav, title) = when (item.itemId) {
-                R.id.navigation_activity -> R.id.navigation_activity to getString(R.string.main_tab_activity)
+                R.id.rewardsFragment -> R.id.rewardsFragment to getString(R.string.main_tab_rewards)
                 R.id.advancedFragment -> R.id.advancedFragment to getString(R.string.main_tab_advanced)
                 R.id.navigation_settings -> R.id.navigation_settings to getString(R.string.main_tab_settings)
                 else -> R.id.navigation_home to getString(R.string.main_tab_home)
@@ -121,7 +132,7 @@ class MainActivity : LocalizationActivity(),
             Logger.v("Navigation", destination.toString())
 
             val translationId = when (destination.id) {
-                R.id.navigation_activity -> R.string.main_tab_activity
+                R.id.rewardsFragment -> R.string.rewards_toolbar_title
                 R.id.activityDetailFragment -> R.string.main_tab_activity
                 R.id.navigation_packs -> getString(R.string.advanced_section_header_packs)
                 R.id.packDetailFragment -> R.string.advanced_section_header_packs
@@ -235,6 +246,14 @@ class MainActivity : LocalizationActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.help_activity -> {
+                findNavController(R.id.nav_host_fragment)
+                    .apply {
+                        navigate(R.id.navigation_home)
+                        navigate(HomeFragmentDirections.actionNavigationActivityToActivityStatsFragment())
+                    }
+                toolbar.title = getString(R.string.activity_section_header)
+            }
             R.id.help_help -> {
                 PopupManager.showContactSupportDialog(this) {
                     EmailHelper.sendEmailToSupport(this)
@@ -243,12 +262,15 @@ class MainActivity : LocalizationActivity(),
 //            R.id.help_logs -> LogService.showLog()
 //            R.id.help_sharelog -> LogService.shareLog()
             R.id.help_settings -> {
-                val nav = findNavController(R.id.nav_host_fragment)
-                nav.navigate(R.id.navigation_settings)
-                nav.navigate(
-                    SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
-                )
+                findNavController(R.id.nav_host_fragment)
+                    .apply {
+                        navigate(R.id.navigation_settings)
+                        navigate(
+                            SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
+                        )
+                    }
             }
+            R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }
         return true
@@ -258,6 +280,13 @@ class MainActivity : LocalizationActivity(),
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels / displayMetrics.density > 650
+    }
+
+    private fun openUrlInBrowser(url: String) {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+            ContextService.requireContext().startActivity(this)
+        }
     }
 
     companion object {

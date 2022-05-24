@@ -15,23 +15,11 @@ package ui.home
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.adshield.R
 import service.VpnPermissionService
-import service.tr
-import ui.AccountViewModel
 import ui.BottomSheetFragment
 import ui.TunnelViewModel
 import ui.app
-import ui.settings.SettingsFragmentDirections
-import utils.Links
 
 class AskVpnProfileFragment : BottomSheetFragment() {
 

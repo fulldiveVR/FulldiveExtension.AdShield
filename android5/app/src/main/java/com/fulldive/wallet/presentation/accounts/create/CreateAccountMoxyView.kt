@@ -1,0 +1,33 @@
+package com.fulldive.wallet.presentation.accounts.create
+
+import androidx.fragment.app.DialogFragment
+import com.fulldive.wallet.presentation.base.BaseMoxyView
+import moxy.viewstate.strategy.alias.AddToEndSingle
+import moxy.viewstate.strategy.alias.OneExecution
+
+interface CreateAccountMoxyView : BaseMoxyView {
+    @AddToEndSingle
+    fun showAccountAddress(address: String)
+
+    @AddToEndSingle
+    fun showMnemonic(mnemonicWords: List<String>)
+
+    @OneExecution
+    fun showWaitDialog()
+
+    @OneExecution
+    fun hideWaitDialog()
+
+    @OneExecution
+    fun showDialog(
+        dialogFragment: DialogFragment,
+        tag: String,
+        cancelable: Boolean
+    )
+
+    @OneExecution
+    fun requestPassword(checkPassword: Boolean)
+
+    @OneExecution
+    fun finish()
+}
