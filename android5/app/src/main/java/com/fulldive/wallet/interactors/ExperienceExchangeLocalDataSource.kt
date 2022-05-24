@@ -17,25 +17,29 @@
 package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
+import com.fulldive.wallet.extensions.safeCompletable
+import com.fulldive.wallet.local.dao.AdshieldDatabase
 import com.fulldive.wallet.models.ExchangePack
-import com.fulldive.wallet.models.ExchangeRequest
-import com.fulldive.wallet.remote.FullDiveApi
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 @ProvidedBy(DefaultInteractorsModule::class)
-class ExperienceExchangeRemoteSource @Inject constructor(
-    private val fullDiveApi: FullDiveApi
+class ExperienceExchangeLocalDataSource @Inject constructor(
+    database: AdshieldDatabase
 ) {
+    private val dao = database.getExchangePacksDao()
 
-    fun getAvailableExchangePacks(): Single<List<ExchangePack>> =
-        fullDiveApi.getAvailableExchangePacks()
+    fun observeExchangePacks(): Observable<List<ExchangePack>> {
+        return dao.observeExchangePacks()
+    }
 
-    fun exchangeExperience(title: String, address: String): Completable {
-        return fullDiveApi.exchangeExperience(ExchangeRequest(title, address))
+    fun setExchangePacks(packs: List<ExchangePack>): Completable {
+        return safeCompletable {
+            dao.insertAll(packs)
+        }
     }
 }

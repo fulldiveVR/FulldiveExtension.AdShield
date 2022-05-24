@@ -17,6 +17,7 @@
 package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
+import com.fulldive.wallet.models.ExchangePack
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -27,28 +28,30 @@ import javax.inject.Singleton
 @Singleton
 @ProvidedBy(DefaultInteractorsModule::class)
 class ExperienceExchangeRepository @Inject constructor(
+    private val experienceExchangeLocalDataSource: ExperienceExchangeLocalDataSource,
     private val experienceExchangeRemoteSource: ExperienceExchangeRemoteSource,
     private val settingsLocalDataSource: SettingsLocalDataSource
 ) {
 
-    fun getExchangeRateForToken(denom: String): Completable {
+    fun observeExchangePacks(): Observable<List<ExchangePack>> {
+        return experienceExchangeLocalDataSource.observeExchangePacks()
+    }
+
+    fun getAvailableExchangePacks(): Completable {
         return experienceExchangeRemoteSource
-            .getExchangeRateForToken(denom)
-            .flatMapCompletable { rate ->
-                settingsLocalDataSource.setExchangeRateForToken(denom, rate)
+            .getAvailableExchangePacks()
+            .flatMapCompletable { exchangePacks ->
+                experienceExchangeLocalDataSource
+                    .setExchangePacks(exchangePacks)
             }
     }
 
-    fun observeExchangeRateForToken(denom: String): Observable<Int> {
-        return settingsLocalDataSource.observeExchangeRateForToken(denom)
+    fun exchangeExperience(title: String, address: String): Completable {
+        return experienceExchangeRemoteSource.exchangeExperience(title, address)
     }
 
-    fun exchangeExperience(denom: String, amount: Int, address: String): Completable {
-        return experienceExchangeRemoteSource.exchangeExperience(denom, amount, address)
-    }
-
-    fun setExperience(adsCount: Long) {
-         settingsLocalDataSource.setExperience(adsCount)
+    fun setExperience(adsCount: Long): Single<Int> {
+        return settingsLocalDataSource.setExperience(adsCount)
     }
 
     fun observeExperience(): Observable<Pair<Int, Int>> {
@@ -63,11 +66,7 @@ class ExperienceExchangeRepository @Inject constructor(
         return settingsLocalDataSource.observeIfExchangeTimeIntervalPassed()
     }
 
-    fun removeExchangedExperience(): Completable {
-        return settingsLocalDataSource.removeExchangedExperience()
-    }
-
-    fun isDaysIntervalPassed(currentTime: Long, time: Long): Boolean {
-        return settingsLocalDataSource.isDaysIntervalPassed(currentTime, time)
+    fun clearExchangedExperience(): Completable {
+        return settingsLocalDataSource.clearExchangedExperience()
     }
 }

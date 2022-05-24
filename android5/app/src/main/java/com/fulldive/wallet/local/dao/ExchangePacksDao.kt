@@ -14,21 +14,16 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.remote
+package com.fulldive.wallet.local.dao
 
+import androidx.room.Dao
+import androidx.room.Query
 import com.fulldive.wallet.models.ExchangePack
-import com.fulldive.wallet.models.ExchangeRequest
-import io.reactivex.Completable
-import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import io.reactivex.Observable
 
-interface FullDiveApi {
+@Dao
+interface ExchangePacksDao : BaseDao<ExchangePack> {
 
-    @GET("/sleep-money/xp/change/packs")
-    fun getAvailableExchangePacks(): Single<List<ExchangePack>>
-
-    @POST("/sleep-money/xp/change")
-    fun exchangeExperience(@Body exchangeRequest: ExchangeRequest): Completable
+    @Query("SELECT * FROM ExchangePack")
+    fun observeExchangePacks(): Observable<List<ExchangePack>>
 }

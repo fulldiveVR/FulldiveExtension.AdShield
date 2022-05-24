@@ -18,7 +18,9 @@ package com.fulldive.wallet.presentation.exchange
 
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.interactors.WalletInteractor
+import com.fulldive.wallet.models.ExchangeValue
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.joom.lightsaber.ProvidedBy
 import moxy.InjectViewState
@@ -28,16 +30,29 @@ import javax.inject.Inject
 @InjectViewState
 @ProvidedBy(DefaultModule::class)
 class ExchangePresenter @Inject constructor(
-    private val accountsInteractor: WalletInteractor
+    private val accountsInteractor: WalletInteractor,
+    private val experienceExchangeInterator: ExperienceExchangeInterator
 ) : BaseMoxyPresenter<ExchangeView>() {
 
     private var userExperience = 0
-
-    private val exchangeCurrency = 1000 //todo it's possible that currency login will be changed
+    private var exchangeCurrency = 0
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        AppSettingsService
+        experienceExchangeInterator
+            .observeExchangePacks()
+            .withDefaults()
+            .compositeSubscribe(
+                onNext = { packs ->
+                    packs.firstOrNull { pack ->
+                        pack.exchangeValues.map { it.type }.contains(ExchangeValue.FD_TOKEN)
+                    }?.let {
+                        exchangeCurrency = it.amount //todo
+                    }
+                }
+            )
+
+        experienceExchangeInterator
             .getExperience()
             .withDefaults()
             .compositeSubscribe(
@@ -61,7 +76,14 @@ class ExchangePresenter @Inject constructor(
         viewState.showAvailableFulldiveCoins(experience / exchangeCurrency.toDouble())
     }
 
-    fun exchangeExperience(experience: String) {
+    fun exchangeExperience(title: String, address: String) {
+        experienceExchangeInterator
+            .exchangeExperience(title, address)
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = {
 
+                }
+            )
     }
 }

@@ -12,6 +12,7 @@
 
 package repository
 
+import com.fulldive.wallet.models.ExchangePack
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import model.*
@@ -116,4 +117,6 @@ interface BlockaRestApi {
     @HTTP(method = "DELETE", path = "v1/lease", hasBody = true)
     fun deleteLease(@Body request: LeaseRequest): Call<Void>
 
+    @POST("/sleep-money/xp/change")
+    fun exchangeExperience(@Body exchangePack: ExchangePack)
 }

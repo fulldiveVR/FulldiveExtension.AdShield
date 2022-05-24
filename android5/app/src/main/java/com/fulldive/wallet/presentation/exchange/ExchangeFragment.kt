@@ -54,7 +54,8 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
             enterExperienceTextEditText.addTextChangedListener(experienceTextWatcher)
             exchangeButton.setOnClickListener {
                 presenter.exchangeExperience(
-                    enterExperienceTextEditText.text.toString()
+                    "", "" //todo server required
+                    // enterExperienceTextEditText.text.toString()
                 )
             }
         }

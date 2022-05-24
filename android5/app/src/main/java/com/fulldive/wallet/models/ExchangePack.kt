@@ -16,13 +16,37 @@
 
 package com.fulldive.wallet.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class ExchangeRequest(
-    @SerializedName("denom")
-    val denom: String,
+@Entity(tableName = "ExchangePack")
+data class ExchangePack(
+    @PrimaryKey
+    @SerializedName("name")
+    val name: String,
     @SerializedName("amount")
     val amount: Int,
+    @SerializedName("enabled")
+    val isEnabled: Boolean,
+    @SerializedName("items")
+    val exchangeValues: List<ExchangeValue>
+)
+
+data class ExchangeValue(
+    @SerializedName("type")
+    val type: String,
+    @SerializedName("amount")
+    val amount: Int
+) {
+    companion object{
+        const val FD_TOKEN = "FDToken"
+    }
+}
+
+data class ExchangeRequest(
+    @SerializedName("title")
+    val title: String, //title of XP exchange pack
     @SerializedName("address")
-    val address: String
+    val address: String //valid Imversed wallet address
 )

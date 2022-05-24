@@ -22,8 +22,11 @@ import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
+import com.joom.lightsaber.getInstance
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
@@ -34,8 +37,8 @@ import model.BlockaRepoConfig
 import model.BlockaRepoPayload
 import service.*
 import ui.advanced.packs.PacksViewModel
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.util.*
 
 class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjectorHolder {
@@ -111,7 +114,14 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             // Not sure how it can be null, but there was a crash report
             stats?.let { stats ->
                 MonitorService.setStats(stats)
-                adsCounterVM.setRuntimeCounter(stats.denied.toLong())
+                val counter = stats.denied.toLong()
+                adsCounterVM.setRuntimeCounter(counter)
+
+                appInjector
+                    .getInstance<ExperienceExchangeInterator>()
+                    .setExperience(counter)
+                    .withDefaults()
+                    .subscribe()
             }
         }
         adsCounterVM.counter.observeForever {
@@ -120,7 +130,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         tunnelVM.tunnelStatus.observeForever {
             MonitorService.setTunnelStatus(it)
         }
-
 
         networksVM.activeConfig.observeForever {
             GlobalScope.launch {

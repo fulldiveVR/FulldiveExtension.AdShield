@@ -1,5 +1,3 @@
-
-
 /*
  * This file is part of Blokada.
  *
@@ -48,4 +46,11 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    libsVersions = [
+            room  : '2.4.0',
+            roomRx: '2.4.0'
+    ]
 }
