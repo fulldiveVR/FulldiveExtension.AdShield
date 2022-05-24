@@ -93,6 +93,7 @@ class MainActivity : LocalizationActivity(),
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home,
+                R.id.navigation_stats,
                 R.id.rewardsFragment,
                 R.id.advancedFragment,
                 R.id.navigation_settings
@@ -105,6 +106,7 @@ class MainActivity : LocalizationActivity(),
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val showNavBar = when (destination.id) {
                 R.id.navigation_home -> true
+                R.id.navigation_stats -> true
                 R.id.rewardsFragment -> true
                 R.id.advancedFragment -> true
                 R.id.navigation_settings -> true
@@ -117,6 +119,7 @@ class MainActivity : LocalizationActivity(),
         val selectionListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             val (nav, title) = when (item.itemId) {
                 R.id.rewardsFragment -> R.id.rewardsFragment to getString(R.string.main_tab_rewards)
+                R.id.navigation_stats -> R.id.navigation_stats to getString(R.string.main_tab_activity)
                 R.id.advancedFragment -> R.id.advancedFragment to getString(R.string.main_tab_advanced)
                 R.id.navigation_settings -> R.id.navigation_settings to getString(R.string.main_tab_settings)
                 else -> R.id.navigation_home to getString(R.string.main_tab_home)

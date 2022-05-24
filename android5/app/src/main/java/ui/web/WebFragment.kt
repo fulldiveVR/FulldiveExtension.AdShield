@@ -19,11 +19,14 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHost
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.adshield.R
 import ui.BottomSheetFragment
+import ui.advanced.packs.PackDetailFragmentDirections
 import ui.advanced.packs.PacksViewModel
 import ui.web.ForwardingListExtension.Companion.EXTENSION_NAME
 
@@ -66,6 +69,8 @@ class WebFragment : BottomSheetFragment() {
                 val type = object : TypeToken<List<PacksViewModel.PackEntity>>() {}.type
                 val config: List<PacksViewModel.PackEntity> = Gson().fromJson(jsonConfig, type)
                 packsVM.onPacksConfigChanged(config)
+                val nav = findNavController()
+                nav.popBackStack()
             }
         }
         webView.settings.javaScriptEnabled = true
