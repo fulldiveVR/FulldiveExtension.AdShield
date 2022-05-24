@@ -14,18 +14,15 @@ package ui.web
 
 import android.view.ViewGroup
 import android.webkit.*
-import com.fulldive.wallet.extensions.unsafeLazy
 import model.Uri
 import org.adshield.R
 import service.ContextService
 import utils.Logger
 import java.lang.ref.WeakReference
-import java.util.regex.Pattern
 
 object WebService {
 
     private val log = Logger("Web")
-    private val pattern by unsafeLazy { Pattern.compile("(https?)://(-\\.)?([^\\s/?\\.#-]+\\.?)+(/[^\\s]*)?") }
 
     private var webView = WeakReference<WebView?>(null)
     private var goingBack = false
@@ -61,11 +58,6 @@ object WebService {
                 true
             } else false
         } ?: false
-    }
-
-    fun isUrl(trimmedUrl: String): Boolean {
-        return trimmedUrl.isNotEmpty() && pattern.matcher(trimmedUrl)
-            .matches() || trimmedUrl.startsWith("http") && trimmedUrl.contains("://")
     }
 
     private fun createWebView(): WebView {

@@ -23,7 +23,7 @@ import android.util.AttributeSet
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatDelegate.*
 
-open class ThemedWebView @JvmOverloads constructor(
+class ThemedWebView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

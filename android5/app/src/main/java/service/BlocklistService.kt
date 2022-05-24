@@ -12,14 +12,15 @@
 
 package service
 
-import android.util.Base64.*
+import android.util.Base64.NO_WRAP
+import android.util.Base64.encodeToString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.BlokadaException
 import model.Uri
-import utils.cause
 import utils.Logger
+import utils.cause
 
 object BlocklistService {
 
@@ -32,7 +33,6 @@ object BlocklistService {
     private val log = Logger("Blocklist")
     private val http = HttpService
     private val file = FileService
-    private val context = ContextService
 
     suspend fun setup() {
         val destination = file.commonDir().file(MERGED_BLOCKLIST)
@@ -40,12 +40,12 @@ object BlocklistService {
             log.w("Initiating default blocklist file")
             val default = file.commonDir().file(DEFAULT_BLOCKLIST)
             try {
-                val asset = context.requireAppContext().assets.open(DEFAULT_BLOCKLIST_ZIP)
+                val asset = ContextService.requireAppContext().assets.open(DEFAULT_BLOCKLIST_ZIP)
                 val decodedAsset = ZipService.decodeStream(asset, key = DEFAULT_BLOCKLIST)
                 file.save(source = decodedAsset, destination = default)
             } catch (ex: Exception) {
                 log.w("No zip blocklist, falling back to plaintext one".cause(ex))
-                val asset = context.requireAppContext().assets.open(DEFAULT_BLOCKLIST)
+                val asset = ContextService.requireAppContext().assets.open(DEFAULT_BLOCKLIST)
                 file.save(source = asset, destination = default)
             }
             file.merge(listOf(default), destination)
@@ -56,8 +56,8 @@ object BlocklistService {
         val denied = file.commonDir().file(USER_DENIED)
         if (!file.exists(allowed) || !file.exists(denied)) {
             log.w("Initiating empty user allowed and user denied lists")
-            file.save(allowed, "")
-            file.save(denied, "")
+            file.save(allowed, "", "")
+            file.save(denied, "", "")
         }
     }
 
@@ -65,7 +65,7 @@ object BlocklistService {
         log.v("Starting download of ${urls.size} urls")
         coroutineScope {
             for (url in urls) {
-                if (force || !hasDownloaded(url))
+                if (file.needToDownload(url))
                     launch(Dispatchers.IO) {
                         download(url)
                         sanitize(getDestination(url))
@@ -157,7 +157,7 @@ object BlocklistService {
         val destination = getDestination(url)
         try {
             val content = http.makeRequest(url)
-            file.save(destination, content)
+            file.save(destination, content, url)
         } catch (ex: Exception) {
             remove(url)
             throw BlokadaException("Could not fetch domains for: $url")
@@ -168,5 +168,4 @@ object BlocklistService {
         val filename = encodeToString(url.toByteArray(), NO_WRAP)
         return file.commonDir().file(filename)
     }
-
 }
