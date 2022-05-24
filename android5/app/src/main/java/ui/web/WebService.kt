@@ -14,8 +14,6 @@ package ui.web
 
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import model.Uri
 import org.adshield.R
 import service.ContextService
@@ -25,7 +23,6 @@ import java.lang.ref.WeakReference
 object WebService {
 
     private val log = Logger("Web")
-    private val context = ContextService
 
     private var webView = WeakReference<WebView?>(null)
     private var goingBack = false
@@ -64,7 +61,7 @@ object WebService {
     }
 
     private fun createWebView(): WebView {
-        val web = WebView(context.requireContext())
+        val web = WebView(ContextService.requireContext())
         web.settings.javaScriptEnabled = true
         web.settings.domStorageEnabled = true
         //if (big) web.minimumHeight = ctx.resources.toPx(480)
@@ -78,9 +75,9 @@ object WebService {
         cookie.setAcceptCookie(true)
         cookie.setAcceptThirdPartyCookies(web, true)
 
-        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK) && isDarkMode()) {
-            WebSettingsCompat.setForceDark(web.settings, WebSettingsCompat.FORCE_DARK_ON)
-        }
+//        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK) && isDarkMode()) {
+//            WebSettingsCompat.setForceDark(web.settings, WebSettingsCompat.FORCE_DARK_ON)
+//        }
 
         webView = WeakReference(web)
         return web
@@ -148,7 +145,7 @@ object WebService {
     }
 
     private fun isDarkMode(): Boolean {
-        val attr = context.requireContext().theme.obtainStyledAttributes(
+        val attr = ContextService.requireContext().theme.obtainStyledAttributes(
             R.style.AppTheme,
             intArrayOf(android.R.attr.windowLightStatusBar)
         )

@@ -524,4 +524,6 @@
   <string name="str_exchange_tokens_amount">%d FD Token</string>
   <string name="str_from">From</string>
   <string name="str_to">To</string>
+  <string name="dns_forwarding_lists_title">DNS Forwarding Lists</string>
+  <string name="dns_forwarding_lists_description">Configure our DNS to improve ad maintenance.</string>
 </resources>
