@@ -24,7 +24,6 @@ import service.Localised
 import ui.Command
 import ui.MainActivity
 import ui.getIntentForCommand
-import ui.getWorkerRequestForCommand
 
 private const val IMPORTANCE_NONE = 0
 private const val IMPORTANCE_DEFAULT = 3

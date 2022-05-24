@@ -354,7 +354,7 @@
   <string name="app_settings_section_advanced">Advanced</string>
   <string name="app_settings_section_use_foreground">Keep alive</string>
   <string name="intro_header">Full AdShield is Active!</string>
-  <string name="intro_text">An active coloured button means that Full AdShield is working.\n\nMind that some ads and popups can still visible. However, you will notice a significant difference.\n\nWe recommend you activate Always on VPN / Connect on Demand in your system settings.</string>
+  <string name="intro_text">An active coloured button means that Full AdShield is working.\n\nMind that some ads and popups can still be visible. However, you will notice a significant difference.\n\nWe recommend you activate &lt;u&gt;Always on VPN / Connect on Demand&lt;/u&gt; in your system settings.</string>
   <string name="location_region_worldwide">Everywhere</string>
   <string name="location_region_america">America</string>
   <string name="location_region_europe">Europe</string>
@@ -524,4 +524,14 @@
   <string name="str_exchange_tokens_amount">%d FD Token</string>
   <string name="str_from">From</string>
   <string name="str_to">To</string>
+  <string name="dns_forwarding_lists_title">DNS Forwarding Lists</string>
+  <string name="dns_forwarding_lists_description">Configure our DNS to improve ad maintenance.</string>
+  <string name="first_start_battery_exception">Also we kindly suggest &lt;u&gt;Add the app into exceptions&lt;/u&gt; to keep it active and provide its stable work on the background.</string>
+  <string name="settings_system_open_battery_settings">Open battery settings</string>
+  <string name="settings_system_open_data_settings">Open data usage settings</string>
+  <string name="first_start_battery_exception_meizu">Also we kindly suggest &lt;u&gt;Allow work at background&lt;/u&gt; to keep it active and provide its stable work on the background.</string>
+  <string name="settings_system_open_background_settings">Open background settings</string>
+  <string name="settings_advanced_hide_history_from_notifications">Hide blocking history from notification</string>
+  <string name="str_notification_experience_limit_title">Exchange XP Rewards into CRYPTO!</string>
+  <string name="str_notification_experience_limit_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
 </resources>

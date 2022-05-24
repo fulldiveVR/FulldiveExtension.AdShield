@@ -30,4 +30,7 @@ class ApplicationComponent(private var context: Context) {
 
     @Import
     fun getDatabaseModule() = DatabaseModule(context)
+
+    @Import
+    fun getNetworkModule() = NetworkModule()
 }

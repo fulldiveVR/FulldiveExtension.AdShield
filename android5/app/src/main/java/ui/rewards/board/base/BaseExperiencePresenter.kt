@@ -1,29 +1,36 @@
 package ui.rewards.board.base
 
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
 import io.reactivex.Observable
-import service.AppSettingsService
 
-abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(private val schedulers: ISchedulersProvider) :
-    BaseMoxyPresenter<VS>() {
+abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
+    private val experienceExchangeInterator: ExperienceExchangeInterator,
+    private val schedulers: ISchedulersProvider
+) : BaseMoxyPresenter<VS>() {
 
-    private var isFirstAttach = true
+    private var userExperience = 0
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         Observable.combineLatest(
-            AppSettingsService.observeExperience().subscribeOn(schedulers.io()),
-            AppSettingsService.observeIfExchangeTimeIntervalPassed().subscribeOn(schedulers.io())
-        ) { (experience, maxExperience), isExchangeAvailable ->
-            Triple(experience, maxExperience, isExchangeAvailable && experience >= maxExperience)
+            experienceExchangeInterator.observeExperience().subscribeOn(schedulers.io()),
+            experienceExchangeInterator.observeIfExchangeTimeIntervalPassed()
+                .subscribeOn(schedulers.io()),
+            experienceExchangeInterator.observeExchangePacks().subscribeOn(schedulers.io()),
+        ) { (experience, maxExperience), isExchangeAvailable, exchangePacks ->
+            Triple(
+                experience,
+                maxExperience,
+                (exchangePacks.isNotEmpty() && isExchangeAvailable && experience >= maxExperience)
+            )
         }
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, maxExperience, isExchangeAvailable) ->
-                    if (isFirstAttach) {
-                        isFirstAttach = false
+                    if (userExperience == 0 || userExperience == experience) {
                         viewState.setExperience(experience, maxExperience, isExchangeAvailable)
                     } else {
                         viewState.updateExperienceProgress(
@@ -32,13 +39,19 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(private 
                             isExchangeAvailable
                         )
                     }
+                    userExperience = experience
                 }
             )
+
+        experienceExchangeInterator
+            .getAvailableExchangePacks()
+            .withDefaults()
+            .compositeSubscribe()
     }
 
     fun onExchangeClicked() {
         //todo clear if exchange is successful
-        AppSettingsService
+        experienceExchangeInterator
             .clearExchangedExperience()
             .withDefaults()
             .compositeSubscribe()
