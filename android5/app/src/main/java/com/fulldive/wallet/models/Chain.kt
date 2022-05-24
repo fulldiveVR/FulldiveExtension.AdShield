@@ -19,10 +19,10 @@ package com.fulldive.wallet.models
 object Chain {
     const val chainName = "imversed-canary"
     const val chainAddressPrefix = "imv"
-    const val mainDenom = "nimv"
+    const val mainDenom = "aimv"
     const val fullNameCoin = "Imversed Staking Coin"
     const val symbolTitle = "IMV"
-    const val divideDecimal = 6
-    const val displayDecimal = 6
+    const val divideDecimal = 18
+    const val displayDecimal = 18
     val grpcApiHost = ApiHost.from("qc.imversed.com")
 }
