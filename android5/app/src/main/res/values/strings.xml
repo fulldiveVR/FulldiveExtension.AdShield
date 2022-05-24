@@ -532,4 +532,6 @@
   <string name="first_start_battery_exception_meizu">Also we kindly suggest &lt;u&gt;Allow work at background&lt;/u&gt; to keep it active and provide its stable work on the background.</string>
   <string name="settings_system_open_background_settings">Open background settings</string>
   <string name="settings_advanced_hide_history_from_notifications">Hide blocking history from notification</string>
+  <string name="str_notification_experience_limit_title">Exchange XP Rewards into CRYPTO!</string>
+  <string name="str_notification_experience_limit_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
 </resources>
