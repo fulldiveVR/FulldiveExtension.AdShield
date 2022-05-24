@@ -122,7 +122,7 @@
         <entry key="app/src/main/res/layout/fragment_dnschoice.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_encryption_level.xml" value="0.16510416666666666" />
         <entry key="app/src/main/res/layout/fragment_exchange.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_help.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_leases.xml" value="0.2015625" />
@@ -140,6 +140,7 @@
         <entry key="app/src/main/res/layout/fragment_stats_detail.xml" value="0.23229166666666667" />
         <entry key="app/src/main/res/layout/fragment_stats_filter.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_vpnprofile.xml" value="0.16510416666666666" />
+        <entry key="app/src/main/res/layout/fragment_web_view.xml" value="0.27853260869565216" />
         <entry key="app/src/main/res/layout/ido_announcement_layout.xml" value="0.2916666666666667" />
         <entry key="app/src/main/res/layout/item_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_advanced_section.xml" value="0.1578125" />

@@ -19,6 +19,7 @@ import model.*
 import service.*
 import utils.cause
 import utils.Logger
+import utils.MonitorNotification
 
 /**
  * This class is responsible for managing the tunnel state and reflecting it on the UI.
@@ -116,6 +117,7 @@ class TunnelViewModel: ViewModel() {
                     val cfg = _config.value?.copy(tunnelEnabled = false) ?: throw BlokadaException("Config not set")
                     engine.updateConfig(user = cfg)
                     cfg.emit()
+                    NotificationService.cancel(MonitorNotification.STATUS_NOTIFICATION_ID)
                     log.v("Tunnel stopped successfully")
                 } catch (ex: Exception) {
                     handleException(ex)

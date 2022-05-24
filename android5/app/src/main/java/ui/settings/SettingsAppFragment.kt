@@ -12,10 +12,13 @@
 
 package ui.settings
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -24,16 +27,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import model.AppTheme
 import model.LocalConfig
 import model.ThemeHelper
+import org.adshield.BuildConfig
 import org.adshield.R
 import repository.LANGUAGE_NICE_NAMES
+import service.AppSettingsService
 import service.EnvironmentService
 import ui.AppSettingsViewModel
 import ui.SettingsViewModel
 import ui.app
 import utils.Links
+import java.util.*
+
 
 class SettingsAppFragment : PreferenceFragmentCompat() {
 
@@ -275,6 +283,39 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
             ctx.startActivity(getIntentForNotificationChannelsSettings(ctx))
             true
         }
+
+        val isMeizu = Build.MANUFACTURER.lowercase(Locale.ENGLISH) == "meizu"
+
+        val battery: Preference? = findPreference("app_battery")
+        battery?.isVisible = !isMeizu
+        battery?.setOnPreferenceClickListener {
+            checkDoze()
+            true
+        }
+
+        val dataUsage: Preference? = findPreference("app_data")
+        dataUsage?.isVisible = !isMeizu
+        dataUsage?.setOnPreferenceClickListener {
+            checkDataSaving()
+            true
+        }
+
+        val workAtBackground: Preference? = findPreference("app_background")
+        workAtBackground?.isVisible = isMeizu
+        workAtBackground?.setOnPreferenceClickListener {
+            activity?.let { activity -> openFlymeSecurityApp(activity) }
+            true
+        }
+
+        var isChecked = AppSettingsService.getIsBlockHistoryAtNotification()
+        val hideHistoryFromNotification: SwitchPreference? = findPreference("app_hide_history_from_notification")
+        hideHistoryFromNotification?.isChecked = isChecked
+        hideHistoryFromNotification?.setOnPreferenceClickListener {
+            isChecked = !isChecked
+            AppSettingsService.setIsBlockHistoryAtNotification(isChecked)
+            hideHistoryFromNotification.isEnabled = isChecked
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -304,6 +345,46 @@ class SettingsAppFragment : PreferenceFragmentCompat() {
         putExtra("app_package", ctx.packageName)
         putExtra("app_uid", ctx.applicationInfo.uid)
         putExtra("android.provider.extra.APP_PACKAGE", ctx.packageName)
+    }
+
+    private fun checkDoze() {
+        val settings = Intent(
+            Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+        )
+        if (context?.packageManager?.resolveActivity(
+                settings,
+                0
+            ) != null
+        ) try {
+            startActivity(settings)
+        } catch (ex: Throwable) {
+        }
+    }
+
+    private fun checkDataSaving() {
+        val settings = Intent(
+            Settings.ACTION_IGNORE_BACKGROUND_DATA_RESTRICTIONS_SETTINGS,
+            Uri.parse("package:" + context?.packageName)
+        )
+        if (context?.packageManager?.resolveActivity(
+                settings,
+                0
+            ) != null
+        ) try {
+            startActivity(settings)
+        } catch (ex: Throwable) {
+        }
+    }
+
+    private fun openFlymeSecurityApp(context: Activity) {
+        val intent = Intent("com.meizu.safe.security.SHOW_APPSEC")
+        intent.addCategory(Intent.CATEGORY_DEFAULT)
+        intent.putExtra("packageName", BuildConfig.APPLICATION_ID)
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 

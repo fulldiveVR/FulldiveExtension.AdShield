@@ -17,15 +17,16 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import appextension.or
-import model.TunnelStatus
 import engine.Host
+import model.TunnelStatus
 import org.adshield.R
+import service.AppSettingsService
 import service.Localised
 import ui.Command
 import ui.MainActivity
 import ui.getIntentForCommand
 
-private const val IMPORTANCE_NONE = 0
+private const val IMPORTANCE_NONE = 2
 private const val IMPORTANCE_DEFAULT = 3
 private const val IMPORTANCE_HIGH = 4
 
@@ -46,7 +47,7 @@ class MonitorNotification(
     tunnelStatus: TunnelStatus,
     counter: Long,
     lastDenied: List<Host>
-): NotificationPrototype(STATUS_NOTIFICATION_ID, NotificationChannels.ACTIVITY,
+) : NotificationPrototype(STATUS_NOTIFICATION_ID, NotificationChannels.ACTIVITY,
     create = { ctx ->
         val b = NotificationCompat.Builder(ctx)
 
@@ -64,7 +65,7 @@ class MonitorNotification(
             tunnelStatus.active -> {
                 val protection = when {
                     tunnelStatus.isPlusMode() -> ctx.getString(R.string.home_level_high)
-                    tunnelStatus.isDnsEncrypted() -> ctx.getString(R.string.home_level_medium)
+                    tunnelStatus.isDnsEncrypted() -> ctx.getString(R.string.home_level_high)
                     else -> ctx.getString(R.string.home_level_low)
                 }
 
@@ -80,17 +81,22 @@ class MonitorNotification(
                 b.setContentTitle(title)
 
                 val style = NotificationCompat.InboxStyle()
-                lastDenied.forEach {
-                    style.addLine(it)
+                if (!AppSettingsService.getIsBlockHistoryAtNotification()) {
+                    lastDenied.forEach {
+                        style.addLine(it)
+                    }
                 }
+
                 b.setStyle(style)
 
                 b.addAction(run {
                     getIntentForCommand(Command.OFF).let {
                         PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
-                        NotificationCompat.Action(R.drawable.ic_baseline_power_settings_new_24,
-                            ctx.getString(R.string.home_power_action_turn_off), it)
+                        NotificationCompat.Action(
+                            R.drawable.ic_baseline_power_settings_new_24,
+                            ctx.getString(R.string.home_power_action_turn_off), it
+                        )
                     }
                 })
 
@@ -104,17 +110,24 @@ class MonitorNotification(
                     getIntentForCommand(Command.ON).let {
                         PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
-                        NotificationCompat.Action(R.drawable.ic_baseline_power_settings_new_24,
-                            ctx.getString(R.string.home_power_action_turn_on), it)
+                        NotificationCompat.Action(
+                            R.drawable.ic_baseline_power_settings_new_24,
+                            ctx.getString(R.string.home_power_action_turn_on), it
+                        )
                     }
                 })
 
                 b.addAction(run {
-                    getIntentForCommand(Command.HIDE, ctx.getString(R.string.notification_desc_settings)).let {
+                    getIntentForCommand(
+                        Command.HIDE,
+                        ctx.getString(R.string.notification_desc_settings)
+                    ).let {
                         PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
-                        NotificationCompat.Action(R.drawable.ic_baseline_power_settings_new_24,
-                            ctx.getString(R.string.universal_action_hide), it)
+                        NotificationCompat.Action(
+                            R.drawable.ic_baseline_power_settings_new_24,
+                            ctx.getString(R.string.universal_action_hide), it
+                        )
                     }
                 })
             }
@@ -122,7 +135,8 @@ class MonitorNotification(
 
         val intentActivity = Intent(ctx, MainActivity::class.java)
         intentActivity.putExtra("notification", true)
-        val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
+        val piActivity =
+            PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
         b.setContentIntent(piActivity)
     }
 ) {
@@ -131,18 +145,19 @@ class MonitorNotification(
     }
 }
 
-class UpdateNotification(versionName: String): NotificationPrototype(3, NotificationChannels.UPDATE,
-    create = { ctx ->
-        val b = NotificationCompat.Builder(ctx)
-        b.setContentTitle(ctx.getString(R.string.notification_update_header))
-        b.setContentText(ctx.getString(R.string.universal_action_learn_more))
-        b.setSmallIcon(R.drawable.ic_stat_adshield)
-        b.priority = NotificationCompat.PRIORITY_DEFAULT
-        b.setVibrate(LongArray(0))
+class UpdateNotification(versionName: String) :
+    NotificationPrototype(3, NotificationChannels.UPDATE,
+        create = { ctx ->
+            val b = NotificationCompat.Builder(ctx)
+            b.setContentTitle(ctx.getString(R.string.notification_update_header))
+            b.setContentText(ctx.getString(R.string.universal_action_learn_more))
+            b.setSmallIcon(R.drawable.ic_stat_adshield)
+            b.priority = NotificationCompat.PRIORITY_DEFAULT
+            b.setVibrate(LongArray(0))
 
-        val intentActivity = Intent(ctx, MainActivity::class.java)
-        intentActivity.putExtra("update", true)
-        val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
-        b.setContentIntent(piActivity)
-    }
-)
+            val intentActivity = Intent(ctx, MainActivity::class.java)
+            intentActivity.putExtra("update", true)
+            val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
+            b.setContentIntent(piActivity)
+        }
+    )

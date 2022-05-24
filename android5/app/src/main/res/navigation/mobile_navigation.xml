@@ -207,7 +207,8 @@
         android:id="@+id/webFragment"
         android:name="ui.web.WebFragment"
         android:label="{name}"
-        tools:layout="@layout/fragment_web">
+        tools:layout="@layout/fragment_web_view"
+        >
         <argument
             android:name="url"
             app:argType="string" />
@@ -269,6 +270,14 @@
         <action
             android:id="@+id/action_advancedFragment_to_userDeniedFragment"
             app:destination="@id/userDeniedFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/advancedFragment" />
+        <action
+            android:id="@+id/action_navigationSettings_to_web_fragment"
+            app:destination="@id/webFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"

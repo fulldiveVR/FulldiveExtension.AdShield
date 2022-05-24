@@ -36,6 +36,7 @@ object AppSettingsService {
 
     const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
     private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 2
+    private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -75,6 +76,14 @@ object AppSettingsService {
         sharedPreferences.setProperty(KEY_APP_THEME, theme)
         val appTheme = AppTheme.getThemeByType(getCurrentAppTheme())
         initCurrentAppTheme(appTheme)
+    }
+
+    fun getIsBlockHistoryAtNotification(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS, false)
+    }
+
+    fun setIsBlockHistoryAtNotification(isBlock: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS, isBlock)
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {
