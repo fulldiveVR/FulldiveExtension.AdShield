@@ -17,10 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.BlokadaException
-import ui.utils.cause
-import ui.utils.now
+import utils.cause
+import utils.now
 import utils.Logger
-import java.lang.Integer.max
 import java.net.InetSocketAddress
 import java.net.Socket
 

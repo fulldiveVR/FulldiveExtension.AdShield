@@ -14,7 +14,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package utils
+package com.fulldive.wallet.models
 
-inline fun <reified T> unsafeLazy(noinline initializer: () -> T): Lazy<T> =
-    lazy(LazyThreadSafetyMode.NONE, initializer)
+import java.math.BigDecimal
+
+data class Balance(
+    val amount: BigDecimal,
+    val denom: String
+)

@@ -17,7 +17,7 @@ import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import repository.TranslationRepository
 import repository.getFirstSupportedLocale
 import repository.getTranslationRepository
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.lang.NullPointerException
 import java.util.*

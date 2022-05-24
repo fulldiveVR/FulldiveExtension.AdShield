@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import model.App
 import model.AppId
 import repository.AppRepository
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 
 class AppsViewModel : ViewModel() {

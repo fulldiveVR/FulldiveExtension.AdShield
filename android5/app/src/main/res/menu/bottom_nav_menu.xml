@@ -19,9 +19,15 @@
         android:title="@string/main_tab_home" />
 
     <item
-        android:id="@+id/navigation_activity"
+        android:id="@+id/navigation_stats"
         android:icon="@drawable/ic_baseline_bar_chart_24"
         android:title="@string/main_tab_activity" />
+
+    <item
+        android:id="@+id/rewardsFragment"
+        android:visible="false"
+        android:icon="@drawable/ic_rewards"
+        android:title="@string/main_tab_rewards" />
 
     <item
         android:id="@+id/advancedFragment"

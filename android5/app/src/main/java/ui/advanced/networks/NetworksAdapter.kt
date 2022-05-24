@@ -26,7 +26,6 @@ import model.NetworkDescriptor
 import model.NetworkType
 import org.adshield.R
 import ui.NetworksViewModel
-import ui.utils.getColorFromAttr
 
 class NetworksAdapter(
     private val viewModel: NetworksViewModel,

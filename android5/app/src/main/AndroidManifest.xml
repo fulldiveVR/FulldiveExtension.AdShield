@@ -11,6 +11,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.adshield"
     android:sharedUserId="org.adshield">
 
@@ -138,6 +139,53 @@
             android:exported="false"
             android:launchMode="singleTop" />
 
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.create.CreateAccountActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.password.PasswordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.ShowMnemonicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.privatekey.ShowPrivateKeyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.privatekey.RestorePrivateKeyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.fulldive.wallet.presentation.accounts.mnemonic.RestoreMnemonicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+
         <receiver android:name="service.DozeReceiver" />
 
         <service
@@ -155,7 +203,7 @@
 
         <service android:name="service.ForegroundService" />
 
-<!--        <service android:name="ui.CommandService" />-->
+        <!--        <service android:name="ui.CommandService" />-->
 
         <service
             android:name="ui.QuickSettingsToggle"

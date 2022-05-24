@@ -23,7 +23,7 @@ import org.adshield.R
 import ui.AccountViewModel
 import ui.BottomSheetFragment
 import ui.app
-import ui.utils.getColorFromAttr
+import utils.getColorFromAttr
 import utils.Links
 import utils.withBoldSections
 

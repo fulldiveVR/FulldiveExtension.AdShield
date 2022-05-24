@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/AppTheme.Toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/Text.H3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_create_account" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/toolbarDividerView"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/walletAddressTextView"
+        style="@style/Text.H3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/size_4dp"
+        android:text="@string/str_wallet_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDividerView" />
+
+    <TextView
+        android:id="@+id/addressTextView"
+        style="@style/Text.H4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_4dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="2"
+        android:padding="@dimen/size_4dp"
+        app:layout_constraintEnd_toStartOf="@id/copyWalletButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/walletAddressTextView"
+        tools:text="@tools:sample/lorem/random" />
+
+    <ImageButton
+        android:id="@+id/copyWalletButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_8dp"
+        android:background="?selectableItemBackground"
+        android:minWidth="@dimen/size_36dp"
+        android:minHeight="@dimen/size_36dp"
+        android:src="@drawable/ic_copy"
+        app:layout_constraintBottom_toBottomOf="@id/addressTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/addressTextView" />
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/size_4dp"
+        android:background="@color/colorDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/addressTextView"
+        app:layout_constraintTop_toBottomOf="@id/addressTextView" />
+
+    <TextView
+        android:id="@+id/walletMnemonicTextView"
+        style="@style/Text.H3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/size_4dp"
+        android:text="@string/str_mnemonic_key"
+        app:layout_constraintEnd_toStartOf="@id/copyMnemonicButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividerView" />
+
+
+    <ImageButton
+        android:id="@+id/copyMnemonicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_8dp"
+        android:background="?selectableItemBackground"
+        android:minWidth="@dimen/size_36dp"
+        android:minHeight="@dimen/size_36dp"
+        android:src="@drawable/ic_copy"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/walletMnemonicTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/walletMnemonicTextView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/warningTextView"
+        style="@style/Text.H4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/size_4dp"
+        android:text="@string/str_create_warning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/walletMnemonicTextView" />
+
+    <com.fulldive.wallet.presentation.accounts.mnemonic.MnemonicLayout
+        android:id="@+id/mnemonicsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_12dp"
+        android:layout_marginTop="@dimen/size_12dp"
+        android:layout_marginEnd="@dimen/size_12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/warningTextView" />
+
+    <Button
+        android:id="@+id/nextButton"
+        style="@style/AccentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:layout_marginBottom="@dimen/size_36dp"
+        android:minHeight="@dimen/size_45dp"
+        android:paddingStart="@dimen/size_36dp"
+        android:paddingEnd="@dimen/size_36dp"
+        android:textAllCaps="false"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/str_show_mnemonic"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

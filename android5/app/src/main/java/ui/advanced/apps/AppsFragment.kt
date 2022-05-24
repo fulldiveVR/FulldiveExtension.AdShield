@@ -22,13 +22,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fulldive.wallet.extensions.unsafeLazy
 import model.App
 import org.adshield.R
 import service.AlertDialogService
 import ui.utils.Tab
 import ui.utils.TabLayout
-import ui.utils.getColorFromAttr
-import utils.unsafeLazy
+import utils.getColorFromAttr
 
 class AppsFragment : Fragment() {
 

@@ -20,7 +20,7 @@ import engine.MetricsService.PACKET_BUFFER_SIZE
 import org.pcap4j.packet.*
 import org.pcap4j.packet.factory.PacketFactoryPropertiesLoader
 import org.pcap4j.util.PropertiesLoader
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 import java.io.FileDescriptor
 import java.io.FileInputStream

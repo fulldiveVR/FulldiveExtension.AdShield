@@ -90,6 +90,12 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
     <style name="AppTheme.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -114,8 +120,19 @@
         <item name="android:layout_height">@dimen/size_48dp</item>
         <item name="android:paddingStart">@dimen/size_24dp</item>
         <item name="android:paddingEnd">@dimen/size_24dp</item>
-        <item name="android:background">@drawable/background_button</item>
+        <item name="android:background">@drawable/background_colored_button</item>
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AccentTextButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_height">@dimen/size_48dp</item>
+        <item name="android:paddingStart">@dimen/size_24dp</item>
+        <item name="android:paddingEnd">@dimen/size_24dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="android:textAllCaps">false</item>
@@ -138,6 +155,21 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="FlatTheme.SmallButtonWithBorder" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/selector_medium_secondary_button</item>
+        <item name="android:paddingStart">@dimen/size_16dp</item>
+        <item name="android:paddingEnd">@dimen/size_16dp</item>
+        <item name="android:textSize">@dimen/text_size_xsmall</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:minHeight">@dimen/size_16dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
@@ -198,6 +230,21 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <declare-styleable name="SettingsItem">
+        <attr name="settingsItemTitle" format="string" />
+        <attr name="settingsItemDescription" format="string" />
+        <attr name="settingsItemTitleColor" format="color" />
+        <attr name="settingsItemDescriptionColor" format="color" />
+        <attr name="settingsItemShowTopSeparator" format="boolean" />
+        <attr name="settingsItemShowBottomSeparator" format="boolean" />
+        <attr name="settingsItemShowArrow" format="boolean" />
+    </declare-styleable>
+
+    <style name="HintOutlinedTextInputStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
 </resources>

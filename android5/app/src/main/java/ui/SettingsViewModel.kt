@@ -17,7 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.*
 import service.PersistenceService
-import ui.utils.cause
+import utils.cause
 import utils.Logger
 
 class SettingsViewModel : ViewModel() {
