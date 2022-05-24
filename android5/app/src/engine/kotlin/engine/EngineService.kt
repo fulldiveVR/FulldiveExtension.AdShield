@@ -24,7 +24,7 @@ import service.EnvironmentService
 import service.NotificationService
 import service.VpnPermissionService
 import utils.Logger
-import ui.utils.cause
+import utils.cause
 import utils.MonitorNotification
 import java.net.DatagramSocket
 import java.net.InetAddress
