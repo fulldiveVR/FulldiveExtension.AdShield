@@ -44,6 +44,7 @@
 
         <item
             android:id="@+id/help_about_rewards"
+            android:visible="false"
             android:icon="@drawable/ic_baseline_bug_report_24"
             android:title="@string/menu_item_about_rewards" />
 </menu>
