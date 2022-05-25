@@ -17,9 +17,8 @@ import kotlinx.coroutines.launch
 import model.AdsCounter
 import service.PersistenceService
 import utils.Logger
-import javax.inject.Inject
 
-class AdsCounterViewModel @Inject constructor() : ViewModel() {
+class AdsCounterViewModel : ViewModel() {
 
     private val log = Logger("AdsCounter")
     private val persistence = PersistenceService

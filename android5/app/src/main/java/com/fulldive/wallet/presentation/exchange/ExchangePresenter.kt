@@ -19,6 +19,7 @@ package com.fulldive.wallet.presentation.exchange
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.interactors.SettingsLocalDataSource
 import com.fulldive.wallet.interactors.WalletInteractor
 import com.fulldive.wallet.models.ExchangeValue
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
@@ -30,7 +31,7 @@ import javax.inject.Inject
 @InjectViewState
 @ProvidedBy(DefaultModule::class)
 class ExchangePresenter @Inject constructor(
-    private val accountsInteractor: WalletInteractor,
+    private val walletInteractor: WalletInteractor,
     private val experienceExchangeInterator: ExperienceExchangeInterator
 ) : BaseMoxyPresenter<ExchangeView>() {
 
@@ -60,7 +61,7 @@ class ExchangePresenter @Inject constructor(
                     userExperience = experience
                     viewState.showUserExperience(
                         experience = experience,
-                        minimumExchangeExperience = AppSettingsService.EXPERIENCE_MIN_EXCHANGE_COUNT,
+                        minimumExchangeExperience = SettingsLocalDataSource.EXPERIENCE_MIN_EXCHANGE_COUNT,
                         coins = userExperience / exchangeCurrency.toDouble()
                     )
                 }
@@ -69,7 +70,7 @@ class ExchangePresenter @Inject constructor(
 
     fun validateExperience(experienceString: String) {
         val experience = if (experienceString.isEmpty()) 0 else experienceString.toInt()
-        val isValid = userExperience >= AppSettingsService.EXPERIENCE_MIN_EXCHANGE_COUNT &&
+        val isValid = userExperience >= SettingsLocalDataSource.EXPERIENCE_MIN_EXCHANGE_COUNT &&
                 experience in 1..userExperience
 
         viewState.experienceIsValid(isValid)

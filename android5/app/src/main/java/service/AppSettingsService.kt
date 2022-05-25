@@ -34,8 +34,6 @@ object AppSettingsService {
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
 
-    const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
-    private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 2
     private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
 
     fun updateAndGetCurrentStartUpCount(): Int {

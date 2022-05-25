@@ -15,18 +15,8 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        Observable.combineLatest(
-            experienceExchangeInterator.observeExperience().subscribeOn(schedulers.io()),
-            experienceExchangeInterator.observeIfExchangeTimeIntervalPassed()
-                .subscribeOn(schedulers.io()),
-            experienceExchangeInterator.observeExchangePacks().subscribeOn(schedulers.io()),
-        ) { (experience, maxExperience), isExchangeAvailable, exchangePacks ->
-            Triple(
-                experience,
-                maxExperience,
-                (exchangePacks.isNotEmpty() && isExchangeAvailable && experience >= maxExperience)
-            )
-        }
+        experienceExchangeInterator
+            .observeIfExperienceExchangeAvailable()
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, maxExperience, isExchangeAvailable) ->
