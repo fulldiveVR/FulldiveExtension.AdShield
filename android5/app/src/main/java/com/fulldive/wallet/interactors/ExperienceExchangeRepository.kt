@@ -50,7 +50,7 @@ class ExperienceExchangeRepository @Inject constructor(
         return experienceExchangeRemoteSource.exchangeExperience(title, address)
     }
 
-    fun setExperience(adsCount: Long): Single<Int> {
+    fun setExperience(adsCount: Long): Completable {
         return settingsLocalDataSource.setExperience(adsCount)
     }
 
@@ -68,5 +68,9 @@ class ExperienceExchangeRepository @Inject constructor(
 
     fun clearExchangedExperience(): Completable {
         return settingsLocalDataSource.clearExchangedExperience()
+    }
+
+    fun isDaysIntervalPassed(currentTime: Long, time: Long): Boolean {
+        return settingsLocalDataSource.isDaysIntervalPassed(currentTime, time)
     }
 }

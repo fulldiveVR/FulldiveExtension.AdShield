@@ -38,10 +38,9 @@ class SettingsLocalDataSource @Inject constructor(
 ) {
     val sharedPreferences = context.getPrivateSharedPreferences()
 
-    fun setExperience(adsCount: Long): Single<Int> {
-        return safeSingle {
-            val previousExperience =
-                AppSettingsService.sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
+    fun setExperience(adsCount: Long): Completable {
+        return safeCompletable {
+            val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
             val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
 
             val experience = when {
@@ -49,7 +48,6 @@ class SettingsLocalDataSource @Inject constructor(
                 else -> previousExperience + newExperience
             }
             sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
-            experience
         }
     }
 
@@ -62,12 +60,7 @@ class SettingsLocalDataSource @Inject constructor(
     }
 
     fun getExperience(): Single<Int> {
-        return safeSingle {
-            sharedPreferences.getInt(
-                KEY_EXPERIENCE,
-                0
-            )
-        }
+        return safeSingle { sharedPreferences.getInt(KEY_EXPERIENCE, 0) }
     }
 
     fun observeIfExchangeTimeIntervalPassed(): Observable<Boolean> {
@@ -90,7 +83,7 @@ class SettingsLocalDataSource @Inject constructor(
         return dateFormat.parse(dateFormat.format(Date())).or(Date())
     }
 
-    private fun isDaysIntervalPassed(currentTime: Long, time: Long): Boolean {
+    fun isDaysIntervalPassed(currentTime: Long, time: Long): Boolean {
         val timeIntervalBetweenDays = (currentTime - time)
         val daysIntervalBetweenDays = TimeUnit.DAYS.convert(
             timeIntervalBetweenDays,
@@ -104,7 +97,7 @@ class SettingsLocalDataSource @Inject constructor(
         private const val LAST_EXCHANGE_DATE = "LAST_EXCHANGE_DATE"
 
         const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
-        private const val EXCHANGE_DAYS_INTERVAL = 1
+        const val EXCHANGE_DAYS_INTERVAL = 1
         private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.3
     }
 }

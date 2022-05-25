@@ -39,7 +39,7 @@ data class ExchangeValue(
     @SerializedName("amount")
     val amount: Int
 ) {
-    companion object{
+    companion object {
         const val FD_TOKEN = "FDToken"
     }
 }
