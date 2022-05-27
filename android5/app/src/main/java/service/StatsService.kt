@@ -12,8 +12,8 @@
 
 package service
 
-import kotlinx.coroutines.coroutineScope
 import engine.Host
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.*
 import utils.Logger
@@ -21,11 +21,12 @@ import java.util.*
 
 object StatsService : PrintsDebugInfo {
 
+    private val blockedHosts: MutableMap<Host, Long> = mutableMapOf()
+    private val internalStats: MutableMap<StatsPersistedKey, StatsPersistedEntry> = mutableMapOf()
+    private val persistence = PersistenceService
+
     private var runtimeAllowed = 0
     private var runtimeDenied = 0
-    private val internalStats: MutableMap<StatsPersistedKey, StatsPersistedEntry> = mutableMapOf()
-
-    private val persistence = PersistenceService
 
     fun setup() {
         internalStats.clear()
@@ -49,8 +50,10 @@ object StatsService : PrintsDebugInfo {
     }
 
     suspend fun blocked(host: Host) {
-        increment(host, HistoryEntryType.blocked)
-        runtimeDenied += 1
+        if (needIncrement(host)) {
+            increment(host, HistoryEntryType.blocked)
+            runtimeDenied += 1
+        }
     }
 
     suspend fun passed(host: Host) {
@@ -97,6 +100,23 @@ object StatsService : PrintsDebugInfo {
         }
     }
 
+
+    private fun needIncrement(host: Host): Boolean {
+        val hostLastCheckTime = blockedHosts[host]
+        val now = System.currentTimeMillis()
+
+        return when {
+            hostLastCheckTime == null
+                    || now - hostLastCheckTime >= 5000L -> {
+                blockedHosts[host] = now
+                true
+            }
+            else -> {
+                false
+            }
+        }
+    }
+
     override fun printDebugInfo() {
         Logger.v("Stats", internalStats.keys.toString())
     }
@@ -105,6 +125,7 @@ object StatsService : PrintsDebugInfo {
 
 // XXX: a proper solution would be to configure Moshi to handle Object as a key
 private typealias StatsPersistedKey = String
+
 private fun String.host(): Host = this.substringBeforeLast(";")
 private fun String.type(): HistoryEntryType = HistoryEntryType.valueOf(this.substringAfterLast(";"))
 private fun statsPersistedKey(host: Host, type: HistoryEntryType) = "$host;$type"

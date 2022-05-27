@@ -45,7 +45,7 @@ object EnvironmentService {
     }
 
     fun isSlim(): Boolean {
-        return BuildConfig.FLAVOR == "google" && !escaped
+        return false
     }
 
     fun isFdroid(): Boolean {
