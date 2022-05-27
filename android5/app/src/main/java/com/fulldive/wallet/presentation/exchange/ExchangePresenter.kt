@@ -79,7 +79,7 @@ class ExchangePresenter @Inject constructor(
                 val experience = if (experienceString.isEmpty()) 0 else experienceString.toInt()
                 val isValid = experience >= minExchangeExperience &&
                         experience in 1..userExperience
-                Log.d("TestB", "isValid $isValid")
+
                 val availableFdTokens = experienceExchangeInterator.getAvailableTokenAmount(
                     experience,
                     rate

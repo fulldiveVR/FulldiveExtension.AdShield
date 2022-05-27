@@ -47,8 +47,8 @@ class ExperienceExchangeRepository @Inject constructor(
         return experienceExchangeRemoteSource.exchangeExperience(denom, amount, address)
     }
 
-    fun setExperience(adsCount: Long): Completable {
-        return settingsLocalDataSource.setExperience(adsCount)
+    fun setExperience(adsCount: Long) {
+         settingsLocalDataSource.setExperience(adsCount)
     }
 
     fun observeExperience(): Observable<Pair<Int, Int>> {

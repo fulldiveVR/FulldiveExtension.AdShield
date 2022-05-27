@@ -16,7 +16,6 @@
 
 package ui.rewards
 
-import android.util.Log
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.or
 import com.fulldive.wallet.extensions.withDefaults
@@ -91,7 +90,6 @@ class RewardsPresenter @Inject constructor(
             .withDefaults()
             .compositeSubscribe(
                 onSuccess = { balances ->
-                    Log.d("TestB","balances $balances")
                     val balance = balances.find { balance ->
                         balance.denom == Chain.mainDenom
                     }.or {

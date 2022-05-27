@@ -38,17 +38,15 @@ class SettingsLocalDataSource @Inject constructor(
 ) {
     val sharedPreferences = context.getPrivateSharedPreferences()
 
-    fun setExperience(adsCount: Long): Completable {
-        return safeCompletable {
-            val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
-            val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
+    fun setExperience(adsCount: Long) {
+        val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
+        val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
 
-            val experience = when {
-                previousExperience + newExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> EXPERIENCE_MIN_EXCHANGE_COUNT
-                else -> previousExperience + newExperience
-            }
-            sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
+        val experience = when {
+            previousExperience + newExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> EXPERIENCE_MIN_EXCHANGE_COUNT
+            else -> previousExperience + newExperience
         }
+        sharedPreferences.setProperty(KEY_EXPERIENCE, experience)
     }
 
     fun observeExperience(): Observable<Pair<Int, Int>> {
@@ -118,6 +116,6 @@ class SettingsLocalDataSource @Inject constructor(
 
         const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
         const val EXCHANGE_DAYS_INTERVAL = 1
-        private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.1
+        private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.3
     }
 }

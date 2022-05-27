@@ -101,8 +101,8 @@ open class ExperienceExchangeInterator @Inject constructor(
         return experienceExchangeRepository.exchangeExperience(denom, amount, address)
     }
 
-    fun setExperience(adsCount: Long): Completable {
-        return experienceExchangeRepository.setExperience(adsCount)
+    fun setExperience(adsCount: Long) {
+        experienceExchangeRepository.setExperience(adsCount)
     }
 
     fun getAvailableTokenAmount(experience: Int, rate: Int): Int {
