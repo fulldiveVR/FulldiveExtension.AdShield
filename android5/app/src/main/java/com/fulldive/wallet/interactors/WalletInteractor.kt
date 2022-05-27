@@ -82,7 +82,7 @@ class WalletInteractor @Inject constructor(
     ): Completable {
         return singleCallable { UUID.randomUUID().toString() }
             .flatMap { uuid ->
-                if(fromMnemonic) {
+                if (fromMnemonic) {
                     encryptFromMnemonic(uuid, entropy)
                 } else {
                     encryptFromPrivateKey(uuid, entropy)

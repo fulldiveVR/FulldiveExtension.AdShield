@@ -19,7 +19,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             .observeIfExperienceExchangeAvailable(ExchangeRequest.DENOM_FD_TOKEN)
             .withDefaults()
             .compositeSubscribe(
-                onNext = { (experience, minExperience, isExchangeAvailable) ->
+                onNext = { (experience, minExperience, isExchangeAvailable, _) ->
                     if (userExperience == 0 || userExperience == experience) {
                         viewState.setExperience(experience, minExperience, isExchangeAvailable)
                     } else {

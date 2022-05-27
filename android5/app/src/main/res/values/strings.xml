@@ -534,4 +534,5 @@
   <string name="settings_advanced_hide_history_from_notifications">Hide blocking history from notification</string>
   <string name="str_notification_experience_limit_title">Exchange XP Rewards into CRYPTO!</string>
   <string name="str_notification_experience_limit_description">You have reached a new level. Redeem your XP to start a new level and continue getting rewards.</string>
+  <string name="str_experience_exchenge_success">Success! You have exchanged %d XP</string>
 </resources>

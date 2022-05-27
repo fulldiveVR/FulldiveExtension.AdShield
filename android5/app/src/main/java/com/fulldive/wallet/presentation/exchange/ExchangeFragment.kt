@@ -17,10 +17,9 @@
 package com.fulldive.wallet.presentation.exchange
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import com.fulldive.wallet.extensions.getDrawableCompat
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.fulldive.wallet.presentation.base.BaseMvpFragment
 import com.joom.lightsaber.getInstance
 import moxy.presenter.InjectPresenter
@@ -36,14 +35,6 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
 
     override fun getViewBinding() = FragmentExchangeBinding.inflate(layoutInflater)
 
-    private val experienceTextWatcher = object : TextWatcher {
-        override fun afterTextChanged(editable: Editable) =
-            presenter.validateExperience(editable.toString().trim())
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-    }
-
     @ProvidePresenter
     fun providePresenter(): ExchangePresenter = appInjector.getInstance()
 
@@ -51,26 +42,20 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.toolbar?.title = getString(R.string.str_exchange_title)
         binding {
-            enterExperienceTextEditText.addTextChangedListener(experienceTextWatcher)
-            exchangeButton.setOnClickListener {
-                presenter.exchangeExperience(enterExperienceTextEditText.text.toString())
-            }
+            exchangeButton.setOnClickListener { presenter.exchangeExperience() }
         }
     }
 
-    override fun onDestroyView() {
-        binding {
-            enterExperienceTextEditText.removeTextChangedListener(experienceTextWatcher)
-        }
-        super.onDestroyView()
-    }
-
-    override fun showUserExperience(experience: Int, minExchangeExperience: Int, availableFdTokens: Int){
+    override fun showUserExperience(
+        experience: Int,
+        minExchangeExperience: Int,
+        availableFdTokens: Int
+    ) {
         binding {
             descriptionTextView.text = String.format(
                 getString(R.string.str_exchange_description), minExchangeExperience
             )
-            enterExperienceTextEditText.setText(experience.toString())
+            userExperienceTextView.text = experience.toString()
             coinsTextView.text = availableFdTokens.toString()
         }
     }
@@ -82,9 +67,21 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
     override fun experienceIsValid(isValid: Boolean) {
         binding {
             exchangeButton.isEnabled = isValid
-            enterExperienceTextLayout.background = context?.getDrawableCompat(
-                if (isValid || enterExperienceTextEditText.editableText.isEmpty()) R.drawable.background_rounded_border_normal else R.drawable.background_rounded_border_error
-            )
         }
+    }
+
+    override fun showSuccessExchange(experience: Int) {
+        Toast.makeText(
+            requireActivity(),
+            String.format(
+                requireActivity().getString(R.string.str_experience_exchenge_success),
+                experience
+            ),
+            Toast.LENGTH_LONG
+        ).show()
+        findNavController()
+            .apply {
+                navigate(ExchangeFragmentDirections.actionNavigationExchangeToRewardsFragment())
+            }
     }
 }

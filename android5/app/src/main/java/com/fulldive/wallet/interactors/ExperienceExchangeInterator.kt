@@ -22,12 +22,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
 import com.fulldive.wallet.extensions.safeCompletable
 import com.fulldive.wallet.extensions.toSingle
+import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
@@ -42,6 +42,7 @@ import javax.inject.Singleton
 @ProvidedBy(DefaultInteractorsModule::class)
 open class ExperienceExchangeInterator @Inject constructor(
     private val context: Context,
+    private val walletInteractor: WalletInteractor,
     private val settingsInteractor: SettingsInterator,
     private val experienceExchangeRepository: ExperienceExchangeRepository,
     private val schedulers: ISchedulersProvider
@@ -55,7 +56,7 @@ open class ExperienceExchangeInterator @Inject constructor(
         return experienceExchangeRepository.observeExchangeRateForToken(denom)
     }
 
-    fun observeIfExperienceExchangeAvailable(denom: String): Observable<Triple<Int, Int, Boolean>> {
+    fun observeIfExperienceExchangeAvailable(denom: String): Observable<ExchangeConfig> {
         return Observable.combineLatest(
             observeExperience()
                 .subscribeOn(schedulers.io()),
@@ -63,13 +64,18 @@ open class ExperienceExchangeInterator @Inject constructor(
                 .subscribeOn(schedulers.io()),
             observeExchangeRateForToken(denom)
                 .subscribeOn(schedulers.io()),
+            walletInteractor
+                .getAccount()
+                .map(Account::address)
+                .onErrorReturnItem("")
+                .toObservable()
+                .subscribeOn(schedulers.io()),
             settingsInteractor
                 .observeExchangePushShownTime()
                 .subscribeOn(schedulers.io()),
-        ) { (experience, minExperience), isTimeIntervalPassed, exchangeRateForToken, pushShownTime ->
-            val isExchangeAvailable = exchangeRateForToken > 0 &&
+        ) { (experience, minExperience), isTimeIntervalPassed, exchangeRateForToken, address, pushShownTime ->
+            val isExchangeAvailable = address.isNotEmpty() && exchangeRateForToken > 0 &&
                     isTimeIntervalPassed && experience >= minExperience
-
             val isExchangePushNeedToShow = experienceExchangeRepository.isDaysIntervalPassed(
                 System.currentTimeMillis(),
                 pushShownTime
@@ -81,16 +87,12 @@ open class ExperienceExchangeInterator @Inject constructor(
                 isExchangeAvailable = isExchangeAvailable,
                 isExchangePushNeedToShow = isExchangePushNeedToShow
             )
-        }.flatMap { (experience, minExperience, isExchangeAvailable, isExchangePushNeedToShow) ->
-            if (isExchangePushNeedToShow) {
+        }.flatMap { exchangeConfig ->
+            if (exchangeConfig.isExchangePushNeedToShow) {
                 showNotification()
-                    .andThen(
-                        Triple(experience, minExperience, isExchangeAvailable)
-                            .toSingle()
-                            .toObservable()
-                    )
+                    .andThen(exchangeConfig.toSingle().toObservable())
             } else {
-                Triple(experience, minExperience, isExchangeAvailable)
+                exchangeConfig
                     .toSingle()
                     .toObservable()
             }
