@@ -40,11 +40,11 @@ class AdsCounterViewModel : ViewModel() {
 
     fun setRuntimeCounter(counter: Long, experienceExchangeInterator: ExperienceExchangeInterator) {
         viewModelScope.launch {
-            _counter.value?.let {
-                val new = it.copy(runtimeValue = counter)
-                persistence.save(new)
-                _counter.value = new
-                experienceExchangeInterator.setExperience(new.runtimeValue - it.runtimeValue)
+            _counter.value?.let { oldValue ->
+                val newValue = oldValue.copy(runtimeValue = counter)
+                persistence.save(newValue)
+                _counter.value = newValue
+                experienceExchangeInterator.setExperience(newValue.runtimeValue - oldValue.runtimeValue)
             }
         }
     }
