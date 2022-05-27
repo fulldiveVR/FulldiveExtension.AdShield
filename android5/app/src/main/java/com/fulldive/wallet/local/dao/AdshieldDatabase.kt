@@ -4,18 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.fulldive.wallet.models.ExchangePack
+import com.fulldive.wallet.models.LeaderEntity
 
 @Database(
     entities = [
-        ExchangePack::class,
+        LeaderEntity::class
     ], version = 1
 )
-@TypeConverters(RoomTypeConverters::class)
+
 abstract class AdshieldDatabase : RoomDatabase() {
 
-    abstract fun getExchangePacksDao(): ExchangePacksDao
+    abstract fun getLeaderEntityDao(): LeaderEntityDao
 
     companion object {
         private const val TAG = "AdshieldDatabase"

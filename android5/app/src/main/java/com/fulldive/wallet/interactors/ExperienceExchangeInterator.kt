@@ -22,19 +22,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
 import com.fulldive.wallet.extensions.safeCompletable
 import com.fulldive.wallet.extensions.toSingle
-import com.fulldive.wallet.models.ExchangePack
 import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
-import jnr.ffi.annotations.In
 import org.adshield.R
 import ui.MainActivity
 import javax.inject.Inject
@@ -49,60 +47,66 @@ open class ExperienceExchangeInterator @Inject constructor(
     private val schedulers: ISchedulersProvider
 ) {
 
-    fun observeExchangePacks(): Observable<List<ExchangePack>> {
-        return experienceExchangeRepository.observeExchangePacks()
+    fun getExchangeRateForToken(denom: String): Completable {
+        return experienceExchangeRepository.getExchangeRateForToken(denom)
     }
 
-    fun getAvailableExchangePacks(): Completable {
-        return experienceExchangeRepository.getAvailableExchangePacks()
+    fun observeExchangeRateForToken(denom: String): Observable<Int> {
+        return experienceExchangeRepository.observeExchangeRateForToken(denom)
     }
 
-    fun observeIfExperienceExchangeAvailable(): Observable<Triple<Int, Int, Boolean>> {
+    fun observeIfExperienceExchangeAvailable(denom: String): Observable<Triple<Int, Int, Boolean>> {
         return Observable.combineLatest(
             observeExperience()
                 .subscribeOn(schedulers.io()),
             observeIfExchangeTimeIntervalPassed()
                 .subscribeOn(schedulers.io()),
-            observeExchangePacks()
+            observeExchangeRateForToken(denom)
                 .subscribeOn(schedulers.io()),
             settingsInteractor
                 .observeExchangePushShownTime()
                 .subscribeOn(schedulers.io()),
-        ) { (experience, maxExperience), isTimeIntervalPassed, exchangePacks, pushShownTime ->
-            val isExchangeAvailable = exchangePacks.isNotEmpty() &&
-                    isTimeIntervalPassed && experience >= maxExperience
+        ) { (experience, minExperience), isTimeIntervalPassed, exchangeRateForToken, pushShownTime ->
+            val isExchangeAvailable = exchangeRateForToken > 0 &&
+                    isTimeIntervalPassed && experience >= minExperience
+
+            val isExchangePushNeedToShow = experienceExchangeRepository.isDaysIntervalPassed(
+                System.currentTimeMillis(),
+                pushShownTime
+            ) && isExchangeAvailable
 
             ExchangeConfig(
                 experience = experience,
-                maxExperience = maxExperience,
+                minExperience = minExperience,
                 isExchangeAvailable = isExchangeAvailable,
-                isExchangePushNeedToShow = experienceExchangeRepository.isDaysIntervalPassed(
-                    System.currentTimeMillis(),
-                    pushShownTime
-                ) && isExchangeAvailable
+                isExchangePushNeedToShow = isExchangePushNeedToShow
             )
-        }.flatMap { (experience, maxExperience, isExchangeAvailable, isExchangePushNeedToShow) ->
+        }.flatMap { (experience, minExperience, isExchangeAvailable, isExchangePushNeedToShow) ->
             if (isExchangePushNeedToShow) {
                 showNotification()
                     .andThen(
-                        Triple(experience, maxExperience, isExchangeAvailable)
+                        Triple(experience, minExperience, isExchangeAvailable)
                             .toSingle()
                             .toObservable()
                     )
             } else {
-                Triple(experience, maxExperience, isExchangeAvailable)
+                Triple(experience, minExperience, isExchangeAvailable)
                     .toSingle()
                     .toObservable()
             }
         }
     }
 
-    fun exchangeExperience(title: String, address: String): Completable {
-        return experienceExchangeRepository.exchangeExperience(title, address)
+    fun exchangeExperience(denom: String, amount: Int, address: String): Completable {
+        return experienceExchangeRepository.exchangeExperience(denom, amount, address)
     }
 
     fun setExperience(adsCount: Long): Completable {
         return experienceExchangeRepository.setExperience(adsCount)
+    }
+
+    fun getAvailableTokenAmount(experience: Int, rate: Int): Int {
+        return Math.floor(experience.toDouble() * rate).toInt()
     }
 
     private fun showNotification(): Completable {
@@ -152,7 +156,7 @@ open class ExperienceExchangeInterator @Inject constructor(
 
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
-            .andThen(settingsInteractor.setExchangePushShownTime())
+            .andThen(settingsInteractor.setExchangePushShownTime(System.currentTimeMillis()))
     }
 
     fun observeExperience(): Observable<Pair<Int, Int>> {
@@ -167,8 +171,8 @@ open class ExperienceExchangeInterator @Inject constructor(
         return experienceExchangeRepository.observeIfExchangeTimeIntervalPassed()
     }
 
-    fun clearExchangedExperience(): Completable {
-        return experienceExchangeRepository.clearExchangedExperience()
+    fun removeExchangedExperience(): Completable {
+        return experienceExchangeRepository.removeExchangedExperience()
     }
 
     companion object {
@@ -180,7 +184,7 @@ open class ExperienceExchangeInterator @Inject constructor(
 
 data class ExchangeConfig(
     val experience: Int,
-    val maxExperience: Int,
+    val minExperience: Int,
     val isExchangeAvailable: Boolean,
     val isExchangePushNeedToShow: Boolean
 )

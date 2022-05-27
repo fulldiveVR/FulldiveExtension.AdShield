@@ -71,7 +71,7 @@ class SettingsLocalDataSource @Inject constructor(
             }
     }
 
-    fun clearExchangedExperience(): Completable {
+    fun removeExchangedExperience(): Completable {
         return safeCompletable {
             sharedPreferences.setProperty(KEY_EXPERIENCE, 0)
             sharedPreferences.setProperty(LAST_EXCHANGE_DATE, getDateWithoutHours().time)
@@ -92,12 +92,32 @@ class SettingsLocalDataSource @Inject constructor(
         return daysIntervalBetweenDays >= EXCHANGE_DAYS_INTERVAL
     }
 
+    fun setExchangeRateForToken(denom: String, rate: Int): Completable {
+        return safeCompletable { sharedPreferences.setProperty("$KEY_DENOM_RATE$denom", rate) }
+    }
+
+    fun observeExchangeRateForToken(denom: String): Observable<Int> {
+        return sharedPreferences.observeSettingsInt("$KEY_DENOM_RATE$denom")
+    }
+
+    fun setExchangePushShownTime(pushShownTime: Long): Completable {
+        return safeCompletable {
+            sharedPreferences.setProperty(KEY_EXCHANGE_PUSH_SHOW_TIME, pushShownTime)
+        }
+    }
+
+    fun observeExchangePushShownTime(): Observable<Long> {
+        return sharedPreferences.observeSettingsLong(KEY_EXCHANGE_PUSH_SHOW_TIME)
+    }
+
     companion object {
         private const val KEY_EXPERIENCE = "KEY_EXPERIENCE"
         private const val LAST_EXCHANGE_DATE = "LAST_EXCHANGE_DATE"
+        private const val KEY_DENOM_RATE = "KEY_DENOM_RATE"
+        private const val KEY_EXCHANGE_PUSH_SHOW_TIME = "KEY_EXCHANGE_PUSH_SHOW_TIME"
 
         const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
         const val EXCHANGE_DAYS_INTERVAL = 1
-        private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.3
+        private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.1
     }
 }

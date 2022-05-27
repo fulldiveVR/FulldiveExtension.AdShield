@@ -12,7 +12,6 @@
 
 package repository
 
-import com.fulldive.wallet.models.ExchangePack
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import model.*
@@ -23,7 +22,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import service.HttpService
 import service.JsonSerializationService
-
 
 object BlockaDataSource {
 

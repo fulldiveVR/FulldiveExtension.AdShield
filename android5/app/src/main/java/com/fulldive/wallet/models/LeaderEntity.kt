@@ -14,23 +14,19 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.interactors
+package com.fulldive.wallet.models
 
-import com.fulldive.wallet.di.modules.DefaultInteractorsModule
-import com.joom.lightsaber.ProvidedBy
-import io.reactivex.Completable
-import io.reactivex.Observable
-import javax.inject.Inject
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
-@ProvidedBy(DefaultInteractorsModule::class)
-class SettingsRepository @Inject constructor(
-    private val settingsLocalDataSource: SettingsLocalDataSource
-) {
-    fun setExchangePushShownTime(pushShownTime: Long): Completable {
-        return settingsLocalDataSource.setExchangePushShownTime(pushShownTime)
-    }
-
-    fun observeExchangePushShownTime(): Observable<Long> {
-        return settingsLocalDataSource.observeExchangePushShownTime()
-    }
-}
+@Entity(tableName = "Leader")
+data class LeaderEntity(
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
+    val id: Long,
+    @SerializedName("balance")
+    val balance: Int,
+    @SerializedName("wallet")
+    val wallet: String,
+)

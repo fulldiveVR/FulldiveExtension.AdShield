@@ -17,13 +17,7 @@
 package com.fulldive.wallet.local.dao
 
 import androidx.room.Dao
-import androidx.room.Query
-import com.fulldive.wallet.models.ExchangePack
-import io.reactivex.Observable
+import com.fulldive.wallet.models.LeaderEntity
 
 @Dao
-interface ExchangePacksDao : BaseDao<ExchangePack> {
-
-    @Query("SELECT * FROM ExchangePack")
-    fun observeExchangePacks(): Observable<List<ExchangePack>>
-}
+interface LeaderEntityDao : BaseDao<LeaderEntity>

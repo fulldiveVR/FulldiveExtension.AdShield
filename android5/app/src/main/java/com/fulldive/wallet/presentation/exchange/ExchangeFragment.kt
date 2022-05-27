@@ -53,10 +53,7 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
         binding {
             enterExperienceTextEditText.addTextChangedListener(experienceTextWatcher)
             exchangeButton.setOnClickListener {
-                presenter.exchangeExperience(
-                    "", "" //todo server required
-                    // enterExperienceTextEditText.text.toString()
-                )
+                presenter.exchangeExperience(enterExperienceTextEditText.text.toString())
             }
         }
     }
@@ -68,22 +65,18 @@ class ExchangeFragment : BaseMvpFragment<FragmentExchangeBinding>(), ExchangeVie
         super.onDestroyView()
     }
 
-    override fun showUserExperience(
-        experience: Int,
-        minimumExchangeExperience: Int,
-        coins: Double
-    ) {
+    override fun showUserExperience(experience: Int, minExchangeExperience: Int, availableFdTokens: Int){
         binding {
             descriptionTextView.text = String.format(
-                getString(R.string.str_exchange_description), minimumExchangeExperience
+                getString(R.string.str_exchange_description), minExchangeExperience
             )
             enterExperienceTextEditText.setText(experience.toString())
-            coinsTextView.text = coins.toString()
+            coinsTextView.text = availableFdTokens.toString()
         }
     }
 
-    override fun showAvailableFulldiveCoins(coins: Double) {
-        binding?.coinsTextView?.text = coins.toString()
+    override fun showAvailableFdTokens(availableFdTokens: Int) {
+        binding?.coinsTextView?.text = availableFdTokens.toString()
     }
 
     override fun experienceIsValid(isValid: Boolean) {

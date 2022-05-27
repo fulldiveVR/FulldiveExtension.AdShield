@@ -17,7 +17,6 @@
 package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
-import com.fulldive.wallet.models.ExchangePack
 import com.fulldive.wallet.models.ExchangeRequest
 import com.fulldive.wallet.remote.FullDiveApi
 import com.joom.lightsaber.ProvidedBy
@@ -32,10 +31,11 @@ class ExperienceExchangeRemoteSource @Inject constructor(
     private val fullDiveApi: FullDiveApi
 ) {
 
-    fun getAvailableExchangePacks(): Single<List<ExchangePack>> =
-        fullDiveApi.getAvailableExchangePacks()
+    fun getExchangeRateForToken(denom: String): Single<Int> {
+        return fullDiveApi.getExchangeRateForToken(denom)
+    }
 
-    fun exchangeExperience(title: String, address: String): Completable {
-        return fullDiveApi.exchangeExperience(ExchangeRequest(title, address))
+    fun exchangeExperience(denom: String, amount: Int, address: String): Completable {
+        return fullDiveApi.exchangeExperience(ExchangeRequest(denom, amount, address))
     }
 }

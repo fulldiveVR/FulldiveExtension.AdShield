@@ -22,7 +22,7 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface ExchangeView : BaseMoxyView {
-    fun showUserExperience(experience: Int, minimumExchangeExperience: Int,  coins: Double)
-    fun showAvailableFulldiveCoins(coins: Double)
+    fun showUserExperience(experience: Int, minExchangeExperience: Int, availableFdTokens: Int)
+    fun showAvailableFdTokens(availableFdTokens: Int)
     fun experienceIsValid(isValid: Boolean)
 }

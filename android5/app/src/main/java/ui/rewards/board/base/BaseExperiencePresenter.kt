@@ -2,9 +2,9 @@ package ui.rewards.board.base
 
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.models.ExchangeRequest
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
-import io.reactivex.Observable
 
 abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
     private val experienceExchangeInterator: ExperienceExchangeInterator,
@@ -16,16 +16,16 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         experienceExchangeInterator
-            .observeIfExperienceExchangeAvailable()
+            .observeIfExperienceExchangeAvailable(ExchangeRequest.DENOM_FD_TOKEN)
             .withDefaults()
             .compositeSubscribe(
-                onNext = { (experience, maxExperience, isExchangeAvailable) ->
+                onNext = { (experience, minExperience, isExchangeAvailable) ->
                     if (userExperience == 0 || userExperience == experience) {
-                        viewState.setExperience(experience, maxExperience, isExchangeAvailable)
+                        viewState.setExperience(experience, minExperience, isExchangeAvailable)
                     } else {
                         viewState.updateExperienceProgress(
                             experience,
-                            maxExperience,
+                            minExperience,
                             isExchangeAvailable
                         )
                     }
@@ -34,15 +34,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             )
 
         experienceExchangeInterator
-            .getAvailableExchangePacks()
-            .withDefaults()
-            .compositeSubscribe()
-    }
-
-    fun onExchangeClicked() {
-        //todo clear if exchange is successful
-        experienceExchangeInterator
-            .clearExchangedExperience()
+            .getExchangeRateForToken(ExchangeRequest.DENOM_FD_TOKEN)
             .withDefaults()
             .compositeSubscribe()
     }
