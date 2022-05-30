@@ -2,7 +2,7 @@ package ui.rewards.board.base
 
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
-import com.fulldive.wallet.models.ExchangeRequest
+import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
 
@@ -16,7 +16,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         experienceExchangeInterator
-            .observeIfExperienceExchangeAvailable(ExchangeRequest.DENOM_FD_TOKEN)
+            .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, minExperience, isExchangeAvailable, _) ->
@@ -34,7 +34,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             )
 
         experienceExchangeInterator
-            .getExchangeRateForToken(ExchangeRequest.DENOM_FD_TOKEN)
+            .getExchangeRateForToken(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe()
     }

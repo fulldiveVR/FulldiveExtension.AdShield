@@ -20,7 +20,7 @@ import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.interactors.WalletInteractor
-import com.fulldive.wallet.models.ExchangeRequest
+import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.ProvidedBy
@@ -43,10 +43,10 @@ class ExchangePresenter @Inject constructor(
         super.onFirstViewAttach()
         Observable.combineLatest(
             experienceExchangeInterator
-                .observeIfExperienceExchangeAvailable(ExchangeRequest.DENOM_FD_TOKEN)
+                .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
                 .subscribeOn(schedulers.io()),
             experienceExchangeInterator
-                .observeExchangeRateForToken(ExchangeRequest.DENOM_FD_TOKEN)
+                .observeExchangeRateForToken(Chain.fdCoinDenom)
                 .subscribeOn(schedulers.io())
         ) { exchangeConfig, rate ->
             Pair(exchangeConfig, rate)
@@ -74,7 +74,7 @@ class ExchangePresenter @Inject constructor(
             .flatMapCompletable { account ->
                 experienceExchangeInterator
                     .exchangeExperience(
-                        ExchangeRequest.DENOM_FD_TOKEN,
+                        Chain.fdCoinDenom,
                         fdTokenAmount,
                         account.address
                     ).andThen(experienceExchangeInterator.removeExchangedExperience())

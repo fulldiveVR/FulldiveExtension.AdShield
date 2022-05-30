@@ -25,8 +25,4 @@ data class ExchangeRequest(
     val amount: Int,
     @SerializedName("address")
     val address: String
-) {
-    companion object {
-        const val DENOM_FD_TOKEN = "FDToken"
-    }
-}
+)

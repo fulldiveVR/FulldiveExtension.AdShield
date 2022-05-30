@@ -51,14 +51,17 @@ android {
         }
     }
 
-    buildTypes {
+    buildTypes { //grpcApiHost
         debug {
             buildConfigField 'String', 'API_URL', '\"https://api-staging.fdvr.co\"'
+            buildConfigField 'String', 'GRPC_API_HOST', '\"qt.imversed.com\"'
+
             // By default it is a 'debuggable' build, signed with a debug key.
         }
 
         release {
             buildConfigField 'String', 'API_URL', '\"https://api.fdvr.co\"'
+            buildConfigField 'String', 'GRPC_API_HOST', '\"qc.imversed.com\"'
 
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
