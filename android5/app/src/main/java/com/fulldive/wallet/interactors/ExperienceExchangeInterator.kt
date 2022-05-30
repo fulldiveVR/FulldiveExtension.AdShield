@@ -108,8 +108,9 @@ open class ExperienceExchangeInterator @Inject constructor(
     private fun showNotification(): Completable {
         return safeCompletable {
             val title = context.getString(R.string.str_notification_experience_limit_title)
-            val description =
-                context.getString(R.string.str_notification_experience_limit_description)
+            val description = context.getString(
+                R.string.str_notification_experience_limit_description
+            )
 
             val notificationLayout = RemoteViews(
                 context.packageName,

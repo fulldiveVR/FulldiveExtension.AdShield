@@ -87,14 +87,14 @@ class RewardsPresenter @Inject constructor(
             .compositeSubscribe(
                 onSuccess = { balances ->
                     val balance = balances.find { balance ->
-                        balance.denom == Chain.mainDenom
+                        balance.denom == Chain.fdCoinDenom
                     }.or {
-                        Balance(BigDecimal.ZERO, Chain.mainDenom)
+                        Balance(BigDecimal.ZERO, Chain.fdCoinDenom)
                     }
                     onBalanceReceived(balance)
                 },
                 onError = { error ->
-                    onBalanceReceived(Balance(BigDecimal.ZERO, Chain.mainDenom))
+                    onBalanceReceived(Balance(BigDecimal.ZERO, Chain.fdCoinDenom))
                 }
             )
     }
@@ -105,7 +105,7 @@ class RewardsPresenter @Inject constructor(
             Chain.divideDecimal,
             Chain.displayDecimal
         )
-        viewState.showBalance(spannableString, Chain.symbolTitle)
+        viewState.showBalance(spannableString, Chain.fdCoinSymbolTitle)
     }
 
     //    fun onDeleteWalletClicked() {
