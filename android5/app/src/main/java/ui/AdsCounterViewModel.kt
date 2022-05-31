@@ -13,9 +13,9 @@
 package ui
 
 import androidx.lifecycle.*
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import kotlinx.coroutines.launch
 import model.AdsCounter
-import service.AppSettingsService
 import service.PersistenceService
 import utils.Logger
 
@@ -23,7 +23,6 @@ class AdsCounterViewModel : ViewModel() {
 
     private val log = Logger("AdsCounter")
     private val persistence = PersistenceService
-    private val appSettingsService = AppSettingsService
 
     private val _counter = MutableLiveData<AdsCounter>()
     val counter: LiveData<Long> = _counter.distinctUntilChanged().map { it.get() }
@@ -39,13 +38,13 @@ class AdsCounterViewModel : ViewModel() {
         }
     }
 
-    fun setRuntimeCounter(counter: Long) {
+    fun setRuntimeCounter(counter: Long, experienceExchangeInterator: ExperienceExchangeInterator) {
         viewModelScope.launch {
-            _counter.value?.let {
-                val new = it.copy(runtimeValue = counter)
-                persistence.save(new)
-                _counter.value = new
-                appSettingsService.setExperience(counter)
+            _counter.value?.let { oldValue ->
+                val newValue = oldValue.copy(runtimeValue = counter)
+                persistence.save(newValue)
+                _counter.value = newValue
+                experienceExchangeInterator.setExperience(newValue.runtimeValue - oldValue.runtimeValue)
             }
         }
     }

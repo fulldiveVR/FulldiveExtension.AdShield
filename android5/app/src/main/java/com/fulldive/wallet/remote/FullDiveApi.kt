@@ -14,19 +14,21 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package com.fulldive.wallet.remote
 
-import org.adshield.BuildConfig
+import com.fulldive.wallet.models.ExchangeRequest
+import io.reactivex.Completable
+import io.reactivex.Single
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
-object Chain {
-    const val chainName = "imversed-canary"
-    const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
-    const val fullNameCoin = "Imversed Staking Coin"
-    const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
+interface FullDiveApi {
+
+    @GET("/sleep-money/xp/exchange/rate/{denom}")
+    fun getExchangeRateForToken(@Path("denom") denom: String): Single<Int>
+
+    @POST("/sleep-money/xp/exchange")
+    fun exchangeExperience(@Body exchangeRequest: ExchangeRequest): Completable
 }

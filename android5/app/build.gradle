@@ -49,11 +49,22 @@ android {
         ndk {
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
         }
+
+        buildConfigField 'String', 'API_URL', '\"https://api.fdvr.co\"'
+        buildConfigField 'String', 'GRPC_API_HOST', '\"qc.imversed.com\"'
     }
 
     buildTypes {
         debug {
             // By default it is a 'debuggable' build, signed with a debug key.
+        }
+
+        stage {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            debuggable true
+            buildConfigField 'String', 'API_URL', '\"https://api-staging.fdvr.co\"'
+            buildConfigField 'String', 'GRPC_API_HOST', '\"qt.imversed.com\"'
         }
 
         release {
@@ -149,6 +160,7 @@ android {
         release.res.srcDirs += 'src/translations/res'
         beta.res.srcDirs += 'src/translations/res'
     }
+    ndkVersion '24.0.8215888'
 }
 
 dependencies {
@@ -177,6 +189,12 @@ dependencies {
     def work_version = "2.7.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
+    //room
+    implementation "androidx.room:room-runtime:$libsVersions.room"
+    implementation "androidx.room:room-ktx:$libsVersions.room"
+    implementation "androidx.room:room-rxjava2:$libsVersions.roomRx"
+    kapt "androidx.room:room-compiler:$libsVersions.room"
+
     // json
     implementation 'com.squareup.moshi:moshi:1.13.0'
     implementation 'com.squareup.moshi:moshi-adapters:1.13.0'
@@ -187,6 +205,8 @@ dependencies {
     // http and rest
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
 
     // dynamic translations

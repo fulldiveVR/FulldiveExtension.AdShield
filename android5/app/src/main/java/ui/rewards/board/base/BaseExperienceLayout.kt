@@ -63,12 +63,10 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     override fun initLayout() {
         super.initLayout()
         exchangeButton?.setOnClickListener {
-            //TODO Mocked
             findNavController()
                 .apply {
                     navigate(RewardsFragmentDirections.actionNavigationRewardsToExchangeFragment())
                 }
-            //  presenter.onExchangeClicked()
         }
     }
 
