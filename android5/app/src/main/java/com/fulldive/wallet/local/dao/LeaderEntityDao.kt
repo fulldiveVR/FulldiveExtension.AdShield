@@ -14,19 +14,10 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package com.fulldive.wallet.local.dao
 
-import org.adshield.BuildConfig
+import androidx.room.Dao
+import com.fulldive.wallet.models.LeaderEntity
 
-object Chain {
-    const val chainName = "imversed-canary"
-    const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
-    const val fullNameCoin = "Imversed Staking Coin"
-    const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
-}
+@Dao
+interface LeaderEntityDao : BaseDao<LeaderEntity>

@@ -16,17 +16,17 @@
 
 package com.fulldive.wallet.models
 
-import org.adshield.BuildConfig
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
-object Chain {
-    const val chainName = "imversed-canary"
-    const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
-    const val fullNameCoin = "Imversed Staking Coin"
-    const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
-}
+@Entity(tableName = "Leader")
+data class LeaderEntity(
+    @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
+    val id: Long,
+    @SerializedName("balance")
+    val balance: Int,
+    @SerializedName("wallet")
+    val wallet: String,
+)

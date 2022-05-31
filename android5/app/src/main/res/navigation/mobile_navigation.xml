@@ -56,7 +56,16 @@
 
     <fragment
         android:id="@+id/exchangeFragment"
-        android:name="com.fulldive.wallet.presentation.exchange.ExchangeFragment" />
+        android:name="com.fulldive.wallet.presentation.exchange.ExchangeFragment">
+        <action
+            android:id="@+id/action_navigation_exchange_to_rewardsFragment"
+            app:destination="@id/rewardsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/rewardsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_stats"
@@ -207,8 +216,7 @@
         android:id="@+id/webFragment"
         android:name="ui.web.WebFragment"
         android:label="{name}"
-        tools:layout="@layout/fragment_web_view"
-        >
+        tools:layout="@layout/fragment_web_view">
         <argument
             android:name="url"
             app:argType="string" />

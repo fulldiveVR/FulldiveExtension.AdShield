@@ -14,19 +14,24 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package com.fulldive.wallet.interactors
 
-import org.adshield.BuildConfig
+import com.fulldive.wallet.di.modules.DefaultInteractorsModule
+import com.joom.lightsaber.ProvidedBy
+import io.reactivex.Completable
+import io.reactivex.Observable
+import javax.inject.Inject
 
-object Chain {
-    const val chainName = "imversed-canary"
-    const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
-    const val fullNameCoin = "Imversed Staking Coin"
-    const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
+@ProvidedBy(DefaultInteractorsModule::class)
+class SettingsInterator @Inject constructor(
+    private val settingsRepository: SettingsRepository
+) {
+
+    fun setExchangePushShownTime(pushShownTime: Long): Completable {
+        return settingsRepository.setExchangePushShownTime(pushShownTime)
+    }
+
+    fun observeExchangePushShownTime(): Observable<Long> {
+        return settingsRepository.observeExchangePushShownTime()
+    }
 }

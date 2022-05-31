@@ -18,50 +18,72 @@ package com.fulldive.wallet.presentation.exchange
 
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.interactors.WalletInteractor
+import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
+import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.ProvidedBy
+import io.reactivex.Observable
 import moxy.InjectViewState
-import service.AppSettingsService
 import javax.inject.Inject
 
 @InjectViewState
 @ProvidedBy(DefaultModule::class)
 class ExchangePresenter @Inject constructor(
-    private val accountsInteractor: WalletInteractor
+    private val walletInteractor: WalletInteractor,
+    private val experienceExchangeInterator: ExperienceExchangeInterator,
+    private val schedulers: ISchedulersProvider
 ) : BaseMoxyPresenter<ExchangeView>() {
 
+    private var fdTokenAmount = 0
     private var userExperience = 0
-
-    private val exchangeCurrency = 1000 //todo it's possible that currency login will be changed
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        AppSettingsService
-            .getExperience()
+        Observable.combineLatest(
+            experienceExchangeInterator
+                .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
+                .subscribeOn(schedulers.io()),
+            experienceExchangeInterator
+                .observeExchangeRateForToken(Chain.fdCoinDenom)
+                .subscribeOn(schedulers.io())
+        ) { exchangeConfig, rate ->
+            Pair(exchangeConfig, rate)
+        }
             .withDefaults()
             .compositeSubscribe(
-                onSuccess = { experience ->
-                    userExperience = experience
+                onNext = { (exchangeConfig, rate) ->
+                    val experience = exchangeConfig.experience
+                    fdTokenAmount = experienceExchangeInterator
+                        .getAvailableTokenAmount(experience, rate)
+                    userExperience = exchangeConfig.experience
                     viewState.showUserExperience(
                         experience = experience,
-                        minimumExchangeExperience = AppSettingsService.EXPERIENCE_MIN_EXCHANGE_COUNT,
-                        coins = userExperience / exchangeCurrency.toDouble()
+                        minExchangeExperience = exchangeConfig.minExperience,
+                        availableFdTokens = fdTokenAmount
                     )
+                    viewState.experienceIsValid(exchangeConfig.isExchangeAvailable)
                 }
             )
     }
 
-    fun validateExperience(experienceString: String) {
-        val experience = if (experienceString.isEmpty()) 0 else experienceString.toInt()
-        val isValid = userExperience >= AppSettingsService.EXPERIENCE_MIN_EXCHANGE_COUNT &&
-                experience in 1..userExperience
-
-        viewState.experienceIsValid(isValid)
-        viewState.showAvailableFulldiveCoins(experience / exchangeCurrency.toDouble())
-    }
-
-    fun exchangeExperience(experience: String) {
-
+    fun exchangeExperience() {
+        walletInteractor
+            .getAccount()
+            .flatMapCompletable { account ->
+                experienceExchangeInterator
+                    .exchangeExperience(
+                        Chain.fdCoinDenom,
+                        fdTokenAmount,
+                        account.address
+                    ).andThen(experienceExchangeInterator.removeExchangedExperience())
+            }
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = {
+                    viewState.showSuccessExchange(userExperience)
+                }
+            )
     }
 }

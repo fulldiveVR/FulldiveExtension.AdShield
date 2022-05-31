@@ -14,19 +14,27 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.fulldive.wallet.models
+package com.fulldive.wallet.di.modules
 
+import com.fulldive.wallet.remote.FullDiveApi
+import com.fulldive.wallet.remote.FulldiveRestApiProvider
+import com.joom.lightsaber.Module
+import com.joom.lightsaber.Provide
 import org.adshield.BuildConfig
+import javax.inject.Singleton
 
-object Chain {
-    const val chainName = "imversed-canary"
-    const val chainAddressPrefix = "imv"
-    const val mainDenom = "aimv"
-    const val fdCoinDenom = "FDToken"
-    const val fullNameCoin = "Imversed Staking Coin"
-    const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD"
-    const val divideDecimal = 18
-    const val displayDecimal = 18
-    val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)
+@Module
+class NetworkModule {
+
+    @Provide
+    @Singleton
+    fun provideFulldiveRestApiProvider(): FulldiveRestApiProvider {
+        return FulldiveRestApiProvider()
+    }
+
+    @Singleton
+    @Provide
+    fun provideFullDiveApi(fulldiveRestApiProvider: FulldiveRestApiProvider): FullDiveApi {
+        return fulldiveRestApiProvider.getRetrofitApi("${BuildConfig.API_URL}/")
+    }
 }
