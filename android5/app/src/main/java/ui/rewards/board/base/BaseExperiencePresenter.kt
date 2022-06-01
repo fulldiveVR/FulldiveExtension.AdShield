@@ -1,45 +1,56 @@
+/*
+ * Copyright (c) 2022 FullDive
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package ui.rewards.board.base
 
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
-import io.reactivex.Observable
-import service.AppSettingsService
 
-abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(private val schedulers: ISchedulersProvider) :
-    BaseMoxyPresenter<VS>() {
+abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
+    private val experienceExchangeInterator: ExperienceExchangeInterator,
+    private val schedulers: ISchedulersProvider
+) : BaseMoxyPresenter<VS>() {
 
-    private var isFirstAttach = true
+    private var userExperience = 0
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        Observable.combineLatest(
-            AppSettingsService.observeExperience().subscribeOn(schedulers.io()),
-            AppSettingsService.observeIfExchangeTimeIntervalPassed().subscribeOn(schedulers.io())
-        ) { (experience, maxExperience), isExchangeAvailable ->
-            Triple(experience, maxExperience, isExchangeAvailable && experience >= maxExperience)
-        }
+        experienceExchangeInterator
+            .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe(
-                onNext = { (experience, maxExperience, isExchangeAvailable) ->
-                    if (isFirstAttach) {
-                        isFirstAttach = false
-                        viewState.setExperience(experience, maxExperience, isExchangeAvailable)
+                onNext = { (experience, minExperience, isExchangeAvailable, _) ->
+                    if (userExperience == 0 || userExperience == experience) {
+                        viewState.setExperience(experience, minExperience, isExchangeAvailable)
                     } else {
                         viewState.updateExperienceProgress(
                             experience,
-                            maxExperience,
+                            minExperience,
                             isExchangeAvailable
                         )
                     }
+                    userExperience = experience
                 }
             )
-    }
 
-    fun onExchangeClicked() {
-        //todo clear if exchange is successful
-        AppSettingsService
-            .clearExchangedExperience()
+        experienceExchangeInterator
+            .getExchangeRateForToken(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe()
     }

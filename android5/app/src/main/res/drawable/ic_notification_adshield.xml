@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="16"
+    android:viewportHeight="16">
+  <group>
+    <clip-path
+        android:pathData="M0,0h16v16h-16z"/>
+    <path
+        android:pathData="M7.914,0.012L3.578,1.18C3.422,1.222 3.321,1.367 3.336,1.528C3.341,1.588 3.344,1.649 3.344,1.711C3.344,2.701 2.613,3.52 1.661,3.656C1.498,3.68 1.379,3.817 1.379,3.982V9.236C1.379,13.154 4.62,14.496 7.864,15.969C7.953,16.01 8.046,16.01 8.136,15.969C11.38,14.496 14.621,13.154 14.621,9.236V3.982C14.621,3.817 14.502,3.68 14.339,3.656C13.387,3.52 12.655,2.701 12.655,1.711C12.655,1.649 12.658,1.588 12.664,1.528C12.679,1.367 12.578,1.222 12.422,1.18L8.085,0.012C8.027,-0.004 7.973,-0.004 7.914,0.012Z"
+        android:fillType="evenOdd">
+      <aapt:attr name="android:fillColor">
+        <gradient 
+            android:startX="1.379"
+            android:startY="8"
+            android:endX="14.621"
+            android:endY="8"
+            android:type="linear">
+          <item android:offset="0" android:color="#FFFFEB4B"/>
+          <item android:offset="1" android:color="#FFFFB438"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+    <path
+        android:pathData="M7.999,1.456L4.622,2.365C4.468,3.44 3.749,4.347 2.757,4.75V9.192C2.757,10.116 2.977,10.94 3.547,11.677C4.531,12.952 6.485,13.812 7.999,14.491C9.513,13.812 11.468,12.952 12.452,11.677C13.021,10.94 13.242,10.116 13.242,9.192V4.75C12.25,4.347 11.531,3.44 11.377,2.365L7.999,1.456Z"
+        android:fillType="evenOdd">
+      <aapt:attr name="android:fillColor">
+        <gradient 
+            android:startX="2.757"
+            android:startY="7.973"
+            android:endX="13.242"
+            android:endY="7.973"
+            android:type="linear">
+          <item android:offset="0" android:color="#FFFFFFFF"/>
+          <item android:offset="1" android:color="#FFECF0F1"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+    <path
+        android:pathData="M5.433,8.411C5.432,8.492 5.432,8.572 5.433,8.653C5.433,9.581 5.571,10.636 6.298,11.285C7.249,12.134 8.964,11.86 9.825,10.747C10.165,10.309 10.42,9.613 10.64,9.026C10.735,8.772 10.95,8.344 10.995,8.148C11.075,7.795 10.733,7.523 10.423,7.716C10.252,7.823 9.35,10.146 9.343,8.78C9.342,8.681 9.344,8.554 9.346,8.406H9.346C9.346,8.398 9.347,8.391 9.347,8.383V8.378C9.361,7.577 9.404,6.206 9.347,5.361V4.924C9.347,4.709 9.171,4.533 8.956,4.533C8.741,4.533 8.565,4.709 8.565,4.924V7.296C8.565,7.369 8.506,7.428 8.434,7.428C8.362,7.428 8.303,7.369 8.303,7.296L8.303,4.556C8.299,4.342 8.127,4.166 7.912,4.166C7.697,4.166 7.521,4.342 7.521,4.556V7.269C7.521,7.341 7.462,7.401 7.39,7.401C7.318,7.401 7.259,7.341 7.259,7.269V5.019C7.259,4.804 7.083,4.628 6.868,4.628C6.653,4.628 6.477,4.804 6.477,5.019V7.412C6.477,7.484 6.418,7.543 6.346,7.543C6.274,7.543 6.215,7.484 6.215,7.412V5.495C6.215,5.28 6.039,5.104 5.824,5.104C5.609,5.104 5.433,5.28 5.433,5.495V8.411ZM7.992,4.166C7.966,4.163 7.942,4.164 7.919,4.166H7.992Z"
+        android:fillType="evenOdd">
+      <aapt:attr name="android:fillColor">
+        <gradient 
+            android:startX="8.22"
+            android:startY="11.783"
+            android:endX="8.22"
+            android:endY="4.164"
+            android:type="linear">
+          <item android:offset="0" android:color="#FFFFCA47"/>
+          <item android:offset="1" android:color="#FFFF590D"/>
+        </gradient>
+      </aapt:attr>
+    </path>
+  </group>
+</vector>
