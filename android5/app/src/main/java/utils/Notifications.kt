@@ -157,7 +157,7 @@ class UpdateNotification(versionName: String) :
 
             val intentActivity = Intent(ctx, MainActivity::class.java)
             intentActivity.putExtra("update", true)
-            val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
+            val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
             b.setContentIntent(piActivity)
         }
     )

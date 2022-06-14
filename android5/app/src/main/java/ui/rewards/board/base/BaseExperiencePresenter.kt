@@ -16,14 +16,20 @@
 
 package ui.rewards.board.base
 
+import android.content.Context
+import android.widget.Toast
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.interactors.WalletInteractor
+import com.fulldive.wallet.models.Account
 import com.fulldive.wallet.models.Chain
 import com.fulldive.wallet.presentation.base.BaseMoxyPresenter
 import com.fulldive.wallet.rx.ISchedulersProvider
 
 abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
+    private val context: Context,
     private val experienceExchangeInterator: ExperienceExchangeInterator,
+    private val walletInteractor: WalletInteractor,
     private val schedulers: ISchedulersProvider
 ) : BaseMoxyPresenter<VS>() {
 
@@ -35,9 +41,15 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe(
-                onNext = { (experience, minExperience, isExchangeAvailable, _) ->
+                onNext = { (experience, minExperience, isExchangeAvailable, _, isExchangeTimeout, isEmptyAddress) ->
                     if (userExperience == 0 || userExperience == experience) {
-                        viewState.setExperience(experience, minExperience, isExchangeAvailable)
+                        viewState.setExperience(
+                            experience,
+                            minExperience,
+                            isExchangeAvailable,
+                            isExchangeTimeout,
+                            isEmptyAddress
+                        )
                     } else {
                         viewState.updateExperienceProgress(
                             experience,
@@ -53,5 +65,22 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             .getExchangeRateForToken(Chain.fdCoinDenom)
             .withDefaults()
             .compositeSubscribe()
+    }
+
+    fun onExchangeClicked() {
+        walletInteractor
+            .getAccount()
+            .map(Account::address)
+            .onErrorReturnItem("")
+            .withDefaults()
+            .compositeSubscribe(
+                onSuccess = { address ->
+                    if (address.isEmpty()) {
+                        Toast.makeText(context, "Create the wallet", Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewState.navigateToExchangeScreen()
+                    }
+                }
+            )
     }
 }

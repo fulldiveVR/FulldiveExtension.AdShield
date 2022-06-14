@@ -22,7 +22,9 @@ import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.models.Chain
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
@@ -116,9 +118,15 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             stats?.let { stats ->
                 MonitorService.setStats(stats)
                 val counter = stats.denied.toLong()
-                adsCounterVM.setRuntimeCounter(counter, experienceExchangeInterator)
+                adsCounterVM.setRuntimeCounter(counter)
             }
         }
+
+        experienceExchangeInterator
+            .getExchangeRateForToken(Chain.fdCoinDenom)
+            .withDefaults()
+            .subscribe()
+
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }

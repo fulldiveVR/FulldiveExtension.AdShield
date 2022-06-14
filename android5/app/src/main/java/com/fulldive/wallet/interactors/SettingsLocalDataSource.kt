@@ -40,7 +40,7 @@ class SettingsLocalDataSource @Inject constructor(
 
     fun setExperience(adsCount: Long) {
         val previousExperience = sharedPreferences.getProperty(KEY_EXPERIENCE, 0)
-        val newExperience = (adsCount * ADSCOUNT_EXPERIENCE_COEFFICIENT).toInt()
+        val newExperience = (adsCount * ADS_COUNT_EXPERIENCE_COEFFICIENT).toInt()
 
         val experience = when {
             previousExperience + newExperience >= EXPERIENCE_MIN_EXCHANGE_COUNT -> EXPERIENCE_MIN_EXCHANGE_COUNT
@@ -116,6 +116,6 @@ class SettingsLocalDataSource @Inject constructor(
 
         const val EXPERIENCE_MIN_EXCHANGE_COUNT = 1000
         const val EXCHANGE_DAYS_INTERVAL = 1
-        private const val ADSCOUNT_EXPERIENCE_COEFFICIENT = 0.3
+        private const val ADS_COUNT_EXPERIENCE_COEFFICIENT = 1
     }
 }
