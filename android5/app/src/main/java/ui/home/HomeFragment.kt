@@ -34,8 +34,8 @@ import service.EnvironmentService
 import service.UpdateService
 import ui.*
 import ui.settings.SettingsFragmentDirections
-import utils.getColorFromAttr
 import utils.Links
+import utils.getColorFromAttr
 import utils.withBoldSections
 
 class HomeFragment : Fragment() {
@@ -159,7 +159,8 @@ class HomeFragment : Fragment() {
             }
 
             when {
-                status.inProgress -> statusTextView.text = getString(R.string.connecting_title)
+                status.inProgress -> statusTextView.text =
+                    getString(R.string.home_status_detail_progress)
                 status.active -> setStatusConnected()
                 else -> setStatusDisconnected()
             }

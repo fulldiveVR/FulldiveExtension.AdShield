@@ -22,7 +22,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.viewbinding.ViewBinding
@@ -41,6 +43,7 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     abstract val experienceProgressTextView: TextView?
     abstract val experienceTextView: TextView?
     abstract val exchangeButton: TextView?
+    abstract val timeIconView: ImageView?
 
     abstract var presenter: P
 
@@ -86,10 +89,51 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
         }
     }
 
-    override fun setExperience(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean) {
+    override fun setExperience(
+        experience: Int,
+        maxExperience: Int,
+        isExchangeAvailable: Boolean,
+        isExchangeTimeout: Boolean,
+        isEmptyAddress: Boolean
+    ) {
         setExperienceProgressText(experience, maxExperience)
         experienceProgressViewLayout?.setProgress(experience, maxExperience)
-        exchangeButton?.isVisible = isExchangeAvailable
+        setExchangeButtonState(isExchangeAvailable, isExchangeTimeout, isEmptyAddress)
+    }
+
+    private fun setExchangeButtonState(
+        isExchangeAvailable: Boolean,
+        isExchangeTimeout: Boolean,
+        isEmptyAddress: Boolean
+    ) {
+        exchangeButton?.isVisible = true
+        exchangeButton?.alpha = if (isExchangeAvailable) ALPHA_ACTIVE else ALPHA_INACTIVE
+        if (isExchangeTimeout) {
+            exchangeButton?.text = ""
+            timeIconView?.isVisible = true
+            timeIconView?.alpha = ALPHA_INACTIVE
+            exchangeButton?.setCompoundDrawables(
+                null,
+                ContextCompat.getDrawable(context, R.drawable.ic_time),
+                null,
+                null
+            )
+        } else {
+            timeIconView?.isVisible = false
+            exchangeButton?.setText(R.string.exchange_button_title)
+            exchangeButton?.setCompoundDrawables(null, null, null, null)
+        }
+
+        when {
+            isEmptyAddress || isExchangeAvailable -> {
+                exchangeButton?.setOnClickListener {
+                    presenter.onExchangeClicked()
+                }
+            }
+            else -> {
+                exchangeButton?.setOnClickListener { }
+            }
+        }
     }
 
     override fun setProgress(progress: Int, maxProgress: Int) {
@@ -113,6 +157,13 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
         exchangeButton?.isVisible = isExchangeAvailable
     }
 
+    override fun navigateToExchangeScreen() {
+        findNavController()
+            .apply {
+                navigate(RewardsFragmentDirections.actionNavigationRewardsToExchangeFragment())
+            }
+    }
+
     private fun setExperienceProgressText(experience: Int, maxLevelExperience: Int) {
         experienceTextView?.text = "$experience"
         experienceProgressTextView?.text = fromHtmlToSpanned(
@@ -126,5 +177,7 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     companion object {
         private const val ANIMATION_DURATION = 1000L
         private const val REPEAT_ROTATION_COUNT = 5
+        private const val ALPHA_ACTIVE = 1f
+        private const val ALPHA_INACTIVE = 0.4f
     }
 }

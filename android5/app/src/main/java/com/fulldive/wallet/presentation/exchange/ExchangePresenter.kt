@@ -75,7 +75,7 @@ class ExchangePresenter @Inject constructor(
                 experienceExchangeInterator
                     .exchangeExperience(
                         Chain.fdCoinDenom,
-                        fdTokenAmount,
+                        userExperience,
                         account.address
                     ).andThen(experienceExchangeInterator.removeExchangedExperience())
             }
