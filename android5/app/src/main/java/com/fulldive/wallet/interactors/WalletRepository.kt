@@ -33,6 +33,8 @@ class WalletRepository @Inject constructor(
         return walletLocalSource.getAccount()
     }
 
+    fun observeAccount() = walletLocalSource.observeAccount()
+
     fun setAccount(account: Account): Completable {
         return walletLocalSource.setAccount(account)
     }

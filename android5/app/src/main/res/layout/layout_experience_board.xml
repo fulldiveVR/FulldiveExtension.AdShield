@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2022 FullDive
   ~  This program is free software: you can redistribute it and/or modify
   ~  it under the terms of the GNU General Public License as published by
@@ -56,11 +55,22 @@
             android:layout_marginBottom="@dimen/size_12dp"
             android:text="@string/exchange_button_title"
             android:textAlignment="center"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/experienceProgressViewLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/timeIconView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.4"
+            android:src="@drawable/ic_time"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/exchangeButton"
+            app:layout_constraintEnd_toEndOf="@+id/exchangeButton"
+            app:layout_constraintStart_toStartOf="@+id/exchangeButton"
+            app:layout_constraintTop_toTopOf="@+id/exchangeButton" />
 
         <ui.rewards.board.ExperienceProgressViewLayout
             android:id="@+id/experienceProgressViewLayout"

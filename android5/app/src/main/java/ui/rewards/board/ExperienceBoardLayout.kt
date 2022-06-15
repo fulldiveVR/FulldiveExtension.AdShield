@@ -19,6 +19,7 @@ package ui.rewards.board
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.TextView
 import com.joom.lightsaber.getInstance
 import moxy.presenter.InjectPresenter
@@ -34,6 +35,7 @@ class ExperienceBoardLayout :
     override val experienceProgressTextView: TextView? = binding?.experienceProgressTextView
     override val experienceTextView: TextView? get() = binding?.experienceTextView
     override val exchangeButton: TextView? get() = binding?.exchangeButton
+    override val timeIconView: ImageView? get() = binding?.timeIconView
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)

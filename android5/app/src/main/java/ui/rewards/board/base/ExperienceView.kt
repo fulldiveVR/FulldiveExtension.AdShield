@@ -22,7 +22,8 @@ import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface ExperienceView : BaseMoxyView {
-    fun setExperience(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean)
+    fun setExperience(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean, isExchangeTimeout: Boolean, isEmptyAddress: Boolean)
     fun setProgress(progress: Int, maxProgress: Int)
     fun updateExperienceProgress(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean)
+    fun navigateToExchangeScreen()
 }
