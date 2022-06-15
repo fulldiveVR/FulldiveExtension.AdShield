@@ -25,13 +25,10 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.*
-import org.adshield.BuildConfig
 import utils.Logger
 import java.util.*
 
 object StatsService : PrintsDebugInfo, IInjectorHolder {
-
-    private const val XP_PER_AD = BuildConfig.XP_PER_AD
 
     private val blockedHosts: MutableMap<Host, Long> = mutableMapOf()
     private val internalStats: MutableMap<StatsPersistedKey, StatsPersistedEntry> = mutableMapOf()
@@ -134,7 +131,7 @@ object StatsService : PrintsDebugInfo, IInjectorHolder {
     }
 
     private fun incrementXP() {
-        experienceExchangeInterator.setExperience(XP_PER_AD)
+        experienceExchangeInterator.setExperience(40)
     }
 
     private fun needIncrement(host: Host): Boolean {

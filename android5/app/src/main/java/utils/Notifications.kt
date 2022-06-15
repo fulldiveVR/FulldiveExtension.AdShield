@@ -15,7 +15,6 @@ package utils
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import appextension.or
 import engine.Host
@@ -47,32 +46,31 @@ sealed class NotificationPrototype(
 class MonitorNotification(
     tunnelStatus: TunnelStatus,
     counter: Long,
-    lastDenied: List<Host>,
-    @StringRes infoStringRes: Int
+    lastDenied: List<Host>
 ) : NotificationPrototype(STATUS_NOTIFICATION_ID, NotificationChannels.ACTIVITY,
-    create = { context ->
-        val builder = NotificationCompat.Builder(context)
+    create = { ctx ->
+        val b = NotificationCompat.Builder(ctx)
 
-        builder.setSmallIcon(R.drawable.ic_stat_adshield)
-        builder.priority = NotificationCompat.PRIORITY_MAX
-        builder.setVibrate(LongArray(0))
-        builder.setOngoing(true)
+        b.setSmallIcon(R.drawable.ic_stat_adshield)
+        b.priority = NotificationCompat.PRIORITY_MAX
+        b.setVibrate(LongArray(0))
+        b.setOngoing(true)
 
         val intentFlags = PendingIntent.FLAG_UPDATE_CURRENT + PendingIntent.FLAG_IMMUTABLE
 
         when {
             tunnelStatus.inProgress -> {
-                builder.setContentTitle(context.getString(R.string.universal_status_processing))
+                b.setContentTitle(ctx.getString(R.string.universal_status_processing))
             }
             tunnelStatus.active -> {
                 val protection = when {
-                    tunnelStatus.isPlusMode() -> context.getString(R.string.home_level_high)
-                    tunnelStatus.isDnsEncrypted() -> context.getString(R.string.home_level_high)
-                    else -> context.getString(R.string.home_level_low)
+                    tunnelStatus.isPlusMode() -> ctx.getString(R.string.home_level_high)
+                    tunnelStatus.isDnsEncrypted() -> ctx.getString(R.string.home_level_high)
+                    else -> ctx.getString(R.string.home_level_low)
                 }
 
                 val location = if (tunnelStatus.isPlusMode()) tunnelStatus.gatewayLabel
-                else context.getString(R.string.home_status_active)
+                else ctx.getString(R.string.home_status_active)
 
                 val title = "%s - %s - %s".format(
                     location,
@@ -80,71 +78,66 @@ class MonitorNotification(
                     tunnelStatus.dns?.label?.or { "" }
                 )
 
-                builder.setContentTitle(title)
+                b.setContentTitle(title)
 
                 val style = NotificationCompat.InboxStyle()
-
-                if (infoStringRes != 0) {
-                    style.addLine(context.getString(infoStringRes))
-                }
                 if (!AppSettingsService.getIsBlockHistoryAtNotification()) {
                     lastDenied.forEach {
                         style.addLine(it)
                     }
                 }
 
-                builder.setStyle(style)
+                b.setStyle(style)
 
-                builder.addAction(run {
+                b.addAction(run {
                     getIntentForCommand(Command.OFF).let {
-                        PendingIntent.getBroadcast(context, 0, it, intentFlags)
+                        PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
                         NotificationCompat.Action(
                             R.drawable.ic_baseline_power_settings_new_24,
-                            context.getString(R.string.home_power_action_turn_off), it
+                            ctx.getString(R.string.home_power_action_turn_off), it
                         )
                     }
                 })
 
             }
             else -> {
-                builder.setContentTitle(
-                    context.getString(R.string.home_status_deactivated).toLowerCase().capitalize()
+                b.setContentTitle(
+                    ctx.getString(R.string.home_status_deactivated).toLowerCase().capitalize()
                 )
 
-                builder.addAction(run {
+                b.addAction(run {
                     getIntentForCommand(Command.ON).let {
-                        PendingIntent.getBroadcast(context, 0, it, intentFlags)
+                        PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
                         NotificationCompat.Action(
                             R.drawable.ic_baseline_power_settings_new_24,
-                            context.getString(R.string.home_power_action_turn_on), it
+                            ctx.getString(R.string.home_power_action_turn_on), it
                         )
                     }
                 })
 
-                builder.addAction(run {
+                b.addAction(run {
                     getIntentForCommand(
                         Command.HIDE,
-                        context.getString(R.string.notification_desc_settings)
+                        ctx.getString(R.string.notification_desc_settings)
                     ).let {
-                        PendingIntent.getBroadcast(context, 0, it, intentFlags)
+                        PendingIntent.getBroadcast(ctx, 0, it, intentFlags)
                     }.let {
                         NotificationCompat.Action(
                             R.drawable.ic_baseline_power_settings_new_24,
-                            context.getString(R.string.universal_action_hide), it
+                            ctx.getString(R.string.universal_action_hide), it
                         )
                     }
                 })
             }
         }
 
-        val intentActivity = Intent(context, MainActivity::class.java)
+        val intentActivity = Intent(ctx, MainActivity::class.java)
         intentActivity.putExtra("notification", true)
-        val piActivity = PendingIntent.getActivity(
-            context, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE
-        )
-        builder.setContentIntent(piActivity)
+        val piActivity =
+            PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
+        b.setContentIntent(piActivity)
     }
 ) {
     companion object {
@@ -164,8 +157,7 @@ class UpdateNotification(versionName: String) :
 
             val intentActivity = Intent(ctx, MainActivity::class.java)
             intentActivity.putExtra("update", true)
-            val piActivity =
-                PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
+            val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, PendingIntent.FLAG_IMMUTABLE)
             b.setContentIntent(piActivity)
         }
     )

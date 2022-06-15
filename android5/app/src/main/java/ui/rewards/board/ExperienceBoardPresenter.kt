@@ -16,8 +16,10 @@
 
 package ui.rewards.board
 
+import android.content.Context
 import com.fulldive.wallet.di.modules.DefaultModule
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.interactors.WalletInteractor
 import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.ProvidedBy
 import moxy.InjectViewState
@@ -27,9 +29,13 @@ import javax.inject.Inject
 @InjectViewState
 @ProvidedBy(DefaultModule::class)
 class ExperienceBoardPresenter @Inject constructor(
+    context: Context,
     experienceExchangeInterator: ExperienceExchangeInterator,
+    walletInteractor: WalletInteractor,
     schedulers: ISchedulersProvider
 ) : BaseExperiencePresenter<ExperienceBoardView>(
+    context,
     experienceExchangeInterator,
+    walletInteractor,
     schedulers
 )

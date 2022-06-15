@@ -28,6 +28,7 @@ import com.fulldive.wallet.utils.CryptoHelper
 import com.fulldive.wallet.utils.MnemonicUtils
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.bitcoinj.crypto.DeterministicKey
 import org.bitcoinj.crypto.MnemonicCode
@@ -117,6 +118,8 @@ class WalletInteractor @Inject constructor(
     fun getAccount(): Single<Account> {
         return walletRepository.getAccount()
     }
+
+    fun observeAccount(): Observable<Account> = walletRepository.observeAccount()
 
     fun setAccount(account: Account): Completable {
         return walletRepository.setAccount(account)

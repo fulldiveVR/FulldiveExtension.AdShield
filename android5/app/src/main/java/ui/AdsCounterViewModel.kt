@@ -13,6 +13,7 @@
 package ui
 
 import androidx.lifecycle.*
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import kotlinx.coroutines.launch
 import model.AdsCounter
 import service.PersistenceService
@@ -39,10 +40,10 @@ class AdsCounterViewModel : ViewModel() {
 
     fun setRuntimeCounter(counter: Long) {
         viewModelScope.launch {
-            _counter.value?.let {
-                val new = it.copy(runtimeValue = counter)
-                persistence.save(new)
-                _counter.value = new
+            _counter.value?.let { oldValue ->
+                val newValue = oldValue.copy(runtimeValue = counter)
+                persistence.save(newValue)
+                _counter.value = newValue
             }
         }
     }

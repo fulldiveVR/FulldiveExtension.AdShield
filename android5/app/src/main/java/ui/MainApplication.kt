@@ -12,7 +12,6 @@
 
 package ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Service
 import androidx.lifecycle.ViewModelProvider
@@ -25,14 +24,13 @@ import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
 import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
-import com.fulldive.wallet.rx.ISchedulersProvider
+import com.fulldive.wallet.models.Chain
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
-import io.reactivex.Observable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlockaConfig
@@ -72,7 +70,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private lateinit var packsVM: PacksViewModel
 
     private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
-    private val schedulers by lazy { appInjector.getInstance<ISchedulersProvider>() }
 
     override fun onCreate() {
         super.onCreate()
@@ -90,8 +87,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         ABPService.initABP(ContextService.requireContext())
         ABPService.setAdblockState(true)
         ABPService.retainAdblockProvider()
-
-        observeIfExperienceExchangeAvailable()
     }
 
     private fun setupEvents() {
@@ -124,13 +119,14 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
                 MonitorService.setStats(stats)
                 val counter = stats.denied.toLong()
                 adsCounterVM.setRuntimeCounter(counter)
-
-                experienceExchangeInterator
-                    .setExperience(counter)
-                    .withDefaults()
-                    .subscribe()
             }
         }
+
+        experienceExchangeInterator
+            .getExchangeRateForToken(Chain.fdCoinDenom)
+            .withDefaults()
+            .subscribe()
+
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
@@ -159,13 +155,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             packsVM.setup()
             FilteringService.reload(packsVM.getActiveUrls())
         }
-    }
-
-    @SuppressLint("CheckResult")
-    private fun observeIfExperienceExchangeAvailable() {
-        experienceExchangeInterator
-            .observeIfExperienceExchangeAvailable()
-            .withDefaults()
     }
 
     private fun maybePerformAction(repo: BlockaRepoConfig) {
