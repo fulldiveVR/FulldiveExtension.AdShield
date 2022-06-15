@@ -251,6 +251,8 @@ dependencies {
 
     // legacy (for import of v4 settings)
     implementation 'io.paperdb:paperdb:2.7.1'
+
+    implementation 'com.android.billingclient:billing-ktx:5.0.0'
 }
 
 apply plugin: 'org.mozilla.rust-android-gradle.rust-android'
