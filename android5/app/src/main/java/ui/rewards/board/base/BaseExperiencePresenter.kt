@@ -42,19 +42,17 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, minExperience, isExchangeAvailable, _, isExchangeTimeout, isEmptyAddress) ->
-                    if (userExperience == 0 || userExperience == experience) {
-                        viewState.setExperience(
-                            experience,
-                            minExperience,
-                            isExchangeAvailable,
-                            isExchangeTimeout,
-                            isEmptyAddress
-                        )
-                    } else {
+                    viewState.setExperience(
+                        experience,
+                        minExperience,
+                        isExchangeAvailable,
+                        isExchangeTimeout,
+                        isEmptyAddress
+                    )
+                    if (userExperience != 0 && userExperience != experience) {
                         viewState.updateExperienceProgress(
                             experience,
-                            minExperience,
-                            isExchangeAvailable
+                            minExperience
                         )
                     }
                     userExperience = experience

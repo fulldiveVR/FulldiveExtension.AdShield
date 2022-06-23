@@ -145,8 +145,7 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
 
     override fun updateExperienceProgress(
         experience: Int,
-        maxExperience: Int,
-        isExchangeAvailable: Boolean
+        maxExperience: Int
     ) {
         experienceProgressViewLayout?.animateExperience(
             progress = experience,
@@ -154,7 +153,6 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
             animationDuration = ANIMATION_DURATION,
             endAction = { setExperienceProgressText(experience, maxExperience) }
         )
-        exchangeButton?.isVisible = isExchangeAvailable
     }
 
     override fun navigateToExchangeScreen() {
