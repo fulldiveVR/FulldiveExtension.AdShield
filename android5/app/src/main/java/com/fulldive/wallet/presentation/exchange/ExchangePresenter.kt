@@ -69,6 +69,7 @@ class ExchangePresenter @Inject constructor(
     }
 
     fun exchangeExperience() {
+        val currentExperience = userExperience
         walletInteractor
             .getAccount()
             .flatMapCompletable { account ->
@@ -83,7 +84,7 @@ class ExchangePresenter @Inject constructor(
             .withDefaults()
             .compositeSubscribe(
                 onSuccess = {
-                    viewState.showSuccessExchange(userExperience)
+                    viewState.showSuccessExchange(currentExperience)
                 }
             )
     }
