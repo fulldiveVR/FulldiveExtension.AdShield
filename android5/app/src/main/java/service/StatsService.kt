@@ -131,7 +131,7 @@ object StatsService : PrintsDebugInfo, IInjectorHolder {
     }
 
     private fun incrementXP() {
-        experienceExchangeInterator.setExperience(40)
+        experienceExchangeInterator.setExperience(1)
     }
 
     private fun needIncrement(host: Host): Boolean {
