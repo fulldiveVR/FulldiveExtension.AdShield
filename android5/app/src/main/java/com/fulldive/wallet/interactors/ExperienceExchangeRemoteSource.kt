@@ -17,11 +17,14 @@
 package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
+import com.fulldive.wallet.models.ErrorMessage
 import com.fulldive.wallet.models.ExchangeRequest
 import com.fulldive.wallet.remote.FullDiveApi
+import com.google.gson.Gson
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
 import io.reactivex.Single
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +39,26 @@ class ExperienceExchangeRemoteSource @Inject constructor(
     }
 
     fun exchangeExperience(denom: String, amount: Int, address: String): Completable {
-        return fullDiveApi.exchangeExperience(ExchangeRequest(denom, amount, address))
+        return fullDiveApi
+            .exchangeExperience(ExchangeRequest(denom, amount, address))
+            .onErrorResumeNext { error ->
+                Completable.error(
+                    RuntimeException(
+                        getErrorMessageCode(error as HttpException)?.message
+                    )
+                )
+            }
+
+    }
+
+    private fun getErrorMessageCode(error: HttpException): ErrorMessage? {
+        return try {
+            Gson().fromJson(
+                error.response()?.errorBody()?.string(),
+                ErrorMessage::class.javaObjectType
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 }

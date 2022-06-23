@@ -14,16 +14,15 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ui.rewards.board.base
+package com.fulldive.wallet.models
 
-import com.fulldive.wallet.presentation.base.BaseMoxyView
-import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.StateStrategyType
+import com.google.gson.annotations.SerializedName
 
-@StateStrategyType(AddToEndSingleStrategy::class)
-interface ExperienceView : BaseMoxyView {
-    fun setExperience(experience: Int, maxExperience: Int, isExchangeAvailable: Boolean, isExchangeTimeout: Boolean, isEmptyAddress: Boolean)
-    fun setProgress(progress: Int, maxProgress: Int)
-    fun updateExperienceProgress(experience: Int, maxExperience: Int)
-    fun navigateToExchangeScreen()
-}
+data class ErrorMessage(
+    @SerializedName("message")
+    val message: String,
+    @SerializedName("status")
+    val status: Int,
+    @SerializedName("code")
+    val code: String
+)
