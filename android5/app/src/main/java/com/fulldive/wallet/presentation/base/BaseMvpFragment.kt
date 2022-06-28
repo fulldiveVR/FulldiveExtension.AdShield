@@ -16,6 +16,7 @@
 
 package com.fulldive.wallet.presentation.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,16 +62,20 @@ abstract class BaseMvpFragment<VB : ViewBinding> : MvpAppCompatFragment(), IInje
         super.onDestroyView()
     }
 
+    override fun getContext(): Context {
+        return super.getContext() as Context
+    }
+
     protected fun binding(viewBinding: VB.() -> Unit) {
         binding?.apply { viewBinding() }
     }
 
     open fun showMessage(@StringRes resourceId: Int) {
-        context?.toast(resourceId)
+        context.toast(resourceId)
     }
 
     open fun showMessage(message: String) {
-        context?.toast(message)
+        context.toast(message)
     }
 
     open fun showDialog(

@@ -49,12 +49,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/normal"
-                android:layout_marginEnd="@dimen/size_4dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/str_limited_offer_title"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent"
-                app:layout_constraintEnd_toStartOf="@+id/closePopupButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/promoImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,21 +62,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/normal"
-                android:layout_marginEnd="@dimen/size_4dp"
                 android:text="@string/str_limited_offer_description"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorIconPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/closePopupButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/promoImageView"
                 app:layout_constraintTop_toBottomOf="@+id/idoAnnouncementTitleTextView" />
-
-            <ImageView
-                android:id="@+id/closePopupButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_cross"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

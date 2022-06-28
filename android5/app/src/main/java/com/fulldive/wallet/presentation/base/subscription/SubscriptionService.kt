@@ -16,22 +16,17 @@
 
 package com.fulldive.wallet.presentation.base.subscription
 
-import analytics.TrackerConstants
 import android.app.Activity
 import android.content.Context
-import appextension.StatisticHelper
 import com.fulldive.iap.DataWrappers
 import com.fulldive.iap.IapConnector
 import com.fulldive.iap.PurchaseServiceListener
 import com.fulldive.iap.SubscriptionServiceListener
-import com.fulldive.startapppopups.isBrowserInstalled
 import com.fulldive.wallet.extensions.orEmptyString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope.coroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import service.AppSettingsService
-import service.RemoteConfigService
 
 object SubscriptionService {
 
@@ -41,14 +36,10 @@ object SubscriptionService {
     const val STATE_PURCHASED = 1
     const val STATE_PENDING = 2
     const val STATE_UNDEFINED = 0
-    private val repeatPopupCounts = listOf(2, 5)
-
 
     val isConnectedState = MutableStateFlow(false)
     val isProStatusPurchasedState = MutableStateFlow<Boolean>(false)
-    val isPopupShowState = MutableStateFlow<Boolean>(false)
     private val subscriptionPrices = mutableMapOf<String, DataWrappers.ProductDetails>()
-    private var isProLimited = false
 
     private var iapConnector: IapConnector? = null
 
@@ -72,7 +63,6 @@ object SubscriptionService {
                 when (purchaseInfo.sku) {
                     proSku, proSkuDiscount -> {
                         CoroutineScope(coroutineContext).launch {
-                            StatisticHelper.logAction(TrackerConstants.EVENT_BUY_PRO_SUCCESS)
                             isProStatusPurchasedState.value =
                                 purchaseInfo.purchaseState == STATE_PURCHASED
                         }
@@ -103,7 +93,6 @@ object SubscriptionService {
                 when (purchaseInfo.sku) {
                     proSku, proSkuDiscount -> {
                         CoroutineScope(coroutineContext).launch {
-                            StatisticHelper.logAction(TrackerConstants.EVENT_BUY_PRO_SUCCESS)
                             isProStatusPurchasedState.value =
                                 (purchaseInfo.purchaseState == STATE_PURCHASED)
                         }
@@ -115,7 +104,6 @@ object SubscriptionService {
                 subscriptionPrices.putAll(iapKeyPrices)
             }
         })
-        handlePromoPopupState(context)
     }
 
     fun onDestroy() {
@@ -143,40 +131,9 @@ object SubscriptionService {
         )
     }
 
-    fun setClosePopup(isClose: Boolean) {
-        isPopupShowState.value = !isClose
-        if (isClose && !AppSettingsService.getIsPromoPopupClosed()) {
-            AppSettingsService.setIsPromoPopupClosed(true)
-        }
-    }
-
-    fun updateIsProLimited(context: Context) {
-        val isLimited = RemoteConfigService.getIsProLimited()
-        if (isProLimited != isLimited) {
-            isProLimited = isLimited
-            handlePromoPopupState(context)
-        }
-    }
-
     private fun getSkuPrice(sku: String): Pair<String, String> {
         return subscriptionPrices[sku]?.let {
             Pair(it.priceAmount.toString(), it.priceCurrencyCode.orEmptyString())
         } ?: Pair("", "")
-    }
-
-    private fun handlePromoPopupState(context: Context) {
-        val isClosed = AppSettingsService.getIsPromoPopupClosed()
-        isPopupShowState.value = when {
-            isProLimited -> {
-                false
-            }
-            isClosed -> {
-                val closeCount = AppSettingsService.getPromoCloseStartCounter()
-                val startCount = AppSettingsService.getCurrentStartCounter()
-                val diff = startCount - closeCount
-                repeatPopupCounts.any { it == diff }
-            }
-            else -> true
-        }&& !context.isBrowserInstalled()
     }
 }

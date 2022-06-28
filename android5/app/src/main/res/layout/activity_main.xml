@@ -34,8 +34,7 @@
                 android:id="@+id/proStatusImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/size_12dp" />
+                android:layout_gravity="center" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -68,6 +67,5 @@
         style="@style/Widget.Design.BottomNavigationView.Blokada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>

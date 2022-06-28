@@ -19,11 +19,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        stage {}
     }
-
-
-
-
 }
 
 dependencies {

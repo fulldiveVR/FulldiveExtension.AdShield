@@ -27,8 +27,9 @@ class BillingService(
 
     override fun init(key: String?) {
         decodedKey = key
-        mBillingClient = BillingClient.newBuilder(context).setListener(this).enablePendingPurchases().build()
-        mBillingClient.startConnection(object : BillingClientStateListener{
+        mBillingClient =
+            BillingClient.newBuilder(context).setListener(this).enablePendingPurchases().build()
+        mBillingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
                 log("onBillingServiceDisconnected")
             }
@@ -65,14 +66,14 @@ class BillingService(
     private suspend fun queryPurchases() {
         val inAppResult: PurchasesResult = mBillingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder()
-            .setProductType(BillingClient.ProductType.INAPP)
-            .build()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
         )
         processPurchases(inAppResult.purchasesList, isRestore = true)
         val subsResult: PurchasesResult = mBillingClient.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder()
-            .setProductType(BillingClient.ProductType.SUBS)
-            .build()
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build()
         )
         processPurchases(subsResult.purchasesList, isRestore = true)
     }
@@ -95,18 +96,22 @@ class BillingService(
         launchBillingFlow(activity, sku, BillingClient.ProductType.SUBS)
     }
 
+    private fun getOfferToken(productDetails: ProductDetails): String {
+        return productDetails.subscriptionOfferDetails?.map { it.offerToken }?.firstOrNull() ?: ""
+    }
+
     private fun launchBillingFlow(activity: Activity, sku: String, type: String) {
         sku.toProductDetails(type) { productDetails ->
             if (productDetails != null) {
-                val productDetailsParamsList =
-                    listOf(
-                        BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(productDetails)
-                            .build()
-                    )
+                val productDetailParamBuilder = BillingFlowParams.ProductDetailsParams.newBuilder()
+                productDetailParamBuilder.setProductDetails(productDetails)
+                if (type == BillingClient.ProductType.SUBS) {
+                    productDetailParamBuilder.setOfferToken(getOfferToken(productDetails))
+                }
+                val productDetailsParamsList = listOf(productDetailParamBuilder.build())
                 val billingFlowParams = BillingFlowParams.newBuilder()
-                        .setProductDetailsParamsList(productDetailsParamsList).build()
-                
+                    .setProductDetailsParamsList(productDetailsParamsList).build()
+
                 mBillingClient.launchBillingFlow(activity, billingFlowParams)
             }
         }
@@ -264,12 +269,20 @@ class BillingService(
 
         val productList = mutableListOf<QueryProductDetailsParams.Product>()
         this.forEach {
-            productList.add(QueryProductDetailsParams.Product.newBuilder()
-                .setProductId(it)
-                .setProductType(type)
-                .build())
+            productList.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(it)
+                    .setProductType(type)
+                    .build()
+            )
         }
-        
+
+        if (productList.isEmpty()) {
+            log("queryProductDetails. Empty product list")
+            done()
+            return
+        }
+
         val params = QueryProductDetailsParams.newBuilder().setProductList(productList)
 
         mBillingClient.queryProductDetailsAsync(params.build()) { billingResult, productDetailsList ->
@@ -281,23 +294,31 @@ class BillingService(
 
                 productDetails.mapNotNull { entry ->
                     entry.value?.let {
-                        when(it.productType){
-                            BillingClient.ProductType.SUBS->{
+                        when (it.productType) {
+                            BillingClient.ProductType.SUBS -> {
                                 entry.key to DataWrappers.ProductDetails(
                                     title = it.title,
                                     description = it.description,
-                                    priceCurrencyCode = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceCurrencyCode,
-                                    price = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.formattedPrice,
-                                    priceAmount = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros?.div(1000000.0)
+                                    priceCurrencyCode = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                                        0
+                                    )?.priceCurrencyCode,
+                                    price = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                                        0
+                                    )?.formattedPrice,
+                                    priceAmount = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                                        0
+                                    )?.priceAmountMicros?.div(1000000.0)
                                 )
                             }
-                            else->{
+                            else -> {
                                 entry.key to DataWrappers.ProductDetails(
                                     title = it.title,
                                     description = it.description,
                                     priceCurrencyCode = it.oneTimePurchaseOfferDetails?.priceCurrencyCode,
                                     price = it.oneTimePurchaseOfferDetails?.formattedPrice,
-                                    priceAmount = it.oneTimePurchaseOfferDetails?.priceAmountMicros?.div(1000000.0)
+                                    priceAmount = it.oneTimePurchaseOfferDetails?.priceAmountMicros?.div(
+                                        1000000.0
+                                    )
                                 )
                             }
                         }
@@ -314,7 +335,10 @@ class BillingService(
      * Get Sku details by sku and type.
      * This method has cache functionality.
      */
-    private fun String.toProductDetails(type: String, done: (productDetails: ProductDetails?) -> Unit = {}) {
+    private fun String.toProductDetails(
+        type: String,
+        done: (productDetails: ProductDetails?) -> Unit = {}
+    ) {
         if (::mBillingClient.isInitialized.not() || !mBillingClient.isReady) {
             log("buy. Google billing service is not ready yet.(mBillingClient is not ready yet - 001)")
             done(null)
@@ -329,10 +353,12 @@ class BillingService(
 
         val productList = mutableListOf<QueryProductDetailsParams.Product>()
         this.forEach {
-            productList.add(QueryProductDetailsParams.Product.newBuilder()
-                .setProductId(it.toString())
-                .setProductType(type)
-                .build())
+            productList.add(
+                QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId(it.toString())
+                    .setProductType(type)
+                    .build()
+            )
         }
 
         val params = QueryProductDetailsParams.newBuilder().setProductList(productList)
@@ -341,8 +367,9 @@ class BillingService(
             when {
                 billingResult.isOk() -> {
                     isBillingClientConnected(true, billingResult.responseCode)
-                    val productDetails: ProductDetails? = productDetailsList.find { it.productId == this }
-                   // productDetails[this] = productDetails
+                    val productDetails: ProductDetails? =
+                        productDetailsList.find { it.productId == this }
+                    // productDetails[this] = productDetails
                     done(productDetails)
                 }
                 else -> {
