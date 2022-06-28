@@ -28,6 +28,10 @@ class AppSettingsViewModel : ViewModel() {
     val isIdoAnnouncementClicked: LiveData<Boolean> = isIdoAnnouncementClickedLd
         .distinctUntilChanged()
 
+    private val isSubscribeSuccessShowLd = MutableLiveData<Boolean>()
+    val isSubscribeSuccessShow: LiveData<Boolean> = isSubscribeSuccessShowLd
+        .distinctUntilChanged()
+
     private val currentThemeLd = MutableLiveData<AppTheme>()
 
     val currentTheme: LiveData<AppTheme> = currentThemeLd
@@ -47,6 +51,7 @@ class AppSettingsViewModel : ViewModel() {
 
     fun updateLiveData() {
         isIdoAnnouncementClickedLd.value = AppSettingsService.isIdoAnnouncementClicked()
+        isSubscribeSuccessShowLd.value = AppSettingsService.isSubscribeSuccessShow()
         currentThemeLd.value = AppSettingsService
             .getCurrentAppTheme().let { AppTheme.getThemeByType(it) }
     }
@@ -62,5 +67,9 @@ class AppSettingsViewModel : ViewModel() {
             currentThemeLd.value = AppSettingsService
                 .getCurrentAppTheme().let { AppTheme.getThemeByType(it) }
         }
+    }
+
+    fun setSubscribeSuccessShow(isShow: Boolean) {
+        AppSettingsService.setSubscribeSuccessShow(isShow)
     }
 }
