@@ -55,7 +55,7 @@ afterEvaluate {
                 artifactId = 'iap'
                 version = '1.0.0'
                 // Tell maven to prepare the generated "*.aar" file for publishing
-                artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+                artifact("$buildDir/outputs/aar/iap-release.aar")
 
 //                pom.withXml {
 //                    def dependenciesNode = asNode().appendNode('dependencies')
