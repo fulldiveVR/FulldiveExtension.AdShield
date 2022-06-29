@@ -52,7 +52,7 @@ afterEvaluate {
 
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.fulldive'
-                artifactId = project.getName()
+                artifactId = 'iap'
                 version = '1.0.0'
                 // Tell maven to prepare the generated "*.aar" file for publishing
                 artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
