@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    tools:context="ui.home.HelpFragment"
+    android:padding="@dimen/half">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tutorialLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/icon"
+            android:padding="@dimen/size_24dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/tutorialImageView"
+                android:layout_width="@dimen/flat_subscription_tutorial_icon_size"
+                android:layout_height="@dimen/flat_subscription_tutorial_icon_size"
+                android:layout_marginTop="@dimen/size_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/lottie_subscribe_res" />
+
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/textsize_xxlarge"
+                app:layout_constraintBottom_toTopOf="@+id/tutorialTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tutorialImageView"
+                tools:text="@string/str_subscription_tutorial_title" />
+
+            <TextView
+                android:id="@+id/tutorialTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:lineSpacingExtra="@dimen/spacing_extra_dialog"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                tools:text="@string/str_subscription_tutorial_checkmarks" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="@dimen/icon"
+        android:layout_height="@dimen/icon"
+        android:padding="@dimen/half"
+        android:src="@drawable/ic_baseline_arrow_back_24" />
+</FrameLayout>

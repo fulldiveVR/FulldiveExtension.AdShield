@@ -102,8 +102,8 @@
             </androidx.cardview.widget.CardView>
 
             <include
-                android:id="@+id/idoAnnouncementLayout"
-                layout="@layout/ido_announcement_layout"
+                android:id="@+id/limitedOfferLayout"
+                layout="@layout/layout_limited_offer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_12dp"
