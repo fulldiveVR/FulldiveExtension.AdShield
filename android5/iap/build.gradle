@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdk 16
         targetSdk 32
-        versionName "1.0.0"
+        versionName "1.0.1"
         versionCode 10000
     }
 
@@ -53,7 +53,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.fulldive'
                 artifactId = 'iap'
-                version = '1.0.0'
+                version = '1.0.1'
                 // Tell maven to prepare the generated "*.aar" file for publishing
                 artifact("$buildDir/outputs/aar/iap-release.aar")
 
