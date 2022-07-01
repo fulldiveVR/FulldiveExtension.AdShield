@@ -50,4 +50,9 @@
     <color name="colorGamificationPrimary">#80D789</color>
     <color name="colorGamificationSecondary">#76C4C1</color>
     <color name="colorLevelReward">#F9D37C</color>
+
+    <color name="backgroundColoredButton">#F2F3F4</color>
+    <color name="backgroundColoredButtonAlpha40">#66F2F3F4</color>
+    <color name="backgroundPrimary">#121212</color>
+    <color name="backgroundPrimaryAlpha40">#66121212</color>
 </resources>

@@ -18,6 +18,7 @@ package com.fulldive.wallet.presentation.base
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
@@ -32,7 +33,7 @@ import moxy.MvpAppCompatDialogFragment
 abstract class BaseMvpDialogFragment<VB : ViewBinding> : MvpAppCompatDialogFragment(),
     IInjectorHolder {
 
-    private val appInjector: Injector
+    val appInjector: Injector
         get() = (activity as IEnrichableActivity).appInjector
 
     protected var binding: VB? = null
@@ -54,6 +55,10 @@ abstract class BaseMvpDialogFragment<VB : ViewBinding> : MvpAppCompatDialogFragm
         binding = null
         clearUi()
         super.onDestroyView()
+    }
+
+    override fun getContext(): Context {
+        return super.getContext() as Context
     }
 
     protected fun binding(viewBinding: VB.() -> Unit) {

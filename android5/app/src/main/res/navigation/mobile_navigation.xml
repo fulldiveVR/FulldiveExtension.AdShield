@@ -38,6 +38,15 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/navigation_home" />
+
+        <action
+            android:id="@+id/action_navigation_activity_to_subscriptionTutorial"
+            app:destination="@id/subscriptionTutorial"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -295,4 +304,7 @@
     <fragment
         android:id="@+id/userDeniedFragment"
         android:name="ui.advanced.userdenied.UserDeniedFragment" />
+    <fragment
+        android:id="@+id/subscriptionTutorial"
+        android:name="com.fulldive.wallet.presentation.base.subscription.SubscriptionTutorialFragment" />
 </navigation>

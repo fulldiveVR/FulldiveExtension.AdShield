@@ -17,7 +17,9 @@
 package service
 
 import android.annotation.SuppressLint
-import appextension.*
+import appextension.getPrivateSharedPreferences
+import appextension.getProperty
+import appextension.setProperty
 import model.AppTheme
 import model.ThemeHelper
 
@@ -32,6 +34,7 @@ object AppSettingsService {
     private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
+    private const val KEY_SUBSCRIBE_SUCCESS_SHOWN = "KEY_SUBSCRIBE_SUCCESS_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
 
     private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
@@ -64,6 +67,14 @@ object AppSettingsService {
 
     fun isIdoAnnouncementClicked(): Boolean {
         return sharedPreferences.getProperty(KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN, false)
+    }
+
+    fun setSubscribeSuccessShow(isShow: Boolean) {
+        sharedPreferences.setProperty(KEY_SUBSCRIBE_SUCCESS_SHOWN, isShow)
+    }
+
+    fun isSubscribeSuccessShow(): Boolean {
+        return sharedPreferences.getProperty(KEY_SUBSCRIBE_SUCCESS_SHOWN, false)
     }
 
     fun getCurrentAppTheme(): String {

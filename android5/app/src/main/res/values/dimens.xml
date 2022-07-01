@@ -44,6 +44,8 @@
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="textsize_xlarge">20sp</dimen>
+    <dimen name="textsize_xxlarge">24sp</dimen>
+    <dimen name="textsize_xxxlarge">28sp</dimen>
 
     <dimen name="size_1dp">1dp</dimen>
     <dimen name="size_2dp">2dp</dimen>
@@ -61,6 +63,11 @@
 
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="keyboardMinHeight">240dp</dimen>
+
+    <dimen name="spacing_extra_dialog">3sp</dimen>
+    <dimen name="flat_subscription_tutorial_icon_size">150dp</dimen>
+    <dimen name="size_32dp">32dp</dimen>
+    <dimen name="shapeButtonRadius">32dp</dimen>
 
 
     <dimen name="connotative_cereus">252dp</dimen>

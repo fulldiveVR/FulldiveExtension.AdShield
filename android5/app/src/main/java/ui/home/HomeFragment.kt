@@ -25,7 +25,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import appextension.getColorCompat
 import appextension.getDrawableCompat
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.launch
 import model.*
 import org.adshield.R
 import service.AlertDialogService
@@ -49,7 +53,7 @@ class HomeFragment : Fragment() {
     private lateinit var activateView: ActivateView
     private lateinit var statusTextView: TextView
     private lateinit var longStatusTextView: TextView
-    private lateinit var idoAnnouncementLayout: FrameLayout
+    private lateinit var limitedOfferLayout: FrameLayout
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -77,9 +81,36 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         initViews(root)
 
-        idoAnnouncementLayout.setOnClickListener {
-            appSettingsVm.setIdoAnnouncementClicked()
-            openUrlInBrowser(Links.idoAnnouncement)
+        lifecycleScope.launch {
+            SubscriptionService.isConnectedState.zip(
+                SubscriptionService.isProStatusPurchasedState
+            ) { isConnected, isPurchased ->
+                isConnected && isPurchased
+            }
+                .collect { isPurchased ->
+                    if (isPurchased) {
+                        if (appSettingsVm.isSubscribeSuccessShow.value == false) {
+                            val fragment = SubscriptionSuccessDialogFragment.newInstance()
+                            fragment.show(parentFragmentManager, null)
+                            appSettingsVm.setSubscribeSuccessShow(true)
+                        }
+                    }
+                }
+        }
+
+        lifecycleScope.launch {
+            SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
+                limitedOfferLayout.isVisible = !isPurchased
+            }
+        }
+
+        limitedOfferLayout.setOnClickListener {
+            findNavController()
+                .apply {
+                    navigate(
+                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                    )
+                }
         }
 
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
@@ -188,10 +219,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        appSettingsVm.isIdoAnnouncementClicked.observe(viewLifecycleOwner) { isIdoAnnouncementClicked ->
-            idoAnnouncementLayout.isVisible = !isIdoAnnouncementClicked
-        }
-
         lifecycleScope.launchWhenCreated {
             delay(1000)
             UpdateService.handleUpdateFlow(
@@ -271,7 +298,7 @@ class HomeFragment : Fragment() {
     private fun initViews(root: View) {
         activateView = root.findViewById(R.id.activateButton)
         statusTextView = root.findViewById(R.id.statusTextView)
-        idoAnnouncementLayout = root.findViewById(R.id.idoAnnouncementLayout)
+        limitedOfferLayout = root.findViewById(R.id.limitedOfferLayout)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
     }
 
@@ -297,6 +324,11 @@ class HomeFragment : Fragment() {
             }
             else -> false
         }
+    }
+
+    override fun onDestroy() {
+        SubscriptionService.onDestroy()
+        super.onDestroy()
     }
 
     private fun openUrlInBrowser(url: String) {

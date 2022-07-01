@@ -22,6 +22,7 @@ import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +36,8 @@ import androidx.preference.PreferenceFragmentCompat
 import appextension.*
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
@@ -61,7 +64,8 @@ class MainActivity : LocalizationActivity(),
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
-     lateinit var toolbar: Toolbar
+    lateinit var toolbar: Toolbar
+    lateinit var proStatusImageView: ImageView
 
     override lateinit var appInjector: Injector
 
@@ -86,6 +90,36 @@ class MainActivity : LocalizationActivity(),
         val navigationView: BottomNavigationView = findViewById(R.id.nav_view)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        proStatusImageView = findViewById(R.id.proStatusImageView)
+        lifecycleScope.launch {
+            SubscriptionService.init(baseContext)
+        }
+
+        lifecycleScope.launch {
+            SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
+                if (isPurchased) {
+                    proStatusImageView.setImageResource(R.drawable.ic_pro_active)
+                    proStatusImageView.setOnClickListener {
+                        val fragment = SubscriptionSuccessDialogFragment.newInstance()
+                        fragment.show(supportFragmentManager, null)
+                    }
+                } else {
+                    proStatusImageView.setImageResource(R.drawable.ic_pro_inactive)
+                    proStatusImageView.setOnClickListener {
+                        findNavController(R.id.nav_host_fragment)
+                            .apply {
+                                try {
+                                    navigate(
+                                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                                    )
+                                } catch (e: Exception) {
+                                }
+                            }
+                    }
+                }
+            }
+        }
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
