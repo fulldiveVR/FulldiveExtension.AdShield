@@ -99,7 +99,7 @@
   <string name="home_status_paused">Paused</string>
   <string name="home_status_active">Active</string>
   <string name="home_status_deactivated">Deactivated</string>
-  <string name="home_action_tap_to_activate">tap to activate</string>
+  <string name="home_action_tap_to_activate">Tap to activate</string>
   <string name="home_status_detail_paused">paused until timer ends</string>
   <string name="home_status_detail_active">Forwarding *ads* and *trackers*</string>
   <string name="home_status_detail_active_with_counter">Forwarded *%s* ads and trackers</string>
@@ -544,6 +544,7 @@
   <string name="str_limited_offer_description">Grab AdShield PRO for a cup of coffee price</string>
   <string name="str_subscription_tutorial_discount">&lt;sup&gt;&lt;small&gt;$&lt;/small&gt;&lt;/sup&gt;5.99</string>
   <string name="str_subscription_tutorial_period">/ month</string>
+  <string name="str_menu_join_discord">Join Discord</string>
   <string name="league_handline_addressograph">Bankrupt marital wildlife obstacle bagatelle</string>
   <string name="supremum_geminid_corduroy_quintus">Harken coincident wheat eighty…</string>
   <string name="casbah_guilford_operable">Breakneck entropy wakeup pantaloon day fortiori… Acetate abramson parry furlong hearken?</string>

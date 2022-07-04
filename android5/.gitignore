@@ -15,3 +15,5 @@
 local.properties
 /.idea
 .idea
+/flurrykey.txt
+/app/google-services.json

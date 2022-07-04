@@ -12,22 +12,26 @@
 
 package ui.home
 
+import analytics.TrackerConstants
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import appextension.StatisticHelper
 import appextension.getColorCompat
 import appextension.getDrawableCompat
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import model.*
@@ -54,6 +58,7 @@ class HomeFragment : Fragment() {
     private lateinit var statusTextView: TextView
     private lateinit var longStatusTextView: TextView
     private lateinit var limitedOfferLayout: FrameLayout
+    private lateinit var closePopupButton: ImageView
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -99,18 +104,31 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
-                limitedOfferLayout.isVisible = !isPurchased
-            }
+            SubscriptionService.isProStatusPurchasedState
+                .combine(SubscriptionService.isPopupShowState)
+                { isPurchased, isShow ->
+                    !isPurchased && isShow
+                }.collect { isVisible ->
+                    limitedOfferLayout.isVisible = isVisible
+                    if (limitedOfferLayout.isVisible) {
+                        StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_PRO_POPUP_SHOWN)
+                    }
+                }
         }
 
         limitedOfferLayout.setOnClickListener {
             findNavController()
                 .apply {
+                    StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_PRO_POPUP)
                     navigate(
                         HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
                     )
                 }
+        }
+
+        closePopupButton.setOnClickListener {
+            StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_CLOSE_PRO_POPUP)
+            SubscriptionService.setClosePopup(true)
         }
 
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
@@ -299,6 +317,7 @@ class HomeFragment : Fragment() {
         activateView = root.findViewById(R.id.activateButton)
         statusTextView = root.findViewById(R.id.statusTextView)
         limitedOfferLayout = root.findViewById(R.id.limitedOfferLayout)
+        closePopupButton = root.findViewById(R.id.closePopupButton)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
     }
 
