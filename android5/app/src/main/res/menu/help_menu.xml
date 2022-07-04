@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -22,28 +21,33 @@
         android:icon="@drawable/ic_baseline_help_outline_24"
         android:title="@string/universal_action_help" />
 
-<!--    <item-->
-<!--        android:id="@+id/help_logs"-->
-<!--        android:icon="@drawable/ic_baseline_format_list_bulleted_24"-->
-<!--        android:title="Logs" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/help_logs"-->
+    <!--        android:icon="@drawable/ic_baseline_format_list_bulleted_24"-->
+    <!--        android:title="Logs" />-->
 
-<!--    <item-->
-<!--        android:id="@+id/help_sharelog"-->
-<!--        android:icon="@drawable/ic_baseline_share_24"-->
-<!--        android:title="@string/universal_action_share_log" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/help_sharelog"-->
+    <!--        android:icon="@drawable/ic_baseline_share_24"-->
+    <!--        android:title="@string/universal_action_share_log" />-->
 
     <item
         android:id="@+id/help_settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/main_tab_settings" />
 
-<!--    <item-->
-<!--        android:id="@+id/help_debug"-->
-<!--        android:icon="@drawable/ic_baseline_bug_report_24"-->
-<!--        android:title="Debug tools" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/help_debug"-->
+    <!--        android:icon="@drawable/ic_baseline_bug_report_24"-->
+    <!--        android:title="Debug tools" />-->
 
-        <item
-            android:id="@+id/help_about_rewards"
-            android:icon="@drawable/ic_baseline_bug_report_24"
-            android:title="@string/menu_item_about_rewards" />
+    <item
+        android:id="@+id/help_about_rewards"
+        android:icon="@drawable/ic_baseline_bug_report_24"
+        android:title="@string/menu_item_about_rewards" />
+
+    <item
+        android:id="@+id/help_join_discord"
+        android:icon="@drawable/ic_baseline_bug_report_24"
+        android:title="@string/str_menu_join_discord" />
 </menu>

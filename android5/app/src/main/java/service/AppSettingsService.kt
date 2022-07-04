@@ -38,11 +38,18 @@ object AppSettingsService {
     private const val KEY_APP_THEME = "KEY_APP_THEME"
 
     private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
+    private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
+    private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
+        "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
         sharedPreferences.setProperty(KEY_START_APP_COUNTER, startCounter + 1)
         return startCounter
+    }
+
+    fun getCurrentStartCounter(): Int {
+        return sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
     }
 
     fun isRateUsDone(): Boolean {
@@ -93,6 +100,22 @@ object AppSettingsService {
 
     fun setIsBlockHistoryAtNotification(isBlock: Boolean) {
         sharedPreferences.setProperty(KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS, isBlock)
+    }
+
+    fun setIsPromoPopupClosed(isClosed: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, isClosed)
+        sharedPreferences.setProperty(
+            KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+            getCurrentStartCounter()
+        )
+    }
+
+    fun getIsPromoPopupClosed(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+    }
+
+    fun getPromoCloseStartCounter(): Int {
+        return  sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {
