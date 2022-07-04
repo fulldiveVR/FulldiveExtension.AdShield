@@ -19,12 +19,9 @@ package service
 import android.annotation.SuppressLint
 import appextension.getPrivateSharedPreferences
 import appextension.getProperty
-import appextension.observeSettingsInt
 import appextension.setProperty
-import io.reactivex.Observable
 import model.AppTheme
 import model.ThemeHelper
-import org.adshield.BuildConfig
 
 @SuppressLint("StaticFieldLeak")
 object AppSettingsService {
@@ -36,19 +33,13 @@ object AppSettingsService {
     private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
     private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
-    private const val KEY_ADBLOCK_DONE = "KEY_ADBLOCK_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_SUBSCRIBE_SUCCESS_SHOWN = "KEY_SUBSCRIBE_SUCCESS_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
-
     private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
     private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
     private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
         "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
-
-    private const val KEY_APP_SETTINGS_PERMISSION_GRANTED = "KEY_APP_SETTINGS_PERMISSION_GRANTED"
-
-    private const val KEY_CURRENT_APP_VERSION = "KEY_CURRENT_APP_VERSION"
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -74,14 +65,6 @@ object AppSettingsService {
 
     fun setInstallBrowserDone() {
         sharedPreferences.setProperty(KEY_INSTALL_BROWSER_DONE, true)
-    }
-
-    fun isAdBlockDone(): Boolean {
-        return sharedPreferences.getProperty(KEY_ADBLOCK_DONE, false)
-    }
-
-    fun setAdBlockDone() {
-        sharedPreferences.setProperty(KEY_ADBLOCK_DONE, true)
     }
 
     fun setIdoAnnouncementClicked() {
@@ -131,40 +114,8 @@ object AppSettingsService {
     }
 
     fun getPromoCloseStartCounter(): Int {
-        return sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+        return  sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
     }
-
-    fun isAppSettingsPermissionGranted(): Boolean {
-        return sharedPreferences.getProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, false)
-    }
-
-    fun setAppSettingsPermissionGranted() {
-        sharedPreferences.setProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, true)
-    }
-
-    fun compareVersions(): Int {
-        return BuildConfig.VERSION_CODE - getActualAppVersion()
-    }
-
-    fun getActualAppVersion(): Int {
-        val version = getCurrentAppVersion()
-        return if (version == 0) {
-            BuildConfig.VERSION_CODE
-        } else {
-            version
-        }
-    }
-
-    fun getCurrentAppVersion(): Int {
-        return sharedPreferences.getProperty(KEY_CURRENT_APP_VERSION, 0)
-    }
-
-    fun setCurrentAppVersion(version: Int) {
-        sharedPreferences.setProperty(KEY_CURRENT_APP_VERSION, version)
-    }
-
-    fun observeCurrentAppVersion(): Observable<Int> =
-        sharedPreferences.observeSettingsInt(KEY_CURRENT_APP_VERSION, 0)
 
     private fun initCurrentAppTheme(theme: AppTheme) {
         ThemeHelper.setCurrentAppTheme(theme.mode)

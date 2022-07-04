@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
+import com.flurry.android.FlurryAgent
 import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
+import org.adshield.BuildConfig
 import service.*
 import ui.advanced.packs.PacksViewModel
 import utils.Logger
@@ -87,6 +89,10 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         ABPService.initABP(ContextService.requireContext())
         ABPService.setAdblockState(true)
         ABPService.retainAdblockProvider()
+
+        FlurryAgent.Builder()
+            .withLogEnabled(true)
+            .build(this, BuildConfig.FLURRY_API_KEY)
     }
 
     private fun setupEvents() {

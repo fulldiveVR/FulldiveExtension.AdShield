@@ -12,6 +12,7 @@
 
 package ui
 
+import analytics.TrackerConstants
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -82,6 +83,7 @@ class MainActivity : LocalizationActivity(),
         ContextService.setActivityContext(this)
         TranslationService.setup()
         initViewModel()
+        StatisticHelper.init(baseContext)
 
         appSettingsVm.initAppTheme()
 
@@ -110,6 +112,7 @@ class MainActivity : LocalizationActivity(),
                         findNavController(R.id.nav_host_fragment)
                             .apply {
                                 try {
+                                    StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_TOOLBAR)
                                     navigate(
                                         HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
                                     )
@@ -308,6 +311,7 @@ class MainActivity : LocalizationActivity(),
                     }
             }
             R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
+            R.id.help_join_discord -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }
         return true
