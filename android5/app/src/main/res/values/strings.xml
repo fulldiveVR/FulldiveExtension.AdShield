@@ -537,11 +537,11 @@
   <string name="str_experience_exchenge_success">Success! You have exchanged %d XP</string>
   <string name="str_subscription_tutorial_title">AdShield &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt;</string>
   <string name="str_subscription_congrats_title">AdShield &lt;font color=\"%tutorialTextColor%\" face=\"sans-serif-medium\"&gt;PRO&lt;/font&gt; is activated</string>
-  <string name="str_subscription_tutorial_checkmarks">:check_mark:  Faster connection\n:check_mark:  Premium support\n:check_mark:  Exclusive access to the upcoming features</string>
+  <string name="str_subscription_tutorial_checkmarks">:check_mark:  Faster connection\n:check_mark:  Premium support\n:check_mark:  Exclusive access to upcoming features</string>
   <string name="str_subscription_tutorial_limited">Limited deal</string>
   <string name="str_subscription_tutorial_subscribe">Subscribe Now</string>
   <string name="str_limited_offer_title">Don\'t miss out on our SALE!</string>
-  <string name="str_limited_offer_description">Grab AdShield PRO for a cup of coffee price</string>
+  <string name="str_limited_offer_description">Grab AdShield PRO for less than a cup of coffee.</string>
   <string name="str_subscription_tutorial_discount">&lt;sup&gt;&lt;small&gt;$&lt;/small&gt;&lt;/sup&gt;5.99</string>
   <string name="str_subscription_tutorial_period">/ month</string>
   <string name="str_menu_join_discord">Join Discord</string>
