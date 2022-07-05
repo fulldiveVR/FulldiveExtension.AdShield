@@ -37,10 +37,7 @@ import kotlinx.coroutines.launch
 import model.*
 import org.adshield.MobileNavigationDirections
 import org.adshield.R
-import service.AlertDialogService
-import service.ContextService
-import service.EnvironmentService
-import service.UpdateService
+import service.*
 import ui.*
 import ui.settings.SettingsFragmentDirections
 import utils.Links
@@ -95,7 +92,7 @@ class HomeFragment : Fragment() {
             }
                 .collect { isPurchased ->
                     if (isPurchased) {
-                        if (appSettingsVm.isSubscribeSuccessShow.value != true) {
+                        if (!AppSettingsService.isSubscribeSuccessShow()) {
                             val fragment = SubscriptionSuccessDialogFragment.newInstance()
                             fragment.show(parentFragmentManager, null)
                             appSettingsVm.setSubscribeSuccessShow(true)
