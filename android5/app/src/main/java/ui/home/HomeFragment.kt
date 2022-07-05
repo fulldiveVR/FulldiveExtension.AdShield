@@ -95,7 +95,7 @@ class HomeFragment : Fragment() {
             }
                 .collect { isPurchased ->
                     if (isPurchased) {
-                        if (appSettingsVm.isSubscribeSuccessShow.value == false) {
+                        if (appSettingsVm.isSubscribeSuccessShow.value != true) {
                             val fragment = SubscriptionSuccessDialogFragment.newInstance()
                             fragment.show(parentFragmentManager, null)
                             appSettingsVm.setSubscribeSuccessShow(true)
