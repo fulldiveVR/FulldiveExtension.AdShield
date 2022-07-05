@@ -32,7 +32,6 @@ import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import model.*
 import org.adshield.MobileNavigationDirections
@@ -85,11 +84,7 @@ class HomeFragment : Fragment() {
         initViews(root)
 
         lifecycleScope.launch {
-            SubscriptionService.isConnectedState.zip(
-                SubscriptionService.isProStatusPurchasedState
-            ) { isConnected, isPurchased ->
-                isConnected && isPurchased
-            }
+            SubscriptionService.isProStatusPurchasedState
                 .collect { isPurchased ->
                     if (isPurchased) {
                         if (!AppSettingsService.isSubscribeSuccessShow()) {
