@@ -23,7 +23,7 @@ apply plugin: 'com.joom.lightsaber.android'
 
 def versionMajor = 1
 def versionMinor = 3
-def versionPatch = 2
+def versionPatch = 3
 
 android {
     compileSdkVersion 32
@@ -254,8 +254,6 @@ dependencies {
 
     // legacy (for import of v4 settings)
     implementation 'io.paperdb:paperdb:2.7.1'
-
-    implementation 'com.android.billingclient:billing-ktx:5.0.0'
 
     implementation 'com.flurry.android:analytics:13.3.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'

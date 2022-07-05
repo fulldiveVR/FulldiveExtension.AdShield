@@ -16,6 +16,14 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <action
+        android:id="@+id/activity_to_subscriptionTutorial"
+        app:destination="@id/subscriptionTutorial"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="ui.home.HomeFragment"
@@ -39,14 +47,6 @@
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/navigation_home" />
 
-        <action
-            android:id="@+id/action_navigation_activity_to_subscriptionTutorial"
-            app:destination="@id/subscriptionTutorial"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_enter_anim"
-            app:popExitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
