@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import model.*
+import org.adshield.MobileNavigationDirections
 import org.adshield.R
 import service.AlertDialogService
 import service.ContextService
@@ -121,7 +122,7 @@ class HomeFragment : Fragment() {
                 .apply {
                     StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_PRO_POPUP)
                     navigate(
-                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                        MobileNavigationDirections.activityToSubscriptionTutorial()
                     )
                 }
         }
