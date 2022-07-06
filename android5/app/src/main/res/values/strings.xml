@@ -101,8 +101,8 @@
   <string name="home_status_deactivated">Deactivated</string>
   <string name="home_action_tap_to_activate">Tap to activate</string>
   <string name="home_status_detail_paused">paused until timer ends</string>
-  <string name="home_status_detail_active">Forwarding *ads* and *trackers*</string>
-  <string name="home_status_detail_active_with_counter">Forwarded *%s* ads and trackers</string>
+  <string name="home_status_detail_active">Detecting *suspicious requests*</string>
+  <string name="home_status_detail_active_with_counter">Detected *%s* suspicious requests</string>
   <string name="home_status_detail_active_slim">Full AdShield is active</string>
   <string name="home_status_detail_plus">*+* protecting your *privacy*</string>
   <string name="home_status_detail_progress">please wait...</string>
@@ -545,4 +545,5 @@
   <string name="str_subscription_tutorial_discount">&lt;sup&gt;&lt;small&gt;$&lt;/small&gt;&lt;/sup&gt;5.99</string>
   <string name="str_subscription_tutorial_period">/ month</string>
   <string name="str_menu_join_discord">Join Discord</string>
+  <string name="home_legal_state_explanation">We do not interfere with user traffic; instead, we change the DNS server.</string>
 </resources>
