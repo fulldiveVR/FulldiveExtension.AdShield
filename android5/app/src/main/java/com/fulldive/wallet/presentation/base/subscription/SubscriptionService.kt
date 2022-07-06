@@ -45,6 +45,7 @@ object SubscriptionService {
     val isProStatusPurchasedState = MutableStateFlow<Boolean>(false)
     val isPopupShowState = MutableStateFlow<Boolean>(false)
     private val subscriptionPrices = mutableMapOf<String, DataWrappers.ProductDetails>()
+    private var isFirstLaunched = false
 
     private var iapConnector: IapConnector? = null
 
@@ -146,6 +147,13 @@ object SubscriptionService {
         }
     }
 
+    fun setIsFirstLaunched(isLaunched: Boolean) {
+        if (isFirstLaunched != isLaunched) {
+            isFirstLaunched = isLaunched
+            handlePromoPopupState()
+        }
+    }
+
     private fun getSkuPrice(sku: String): Pair<String, String> {
         return subscriptionPrices[sku]?.let {
             Pair(it.priceAmount.toString(), it.priceCurrencyCode.orEmptyString())
@@ -154,13 +162,18 @@ object SubscriptionService {
 
     private fun handlePromoPopupState() {
         val isClosed = AppSettingsService.getIsPromoPopupClosed()
-        isPopupShowState.value = if (isClosed) {
-            val closeCount = AppSettingsService.getPromoCloseStartCounter()
-            val startCount = AppSettingsService.getCurrentStartCounter()
-            val diff = startCount - closeCount
-            repeatPopupCounts.any { it == diff }
-        } else {
-            true
+        isPopupShowState.value = when {
+            !isFirstLaunched -> {
+                false
+            }
+            isClosed -> {
+                val closeCount = AppSettingsService.getPromoCloseStartCounter()
+                val startCount = AppSettingsService.getCurrentStartCounter()
+                val diff = startCount - closeCount
+                repeatPopupCounts.any { it == diff }
+            }
+            else -> true
         }
+
     }
 }

@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
     private lateinit var accountVM: AccountViewModel
     private lateinit var adsCounterVm: AdsCounterViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
+    private lateinit var settingsVM: SettingsViewModel
 
     private lateinit var activateView: ActivateView
     private lateinit var statusTextView: TextView
@@ -95,7 +96,9 @@ class HomeFragment : Fragment() {
                     }
                 }
         }
-
+        settingsVM.syncableConfig.observe(viewLifecycleOwner) { config ->
+            SubscriptionService.setIsFirstLaunched(config.notFirstRun)
+        }
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState
                 .combine(SubscriptionService.isPopupShowState)
@@ -303,6 +306,7 @@ class HomeFragment : Fragment() {
             accountVM = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
             adsCounterVm = ViewModelProvider(it.app()).get(AdsCounterViewModel::class.java)
             appSettingsVm = ViewModelProvider(it.app()).get(AppSettingsViewModel::class.java)
+            settingsVM = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
         }
     }
 
