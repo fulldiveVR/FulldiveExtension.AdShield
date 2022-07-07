@@ -42,6 +42,7 @@ import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDia
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
+import org.adshield.MobileNavigationDirections
 import org.adshield.R
 import service.ContextService
 import service.NetworkMonitorPermissionService
@@ -114,7 +115,7 @@ class MainActivity : LocalizationActivity(),
                                 try {
                                     StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_TOOLBAR)
                                     navigate(
-                                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                                        MobileNavigationDirections.activityToSubscriptionTutorial()
                                     )
                                 } catch (e: Exception) {
                                 }
