@@ -162,7 +162,7 @@ dependencies {
     implementation project(path: ':iap')
     // forgot what is it for
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
+    implementation 'org.jsoup:jsoup:1.10.1'
     // androidx and kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'

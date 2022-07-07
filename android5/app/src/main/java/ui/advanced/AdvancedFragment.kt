@@ -25,7 +25,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
 import org.adshield.R
-import service.EnvironmentService
 import ui.TunnelViewModel
 import ui.app
 import utils.Links
@@ -41,7 +40,7 @@ class AdvancedFragment : Fragment() {
         val destination: NavDirections
     )
 
-//    private val isSlimMode = EnvironmentService.isSlim()
+    // private val isSlimMode = EnvironmentService.isSlim()
     private val isSlimMode = true
 
     private val sections by lazy {
@@ -66,15 +65,12 @@ class AdvancedFragment : Fragment() {
                 )
             },
 
-            if (isSlimMode) null
-            else {
-                Section(
-                    name = getString(R.string.apps_section_header),
-                    slugline = getString(R.string.advanced_section_slugline_apps),
-                    iconResId = R.drawable.ic_apps,
-                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
-                )
-            },
+            Section(
+                name = getString(R.string.apps_section_header),
+                slugline = getString(R.string.advanced_section_slugline_apps),
+                iconResId = R.drawable.ic_apps,
+                destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
+            ),
 
             Section(
                 name = getString(R.string.networks_section_header),

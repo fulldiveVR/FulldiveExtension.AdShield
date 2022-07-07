@@ -17,17 +17,16 @@ import android.os.Bundle
 import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.lifecycle.Observer
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHost
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.adshield.R
 import ui.BottomSheetFragment
-import ui.advanced.packs.PackDetailFragmentDirections
 import ui.advanced.packs.PacksViewModel
+import ui.utils.CircleProgressBar
 import ui.web.ForwardingListExtension.Companion.EXTENSION_NAME
 
 class WebFragment : BottomSheetFragment() {
@@ -47,20 +46,23 @@ class WebFragment : BottomSheetFragment() {
             packsVM = ViewModelProvider(it)[PacksViewModel::class.java]
         }
 
-        var packsConfiguration = emptyList<PacksViewModel.PackEntity>()
-
         val root = inflater.inflate(R.layout.fragment_web_view, container, false)
         val webView: WebView = root.findViewById(R.id.webView)
+        val circleProgressView: CircleProgressBar = root.findViewById(R.id.circleProgressView)
+        webView.isVisible = false
+        circleProgressView.isVisible = true
         var jsonConfig = "[]"
         var isLoaded = false
-        packsVM.packs.observe(viewLifecycleOwner, Observer { packs ->
+        packsVM.packs.observe(viewLifecycleOwner) { packs ->
             if (!isLoaded) {
-                packsConfiguration = packsVM.mapPacksToEntities(packs)
+                val packsConfiguration = packsVM.mapPacksToEntities(packs)
                 jsonConfig = Gson().toJson(packsConfiguration)
+                webView.isVisible = true
+                circleProgressView.isVisible = false
                 webView.loadUrl(args.url)
                 isLoaded = true
             }
-        })
+        }
 
         currentUrl = args.url
 

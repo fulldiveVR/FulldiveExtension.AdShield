@@ -15,23 +15,37 @@ package repository
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.fulldive.wallet.di.IInjectorHolder
+import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.orEmptyString
+import com.fulldive.wallet.models.AppIcon
+import com.joom.lightsaber.Injector
+import com.joom.lightsaber.Lightsaber
+import com.joom.lightsaber.getInstance
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import model.App
 import model.AppId
 import model.BypassedAppIds
 import service.ContextService
 import service.PersistenceService
-import utils.cause
 import utils.Logger
+import utils.cause
 
-object AppRepository {
+object AppRepository : IInjectorHolder {
 
     private val log = Logger("AppRepository")
-    private val context = ContextService
     private val persistence = PersistenceService
-    private val scope = GlobalScope
+
+    private var appInjector: Injector = Lightsaber.Builder().build().createInjector(
+        ApplicationComponent(ContextService.requireContext())
+    )
+
+    private val appIconLocalDataSource: AppIconLocalDataSource = appInjector.getInstance()
+
+    override fun getInjector(): Injector {
+        return appInjector
+    }
 
     private var bypassedAppIds = persistence.load(BypassedAppIds::class).ids
         set(value) {
@@ -40,7 +54,7 @@ object AppRepository {
         }
 
     private val alwaysBypassed by lazy {
-        listOf<AppId>(
+        listOf(
             // This app package name
             //context.requireContext().packageName
             "com.fulldive.mobile",
@@ -95,9 +109,9 @@ object AppRepository {
     }
 
     suspend fun getApps(): List<App> {
-        return scope.async(Dispatchers.Default) {
+        return withContext(Dispatchers.Default) {
             log.v("Fetching apps")
-            val ctx = context.requireContext()
+            val ctx = ContextService.requireContext()
             val installed = try {
                 ctx.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
                     .filter { it.packageName != ctx.packageName }
@@ -106,14 +120,23 @@ object AppRepository {
                 emptyList<ApplicationInfo>()
             }
 
+            val appIcons = try {
+                appIconLocalDataSource.getAllAppIcons()
+            } catch (ex: Exception) {
+                log.w("Could not apps icons, ignoring".cause(ex))
+                emptyList<AppIcon>()
+            }
+
             log.v("Fetched ${installed.size} apps, mapping")
-            val apps = installed.mapNotNull {
+            val apps = installed.mapNotNull { appInfo ->
                 try {
+                    val appId = appInfo.packageName
                     App(
-                        id = it.packageName,
-                        name = ctx.packageManager.getApplicationLabel(it).toString(),
-                        isSystem = (it.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
-                        isBypassed = isAppBypassed(it.packageName)
+                        id = appId,
+                        name = ctx.packageManager.getApplicationLabel(appInfo).toString(),
+                        isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
+                        isBypassed = isAppBypassed(appInfo.packageName),
+                        iconUrl = appIcons.firstOrNull { it.appId == appId }?.iconUrl.orEmptyString()
                     )
                 } catch (ex: Exception) {
                     log.w("Could not map app, ignoring".cause(ex))
@@ -122,7 +145,7 @@ object AppRepository {
             }
             log.v("Mapped ${apps.size} apps")
             apps
-        }.await()
+        }
     }
 
     fun isAppBypassed(id: AppId): Boolean {
@@ -135,17 +158,17 @@ object AppRepository {
                 // Do nothing.
             }
             isAppBypassed(id) -> {
-                bypassedAppIds -= id
+                bypassedAppIds = bypassedAppIds - id
             }
             else -> {
-                bypassedAppIds += id
+                bypassedAppIds = bypassedAppIds + id
             }
         }
     }
 
     fun getAppIcon(id: AppId): Drawable? {
         return try {
-            val ctx = context.requireContext()
+            val ctx = ContextService.requireContext()
             ctx.packageManager.getApplicationIcon(
                 ctx.packageManager.getApplicationInfo(id, PackageManager.GET_META_DATA)
             )
