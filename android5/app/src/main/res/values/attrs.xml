@@ -44,4 +44,8 @@
     <declare-styleable name="ExperienceProgressLayout">
         <attr name="progressViewHeight" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="indicatorColor" format="color" />
+    </declare-styleable>
 </resources>

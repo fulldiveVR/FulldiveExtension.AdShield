@@ -16,7 +16,6 @@
 
 package com.fulldive.wallet.interactors
 
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
@@ -40,19 +39,15 @@ class AppSettingsRepository @Inject constructor(
     fun loadAppIconUrls(): Single<List<String>> {
         return safeSingle {
             val ctx = ContextService.requireContext()
-            ctx.packageManager.queryIntentActivities(
-                Intent(Intent.ACTION_MAIN),
-                PackageManager.MATCH_ALL
-            )
-                .map { it.activityInfo.applicationInfo }
+            ctx.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
                 .filter { appInfo ->
                     appInfo.packageName != ctx.packageName && (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) == 0
                 }
-                .map { it.packageName }
-        }.flatMap { packageNameList ->
+        }.flatMap { appInfoList ->
             Observable
-                .fromIterable(packageNameList.toSet())
-                .flatMapSingle { appId ->
+                .fromIterable(appInfoList)
+                .flatMapSingle { appInfo ->
+                    val appId = appInfo.packageName
                     appIconLocalDataSource
                         .getAppIconByAppId(appId)
                         .onErrorResumeNext {

@@ -27,6 +27,6 @@ interface AppIconDao : BaseDao<AppIcon> {
     @Query("SELECT * FROM AppIcon")
     fun getAll(): List<AppIcon>
 
-    @Query("SELECT iconUrl FROM AppIcon WHERE appId=:appId and iconUrl != ''")
+    @Query("SELECT iconUrl FROM AppIcon WHERE appId=:appId")
     fun getAppIconByAppId(appId: String): Single<String>
 }
