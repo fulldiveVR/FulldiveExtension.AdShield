@@ -12,8 +12,10 @@
 
 package repository
 
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
@@ -113,12 +115,14 @@ object AppRepository : IInjectorHolder {
             log.v("Fetching apps")
             val ctx = ContextService.requireContext()
             val installed = try {
-                ctx.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-                    .filter { it.packageName != ctx.packageName }
+                ctx.packageManager.queryIntentActivities(
+                    Intent(Intent.ACTION_MAIN),
+                    PackageManager.MATCH_ALL
+                )
             } catch (ex: Exception) {
                 log.w("Could not fetch apps, ignoring".cause(ex))
-                emptyList<ApplicationInfo>()
-            }
+                emptySet<ResolveInfo>()
+            }.map { it.activityInfo.applicationInfo }
 
             val appIcons = try {
                 appIconLocalDataSource.getAllAppIcons()
