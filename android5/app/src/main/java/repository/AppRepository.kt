@@ -122,7 +122,7 @@ object AppRepository : IInjectorHolder {
             } catch (ex: Exception) {
                 log.w("Could not fetch apps, ignoring".cause(ex))
                 emptySet<ResolveInfo>()
-            }.map { it.activityInfo.applicationInfo }
+            }.map { it.activityInfo.applicationInfo }.toSet()
 
             val appIcons = try {
                 appIconLocalDataSource.getAllAppIcons()
@@ -147,6 +147,8 @@ object AppRepository : IInjectorHolder {
                     null
                 }
             }
+                .toSet() // Since we get apps from activities, ic could be doubles.
+                .toList()
             log.v("Mapped ${apps.size} apps")
             apps
         }
