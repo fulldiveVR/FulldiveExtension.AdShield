@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
     private lateinit var longStatusTextView: TextView
     private lateinit var limitedOfferLayout: FrameLayout
     private lateinit var closePopupButton: ImageView
+    private lateinit var legalStateDescriptionTextView: TextView
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -96,9 +97,11 @@ class HomeFragment : Fragment() {
                     }
                 }
         }
-        settingsVM.syncableConfig.observe(viewLifecycleOwner) { config ->
-            SubscriptionService.setIsFirstLaunched(config.notFirstRun)
-        }
+
+        legalStateDescriptionTextView
+            .isVisible = SubscriptionService.getIsLegalStateDescriptionEnabled()
+
+        SubscriptionService.updateIsProLimited()
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState
                 .combine(SubscriptionService.isPopupShowState)
@@ -316,6 +319,7 @@ class HomeFragment : Fragment() {
         limitedOfferLayout = root.findViewById(R.id.limitedOfferLayout)
         closePopupButton = root.findViewById(R.id.closePopupButton)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
+        legalStateDescriptionTextView = root.findViewById(R.id.legalStateDescriptionTextView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
