@@ -23,6 +23,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import appextension.PopupManager
 import com.fulldive.wallet.extensions.orEmptyString
 import com.google.gson.Gson
 import model.App
@@ -71,7 +73,13 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
                 appJsonConfig = Gson().toJson(apps)
                 webView.isVisible = true
                 circleProgressView.isVisible = false
-                webView.loadUrl(appsSettingsUrl)
+                PopupManager.showAppSettingsPermissionDialog(requireContext()) { isGranted ->
+                    if (isGranted) {
+                        webView.loadUrl(appsSettingsUrl)
+                    } else {
+                        findNavController().popBackStack()
+                    }
+                }
                 isLoaded = true
             }
         }
@@ -79,11 +87,7 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
 
         val extension = AppsSettingsExtension().apply {
             onAppStateChangeListener = { appId, _ ->
-                //todo mocked !!!
-                val mockedAppId: AppId = appsConfiguration
-                    .firstOrNull { it.name == appId }?.id.orEmptyString()
-
-                appsVM.switchBypass(mockedAppId)
+                appsVM.switchBypass(appId)
             }
         }
         webView.settings.javaScriptEnabled = true

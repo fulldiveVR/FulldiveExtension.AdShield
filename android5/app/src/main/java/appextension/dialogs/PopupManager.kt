@@ -17,6 +17,8 @@
 package appextension
 
 import android.content.Context
+import appextension.dialogs.*
+import com.flurry.sdk.it
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -113,6 +115,24 @@ object PopupManager {
         } else {
             context.openAppInGooglePlay(BuildConfig.APPLICATION_ID)
             AppSettingsService.setRateUsDone()
+        }
+    }
+
+    fun showAppSettingsPermissionDialog(
+        context: Context,
+        onPermissionGranted: (Boolean) -> Unit
+    ) {
+        when {
+            !AppSettingsService.isAppSettingsPermissionGranted() -> {
+                AppSettingsPermissionDialog
+                    .show(context) { isGranted ->
+                        if (isGranted) {
+                            AppSettingsService.setAppSettingsPermissionGranted()
+                        }
+                        onPermissionGranted.invoke(isGranted)
+                    }
+            }
+            else -> onPermissionGranted.invoke(true)
         }
     }
 

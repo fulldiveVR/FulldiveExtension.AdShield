@@ -42,6 +42,8 @@ object AppSettingsService {
     private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
         "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
 
+    private const val KEY_APP_SETTINGS_PERMISSION_GRANTED = "KEY_APP_SETTINGS_PERMISSION_GRANTED"
+
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
         sharedPreferences.setProperty(KEY_START_APP_COUNTER, startCounter + 1)
@@ -115,7 +117,15 @@ object AppSettingsService {
     }
 
     fun getPromoCloseStartCounter(): Int {
-        return  sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+        return sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+    }
+
+    fun isAppSettingsPermissionGranted(): Boolean {
+        return sharedPreferences.getProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, false)
+    }
+
+    fun setAppSettingsPermissionGranted() {
+        sharedPreferences.setProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, true)
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {
