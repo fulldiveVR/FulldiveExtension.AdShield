@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>is_adshield_pro_limited</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>is_adshield_legal_description_enabled</key>
+        <value>true</value>
+    </entry>
+</defaultsMap>
