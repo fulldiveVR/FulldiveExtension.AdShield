@@ -106,7 +106,7 @@ class HomeFragment : Fragment() {
         }
 
         legalStateDescriptionTextView
-            .isVisible = SubscriptionService.getIsLegalStateDescriptionEnabled()
+            .isVisible = RemoteConfigService.getIsLegalStateDescriptionEnabled()
 
         SubscriptionService.updateIsProLimited()
         lifecycleScope.launch {

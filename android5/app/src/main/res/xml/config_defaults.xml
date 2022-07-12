@@ -8,4 +8,12 @@
         <key>is_adshield_legal_description_enabled</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>is_adshield_web_apps_settings_limited</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>is_adshield_web_custom_settings_limited</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

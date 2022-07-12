@@ -19,12 +19,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
 import org.adshield.R
+import service.RemoteConfigService
 import ui.TunnelViewModel
 import ui.app
 import utils.Links
@@ -65,12 +67,16 @@ class AdvancedFragment : Fragment() {
                 )
             },
 
-            Section(
-                name = getString(R.string.apps_section_header),
-                slugline = getString(R.string.advanced_section_slugline_apps),
-                iconResId = R.drawable.ic_apps,
-                destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
-            ),
+            if (RemoteConfigService.getIsWebAppsSettingsLimited()) {
+                null
+            } else {
+                Section(
+                    name = getString(R.string.apps_section_header),
+                    slugline = getString(R.string.advanced_section_slugline_apps),
+                    iconResId = R.drawable.ic_apps,
+                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
+                )
+            },
 
             Section(
                 name = getString(R.string.networks_section_header),
@@ -85,7 +91,17 @@ class AdvancedFragment : Fragment() {
                 destination = AdvancedFragmentDirections.actionNavigationSettingsToWebFragment(
                     Links.dnsSettings, getString(R.string.dns_forwarding_lists_title)
                 )
-            )
+            ),
+            if (RemoteConfigService.getIsWebCustomSettingsEnabled()) {
+                null
+            } else {
+                Section(
+                    name = getString(R.string.str_custom_forwarding_lists_title),
+                    slugline = getString(R.string.str_custom_forwarding_lists_description),
+                    iconResId = R.drawable.ic_my_blocklists,
+                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToCustomSettingsFragment()
+                )
+            }
         )
     }
 
@@ -122,6 +138,13 @@ class AdvancedFragment : Fragment() {
             val iconView = sectionView.findViewById<ImageView>(R.id.advanced_icon)
             iconView.setImageResource(iconResId)
         }
+
+        val developImageView = root.findViewById<ImageView>(R.id.developImageView)
+        val developTextView = root.findViewById<TextView>(R.id.advanced_migrateslim)
+        val isDevelopVisible = RemoteConfigService.getIsWebAppsSettingsLimited()
+                || RemoteConfigService.getIsWebCustomSettingsEnabled()
+        developImageView.isVisible = isDevelopVisible
+        developTextView.isVisible = isDevelopVisible
         return root
     }
 }

@@ -190,13 +190,13 @@ object EngineService {
         state.stopped()
     }
 
-    suspend fun reloadBlockLists(urls: Set<String>) {
-        filtering.reload(urls)
+    suspend fun reloadBlockLists(urls: Set<String>, blocklistConfig: CustomBlocklistConfig, currentBlocklistConfig: CustomBlocklistConfig) {
+        filtering.reload(urls, blocklistConfig, currentBlocklistConfig)
         reload(config, force = true)
     }
 
     suspend fun forceReload() {
-        reload(config, force = true)
+        reload(config = config, force = true)
     }
 
     fun getTunnelStatus(): TunnelStatus {

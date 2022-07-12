@@ -25,15 +25,12 @@ import com.fulldive.iap.IapConnector
 import com.fulldive.iap.PurchaseServiceListener
 import com.fulldive.iap.SubscriptionServiceListener
 import com.fulldive.wallet.extensions.orEmptyString
-import engine.ABPService.orTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope.coroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import remoteconfig.IRemoteConfigFetcher
-import remoteconfig.isAdShieldLegalDescriptionEnabled
-import remoteconfig.isAdShieldProLimited
 import service.AppSettingsService
+import service.RemoteConfigService
 
 object SubscriptionService {
 
@@ -45,7 +42,6 @@ object SubscriptionService {
     const val STATE_UNDEFINED = 0
     private val repeatPopupCounts = listOf(2, 5)
 
-    private var remoteConfig: IRemoteConfigFetcher? = null
 
     val isConnectedState = MutableStateFlow(false)
     val isProStatusPurchasedState = MutableStateFlow<Boolean>(false)
@@ -154,23 +150,11 @@ object SubscriptionService {
     }
 
     fun updateIsProLimited() {
-        val isLimited = remoteConfig?.isAdShieldProLimited().orTrue()
+        val isLimited = RemoteConfigService.getIsProLimited()
         if (isProLimited != isLimited) {
             isProLimited = isLimited
             handlePromoPopupState()
         }
-    }
-
-    fun setRemoteConfigFetcher(configFetcher: IRemoteConfigFetcher) {
-        this.remoteConfig = configFetcher
-    }
-
-    fun getIsProLimited(): Boolean {
-        return remoteConfig?.isAdShieldProLimited().orTrue()
-    }
-
-    fun getIsLegalStateDescriptionEnabled(): Boolean {
-        return remoteConfig?.isAdShieldLegalDescriptionEnabled().orTrue()
     }
 
     private fun getSkuPrice(sku: String): Pair<String, String> {

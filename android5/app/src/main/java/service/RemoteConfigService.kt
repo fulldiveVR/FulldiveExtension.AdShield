@@ -17,7 +17,6 @@
 package service
 
 import com.fulldive.wallet.extensions.orTrue
-import org.adshield.BuildConfig
 import remoteconfig.*
 
 object RemoteConfigService {
@@ -42,30 +41,5 @@ object RemoteConfigService {
 
     fun getIsWebCustomSettingsEnabled(): Boolean {
         return remoteConfig?.isAdShieldWebCustomSettingsLimited().orTrue()
-    }
-
-    fun getIsAdShieldAdsCounterLimited(): Boolean {
-        return remoteConfig?.isAdShieldAdsCounterLimited().orTrue()
-    }
-
-    fun getIsRewardsLimited(): Boolean {
-        return remoteConfig?.getIsRewardsLimited().orTrue()
-    }
-
-
-    fun getIsStatsLimited(): Boolean {
-        return remoteConfig?.getIsStatsLimited().orTrue()
-    }
-
-    fun getAdblockWorkCheckUrl(): String {
-        return remoteConfig?.getAdblockWorkCheckUrl().orEmpty()
-    }
-
-    fun getAdblockWorkCheckDomain(): String {
-        return remoteConfig?.getAdblockWorkCheckDomain().orEmpty()
-    }
-
-    fun getAdblockTutorialUrl(): String {
-        return remoteConfig?.getAdblockTutorialUrl().orEmpty()
     }
 }
