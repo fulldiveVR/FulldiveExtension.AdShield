@@ -20,17 +20,22 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.fulldive.wallet.models.AppIcon
 import com.fulldive.wallet.models.LeaderEntity
 
 @Database(
     entities = [
-        LeaderEntity::class
-    ], version = 1
+        LeaderEntity::class,
+        AppIcon::class
+    ], version = 2
 )
 
 abstract class AdshieldDatabase : RoomDatabase() {
 
     abstract fun getLeaderEntityDao(): LeaderEntityDao
+    abstract fun getAppIconDao(): AppIconDao
 
     companion object {
         private const val TAG = "AdshieldDatabase"
@@ -50,13 +55,26 @@ abstract class AdshieldDatabase : RoomDatabase() {
                                 AdshieldDatabase::class.java,
                                 DATABASE_NAME
                             )
-                        // .addMigrations()
+                            .addMigrations(
+                                MIGRATION_1_2
+                            )
 
                         INSTANCE = builder.build()
                     }
                 }
             }
             return INSTANCE
+        }
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "CREATE TABLE AppIcon (" +
+                            "appId TEXT PRIMARY KEY NOT NULL," +
+                            "iconUrl TEXT NOT NULL" +
+                            ")"
+                )
+            }
         }
     }
 }

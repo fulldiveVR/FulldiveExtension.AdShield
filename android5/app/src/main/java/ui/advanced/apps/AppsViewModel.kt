@@ -27,7 +27,7 @@ import utils.Logger
 class AppsViewModel : ViewModel() {
 
     enum class Group {
-        INSTALLED, SYSTEM
+        ALL, INSTALLED, SYSTEM
     }
 
     enum class Filter {
@@ -69,7 +69,7 @@ class AppsViewModel : ViewModel() {
     }
 
     fun clear() {
-      //  statistics.clear()
+        //  statistics.clear()
         refresh()
     }
 
@@ -148,16 +148,20 @@ class AppsViewModel : ViewModel() {
         }
 
         // Apply filtering on group
-        when (group) {
+        entries = when (group) {
             Group.INSTALLED -> {
-                entries = entries.filter { !it.isSystem }
+                entries.filter { !it.isSystem }.sortedBy { it.name }
             }
             Group.SYSTEM -> {
-                entries = entries.filter { it.isSystem }
+                entries.filter { it.isSystem }.sortedBy { it.name }
+            }
+            else -> {
+                val installedApps = entries.filter { !it.isSystem }.sortedBy { it.name }
+                val systemApps = entries.filter { it.isSystem }.sortedBy { it.name }
+                installedApps + systemApps
             }
         }
 
-        return entries.sortedBy { it.name }
+        return entries
     }
-
 }

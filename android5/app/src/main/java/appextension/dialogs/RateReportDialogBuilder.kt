@@ -14,30 +14,30 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package appextension.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.EditText
 import org.adshield.R
 
-object InstallBrowserDialogBuilder {
+object RateReportDialogBuilder {
 
-    fun show(context: Context, onPositiveClicked: () -> Unit) {
-        val view = LayoutInflater.from(context)
-            .inflate(R.layout.install_browser_dialog_layout, null)
-        val dialog = AlertDialog
-            .Builder(context, R.style.AppTheme_DialogStyle)
+    fun show(context: Context, onPositiveClicked: (String) -> Unit) {
+        val view = LayoutInflater.from(context).inflate(R.layout.rate_report_dialog_layout, null)
+        val messageEditText = view.findViewById<EditText>(R.id.messageEditText)
+        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
             .setView(view)
-            .setPositiveButton(R.string.install_submit) { _, _ ->
-                onPositiveClicked.invoke()
+            .setTitle(R.string.rate_us_title)
+            .setPositiveButton(R.string.rate_submit) { _, _ ->
+                onPositiveClicked.invoke(messageEditText.text.toString())
             }
-            .setNegativeButton(R.string.rate_cancel) { _, _ -> }
             .create()
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(context.getColor(R.color.colorAccent))
+                ?.setTextColor(context.getColor(R.color.textColorPrimary))
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 ?.setTextColor(context.getColor(R.color.textColorSecondary))
         }

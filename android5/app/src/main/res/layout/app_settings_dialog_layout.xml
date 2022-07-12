@@ -15,29 +15,16 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:alpha="1"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:padding="@dimen/half"
-    tools:context="ui.home.HelpFragment">
+    android:gravity="center|center_vertical">
 
-    <ui.utils.CircleProgressBar
-        android:id="@+id/circleProgressView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/size_12dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:visibility="gone"
-        app:indicatorColor="@color/colorAccent" />
-
-    <ui.web.ThemedWebView
-        android:id="@+id/webView"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+    <TextView
+        android:id="@+id/titleTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_24dp"
+        android:text="@string/str_app_settings_permission_message"
+        android:textSize="18sp" />
 </FrameLayout>

@@ -14,25 +14,34 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package appextension.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.EditText
+import androidx.appcompat.widget.AppCompatRatingBar
 import org.adshield.R
+import kotlin.math.roundToInt
 
-object RateReportDialogBuilder {
+object RateUsDialogBuilder {
 
-    fun show(context: Context, onPositiveClicked: (String) -> Unit) {
-        val view = LayoutInflater.from(context).inflate(R.layout.rate_report_dialog_layout, null)
-        val messageEditText = view.findViewById<EditText>(R.id.messageEditText)
+    fun show(context: Context, onPositiveClicked: (Int) -> Unit) {
+        val view = LayoutInflater.from(context).inflate(R.layout.rate_us_dialog_layout, null)
+        val ratingBar = view.findViewById<AppCompatRatingBar>(R.id.ratingBar)
+        var ratingValue = 0
+        ratingBar.setOnRatingBarChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                ratingValue = value.roundToInt()
+            }
+        }
+
         val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
             .setView(view)
             .setTitle(R.string.rate_us_title)
             .setPositiveButton(R.string.rate_submit) { _, _ ->
-                onPositiveClicked.invoke(messageEditText.text.toString())
+                onPositiveClicked.invoke(ratingValue)
             }
+            .setNegativeButton(R.string.rate_cancel) { _, _ -> }
             .create()
 
         dialog.setOnShowListener {

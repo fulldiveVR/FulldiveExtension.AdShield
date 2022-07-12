@@ -45,10 +45,7 @@ import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
 import org.adshield.MobileNavigationDirections
 import org.adshield.R
-import service.ContextService
-import service.NetworkMonitorPermissionService
-import service.TranslationService
-import service.VpnPermissionService
+import service.*
 import ui.home.FirstTimeFragment
 import ui.home.HomeFragmentDirections
 import ui.settings.SettingsFragmentDirections
@@ -100,7 +97,7 @@ class MainActivity : LocalizationActivity(),
             SubscriptionService.init(baseContext)
         }
 
-        proStatusImageView.isVisible = !SubscriptionService.getIsProLimited()
+        proStatusImageView.isVisible = !RemoteConfigService.getIsProLimited()
 
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
@@ -185,6 +182,8 @@ class MainActivity : LocalizationActivity(),
                 R.id.settingsNetworksFragment -> R.string.networks_section_header
                 R.id.networksDetailFragment -> R.string.all_networks_title
                 R.id.appsFragment -> R.string.apps_section_header
+                R.id.appsWebSettingsFragment -> R.string.apps_section_header
+                R.id.customSettingsWebSettingsFragment -> R.string.str_custom_forwarding_lists_title
                 R.id.navigation_settings -> R.string.main_tab_settings
                 R.id.navigation_settings_account -> R.string.account_action_my_account
                 R.id.settingsLogoutFragment -> R.string.account_header_logout

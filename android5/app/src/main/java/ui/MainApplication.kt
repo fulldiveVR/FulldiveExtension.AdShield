@@ -25,9 +25,9 @@ import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
 import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.AppSettingsInteractor
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.models.Chain
-import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
+import model.CustomBlocklistConfig
 import org.adshield.BuildConfig
 import remoteconfig.IRemoteConfigFetcher
 import service.*
@@ -78,6 +79,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
     private val remoteConfig by lazy { appInjector.getInstance<IRemoteConfigFetcher>() }
     private var remoteConfigDisposable: Disposable? = null
+    private val appSettingsInteractor by lazy { appInjector.getInstance<AppSettingsInteractor>() }
 
     override fun onCreate() {
         super.onCreate()
@@ -107,15 +109,15 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         networksVM = ViewModelProvider(this).get(NetworksViewModel::class.java)
         EngineService.setup(
             network = networksVM.getActiveNetworkConfig(),
-            user = PersistenceService.load(BlockaConfig::class) // TODO: not nice
+            user = PersistenceService.load(BlockaConfig::class)
         )
 
-        accountVM = ViewModelProvider(this).get(AccountViewModel::class.java)
-        tunnelVM = ViewModelProvider(this).get(TunnelViewModel::class.java)
-        settingsVM = ViewModelProvider(this).get(SettingsViewModel::class.java)
-        statsVM = ViewModelProvider(this).get(StatsViewModel::class.java)
-        adsCounterVM = ViewModelProvider(this).get(AdsCounterViewModel::class.java)
-        packsVM = ViewModelProvider(this).get(PacksViewModel::class.java)
+        accountVM = ViewModelProvider(this)[AccountViewModel::class.java]
+        tunnelVM = ViewModelProvider(this)[TunnelViewModel::class.java]
+        settingsVM = ViewModelProvider(this)[SettingsViewModel::class.java]
+        statsVM = ViewModelProvider(this)[StatsViewModel::class.java]
+        adsCounterVM = ViewModelProvider(this)[AdsCounterViewModel::class.java]
+        packsVM = ViewModelProvider(this)[PacksViewModel::class.java]
 
         accountVM.account.observeForever { account ->
             tunnelVM.checkConfigAfterAccountChanged(account)
@@ -138,6 +140,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
 
         experienceExchangeInterator
             .getExchangeRateForToken(Chain.fdCoinDenom)
+            .withDefaults()
+            .subscribe()
+
+        appSettingsInteractor
+            .loadAppIconUrls()
             .withDefaults()
             .subscribe()
 
@@ -167,7 +174,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
-            FilteringService.reload(packsVM.getActiveUrls())
+            FilteringService.reload(
+                packsVM.getActiveUrls(),
+                statsVM.getCustomBlocklistConfig(),
+                CustomBlocklistConfig.emptyConfig
+            )
         }
     }
 
@@ -195,7 +206,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     }
 
     private fun initRemoteConfig() {
-        SubscriptionService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
+        RemoteConfigService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
         remoteConfigDisposable = remoteConfig
             .fetch(force = false)
             .withDefaults()

@@ -546,6 +546,10 @@
   <string name="str_subscription_tutorial_period">/ month</string>
   <string name="str_menu_join_discord">Join Discord</string>
   <string name="home_legal_state_explanation">We do not interfere with user traffic; instead, we change the DNS server.</string>
+  <string name="str_app_settings_permission_message">Grant us the permission to access your applications, so that you can manage DNS settings for the specific app.</string>
+  <string name="str_allow_button_title">Allow</string>
+  <string name="str_custom_forwarding_lists_title">DNS Custom Forwarding Lists</string>
+  <string name="str_custom_forwarding_lists_description">Manage the list of allowed and forbidden domains</string>
   <string name="league_handline_addressograph">Bankrupt marital wildlife obstacle bagatelle</string>
   <string name="supremum_geminid_corduroy_quintus">Harken coincident wheat eighty…</string>
   <string name="casbah_guilford_operable">Breakneck entropy wakeup pantaloon day fortiori… Acetate abramson parry furlong hearken?</string>

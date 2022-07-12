@@ -15,6 +15,7 @@ package engine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import model.CustomBlocklistConfig
 import service.BlocklistService
 import service.EnvironmentService
 import service.StatsService
@@ -33,7 +34,7 @@ internal object FilteringService {
 
     private var filteringStrategy: FilteringStrategy = NoopFilteringStrategy
 
-    fun reload(urls: Set<String>) {
+    fun reload(urls: Set<String>, config: CustomBlocklistConfig, currentConfig: CustomBlocklistConfig) {
         // init adp if have adp blocklist.
         log.v("Reloading blocklist")
         merged = blocklist.loadMerged()
@@ -59,6 +60,7 @@ internal object FilteringService {
         }
 
         ABPService.setAdblockSubscriptions(urls)
+        ABPService.updateCustomBlocklists(config, currentConfig)
     }
 
     fun allowed(host: Host): Boolean {

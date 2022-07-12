@@ -126,6 +126,8 @@
         <entry key="app/src/main/res/drawable/user_experience_progress_bar.xml" value="0.2035" />
         <entry key="app/src/main/res/layout/activity_create.xml" value="0.1171875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.355" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4932182490752158" />
+        <entry key="app/src/main/res/layout/app_settings_dialog_layout.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/dialog_add_account.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/layout/dialog_exchange_experience_info.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/layout/dialog_wait.xml" value="0.20833333333333334" />
@@ -181,7 +183,7 @@
         <entry key="app/src/main/res/layout/layout_tab_text.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/plusbutton.xml" value="0.375" />
         <entry key="app/src/main/res/layout/rate_report_dialog_layout.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/rate_us_dialog_layout.xml" value="0.23645833333333333" />
+        <entry key="app/src/main/res/layout/rate_us_dialog_layout.xml" value="0.335" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.265625" />
         <entry key="app/src/main/res/menu/help_menu.xml" value="0.22291666666666668" />
         <entry key="app/src/main/res/menu/rewards_menu.xml" value="0.3880208333333333" />
