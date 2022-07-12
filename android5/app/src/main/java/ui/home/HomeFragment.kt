@@ -32,14 +32,11 @@ import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import model.*
+import org.adshield.MobileNavigationDirections
 import org.adshield.R
-import service.AlertDialogService
-import service.ContextService
-import service.EnvironmentService
-import service.UpdateService
+import service.*
 import ui.*
 import ui.settings.SettingsFragmentDirections
 import utils.Links
@@ -53,12 +50,14 @@ class HomeFragment : Fragment() {
     private lateinit var accountVM: AccountViewModel
     private lateinit var adsCounterVm: AdsCounterViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
+    private lateinit var settingsVM: SettingsViewModel
 
     private lateinit var activateView: ActivateView
     private lateinit var statusTextView: TextView
     private lateinit var longStatusTextView: TextView
     private lateinit var limitedOfferLayout: FrameLayout
     private lateinit var closePopupButton: ImageView
+    private lateinit var legalStateDescriptionTextView: TextView
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -87,14 +86,10 @@ class HomeFragment : Fragment() {
         initViews(root)
 
         lifecycleScope.launch {
-            SubscriptionService.isConnectedState.zip(
-                SubscriptionService.isProStatusPurchasedState
-            ) { isConnected, isPurchased ->
-                isConnected && isPurchased
-            }
+            SubscriptionService.isProStatusPurchasedState
                 .collect { isPurchased ->
                     if (isPurchased) {
-                        if (appSettingsVm.isSubscribeSuccessShow.value == false) {
+                        if (!AppSettingsService.isSubscribeSuccessShow()) {
                             val fragment = SubscriptionSuccessDialogFragment.newInstance()
                             fragment.show(parentFragmentManager, null)
                             appSettingsVm.setSubscribeSuccessShow(true)
@@ -103,6 +98,10 @@ class HomeFragment : Fragment() {
                 }
         }
 
+        legalStateDescriptionTextView
+            .isVisible = SubscriptionService.getIsLegalStateDescriptionEnabled()
+
+        SubscriptionService.updateIsProLimited()
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState
                 .combine(SubscriptionService.isPopupShowState)
@@ -121,7 +120,7 @@ class HomeFragment : Fragment() {
                 .apply {
                     StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_PRO_POPUP)
                     navigate(
-                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                        MobileNavigationDirections.activityToSubscriptionTutorial()
                     )
                 }
         }
@@ -310,6 +309,7 @@ class HomeFragment : Fragment() {
             accountVM = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
             adsCounterVm = ViewModelProvider(it.app()).get(AdsCounterViewModel::class.java)
             appSettingsVm = ViewModelProvider(it.app()).get(AppSettingsViewModel::class.java)
+            settingsVM = ViewModelProvider(it.app()).get(SettingsViewModel::class.java)
         }
     }
 
@@ -319,6 +319,7 @@ class HomeFragment : Fragment() {
         limitedOfferLayout = root.findViewById(R.id.limitedOfferLayout)
         closePopupButton = root.findViewById(R.id.closePopupButton)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
+        legalStateDescriptionTextView = root.findViewById(R.id.legalStateDescriptionTextView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

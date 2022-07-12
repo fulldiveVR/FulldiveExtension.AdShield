@@ -12,6 +12,7 @@
 
 package ui
 
+import analytics.FdLog
 import android.app.Activity
 import android.app.Service
 import androidx.lifecycle.ViewModelProvider
@@ -27,18 +28,21 @@ import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.AppSettingsInteractor
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.models.Chain
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
 import org.adshield.BuildConfig
+import remoteconfig.IRemoteConfigFetcher
 import service.*
 import ui.advanced.packs.PacksViewModel
 import utils.Logger
@@ -73,6 +77,8 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private lateinit var packsVM: PacksViewModel
 
     private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
+    private val remoteConfig by lazy { appInjector.getInstance<IRemoteConfigFetcher>() }
+    private var remoteConfigDisposable: Disposable? = null
     private val appSettingsInteractor by lazy { appInjector.getInstance<AppSettingsInteractor>() }
 
     override fun onCreate() {
@@ -95,6 +101,8 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         FlurryAgent.Builder()
             .withLogEnabled(true)
             .build(this, BuildConfig.FLURRY_API_KEY)
+
+        initRemoteConfig()
     }
 
     private fun setupEvents() {
@@ -191,6 +199,21 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             log.v("Marking repo payload as acted on")
             persistence.save(payload)
         }
+    }
+
+    private fun initRemoteConfig() {
+        SubscriptionService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
+        remoteConfigDisposable = remoteConfig
+            .fetch(force = false)
+            .withDefaults()
+            .subscribe(
+                {
+                    FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
+                },
+                { error ->
+                    FdLog.d("initRemoteConfig", "RemoteConfig fetching was failed", error)
+                }
+            )
     }
 
     override fun getDefaultLanguage(): Locale {

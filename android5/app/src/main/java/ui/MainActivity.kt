@@ -25,6 +25,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +43,7 @@ import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDia
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
 import kotlinx.coroutines.launch
+import org.adshield.MobileNavigationDirections
 import org.adshield.R
 import service.ContextService
 import service.NetworkMonitorPermissionService
@@ -98,6 +100,8 @@ class MainActivity : LocalizationActivity(),
             SubscriptionService.init(baseContext)
         }
 
+        proStatusImageView.isVisible = !SubscriptionService.getIsProLimited()
+
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
                 if (isPurchased) {
@@ -114,7 +118,7 @@ class MainActivity : LocalizationActivity(),
                                 try {
                                     StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_TOOLBAR)
                                     navigate(
-                                        HomeFragmentDirections.actionNavigationActivityToSubscriptionTutorial()
+                                        MobileNavigationDirections.activityToSubscriptionTutorial()
                                     )
                                 } catch (e: Exception) {
                                 }

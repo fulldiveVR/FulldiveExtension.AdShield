@@ -25,10 +25,14 @@ import com.fulldive.iap.IapConnector
 import com.fulldive.iap.PurchaseServiceListener
 import com.fulldive.iap.SubscriptionServiceListener
 import com.fulldive.wallet.extensions.orEmptyString
+import engine.ABPService.orTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope.coroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import remoteconfig.IRemoteConfigFetcher
+import remoteconfig.isAdShieldLegalDescriptionEnabled
+import remoteconfig.isAdShieldProLimited
 import service.AppSettingsService
 
 object SubscriptionService {
@@ -41,10 +45,13 @@ object SubscriptionService {
     const val STATE_UNDEFINED = 0
     private val repeatPopupCounts = listOf(2, 5)
 
+    private var remoteConfig: IRemoteConfigFetcher? = null
+
     val isConnectedState = MutableStateFlow(false)
     val isProStatusPurchasedState = MutableStateFlow<Boolean>(false)
     val isPopupShowState = MutableStateFlow<Boolean>(false)
     private val subscriptionPrices = mutableMapOf<String, DataWrappers.ProductDetails>()
+    private var isProLimited = false
 
     private var iapConnector: IapConnector? = null
 
@@ -146,6 +153,26 @@ object SubscriptionService {
         }
     }
 
+    fun updateIsProLimited() {
+        val isLimited = remoteConfig?.isAdShieldProLimited().orTrue()
+        if (isProLimited != isLimited) {
+            isProLimited = isLimited
+            handlePromoPopupState()
+        }
+    }
+
+    fun setRemoteConfigFetcher(configFetcher: IRemoteConfigFetcher) {
+        this.remoteConfig = configFetcher
+    }
+
+    fun getIsProLimited(): Boolean {
+        return remoteConfig?.isAdShieldProLimited().orTrue()
+    }
+
+    fun getIsLegalStateDescriptionEnabled(): Boolean {
+        return remoteConfig?.isAdShieldLegalDescriptionEnabled().orTrue()
+    }
+
     private fun getSkuPrice(sku: String): Pair<String, String> {
         return subscriptionPrices[sku]?.let {
             Pair(it.priceAmount.toString(), it.priceCurrencyCode.orEmptyString())
@@ -154,13 +181,17 @@ object SubscriptionService {
 
     private fun handlePromoPopupState() {
         val isClosed = AppSettingsService.getIsPromoPopupClosed()
-        isPopupShowState.value = if (isClosed) {
-            val closeCount = AppSettingsService.getPromoCloseStartCounter()
-            val startCount = AppSettingsService.getCurrentStartCounter()
-            val diff = startCount - closeCount
-            repeatPopupCounts.any { it == diff }
-        } else {
-            true
+        isPopupShowState.value = when {
+            isProLimited -> {
+                false
+            }
+            isClosed -> {
+                val closeCount = AppSettingsService.getPromoCloseStartCounter()
+                val startCount = AppSettingsService.getCurrentStartCounter()
+                val diff = startCount - closeCount
+                repeatPopupCounts.any { it == diff }
+            }
+            else -> true
         }
     }
 }

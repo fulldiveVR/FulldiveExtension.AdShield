@@ -75,6 +75,7 @@
         <entry key="app/src/main/res/drawable/ic_blocklists.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_check_mark.xml" value="0.3125" />
+        <entry key="app/src/main/res/drawable/ic_cross.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_developing.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_discord.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_email_us.xml" value="0.1" />
@@ -84,6 +85,7 @@
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_level_bubble.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_limited_offer.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/ic_lock_check.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_map_marker_off.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.119" />
@@ -95,6 +97,7 @@
         <entry key="app/src/main/res/drawable/ic_power.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_pro.xml" value="0.24" />
         <entry key="app/src/main/res/drawable/ic_pro_inactive.xml" value="0.24" />
+        <entry key="app/src/main/res/drawable/ic_promo_adshield.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable/ic_recognise_networks.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_rewards.xml" value="0.196" />
         <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.1" />
@@ -122,6 +125,7 @@
         <entry key="app/src/main/res/drawable/tab_indicator_2.xml" value="0.104" />
         <entry key="app/src/main/res/drawable/user_experience_progress_bar.xml" value="0.2035" />
         <entry key="app/src/main/res/layout/activity_create.xml" value="0.1171875" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.355" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4932182490752158" />
         <entry key="app/src/main/res/layout/app_settings_dialog_layout.xml" value="0.20425724637681159" />
         <entry key="app/src/main/res/layout/dialog_add_account.xml" value="0.26979166666666665" />
@@ -139,6 +143,7 @@
         <entry key="app/src/main/res/layout/fragment_firsttime.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_help.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_keyboard_alphabet.xml" value="0.2625" />
         <entry key="app/src/main/res/layout/fragment_leases.xml" value="0.2015625" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_networks.xml" value="0.2015625" />

@@ -17,6 +17,8 @@
 package com.fulldive.wallet.di.modules
 
 import android.content.Context
+import remoteconfig.FirebaseConfigurationFetcher
+import remoteconfig.IRemoteConfigFetcher
 import com.fulldive.wallet.rx.AppSchedulers
 import com.fulldive.wallet.rx.ISchedulersProvider
 import com.joom.lightsaber.Module
@@ -34,4 +36,7 @@ class ApplicationConfigurationModule(private val context: Context) {
     @Provide
     fun provideSchedulersProvider(): ISchedulersProvider = AppSchedulers
 
+    @Singleton
+    @Provide
+    fun getConfigurationFetcher(): IRemoteConfigFetcher = FirebaseConfigurationFetcher()
 }
