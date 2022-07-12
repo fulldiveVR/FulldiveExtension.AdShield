@@ -14,7 +14,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ui.web
+package ui.web.appsettings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -25,16 +25,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import appextension.PopupManager
-import com.fulldive.wallet.extensions.orEmptyString
 import com.google.gson.Gson
 import model.App
-import model.AppId
 import org.adshield.R
 import ui.BottomSheetFragment
 import ui.advanced.apps.AppsViewModel
 import ui.advanced.packs.PacksViewModel
 import ui.utils.CircleProgressBar
-import ui.web.appsettings.AppsSettingsExtension
 import utils.Links
 
 class AppsWebSettingsFragment : BottomSheetFragment() {

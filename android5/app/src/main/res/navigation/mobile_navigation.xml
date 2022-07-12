@@ -240,7 +240,12 @@
 
     <fragment
         android:id="@+id/appsWebSettingsFragment"
-        android:name="ui.web.AppsWebSettingsFragment"
+        android:name="ui.web.appsettings.AppsWebSettingsFragment"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/customSettingsWebSettingsFragment"
+        android:name="ui.web.customsettings.CustomWebSettingsFragment"
         tools:layout="@layout/fragment_web_view" />
     <fragment
         android:id="@+id/settingsAppFragment"
@@ -268,6 +273,15 @@
         <action
             android:id="@+id/action_advancedFragment_to_appsFragment"
             app:destination="@id/appsWebSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/advancedFragment" />
+
+        <action
+            android:id="@+id/action_advancedFragment_to_customSettingsFragment"
+            app:destination="@id/customSettingsWebSettingsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"

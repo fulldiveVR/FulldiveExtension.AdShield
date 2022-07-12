@@ -28,7 +28,6 @@ import com.fulldive.wallet.extensions.withDefaults
 import com.fulldive.wallet.interactors.AppSettingsInteractor
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
 import com.fulldive.wallet.models.Chain
-import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
@@ -41,6 +40,7 @@ import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
+import model.CustomBlocklistConfig
 import org.adshield.BuildConfig
 import remoteconfig.IRemoteConfigFetcher
 import service.*
@@ -174,7 +174,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
-            FilteringService.reload(packsVM.getActiveUrls())
+            FilteringService.reload(
+                packsVM.getActiveUrls(),
+                statsVM.getCustomBlocklistConfig(),
+                CustomBlocklistConfig.emptyConfig
+            )
         }
     }
 
@@ -202,7 +206,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     }
 
     private fun initRemoteConfig() {
-        SubscriptionService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
+        RemoteConfigService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
         remoteConfigDisposable = remoteConfig
             .fetch(force = false)
             .withDefaults()

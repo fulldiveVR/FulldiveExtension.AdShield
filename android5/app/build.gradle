@@ -22,8 +22,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.joom.lightsaber.android'
 
 def versionMajor = 1
-def versionMinor = 3
-def versionPatch = 6
+def versionMinor = 4
+def versionPatch = 0
 
 android {
     compileSdkVersion 32

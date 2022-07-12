@@ -77,7 +77,12 @@ class PacksViewModel : ViewModel() {
                                 .distinct()
                         blocklist.downloadAll(urls, force = true)
                         blocklist.mergeAll(urls)
-                        engine.reloadBlockLists(getActiveUrls())
+                        // No need to update custom filters on blocklist change.
+                        engine.reloadBlockLists(
+                            getActiveUrls(),
+                            CustomBlocklistConfig.emptyConfig,
+                            CustomBlocklistConfig.emptyConfig
+                        )
                         persistence.save(packs.copy(lastRefreshMillis = now()))
                     }
                 } catch (ex: Throwable) {
@@ -120,7 +125,12 @@ class PacksViewModel : ViewModel() {
 
                 blocklist.downloadAll(urls)
                 blocklist.mergeAll(urls)
-                engine.reloadBlockLists(getActiveUrls())
+                // No need to update custom filters on blocklist change.
+                engine.reloadBlockLists(
+                    getActiveUrls(),
+                    CustomBlocklistConfig.emptyConfig,
+                    CustomBlocklistConfig.emptyConfig
+                )
                 updatePack(pack.changeStatus(installing = false, installed = true))
             } catch (ex: Throwable) {
                 log.e("Could not install pack".cause(ex))
@@ -147,7 +157,12 @@ class PacksViewModel : ViewModel() {
                     blocklist.mergeAll(urls)
                 }
 
-                engine.reloadBlockLists(getActiveUrls())
+                // No need to update custom filters on blocklist change.
+                engine.reloadBlockLists(
+                    getActiveUrls(),
+                    CustomBlocklistConfig.emptyConfig,
+                    CustomBlocklistConfig.emptyConfig
+                )
                 updatePack(pack.changeStatus(installing = false, installed = false))
             } catch (ex: Throwable) {
                 log.e("Could not uninstall pack".cause(ex))
@@ -208,7 +223,12 @@ class PacksViewModel : ViewModel() {
 
                 blocklist.downloadAll(urls)
                 blocklist.mergeAll(urls)
-                engine.reloadBlockLists(getActiveUrls())
+                // No need to update custom filters on blocklist change.
+                engine.reloadBlockLists(
+                    getActiveUrls(),
+                    CustomBlocklistConfig.emptyConfig,
+                    CustomBlocklistConfig.emptyConfig
+                )
                 changedPacks
                     .map { pack ->
                         pack.changeStatus(

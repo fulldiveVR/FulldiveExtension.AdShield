@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -31,10 +30,10 @@
             <ImageView
                 android:id="@+id/activity_icon"
                 android:layout_width="@dimen/icon_huge"
-                android:visibility="gone"
                 android:layout_height="@dimen/icon_huge"
                 android:src="@drawable/ic_shield_outline"
-                android:tint="@color/colorAlert" />
+                android:visibility="gone"
+                app:tint="@color/colorAlert" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -45,18 +44,21 @@
 
                 <TextView
                     android:id="@+id/activity_name"
-                    style="@style/Text.H2"
+                    style="@style/AccentTextButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="middle"
                     android:singleLine="true"
-                    android:text="www.apple.com" />
+                    android:text="www.apple.com"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/textsize_xlarge" />
 
                 <TextView
                     android:id="@+id/activity_comment"
                     style="@style/Text.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_12dp"
                     android:text="@string/activity_request_blocked" />
 
             </LinearLayout>
@@ -65,38 +67,42 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/normal"
-            android:background="@color/shadowColor" />
+            android:background="@color/shadowColor"
+            android:visibility="visible" />
 
         <TextView
-            android:visibility="gone"
             style="@style/Text.H3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_12dp"
             android:layout_marginTop="@dimen/half"
-            android:text="@string/activity_actions_header" />
+            android:text="@string/activity_actions_header"
+            android:visibility="gone" />
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/doubled">
+            android:padding="@dimen/doubled"
+            android:visibility="visible">
 
-            <ui.advanced.packs.OptionView
+            <TextView
                 android:id="@+id/activity_primaryaction"
+                style="@style/AccentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconRef="@drawable/ic_unlock"
-                app:name="@string/activity_action_add_to_blacklist" />
+                android:padding="@dimen/size_4dp"
+                android:text="@string/activity_action_add_to_blacklist" />
 
-            <ui.advanced.packs.OptionView
+            <TextView
                 android:id="@+id/activity_copyaction"
+                style="@style/AccentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconRef="@drawable/ic_baseline_file_copy_24"
-                app:name="@string/activity_action_copy_to_clipboard" />
+                android:layout_marginTop="@dimen/size_12dp"
+                android:padding="@dimen/size_4dp"
+                android:text="@string/activity_action_copy_to_clipboard" />
         </LinearLayout>
 
         <View

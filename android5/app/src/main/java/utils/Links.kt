@@ -36,6 +36,7 @@ object Links {
     const val idoAnnouncement = "https://www.fulldive.com/fulladshield"
     const val dnsSettings = "https://static.fdvr.co/dns-settings/index.html"
     const val appsSettings = "https://static.fdvr.co/app-settings/index.html"
+    const val customSettings = "https://static.fdvr.co/hosts-settings/index.html"
 
     val updated = if (EnvironmentService.isSlim()) FULLDIVE_URL else FULLDIVE_URL
 

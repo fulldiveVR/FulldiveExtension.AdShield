@@ -27,7 +27,6 @@ import appextension.getColorCompat
 import model.HistoryEntryType
 import org.adshield.R
 import ui.StatsViewModel
-import ui.advanced.packs.OptionView
 import ui.app
 import utils.AndroidUtils
 
@@ -58,8 +57,8 @@ class StatsDetailFragment : Fragment() {
         val fullName: TextView = root.findViewById(R.id.activity_fullname)
         val time: TextView = root.findViewById(R.id.activity_fulltime)
         val counter: TextView = root.findViewById(R.id.activity_occurrences)
-        val primaryAction: OptionView = root.findViewById(R.id.activity_primaryaction)
-        val copyAction: OptionView = root.findViewById(R.id.activity_copyaction)
+        val primaryAction: TextView = root.findViewById(R.id.activity_primaryaction)
+        val copyAction: TextView = root.findViewById(R.id.activity_copyaction)
 
         viewModel.history.observe(viewLifecycleOwner, Observer {
             viewModel.get(args.historyId)?.run {
@@ -127,29 +126,25 @@ class StatsDetailFragment : Fragment() {
 
                 when {
                     viewModel.isDenied(this.name) -> {
-                        primaryAction.name = getString(R.string.activity_action_added_to_blacklist)
-                        primaryAction.active = true
+                        primaryAction.text = getString(R.string.activity_action_added_to_blacklist)
                         primaryAction.setOnClickListener {
                             viewModel.undeny(this.name)
                         }
                     }
                     viewModel.isAllowed(this.name) -> {
-                        primaryAction.name = getString(R.string.activity_action_added_to_whitelist)
-                        primaryAction.active = true
+                        primaryAction.text = getString(R.string.activity_action_added_to_whitelist)
                         primaryAction.setOnClickListener {
                             viewModel.unallow(this.name)
                         }
                     }
                     this.type == HistoryEntryType.passed -> {
-                        primaryAction.name = getString(R.string.activity_action_add_to_blacklist)
-                        primaryAction.active = false
+                        primaryAction.text = getString(R.string.activity_action_add_to_blacklist)
                         primaryAction.setOnClickListener {
                             viewModel.deny(this.name)
                         }
                     }
                     else -> {
-                        primaryAction.name = getString(R.string.activity_action_add_to_whitelist)
-                        primaryAction.active = false
+                        primaryAction.text = getString(R.string.activity_action_add_to_whitelist)
                         primaryAction.setOnClickListener {
                             viewModel.allow(this.name)
                         }
