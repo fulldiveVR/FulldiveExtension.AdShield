@@ -42,7 +42,7 @@ class AdvancedFragment : Fragment() {
         val destination: NavDirections
     )
 
-    // private val isSlimMode = EnvironmentService.isSlim()
+    //     private val isSlimMode = EnvironmentService.isSlim()
     private val isSlimMode = true
 
     private val sections by lazy {

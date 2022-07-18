@@ -22,6 +22,7 @@ import appextension.getProperty
 import appextension.setProperty
 import model.AppTheme
 import model.ThemeHelper
+import org.adshield.BuildConfig
 
 @SuppressLint("StaticFieldLeak")
 object AppSettingsService {
@@ -126,6 +127,10 @@ object AppSettingsService {
 
     fun setAppSettingsPermissionGranted() {
         sharedPreferences.setProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, true)
+    }
+
+    fun compareVersions(): Int {
+        return BuildConfig.VERSION_CODE - RemoteConfigService.getActualAppVersion()
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {

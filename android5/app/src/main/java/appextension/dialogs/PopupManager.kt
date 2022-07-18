@@ -14,11 +14,10 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package appextension.dialogs
 
 import android.content.Context
-import appextension.dialogs.*
-import com.flurry.sdk.it
+import appextension.openAppInGooglePlay
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -133,6 +132,12 @@ object PopupManager {
                     }
             }
             else -> onPermissionGranted.invoke(true)
+        }
+    }
+
+    fun showUpdateDialog(context: Context) {
+        if (AppSettingsService.compareVersions() < 0) {
+            UpdateAppDialog.show(context)
         }
     }
 
