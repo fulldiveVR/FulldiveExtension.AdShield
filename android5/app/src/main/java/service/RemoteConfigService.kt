@@ -42,4 +42,8 @@ object RemoteConfigService {
     fun getIsWebCustomSettingsEnabled(): Boolean {
         return remoteConfig?.isAdShieldWebCustomSettingsLimited().orTrue()
     }
+
+    fun getIsAdShieldAdsCounterLimited(): Boolean {
+        return remoteConfig?.isAdShieldAdsCounterLimited().orTrue()
+    }
 }
