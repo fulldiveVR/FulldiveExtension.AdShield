@@ -136,9 +136,16 @@ class HomeFragment : Fragment() {
                     getString(R.string.home_status_detail_progress)
                 status.active && status.gatewayId != null && counter == null -> {
                     setStatusConnected()
-                    longStatusTextView.text = (
-                            "${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}"
-                            ).withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                    longStatusTextView.text =
+                        if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
+                            getString(R.string.home_status_detail_active_slim)
+                        } else {
+                            ("${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}")
+                                .withBoldSections(
+                                    requireContext()
+                                        .getColorFromAttr(R.attr.colorAccent)
+                                )
+                        }
                 }
                 status.active && EnvironmentService.isSlim() -> {
                     setStatusConnected()
@@ -151,22 +158,31 @@ class HomeFragment : Fragment() {
                 }
                 status.active && status.gatewayId != null -> {
                     setStatusConnected()
-                    val statusString = "${
-                        getString(
-                            R.string.home_status_detail_active_with_counter,
-                            counter.toString()
-                        )
-                    }\n ${getString(R.string.home_status_detail_plus)}"
+                    val statusString = if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
+                        getString(R.string.home_status_detail_active_slim)
+                    } else {
+                        "${
+                            getString(
+                                R.string.home_status_detail_active_with_counter,
+                                counter.toString()
+                            )
+                        }\n ${getString(R.string.home_status_detail_plus)}"
+                    }
                     longStatusTextView.text =
                         statusString.withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
                 status.active -> {
                     setStatusConnected()
-                    longStatusTextView.text = getString(
-                        R.string.home_status_detail_active_with_counter,
-                        counter.toString()
-                    )
-                        .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                    longStatusTextView.text =
+                        if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
+                            getString(R.string.home_status_detail_active_slim)
+                        } else {
+                            getString(
+                                R.string.home_status_detail_active_with_counter,
+                                counter.toString()
+                            )
+                                .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                        }
                 }
                 else -> {
                     setStatusDisconnected()

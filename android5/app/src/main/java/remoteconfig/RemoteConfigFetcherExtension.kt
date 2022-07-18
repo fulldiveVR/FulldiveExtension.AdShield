@@ -11,3 +11,6 @@ fun IRemoteConfigFetcher.isAdShieldWebAppSettingsLimited() =
 
 fun IRemoteConfigFetcher.isAdShieldWebCustomSettingsLimited() =
     getRemoteBoolean("is_adshield_web_custom_settings_limited")
+
+fun IRemoteConfigFetcher.isAdShieldAdsCounterLimited() =
+    getRemoteBoolean("is_adshield_ads_counter_limited")
