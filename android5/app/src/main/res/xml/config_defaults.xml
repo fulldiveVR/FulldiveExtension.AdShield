@@ -16,4 +16,8 @@
         <key>is_adshield_web_custom_settings_limited</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>is_adshield_ads_counter_limited</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>
