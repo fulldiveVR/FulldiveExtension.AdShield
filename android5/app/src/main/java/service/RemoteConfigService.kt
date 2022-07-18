@@ -17,6 +17,7 @@
 package service
 
 import com.fulldive.wallet.extensions.orTrue
+import org.adshield.BuildConfig
 import remoteconfig.*
 
 object RemoteConfigService {
@@ -48,6 +49,11 @@ object RemoteConfigService {
     }
 
     fun getActualAppVersion(): Int {
-        return remoteConfig?.getCurrentVersion() ?: 0
+        val version = remoteConfig?.getCurrentVersion() ?: 0
+        return if (version == 0) {
+            BuildConfig.VERSION_CODE
+        } else {
+            version
+        }
     }
 }

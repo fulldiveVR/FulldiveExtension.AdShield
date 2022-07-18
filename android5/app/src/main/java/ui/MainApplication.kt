@@ -101,8 +101,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         FlurryAgent.Builder()
             .withLogEnabled(true)
             .build(this, BuildConfig.FLURRY_API_KEY)
-
-        initRemoteConfig()
     }
 
     private fun setupEvents() {
@@ -171,6 +169,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         }
         ConnectivityService.setup()
 
+        initRemoteConfig()
+        initFiltering()
+    }
+
+    private fun initFiltering() {
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
@@ -212,6 +215,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             .withDefaults()
             .subscribe(
                 {
+                    initFiltering()
                     FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
                 },
                 { error ->
