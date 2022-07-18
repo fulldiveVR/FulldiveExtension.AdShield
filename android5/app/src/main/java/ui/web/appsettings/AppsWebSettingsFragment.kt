@@ -24,7 +24,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import appextension.PopupManager
+import appextension.dialogs.PopupManager
 import com.google.gson.Gson
 import model.App
 import org.adshield.R
