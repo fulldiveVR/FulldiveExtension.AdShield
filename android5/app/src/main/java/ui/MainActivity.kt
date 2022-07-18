@@ -36,12 +36,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import appextension.*
+import appextension.dialogs.PopupManager
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.adshield.MobileNavigationDirections
 import org.adshield.R
@@ -209,6 +211,10 @@ class MainActivity : LocalizationActivity(),
         }
 
         PopupManager.onAppStarted(this)
+        lifecycleScope.launch {
+            delay(5000)
+            PopupManager.showUpdateDialog(this@MainActivity)
+        }
     }
 
     private fun initViewModel() {

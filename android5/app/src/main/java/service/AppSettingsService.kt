@@ -22,6 +22,7 @@ import appextension.getProperty
 import appextension.setProperty
 import model.AppTheme
 import model.ThemeHelper
+import org.adshield.BuildConfig
 
 @SuppressLint("StaticFieldLeak")
 object AppSettingsService {
@@ -115,6 +116,10 @@ object AppSettingsService {
 
     fun getPromoCloseStartCounter(): Int {
         return  sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+    }
+
+    fun compareVersions(): Int {
+        return BuildConfig.VERSION_CODE - RemoteConfigService.getActualAppVersion()
     }
 
     private fun initCurrentAppTheme(theme: AppTheme) {

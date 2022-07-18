@@ -28,7 +28,7 @@ object UpdateAppDialog {
     ) {
         val view = LayoutInflater.from(context).inflate(R.layout.app_update_available_dialog_layout, null)
 
-        val dialog = AlertDialog.Builder(context, R.style.PopupDialogTheme)
+        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
             .setView(view)
             .setPositiveButton(R.string.str_ok) { _, _ ->
             }
