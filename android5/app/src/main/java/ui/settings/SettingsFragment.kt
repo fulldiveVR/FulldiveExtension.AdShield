@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.preference.PreferenceFragmentCompat
 import appextension.EmailHelper
-import appextension.PopupManager
+import appextension.dialogs.PopupManager
 import model.Account
 import model.AccountId
 import org.adshield.R

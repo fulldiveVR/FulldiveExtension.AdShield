@@ -46,4 +46,8 @@ object RemoteConfigService {
     fun getIsAdShieldAdsCounterLimited(): Boolean {
         return remoteConfig?.isAdShieldAdsCounterLimited().orTrue()
     }
+
+    fun getActualAppVersion(): Int {
+        return remoteConfig?.getCurrentVersion() ?: 0
+    }
 }
