@@ -102,7 +102,7 @@
   <string name="home_action_tap_to_activate">Tap to activate</string>
   <string name="home_status_detail_paused">paused until timer ends</string>
   <string name="home_status_detail_active">Detecting *suspicious requests*</string>
-  <string name="home_status_detail_active_with_counter">Detected *%s* suspicious requests</string>
+  <string name="home_status_detail_active_with_counter">Forwarded *%s* suspicious ads, virus, trackers to outer space</string>
   <string name="home_status_detail_active_slim">Full AdShield is active</string>
   <string name="home_status_detail_plus">*+* protecting your *privacy*</string>
   <string name="home_status_detail_progress">please wait...</string>
