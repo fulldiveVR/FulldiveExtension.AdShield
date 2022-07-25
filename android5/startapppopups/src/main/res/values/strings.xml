@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="rate_submit">Rate</string>
+    <string name="install_submit">Learn more</string>
+    <string name="rate_cancel">Not now</string>
+    <string name="maybe_later">Maybe Later</string>
+    <string name="rate_us_title">Rate us</string>
+    <string name="install_browser_title">Sync with Fulldive and get rewards</string>
+    <string name="install_browser_description">Thank you for trying our Full apps, we feature many more great apps such as a browser that rewards you cash when you browse, check it out!</string>
+    <string name="rate_us_description">Do you like Fulldive? We would love to hear your feedback and make the app better for you.</string>
+</resources>
