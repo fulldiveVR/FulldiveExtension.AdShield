@@ -27,7 +27,7 @@ object RateReportDialogBuilder {
     fun show(context: Context, onPositiveClicked: (String) -> Unit) {
         val view = LayoutInflater.from(context).inflate(R.layout.rate_report_dialog_layout, null)
         val messageEditText = view.findViewById<EditText>(R.id.messageEditText)
-        val dialog = AlertDialog.Builder(context, R.style.PopupDialogTheme)
+        val dialog = AlertDialog.Builder(context)
             .setView(view)
             .setTitle(R.string.rate_us_title)
             .setPositiveButton(R.string.rate_submit) { _, _ ->
