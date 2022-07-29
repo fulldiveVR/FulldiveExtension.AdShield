@@ -145,7 +145,7 @@ class CustomWebSettingsFragment : BottomSheetFragment() {
 
             override fun onPageFinished(view: WebView?, url: String) {
                 if (currentUrl == url) {
-                    webView.loadUrl("javascript:loadConfig('$customBlocklistsJsonConfig')")
+                    webView.loadUrl("javascript:loadHost('$customBlocklistsJsonConfig')")
                 }
                 webBackButton.isGone = !webView.canGoBack()
             }

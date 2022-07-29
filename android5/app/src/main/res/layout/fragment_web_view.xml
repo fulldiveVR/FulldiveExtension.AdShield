@@ -29,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_8dp"
+        android:visibility="gone"
         android:layout_marginEnd="@dimen/size_8dp"
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
