@@ -14,7 +14,7 @@
   ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,6 +24,38 @@
     android:padding="@dimen/half"
     tools:context="ui.home.HelpFragment">
 
+    <ImageView
+        android:id="@+id/webBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_8dp"
+        android:layout_marginEnd="@dimen/size_8dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="@+id/searchBar"
+        app:layout_constraintEnd_toStartOf="@+id/searchBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/searchBar" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_12dp"
+        android:layout_marginEnd="@dimen/size_12dp"
+        android:autofillHints="false"
+        android:background="@drawable/background_search_bar"
+        android:imeOptions="actionSearch"
+        android:inputType="textUri"
+        android:maxLines="1"
+        android:paddingStart="@dimen/size_24dp"
+        android:paddingEnd="@dimen/size_24dp"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBottom_toTopOf="@+id/webView"
+        app:layout_constraintEnd_toStartOf="@+id/webRefreshButton"
+        app:layout_constraintStart_toEndOf="@+id/webBackButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryBackground="@color/colorTransparent" />
+
     <ui.utils.CircleProgressBar
         android:id="@+id/circleProgressView"
         android:layout_width="80dp"
@@ -32,12 +64,33 @@
         android:layout_marginTop="@dimen/size_12dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:visibility="gone"
-        app:indicatorColor="@color/colorAccent" />
+        app:indicatorColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
-    <ui.web.ThemedWebView
+    <ui.web.BackPressedWebView
         android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/size_12dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
+    <ImageView
+        android:id="@+id/webRefreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_8dp"
+        android:layout_marginEnd="@dimen/size_8dp"
+        android:src="@drawable/ic_baseline_refresh_24"
+        app:layout_constraintBottom_toBottomOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/searchBar"
+        app:layout_constraintTop_toTopOf="@+id/searchBar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

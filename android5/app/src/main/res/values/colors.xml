@@ -58,6 +58,8 @@
     <color name="backgroundPrimary">#ffffff</color>
     <color name="backgroundPrimaryAlpha40">#66ffffff</color>
 
+    <color name="backgroundSearchBar">#F3F3F3</color>
+
 
     <color name="betty_accordant_halftone">#C1F8DB</color>
     <color name="hasty_mare">#F93FF656</color>
