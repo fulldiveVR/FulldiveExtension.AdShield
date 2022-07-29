@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/drawable/background_disabled_colored_button.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/background_rounded_border_error.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_rounded_border_normal.xml" value="0.2625" />
+        <entry key="app/src/main/res/drawable/background_search_bar.xml" value="0.241" />
         <entry key="app/src/main/res/drawable/background_secondary_border_normal_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_subscription_section.xml" value="0.2625" />
         <entry key="app/src/main/res/drawable/background_user_level.xml" value="0.18" />

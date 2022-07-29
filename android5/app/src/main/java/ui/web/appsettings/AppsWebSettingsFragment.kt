@@ -21,6 +21,9 @@ import android.os.Bundle
 import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -32,6 +35,7 @@ import ui.BottomSheetFragment
 import ui.advanced.apps.AppsViewModel
 import ui.advanced.packs.PacksViewModel
 import ui.utils.CircleProgressBar
+import ui.web.WebService
 import utils.Links
 
 class AppsWebSettingsFragment : BottomSheetFragment() {
@@ -58,6 +62,38 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
         val root = inflater.inflate(R.layout.fragment_web_view, container, false)
         val webView: WebView = root.findViewById(R.id.webView)
         val circleProgressView: CircleProgressBar = root.findViewById(R.id.circleProgressView)
+        val searchBar: SearchView = root.findViewById(R.id.searchBar)
+        val webBackButton: AppCompatImageView = root.findViewById(R.id.webBackButton)
+        val webRefreshButton: AppCompatImageView = root.findViewById(R.id.webRefreshButton)
+        webBackButton.setOnClickListener {
+            if (webView.canGoBack()) {
+                webView.goBack()
+            }
+            webView.postDelayed(
+                { searchBar.setQuery(webView.url, false) },
+                200
+            )
+        }
+
+        webRefreshButton.setOnClickListener {
+            webView.url?.let { it1 -> webView.loadUrl(it1) }
+        }
+
+        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (WebService.isUrl(query)) {
+                    webView.loadUrl(query)
+                } else {
+                    webView.loadUrl("https://www.google.com/search?q=$query")
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return newText.isNotEmpty()
+            }
+        })
+
         webView.isVisible = false
         circleProgressView.isVisible = true
 
@@ -70,6 +106,10 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
                 appJsonConfig = Gson().toJson(apps)
                 webView.isVisible = true
                 circleProgressView.isVisible = false
+                searchBar.setQuery(appsSettingsUrl, false)
+                searchBar.requestFocus()
+                searchBar.isActivated = true
+                searchBar.isIconified = false
                 PopupManager.showAppSettingsPermissionDialog(requireContext()) { isGranted ->
                     if (isGranted) {
                         webView.loadUrl(appsSettingsUrl)
@@ -91,9 +131,18 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
         webView.addJavascriptInterface(extension, AppsSettingsExtension.EXTENSION_NAME)
 
         webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String) {
-                webView.loadUrl("javascript:loadConfig('$appJsonConfig')")
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                if (url.isNotEmpty()) {
+                    searchBar.setQuery(url, false)
+                }
+                return super.shouldOverrideUrlLoading(view, url)
+            }
 
+            override fun onPageFinished(view: WebView?, url: String) {
+                if (currentUrl == url) {
+                    webView.loadUrl("javascript:loadConfig('$appJsonConfig')")
+                }
+                webBackButton.isGone = !webView.canGoBack()
             }
         }
         return root
