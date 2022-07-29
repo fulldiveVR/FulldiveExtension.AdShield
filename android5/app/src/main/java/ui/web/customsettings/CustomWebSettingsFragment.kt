@@ -116,9 +116,6 @@ class CustomWebSettingsFragment : BottomSheetFragment() {
                 webView.isVisible = true
                 circleProgressView.isVisible = false
                 searchBar.setQuery(customSettingsUrl, false)
-                searchBar.requestFocus()
-                searchBar.isActivated = true
-                searchBar.isIconified = false
                 webView.loadUrl(customSettingsUrl)
                 isLoaded = true
             }
@@ -145,13 +142,15 @@ class CustomWebSettingsFragment : BottomSheetFragment() {
 
             override fun onPageFinished(view: WebView?, url: String) {
                 if (currentUrl == url) {
-                    webView.loadUrl("javascript:loadHost('$customBlocklistsJsonConfig')")
+                    webView.loadUrl("javascript:loadHosts('$customBlocklistsJsonConfig')")
                 }
                 webBackButton.isGone = !webView.canGoBack()
             }
         }
         return root
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.web_menu, menu)
