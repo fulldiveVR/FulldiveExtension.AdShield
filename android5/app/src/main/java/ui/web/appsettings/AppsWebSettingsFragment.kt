@@ -107,9 +107,6 @@ class AppsWebSettingsFragment : BottomSheetFragment() {
                 webView.isVisible = true
                 circleProgressView.isVisible = false
                 searchBar.setQuery(appsSettingsUrl, false)
-                searchBar.requestFocus()
-                searchBar.isActivated = true
-                searchBar.isIconified = false
                 PopupManager.showAppSettingsPermissionDialog(requireContext()) { isGranted ->
                     if (isGranted) {
                         webView.loadUrl(appsSettingsUrl)

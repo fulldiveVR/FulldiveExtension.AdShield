@@ -31,6 +31,7 @@
         android:layout_marginStart="@dimen/size_8dp"
         android:layout_marginEnd="@dimen/size_8dp"
         android:src="@drawable/ic_baseline_arrow_back_24"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
         app:layout_constraintEnd_toStartOf="@+id/searchBar"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +40,7 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchBar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="@dimen/size_12dp"
         android:layout_marginEnd="@dimen/size_12dp"
         android:autofillHints="false"
@@ -47,9 +48,10 @@
         android:imeOptions="actionSearch"
         android:inputType="textUri"
         android:maxLines="1"
-        android:paddingStart="@dimen/size_24dp"
-        android:paddingEnd="@dimen/size_24dp"
+        android:paddingStart="@dimen/size_8dp"
         android:selectAllOnFocus="true"
+        android:theme="@style/AppSearchView"
+        app:iconifiedByDefault="false"
         app:layout_constraintBottom_toTopOf="@+id/webView"
         app:layout_constraintEnd_toStartOf="@+id/webRefreshButton"
         app:layout_constraintStart_toEndOf="@+id/webBackButton"
@@ -70,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
-    <ui.web.BackPressedWebView
+    <ui.web.ThemedWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -16,7 +16,6 @@
 
 package com.fulldive.startapppopups.donation
 
-import android.os.Build
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -51,9 +50,7 @@ class DonationSnackbar {
                 bottomMargin + params.bottomMargin
             )
             rootView.layoutParams = params
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                rootView.elevation = 0f
-            }
+            rootView.elevation = 0f
             snackbar?.setBackgroundTint(
                 ContextCompat.getColor(
                     view.context,
