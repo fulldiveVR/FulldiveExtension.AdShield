@@ -50,7 +50,7 @@ class WebFragment : BottomSheetFragment() {
         }
 
         val root = inflater.inflate(R.layout.fragment_web_view, container, false)
-        val webView: BackPressedWebView = root.findViewById(R.id.webView)
+        val webView: WebView = root.findViewById(R.id.webView)
         val circleProgressView: CircleProgressBar = root.findViewById(R.id.circleProgressView)
         val searchBar: SearchView = root.findViewById(R.id.searchBar)
         val webBackButton: AppCompatImageView = root.findViewById(R.id.webBackButton)
@@ -96,10 +96,6 @@ class WebFragment : BottomSheetFragment() {
                 webView.isVisible = true
                 circleProgressView.isVisible = false
                 searchBar.setQuery(args.url, false)
-                searchBar.requestFocus()
-                searchBar.isActivated = true
-                searchBar.isIconified = false
-
                 webView.loadUrl(args.url)
                 isLoaded = true
             }

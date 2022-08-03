@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022 FullDive
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.fulldive.iap
 
 import android.app.Activity
@@ -22,6 +38,7 @@ class BillingService(
     private var decodedKey: String? = null
 
     private var enableDebug: Boolean = false
+    private var acknowledgeAttempts = 0
 
     private val productDetails = mutableMapOf<String, ProductDetails?>()
 
@@ -101,6 +118,7 @@ class BillingService(
     }
 
     private fun launchBillingFlow(activity: Activity, sku: String, type: String) {
+        acknowledgeAttempts = 0
         sku.toProductDetails(type) { productDetails ->
             if (productDetails != null) {
                 val productDetailParamBuilder = BillingFlowParams.ProductDetailsParams.newBuilder()
@@ -202,6 +220,12 @@ class BillingService(
                                                     TAG,
                                                     "Handling consumables : Error during consumption attempt -> ${billingResult.debugMessage}"
                                                 )
+                                                if (!purchase.isAcknowledged && acknowledgeAttempts <= MAX_ACKNOWLEDGE_ATTEMPTS) {
+                                                    GlobalScope.launch {
+                                                        queryPurchases()
+                                                        acknowledgeAttempts++
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -407,5 +431,6 @@ class BillingService(
 
     companion object {
         const val TAG = "GoogleBillingService"
+        private const val MAX_ACKNOWLEDGE_ATTEMPTS = 2
     }
 }
