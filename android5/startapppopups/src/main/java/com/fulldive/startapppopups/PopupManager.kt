@@ -115,12 +115,12 @@ class PopupManager {
                             onPurchased = {
                                 donationActionListener.invoke(DonationAction.DonationSuccess)
                                 showDonationSuccess(activity)
+                                onCloseDonationClicked(sharedPreferences)
                             }
                         )
                     }
                     donationActionListener.invoke(DonationAction.OpenedFromPopup)
                     snackbar.dismiss()
-                    onCloseDonationClicked(sharedPreferences)
                 },
                 onCloseClicked = {
                     donationActionListener.invoke(DonationAction.PopupClosed)
