@@ -79,8 +79,8 @@ afterEvaluate {
 
                     // You can then customize attributes of the publication as shown below.
                     groupId = "com.fulldive"
-                    artifactId = 'FD-Popups'
-                    version = '1.0.3'
+                    artifactId = 'popups'
+                    version = '1.0.4'
                 }
             }
         }
