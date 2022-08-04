@@ -24,7 +24,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 19
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -80,7 +80,7 @@ afterEvaluate {
                     // You can then customize attributes of the publication as shown below.
                     groupId = "com.fulldive"
                     artifactId = 'popups'
-                    version = '1.0.5'
+                    version = '1.0.6'
                 }
             }
         }

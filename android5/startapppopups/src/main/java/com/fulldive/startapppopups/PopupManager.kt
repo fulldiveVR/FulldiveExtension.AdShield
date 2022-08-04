@@ -60,6 +60,7 @@ class PopupManager {
         val sharedPreferences = activity.getPrivateSharedPreferences()
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
         val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        val isDonated = sharedPreferences.getProperty(KEY_IS_DONATED, false)
         val isPromoPopupCloseCounter = sharedPreferences
             .getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
 
@@ -99,7 +100,10 @@ class PopupManager {
             }
         }
 
-        if (isShowDonationPopup && (!isPromoPopupClosed || repeatPopupCounts.any { it == diff })) {
+        if (
+            isShowDonationPopup && (!isPromoPopupClosed || repeatPopupCounts.any { it == diff })
+            && (!isDonated || repeatPopupCountsIfDonated.any { it == diff })
+        ) {
             val snackbar = DonationSnackbar()
             snackbar.showSnackBar(
                 activity.findViewById(android.R.id.content),
@@ -115,7 +119,7 @@ class PopupManager {
                             onPurchased = {
                                 donationActionListener.invoke(DonationAction.DonationSuccess)
                                 showDonationSuccess(activity)
-                                onCloseDonationClicked(sharedPreferences)
+                                onDonationSuccess(sharedPreferences)
                             }
                         )
                     }
@@ -138,6 +142,14 @@ class PopupManager {
 
     private fun onCloseDonationClicked(sharedPreferences: SharedPreferences) {
         sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
+        sharedPreferences.setProperty(
+            KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+            sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+        )
+    }
+
+    private fun onDonationSuccess(sharedPreferences: SharedPreferences) {
+        sharedPreferences.setProperty(KEY_IS_DONATED, true)
         sharedPreferences.setProperty(
             KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
             sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -261,11 +273,13 @@ class PopupManager {
 
     companion object {
         private val repeatPopupCounts = listOf(2, 5)
+        private val repeatPopupCountsIfDonated = listOf(20, 40)
         private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
         private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
         private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
         private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
         private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
+        private const val KEY_IS_DONATED = "KEY_IS_DONATED"
         private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
             "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
         private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"
