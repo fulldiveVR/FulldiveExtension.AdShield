@@ -101,8 +101,9 @@ class PopupManager {
         }
 
         if (
-            isShowDonationPopup && (!isPromoPopupClosed || repeatPopupCounts.any { it == diff })
-            && (!isDonated || repeatPopupCountsIfDonated.any { it == diff })
+            isShowDonationPopup && ((!isPromoPopupClosed || isPromoPopupClosed && repeatPopupCounts.any { it == diff })
+                    && (!isDonated || isDonated && repeatPopupCountsIfDonated.any { it == diff })
+                    || (isPromoPopupClosed && isDonated && repeatPopupCountsIfDonated.any { it == diff }))
         ) {
             val snackbar = DonationSnackbar()
             snackbar.showSnackBar(
@@ -140,12 +141,30 @@ class PopupManager {
         }
     }
 
+    fun showDonationSuccess(context: Context) {
+        val dialog = AlertDialog
+            .Builder(context)
+            .setTitle(R.string.donation_title)
+            .setMessage(R.string.donation_message)
+            .setPositiveButton(R.string.donation_done) { _, _ -> }
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
+        }
+        dialog.show()
+    }
+
     private fun onCloseDonationClicked(sharedPreferences: SharedPreferences) {
-        sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
-        sharedPreferences.setProperty(
-            KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
-            sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
-        )
+        val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        if (!isPromoPopupClosed) {
+            sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
+            sharedPreferences.setProperty(
+                KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+                sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+            )
+        }
     }
 
     private fun onDonationSuccess(sharedPreferences: SharedPreferences) {
@@ -254,21 +273,6 @@ class PopupManager {
             result = response.body.toString()
         }
         return result
-    }
-
-    fun showDonationSuccess(context: Context) {
-        val dialog = AlertDialog
-            .Builder(context)
-            .setTitle(R.string.donation_title)
-            .setMessage(R.string.donation_message)
-            .setPositiveButton(R.string.donation_done) { _, _ -> }
-            .create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
-        }
-        dialog.show()
     }
 
     companion object {
