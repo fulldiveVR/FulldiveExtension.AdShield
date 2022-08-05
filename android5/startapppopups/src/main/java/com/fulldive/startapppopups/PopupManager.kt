@@ -124,6 +124,7 @@ class PopupManager {
                             }
                         )
                     }
+                    onCloseDonationClicked(sharedPreferences)
                     donationActionListener.invoke(DonationAction.OpenedFromPopup)
                     snackbar.dismiss()
                 },
