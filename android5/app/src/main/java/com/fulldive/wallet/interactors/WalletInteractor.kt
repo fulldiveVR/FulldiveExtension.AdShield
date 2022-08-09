@@ -119,6 +119,8 @@ class WalletInteractor @Inject constructor(
         return walletRepository.getAccount()
     }
 
+    fun getCurrentAccount() = walletRepository.getCurrentAccount()
+
     fun observeAccount(): Observable<Account> = walletRepository.observeAccount()
 
     fun setAccount(account: Account): Completable {

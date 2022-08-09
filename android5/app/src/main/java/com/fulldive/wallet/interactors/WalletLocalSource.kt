@@ -142,7 +142,7 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
-    private fun getCurrentAccount(): Account? {
+    fun getCurrentAccount(): Account? {
         return currentAccount
             .or {
                 sharedPreferences

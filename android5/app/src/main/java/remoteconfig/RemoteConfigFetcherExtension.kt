@@ -17,3 +17,9 @@ fun IRemoteConfigFetcher.isAdShieldAdsCounterLimited() =
 
 fun IRemoteConfigFetcher.getCurrentVersion() =
     getRemoteLong("adshield_current_version").toInt()
+
+fun IRemoteConfigFetcher.getIsRewardsLimited() =
+    getRemoteBoolean("is_adshield_rewards_limited")
+
+fun IRemoteConfigFetcher.getIsStatsLimited() =
+    getRemoteBoolean("is_adshield_stats_limited")
