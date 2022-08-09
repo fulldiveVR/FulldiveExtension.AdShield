@@ -198,7 +198,10 @@
         <entry key="app/src/main/res/xml/settings_encryption.xml" value="0.291213768115942" />
         <entry key="app/src/main/res/xml/settings_logout.xml" value="0.16510416666666666" />
         <entry key="app/src/notgoogle/res/xml/settings_main.xml" value="0.335" />
+        <entry key="startapppopups/src/main/res/drawable/ic_coffee.xml" value="0.1575" />
+        <entry key="startapppopups/src/main/res/drawable/ic_cross.xml" value="0.241" />
         <entry key="startapppopups/src/main/res/drawable/ic_fulldive_coins.xml" value="0.203" />
+        <entry key="startapppopups/src/main/res/layout/layout_donate.xml" value="0.37604166666666666" />
         <entry key="startapppopups/src/main/res/layout/rate_us_dialog_layout.xml" value="0.17300724637681159" />
       </map>
     </option>

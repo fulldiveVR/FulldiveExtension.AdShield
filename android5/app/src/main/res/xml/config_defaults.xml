@@ -24,4 +24,12 @@
         <key>adshield_current_version</key>
         <value>10401</value>
     </entry>
+    <entry>
+        <key>is_adshield_rewards_limited</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>is_adshield_stats_limited</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

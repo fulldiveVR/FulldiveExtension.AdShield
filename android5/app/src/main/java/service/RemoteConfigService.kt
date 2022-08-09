@@ -56,4 +56,13 @@ object RemoteConfigService {
             version
         }
     }
+
+    fun getIsRewardsLimited(): Boolean {
+        return remoteConfig?.getIsRewardsLimited().orTrue()
+    }
+
+
+    fun getIsStatsLimited(): Boolean {
+        return remoteConfig?.getIsStatsLimited().orTrue()
+    }
 }

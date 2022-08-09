@@ -15,9 +15,9 @@
   -->
 
 <resources>
-    <color name="textColorPrimary">#0D1826</color>
-    <color name="textColorSecondary">#BABDC1</color>
-    <color name="textColorAccent">#FF9900</color>
+    <color name="textColorPrimary">#F3F3F3</color>
+    <color name="textColorSecondary">#676B71</color>
+    <color name="textColorAccent">#FFCA28</color>
 
-    <color name="backgroundTabsAndNavBars">#ffffff</color>
+    <color name="backgroundTabsAndNavBars">#1C1C1E</color>
 </resources>

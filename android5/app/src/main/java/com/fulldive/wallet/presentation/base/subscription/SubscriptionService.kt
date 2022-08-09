@@ -24,6 +24,7 @@ import com.fulldive.iap.DataWrappers
 import com.fulldive.iap.IapConnector
 import com.fulldive.iap.PurchaseServiceListener
 import com.fulldive.iap.SubscriptionServiceListener
+import com.fulldive.startapppopups.isBrowserInstalled
 import com.fulldive.wallet.extensions.orEmptyString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope.coroutineContext
@@ -114,7 +115,7 @@ object SubscriptionService {
                 subscriptionPrices.putAll(iapKeyPrices)
             }
         })
-        handlePromoPopupState()
+        handlePromoPopupState(context)
     }
 
     fun onDestroy() {
@@ -149,11 +150,11 @@ object SubscriptionService {
         }
     }
 
-    fun updateIsProLimited() {
+    fun updateIsProLimited(context: Context) {
         val isLimited = RemoteConfigService.getIsProLimited()
         if (isProLimited != isLimited) {
             isProLimited = isLimited
-            handlePromoPopupState()
+            handlePromoPopupState(context)
         }
     }
 
@@ -163,7 +164,7 @@ object SubscriptionService {
         } ?: Pair("", "")
     }
 
-    private fun handlePromoPopupState() {
+    private fun handlePromoPopupState(context: Context) {
         val isClosed = AppSettingsService.getIsPromoPopupClosed()
         isPopupShowState.value = when {
             isProLimited -> {
@@ -176,6 +177,6 @@ object SubscriptionService {
                 repeatPopupCounts.any { it == diff }
             }
             else -> true
-        }
+        }&& !context.isBrowserInstalled()
     }
 }

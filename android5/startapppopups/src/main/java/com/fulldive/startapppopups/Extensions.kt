@@ -77,3 +77,12 @@ fun Context.openAppInGooglePlay(appPackageName: String? = null) {
         )
     }
 }
+
+fun Context.isBrowserInstalled(): Boolean {
+    val app = try {
+        packageManager.getApplicationInfo("com.fulldive.mobile", 0)
+    } catch (e: Exception) {
+        null
+    }
+    return app?.enabled ?: false
+}

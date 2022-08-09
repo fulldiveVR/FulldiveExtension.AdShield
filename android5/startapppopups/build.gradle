@@ -24,7 +24,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 14
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -48,10 +48,12 @@ android {
 }
 
 dependencies {
-
+    implementation project(path: ':iap')
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -77,8 +79,8 @@ afterEvaluate {
 
                     // You can then customize attributes of the publication as shown below.
                     groupId = "com.fulldive"
-                    artifactId = 'FD-Popups'
-                    version = '1.0.0'
+                    artifactId = 'popups'
+                    version = '1.0.9'
                 }
             }
         }

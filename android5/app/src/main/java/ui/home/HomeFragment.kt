@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
         legalStateDescriptionTextView
             .isVisible = RemoteConfigService.getIsLegalStateDescriptionEnabled()
 
-        SubscriptionService.updateIsProLimited()
+        context?.let { SubscriptionService.updateIsProLimited(it) }
         lifecycleScope.launch {
             SubscriptionService.isProStatusPurchasedState
                 .combine(SubscriptionService.isPopupShowState)

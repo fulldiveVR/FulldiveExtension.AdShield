@@ -16,10 +16,15 @@
 
 package com.fulldive.startapppopups
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.fulldive.startapppopups.*
+import androidx.core.content.ContextCompat
+import com.fulldive.startapppopups.donation.DonationAction
+import com.fulldive.startapppopups.donation.DonationManager
+import com.fulldive.startapppopups.donation.DonationSnackbar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -43,9 +48,24 @@ class PopupManager {
         StartAppDialog.Empty
     )
 
-    fun onAppStarted(context: Context, appId: String) {
-        val sharedPreferences = context.getPrivateSharedPreferences()
+    fun onAppStarted(
+        activity: Activity,
+        appId: String,
+        isShowInstallBrowserPopup: Boolean = true,
+        isShowRateUsPopup: Boolean = true,
+        isShowDonationPopup: Boolean = true,
+        donationPopupBottomMarginInPixels: Int = 0,
+        donationActionListener: (DonationAction) -> Unit = {}
+    ) {
+        val sharedPreferences = activity.getPrivateSharedPreferences()
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+        val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        val isDonated = sharedPreferences.getProperty(KEY_IS_DONATED, false)
+        val isPromoPopupCloseCounter = sharedPreferences
+            .getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+
+        val diff = startCounter - isPromoPopupCloseCounter
+
         sharedPreferences.setProperty(KEY_START_APP_COUNTER, startCounter + 1)
 
         val rateUsDone = sharedPreferences.getProperty(KEY_RATE_US_DONE, false)
@@ -54,10 +74,10 @@ class PopupManager {
         if (!rateUsDone || !installBrowserDone) {
             when (getShowingPopup(startCounter)) {
                 StartAppDialog.RateUs -> {
-                    if (!rateUsDone) {
-                        showRateUsDialog(context) {
+                    if (isShowRateUsPopup && !rateUsDone) {
+                        showRateUsDialog(activity) {
                             onRateUsPositiveClicked(
-                                context,
+                                activity,
                                 sharedPreferences,
                                 it,
                                 appId
@@ -66,9 +86,12 @@ class PopupManager {
                     }
                 }
                 StartAppDialog.InstallBrowser -> {
-                    if ((!installBrowserDone) && !isBrowserInstalled(context)) {
-                        showInstallBrowserDialog(context) {
-                            onInstallAppPositiveClicked(context, sharedPreferences)
+                    if (isShowInstallBrowserPopup && (!installBrowserDone) && !isBrowserInstalled(
+                            activity
+                        )
+                    ) {
+                        showInstallBrowserDialog(activity) {
+                            onInstallAppPositiveClicked(activity, sharedPreferences)
                         }
                     }
                 }
@@ -76,6 +99,81 @@ class PopupManager {
                 }
             }
         }
+
+        if (
+            isShowDonationPopup && ((!isPromoPopupClosed || isPromoPopupClosed && repeatPopupCounts.any { it == diff })
+                    && (!isDonated || isDonated && repeatPopupCountsIfDonated.any { it == diff })
+                    || (isPromoPopupClosed && isDonated && repeatPopupCountsIfDonated.any { it == diff }))
+        ) {
+            val snackbar = DonationSnackbar()
+            snackbar.showSnackBar(
+                activity.findViewById(android.R.id.content),
+                onDonateClicked = {
+                    if (DonationManager.isConnected) {
+                        DonationManager.purchase(activity)
+                    } else {
+                        DonationManager.init(
+                            activity,
+                            onConnected = {
+                                DonationManager.purchase(activity)
+                            },
+                            onPurchased = {
+                                donationActionListener.invoke(DonationAction.DonationSuccess)
+                                showDonationSuccess(activity)
+                                onDonationSuccess(sharedPreferences)
+                            }
+                        )
+                    }
+                    onCloseDonationClicked(sharedPreferences)
+                    donationActionListener.invoke(DonationAction.OpenedFromPopup)
+                    snackbar.dismiss()
+                },
+                onCloseClicked = {
+                    donationActionListener.invoke(DonationAction.PopupClosed)
+                    onCloseDonationClicked(sharedPreferences)
+                },
+                bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
+                    activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
+                } else {
+                    donationPopupBottomMarginInPixels
+                }
+            )
+            donationActionListener.invoke(DonationAction.PopupShown)
+        }
+    }
+
+    fun showDonationSuccess(context: Context) {
+        val dialog = AlertDialog
+            .Builder(context)
+            .setTitle(R.string.donation_title)
+            .setMessage(R.string.donation_message)
+            .setPositiveButton(R.string.donation_done) { _, _ -> }
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
+        }
+        dialog.show()
+    }
+
+    private fun onCloseDonationClicked(sharedPreferences: SharedPreferences) {
+        val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        if (!isPromoPopupClosed) {
+            sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
+            sharedPreferences.setProperty(
+                KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+                sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+            )
+        }
+    }
+
+    private fun onDonationSuccess(sharedPreferences: SharedPreferences) {
+        sharedPreferences.setProperty(KEY_IS_DONATED, true)
+        sharedPreferences.setProperty(
+            KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+            sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+        )
     }
 
     private fun isBrowserInstalled(context: Context): Boolean {
@@ -179,10 +277,16 @@ class PopupManager {
     }
 
     companion object {
+        private val repeatPopupCounts = listOf(2, 5)
+        private val repeatPopupCountsIfDonated = listOf(20, 40)
         private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
         private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
         private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
         private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
+        private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
+        private const val KEY_IS_DONATED = "KEY_IS_DONATED"
+        private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
+            "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
         private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"
         private const val SUCCESS_RATING_VALUE = 4
     }
