@@ -34,6 +34,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.adshield.R
+import service.RemoteConfigService
 import ui.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -105,7 +106,9 @@ open class ExperienceExchangeInterator @Inject constructor(
     }
 
     fun setExperience(adsCount: Long) {
-        return experienceExchangeRepository.setExperience(adsCount)
+        if (!RemoteConfigService.getIsRewardsLimited()) {
+            experienceExchangeRepository.setExperience(adsCount)
+        }
     }
 
     fun getAvailableTokenAmount(experience: Int, rate: Int): Int {
