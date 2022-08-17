@@ -19,14 +19,17 @@ We are working on combining these two apps.
 
 q: Why do I still see some ads?
 a: Ads are divided into two types: Allowed (like in youtube) and not allowed. Allowed - not placed in most of the blocklists. 
-We are working on the efficacy of handling suspicious requests.
+We are working on the efficacy of handling suspicious requests. Anyway, you can play with forwarding lists to achieve greater blocking efficiancy.
 
 q: Why is my network connection so slow while using AdBlock VPN?
 a: AdShield should check all connections you make. It takes some time.
 The more ads we can block, the more time it can take. We are trying to find compromise.
 
 q: Where are forwarding lists and exception apps disappearing?
-a: We temporarily disable it because of google policy. We are working on an alternative that won’t violate google policy.
+a: We temporarily disable it because of google policy. Instead you can setup our DNS with same way.
+Go to Advanced -> DNS settings. You'll hit to forwarding list web page. Setup forwarding lists you wish and tap "Submit" button at the bottom of page.
+For apps settings or custom blocking settings just tap on search bar at the top of the screen.
+Here will be some suggestions you can click and navigate to relevant page.
 
 q: Can I use AdBlock VPN at Chromebook/android auto/android tv?
 a: You can try, but we do not guarantee it works properly.
@@ -42,6 +45,18 @@ AWS is an Amazon cloud service. We do not block it because it can break some of 
 q: When i launch AdBlock VPN i lose all network connections, what should i do?
 a: More likely you have enabled private DNS at device settings (Settings - Network - Private DNS).
 You should switch it off and set up your DNS inside AdBlock VPN at the network's settings.
+
+q: Ads not blocking anymore, what should i do?
+a: There is few reasons for that:
+   1. Specific site has changed his ads provider or ads provider has updated his ads protection.
+Just try another forwarding lists or wait a bit (day or two) - forwarding lists will be updated automaticly.
+   2. Android system kills AdBlock VPN. Need to exclude AdBlock VPN from battery/data saving.
+Go to Settings - This device. Try to enable Always on VPN at VPN profile,
+exclude from battery optimisation at battery settings and exclude from data usage at data usage setings. Some of them or combination can help.
+   3. Conflict with another VPN application. It can interfere with work even if not lauched!
+Try to remove another VPN apps from device and see the difference.
+Also, you can check ads blocking at https://adblock-tester.com/ and https://d3ward.github.io/toolz/adblock.html.
+If score on this sites less then 50 - you definitely shoult try 2 and 3 points, otherwise 1 point.
 
 q: This is a great app! How can I support you?
 a: Thanks! We will appreciate if you try another apps developed by the FullDive team! 
