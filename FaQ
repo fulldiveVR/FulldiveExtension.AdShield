@@ -49,14 +49,14 @@ You should switch it off and set up your DNS inside AdBlock VPN at the network's
 q: Ads not blocking anymore, what should i do?
 a: There is few reasons for that:
    1. Specific site has changed his ads provider or ads provider has updated his ads protection.
-Just try another forwarding lists or wait a bit (day or two) - forwarding lists will be updated automaticly.
+Just try another forwarding lists or wait a bit (day or two) - forwarding lists will be updated automatically.
    2. Android system kills AdBlock VPN. Need to exclude AdBlock VPN from battery/data saving.
 Go to Settings - This device. Try to enable Always on VPN at VPN profile,
 exclude from battery optimisation at battery settings and exclude from data usage at data usage setings. Some of them or combination can help.
    3. Conflict with another VPN application. It can interfere with work even if not lauched!
 Try to remove another VPN apps from device and see the difference.
 Also, you can check ads blocking at https://adblock-tester.com/ and https://d3ward.github.io/toolz/adblock.html.
-If score on this sites less then 50 - you definitely shoult try 2 and 3 points, otherwise 1 point.
+If score on this sites less then 50 - you definitely should try 2 and 3 points, otherwise 1 point.
 
 q: This is a great app! How can I support you?
 a: Thanks! We will appreciate if you try another apps developed by the FullDive team! 
