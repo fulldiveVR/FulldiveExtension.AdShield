@@ -1,0 +1,47 @@
+AdBlock VPN FaQ
+
+ 
+q: How is the app monetized? By selling my data?
+a: There is PRO subscription available If you don't want to spend money - try our Fulldive Browser - fast and secure!
+
+q: How about my privacy? Do you use my data?
+a: We won’t receive any data from AdBlock VPN you use. It’s all kept locally on your device.
+Logs are used to detect what kind of ads were blocked. You can easily clean logs by pressing the Clean button at the menu.
+
+q: Why is it called VPN? Can I use another VPN app?
+a: AdBlock VPN uses VPN service to detect connections from other apps, compare it to the forwarding lists and redirect suspicious requests to alter DNS.
+If this alter DNS is Fulldive DNS, suspicious requests will be blocked.
+This is how it works. Unfortunately, you can not use another VPN app together with AdBlock VPN. 
+
+q: Is AdBlock VPN a real VPN? Seems it just uses DNS crypt.
+a: No, it isn’t. For a real VPN try our Full Tor VPN. AdBlock VPN blocks ads only.
+We are working on combining these two apps.
+
+q: Why do I still see some ads?
+a: Ads are divided into two types: Allowed (like in youtube) and not allowed. Allowed - not placed in most of the blocklists. 
+We are working on the efficacy of handling suspicious requests.
+
+q: Why is my network connection so slow while using AdBlock VPN?
+a: AdShield should check all connections you make. It takes some time.
+The more ads we can block, the more time it can take. We are trying to find compromise.
+
+q: Where are forwarding lists and exception apps disappearing?
+a: We temporarily disable it because of google policy. We are working on an alternative that won’t violate google policy.
+
+q: Can I use AdBlock VPN at Chromebook/android auto/android tv?
+a: You can try, but we do not guarantee it works properly.
+
+q: You copied a Blocada app to sell out my data. Is that true?
+a: AdBlock VPN is a fork of Blocada app, since it's an open source project.
+But after all, we will develop AdBlock VPN in our own secure and protected way.
+
+q: Looks like a lot of things that I don’t want (Firebase and AWS) are passed through. What is it and why is it not blocked?
+a: Firebase is a Google cloud service, it is used by most of android apps by default.
+AWS is an Amazon cloud service. We do not block it because it can break some of your apps and websites.
+
+q: When i launch AdBlock VPN i lose all network connections, what should i do?
+a: More likely you have enabled private DNS at device settings (Settings - Network - Private DNS).
+You should switch it off and set up your DNS inside AdBlock VPN at the network's settings.
+
+q: This is a great app! How can I support you?
+a: Thanks! We will appreciate if you try another apps developed by the FullDive team! 
