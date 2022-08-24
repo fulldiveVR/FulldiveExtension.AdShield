@@ -201,6 +201,7 @@ class MainActivity : LocalizationActivity(),
                 R.id.settingsLogoutFragment -> R.string.account_header_logout
                 R.id.settingsAppFragment -> R.string.app_settings_section_header
                 R.id.leasesFragment -> R.string.account_action_devices
+                R.id.presetsFragment -> R.string.str_presets_settings
                 else -> null
             }
             toolbar.title = translationId?.let {

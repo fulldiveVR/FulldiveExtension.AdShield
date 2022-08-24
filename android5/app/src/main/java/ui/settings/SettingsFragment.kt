@@ -87,16 +87,13 @@ object SettingsNavigation {
             "join_discord" -> openUrlInBrowser(Links.discordInvite)
             "main_kb" -> openUrlInBrowser(Links.kb)
             "support_earn" -> openUrlInBrowser(Links.idoAnnouncement)
+            "main_donate" -> openUrlInBrowser(Links.donate)
             else -> {
                 val path = when (key) {
                     "main_account" -> SettingsFragmentDirections.actionNavigationSettingsToNavigationSettingsAccount()
                     "main_logout" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsLogoutFragment()
                     "main_leases" -> SettingsFragmentDirections.actionNavigationSettingsToLeasesFragment()
                     "main_app" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
-                    "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                        Links.donate,
-                        getString(R.string.universal_action_donate)
-                    )
                     "account_subscription_manage" -> accountId?.let {
                         SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
                             Links.manageSubscriptions(it),

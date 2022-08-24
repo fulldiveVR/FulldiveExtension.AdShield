@@ -26,6 +26,7 @@ import org.adshield.R
 import service.AlertDialogService
 import service.BlocklistService
 import service.PersistenceService
+import ui.advanced.presets.PacksPreset
 import utils.Logger
 import utils.cause
 import utils.now
@@ -49,6 +50,9 @@ class PacksViewModel : ViewModel() {
     private val _packs = MutableLiveData<Packs>()
     val packs = _packs.map { applyFilters(it.packs) }
 
+    private val _packsPresets = MutableLiveData<List<PacksPreset>>()
+    val packsPresets = _packsPresets
+
     private var allPacks: List<Pack> = emptyList()
 
     init {
@@ -63,6 +67,8 @@ class PacksViewModel : ViewModel() {
         viewModelScope.launch {
             delay(3000) // Let the app start up and not block our download
             // Refresh every 2-3 days but only on app fresh start
+            _packsPresets.value = PacksPreset.getPresets()
+
             if (_packs.value?.lastRefreshMillis ?: 0 < (now() - (2 * 86400 + Random.nextInt(
                     86400
                 )))
@@ -245,6 +251,9 @@ class PacksViewModel : ViewModel() {
                     .forEach(::updatePack)
                 alert.showAlert(R.string.error_pack_install)
             }
+            viewModelScope.launch {
+                _packs.value = persistence.load(Packs::class)
+            }
         }
     }
 
@@ -271,6 +280,11 @@ class PacksViewModel : ViewModel() {
                 }
             )
         }
+    }
+
+    fun onPresetSelected(packs: List<Pack>, preset: PacksPreset) {
+        val config = mapPacksToEntities(packs)
+        onPacksConfigChanged(preset.updateConfig(config))
     }
 
     private fun updatePack(pack: Pack) {
