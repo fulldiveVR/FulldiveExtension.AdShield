@@ -24,6 +24,15 @@
         app:popEnterAnim="@anim/nav_default_enter_anim"
         app:popExitAnim="@anim/nav_default_exit_anim" />
 
+    <action
+        android:id="@+id/action_activity_to_web_fragment"
+        app:destination="@id/webFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"
+        app:popUpTo="@id/advancedFragment" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="ui.home.HomeFragment"
@@ -240,6 +249,10 @@
         android:name="ui.web.customsettings.CustomWebSettingsFragment"
         tools:layout="@layout/fragment_web_view" />
     <fragment
+        android:id="@+id/presetsFragment"
+        android:name="ui.advanced.presets.PresetsFragment"
+        tools:layout="@layout/fragment_packs_presets" />
+    <fragment
         android:id="@+id/settingsAppFragment"
         android:name="ui.settings.SettingsAppFragment">
         <action
@@ -280,6 +293,14 @@
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/advancedFragment" />
 
+        <action
+            android:id="@+id/action_advancedFragment_to_presets_fragment"
+            app:destination="@id/presetsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/advancedFragment" />
         <action
             android:id="@+id/action_advancedFragment_to_settingsNetworksFragment"
             app:destination="@id/settingsNetworksFragment"

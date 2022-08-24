@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,40 +19,53 @@
         app:title="@string/account_section_header_primary">
 
         <Preference
+            android:fragment="ui.settings.SettingsAccountFragment"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            app:key="main_account"
+            app:title="@string/account_action_my_account" />
+
+        <Preference
+            android:icon="@drawable/ic_baseline_inbox_24"
+            app:key="main_inbox"
+            app:title="@string/account_action_inbox" />
+
+        <Preference
+            android:fragment="ui.settings.leases.LeasesFragment"
+            android:icon="@drawable/ic_baseline_devices_24"
+            app:key="main_leases"
+            app:title="@string/account_action_devices" />
+
+        <Preference
             android:fragment="ui.settings.SettingsAppFragment"
             android:icon="@drawable/ic_settings"
             app:key="main_app"
             app:title="@string/app_settings_section_header" />
 
+        <Preference
+            android:fragment="ui.settings.SettingsLogoutFragment"
+            android:icon="@drawable/ic_baseline_arrow_back_24"
+            app:key="main_logout"
+            app:title="@string/account_action_logout" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="main_other"
-        app:title="@string/universal_action_support">
+        app:title="@string/account_section_header_other">
 
         <Preference
             android:fragment="ui.web.WebFragment"
             android:icon="@drawable/ic_baseline_help_outline_24"
             app:key="main_kb"
-            app:title="@string/homepage_action_faq" />
-
-        <Preference
-            android:fragment="ui.settings.SettingsFragment"
-            android:icon="@drawable/ic_email_us"
-            app:key="email_us"
-            app:title="@string/settings_action_email" />
+            app:title="@string/universal_action_help" />
 
         <Preference
             android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_discord"
-            app:key="join_discord"
-            app:title="@string/settings_action_discord" />
-
-        <Preference
-            android:fragment="ui.web.WebFragment"
-            android:icon="@drawable/ic_support_and_earn"
-            app:key="support_earn"
-            app:title="@string/setting_ido_announcement" />
+            android:icon="@drawable/ic_heart_outline"
+            app:key="main_donate"
+            app:title="@string/universal_action_donate" />
 
     </PreferenceCategory>
+
+
 </PreferenceScreen>

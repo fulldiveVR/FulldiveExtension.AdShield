@@ -12,6 +12,8 @@
 
 package ui.settings
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.preference.PreferenceFragmentCompat
 import appextension.EmailHelper
-import appextension.PopupManager
+import appextension.dialogs.PopupManager
 import model.Account
 import model.AccountId
 import org.adshield.R
@@ -32,6 +34,7 @@ import ui.app
 import utils.Links
 import utils.toBlokadaText
 import utils.toSimpleString
+
 
 class SettingsFragment : Fragment() {
 
@@ -75,51 +78,54 @@ class SettingsMainFragment : PreferenceFragmentCompat() {
 
 object SettingsNavigation {
     fun handle(nav: NavController, key: String, accountId: AccountId?) {
-        if (key == "email_us") {
-            PopupManager.showContactSupportDialog(ContextService.requireContext()) {
-                EmailHelper.sendEmailToSupport(ContextService.requireContext())
+        when (key) {
+            "email_us" -> {
+                PopupManager.showContactSupportDialog(ContextService.requireContext()) {
+                    EmailHelper.sendEmailToSupport(ContextService.requireContext())
+                }
+            }
+            "join_discord" -> openUrlInBrowser(Links.discordInvite)
+            "main_kb" -> openUrlInBrowser(Links.kb)
+            "support_earn" -> openUrlInBrowser(Links.idoAnnouncement)
+            "main_donate" -> openUrlInBrowser(Links.donate)
+            else -> {
+                val path = when (key) {
+                    "main_account" -> SettingsFragmentDirections.actionNavigationSettingsToNavigationSettingsAccount()
+                    "main_logout" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsLogoutFragment()
+                    "main_leases" -> SettingsFragmentDirections.actionNavigationSettingsToLeasesFragment()
+                    "main_app" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
+                    "account_subscription_manage" -> accountId?.let {
+                        SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
+                            Links.manageSubscriptions(it),
+                            getString(R.string.account_action_manage_subscription)
+                        )
+                    }
+                    "account_help_why" -> SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
+                        Links.whyUpgrade,
+                        getString(R.string.account_action_why_upgrade)
+                    )
+                    "logout_howtorestore" -> SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
+                        Links.howToRestore,
+                        getString(R.string.account_action_how_to_restore)
+                    )
+                    "logout_support" -> accountId?.let {
+                        SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
+                            Links.support(it),
+                            getString(R.string.universal_action_contact_us)
+                        )
+                    }
+                    else -> null
+                }
+                path?.let { nav.navigate(it) }
             }
         }
-        val path = when (key) {
-            "main_account" -> SettingsFragmentDirections.actionNavigationSettingsToNavigationSettingsAccount()
-            "main_logout" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsLogoutFragment()
-            "main_leases" -> SettingsFragmentDirections.actionNavigationSettingsToLeasesFragment()
-            "main_app" -> SettingsFragmentDirections.actionNavigationSettingsToSettingsAppFragment()
-            "main_kb" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                Links.kb,
-                getString(R.string.universal_action_help)
-            )
-            "main_discord" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                Links.discordInvite,
-                getString(R.string.settings_action_discord)
-            )
-            "main_donate" -> SettingsFragmentDirections.actionNavigationSettingsToWebFragment(
-                Links.donate,
-                getString(R.string.universal_action_donate)
-            )
-            "account_subscription_manage" -> accountId?.let {
-                SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
-                    Links.manageSubscriptions(it),
-                    getString(R.string.account_action_manage_subscription)
-                )
-            }
-            "account_help_why" -> SettingsAccountFragmentDirections.actionNavigationSettingsAccountToWebFragment(
-                Links.whyUpgrade,
-                getString(R.string.account_action_why_upgrade)
-            )
-            "logout_howtorestore" -> SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
-                Links.howToRestore,
-                getString(R.string.account_action_how_to_restore)
-            )
-            "logout_support" -> accountId?.let {
-                SettingsLogoutFragmentDirections.actionSettingsLogoutFragmentToWebFragment(
-                    Links.support(it),
-                    getString(R.string.universal_action_contact_us)
-                )
-            }
-            else -> null
+    }
+
+    private fun openUrlInBrowser(url: String) {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(url)
+            ContextService.requireContext().startActivity(this)
         }
-        path?.let { nav.navigate(it) }
     }
 
     private fun getString(id: Int) = ContextService.requireContext().getString(id)

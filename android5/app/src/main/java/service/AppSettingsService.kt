@@ -34,6 +34,7 @@ object AppSettingsService {
     private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
     private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
+    private const val KEY_ADBLOCK_DONE = "KEY_ADBLOCK_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_SUBSCRIBE_SUCCESS_SHOWN = "KEY_SUBSCRIBE_SUCCESS_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
@@ -66,6 +67,14 @@ object AppSettingsService {
 
     fun setInstallBrowserDone() {
         sharedPreferences.setProperty(KEY_INSTALL_BROWSER_DONE, true)
+    }
+
+    fun isAdBlockDone(): Boolean {
+        return sharedPreferences.getProperty(KEY_ADBLOCK_DONE, false)
+    }
+
+    fun setAdBlockDone() {
+        sharedPreferences.setProperty(KEY_ADBLOCK_DONE, true)
     }
 
     fun setIdoAnnouncementClicked() {

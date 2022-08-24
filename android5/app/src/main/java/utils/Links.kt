@@ -26,7 +26,7 @@ object Links {
     const val tunnelFailure = FULLDIVE_URL
     const val startOnBoot = FULLDIVE_URL
 
-    const val kb = FULLDIVE_URL
+    const val kb = "https://github.com/fulldiveVR/FulldiveExtension.AdShield/blob/release/FaQ"
     const val discordInvite = "https://discord.com/invite/3f79ygxZ3y"
     const val donate = FULLDIVE_URL
     const val privacy = "https://fulldive.com/privacy-policy"

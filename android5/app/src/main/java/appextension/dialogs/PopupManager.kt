@@ -17,6 +17,9 @@
 package appextension.dialogs
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.navigation.findNavController
 import appextension.openAppInGooglePlay
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -24,7 +27,12 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.adshield.BuildConfig
+import org.adshield.R
 import service.AppSettingsService
+import service.EnvironmentService
+import ui.MainActivity
+import ui.advanced.AdvancedFragmentDirections
+import utils.Links
 import utils.Logger
 import java.io.IOException
 
@@ -42,6 +50,7 @@ object PopupManager {
         StartAppDialog.RateUs,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
+        StartAppDialog.BlockAds,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
         StartAppDialog.InstallBrowser,
@@ -52,11 +61,12 @@ object PopupManager {
 
     private val log = Logger("PopupManager")
 
-    fun onAppStarted(context: Context) {
+    fun onAppStarted(context: MainActivity) {
         val startCounter = AppSettingsService.updateAndGetCurrentStartUpCount()
 
         val rateUsDone = AppSettingsService.isRateUsDone()
         val installBrowserDone = AppSettingsService.isInstallBrowserDone()
+        val adBlockDone = AppSettingsService.isAdBlockDone()
 
         if (!rateUsDone || !installBrowserDone) {
             when (getShowingPopup(startCounter)) {
@@ -75,6 +85,28 @@ object PopupManager {
                         showInstallBrowserDialog(context) {
                             onInstallAppPositiveClicked(context)
                         }
+                    }
+                }
+                StartAppDialog.BlockAds -> {
+                    if (!adBlockDone && !EnvironmentService.isSlim()) {
+                        showAdBlockDialog(context,
+                            positiveClickListener = {
+                                context.findNavController(R.id.nav_host_fragment).navigate(
+                                    AdvancedFragmentDirections.actionActivityToWebFragment(
+                                        Links.dnsSettings,
+                                        context.getString(R.string.str_dns_settings)
+                                    )
+                                )
+                                AppSettingsService.setAdBlockDone()
+                            },
+                            neutralClickListener = {
+                                Intent(Intent.ACTION_VIEW).apply {
+                                    data = Uri.parse(Links.kb)
+                                    context.startActivity(this)
+                                }
+                                AppSettingsService.setAdBlockDone()
+                            }
+                        )
                     }
                 }
                 else -> {
@@ -203,6 +235,14 @@ object PopupManager {
             }
     }
 
+    private fun showAdBlockDialog(
+        context: Context,
+        positiveClickListener: () -> Unit,
+        neutralClickListener: () -> Unit
+    ) {
+        AdBlockDialogBuilder.show(context, positiveClickListener, neutralClickListener)
+    }
+
     @Throws(IOException::class)
     private fun post(url: String, json: String): String {
         val body: RequestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -221,5 +261,6 @@ object PopupManager {
 sealed class StartAppDialog(val id: String) {
     object RateUs : StartAppDialog("RateUs")
     object InstallBrowser : StartAppDialog("InstallBrowser")
+    object BlockAds : StartAppDialog("BlockAds")
     object Empty : StartAppDialog("Empty")
 }
