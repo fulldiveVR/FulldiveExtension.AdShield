@@ -30,6 +30,7 @@ import org.adblockplus.libadblockplus.android.settings.AdblockSettingsStorage
 import org.adblockplus.libadblockplus.android.settings.Utils
 import org.adshield.R
 import service.ContextService
+import java.util.*
 
 object ABPService {
 
@@ -63,6 +64,7 @@ object ABPService {
                 AndroidHttpClientResourceWrapper.EASYLIST to easylistResource,
                 AndroidHttpClientResourceWrapper.ACCEPTABLE_ADS to R.raw.exceptionrules
             )
+            addPreloadedResourceByLocale(preloadedResources, easylistResource)
             adblockHelperInstance
                 .init(context, basePath, AdblockHelper.PREFERENCE_NAME)
                 .preloadSubscriptions(AdblockHelper.PRELOAD_PREFERENCE_NAME, preloadedResources)
@@ -152,7 +154,10 @@ object ABPService {
         readEngineLock.unlock()
     }
 
-    fun updateCustomBlocklists(config: CustomBlocklistConfig, currentConfig: CustomBlocklistConfig) {
+    fun updateCustomBlocklists(
+        config: CustomBlocklistConfig,
+        currentConfig: CustomBlocklistConfig
+    ) {
         removeCurrentFilters(currentConfig)
         if (config.isAllowed.isNotEmpty()) initAllowlistedDomains(config.isAllowed)
         if (config.isDenied.isNotEmpty()) initDennyListedDomains(config.isDenied)
@@ -197,6 +202,33 @@ object ABPService {
             val filter = filterEngine.getFilter("||$domain^")
             filterEngine.addFilter(filter)
         }
+    }
+
+    private fun addPreloadedResourceByLocale(
+        preloadedResources: MutableMap<String, Int>,
+        resourceId: Int
+    ) {
+        when (Locale.getDefault().country.lowercase(Locale.ENGLISH)) {
+            "id" -> AndroidHttpClientResourceWrapper.EASYLIST_INDONESIAN
+            "bg" -> AndroidHttpClientResourceWrapper.EASYLIST_BULGARIAN
+            "cn" -> AndroidHttpClientResourceWrapper.EASYLIST_CHINESE
+            "tw" -> AndroidHttpClientResourceWrapper.EASYLIST_CHINESE
+            "cz" -> AndroidHttpClientResourceWrapper.EASYLIST_CZECH_SLOVAK
+            "sk" -> AndroidHttpClientResourceWrapper.EASYLIST_CZECH_SLOVAK
+            "dk" -> AndroidHttpClientResourceWrapper.EASYLIST_DUTCH
+            "de" -> AndroidHttpClientResourceWrapper.EASYLIST_GERMAN
+            "is" -> AndroidHttpClientResourceWrapper.EASYLIST_ISRAELI
+            "it" -> AndroidHttpClientResourceWrapper.EASYLIST_ITALIAN
+            "lt" -> AndroidHttpClientResourceWrapper.EASYLIST_LITHUANIAN
+            "lv" -> AndroidHttpClientResourceWrapper.EASYLIST_LATVIAN
+            "fr" -> AndroidHttpClientResourceWrapper.EASYLIST_FRENCH
+            "ro" -> AndroidHttpClientResourceWrapper.EASYLIST_ROMANIAN
+            "ru" -> AndroidHttpClientResourceWrapper.EASYLIST_RUSSIAN
+            else -> null
+        }
+            ?.let {
+                preloadedResources.put(it, resourceId)
+            }
     }
 
     fun Boolean?.orFalse() = this ?: false
