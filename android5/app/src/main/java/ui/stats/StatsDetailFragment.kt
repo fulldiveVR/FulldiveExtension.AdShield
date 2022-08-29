@@ -51,52 +51,30 @@ class StatsDetailFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_stats_detail, container, false)
 
-        val icon: ImageView = root.findViewById(R.id.activity_icon)
         val name: TextView = root.findViewById(R.id.activity_name)
         val comment: TextView = root.findViewById(R.id.activity_comment)
         val fullName: TextView = root.findViewById(R.id.activity_fullname)
         val time: TextView = root.findViewById(R.id.activity_fulltime)
         val counter: TextView = root.findViewById(R.id.activity_occurrences)
         val primaryAction: TextView = root.findViewById(R.id.activity_primaryaction)
-        val copyAction: TextView = root.findViewById(R.id.activity_copyaction)
+        val copyAction: ImageView = root.findViewById(R.id.copyActionImageView)
 
         viewModel.history.observe(viewLifecycleOwner, Observer {
             viewModel.get(args.historyId)?.run {
                 when (this.type) {
                     HistoryEntryType.passed_allowed -> {
-                        icon.setImageResource(R.drawable.ic_shield_off_outline)
-                        icon.setColorFilter(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.colorGreen
-                            )
-                        )
                         comment.text = getString(R.string.activity_request_allowed_whitelisted)
                         context?.let { context ->
                             comment.setTextColor(context.getColorCompat(R.color.textColorForwarded))
                         }
                     }
                     HistoryEntryType.blocked_denied -> {
-                        icon.setImageResource(R.drawable.ic_shield_off_outline)
-                        icon.setColorFilter(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.colorAlert
-                            )
-                        )
                         comment.text = getString(R.string.activity_request_blocked_blacklisted)
                         context?.let { context ->
                             comment.setTextColor(context.getColorCompat(R.color.textColorDenied))
                         }
                     }
                     HistoryEntryType.passed -> {
-                        icon.setImageResource(R.drawable.ic_shield_outline)
-                        icon.setColorFilter(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.colorGreen
-                            )
-                        )
                         comment.text = getString(R.string.activity_request_allowed)
                         context?.let { context ->
                             comment.setTextColor(
@@ -108,13 +86,6 @@ class StatsDetailFragment : Fragment() {
                         }
                     }
                     else -> {
-                        icon.setImageResource(R.drawable.ic_shield_outline)
-                        icon.setColorFilter(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.colorAlert
-                            )
-                        )
                         comment.text = getString(R.string.activity_request_blocked)
                         context?.let { context ->
                             comment.setTextColor(
