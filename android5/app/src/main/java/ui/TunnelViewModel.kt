@@ -17,9 +17,9 @@ import engine.EngineService
 import kotlinx.coroutines.launch
 import model.*
 import service.*
-import utils.cause
 import utils.Logger
 import utils.MonitorNotification
+import utils.cause
 
 /**
  * This class is responsible for managing the tunnel state and reflecting it on the UI.
@@ -27,7 +27,7 @@ import utils.MonitorNotification
  * Mainly used in HomeFragment, but also affecting other parts, like Settings.
  * Warning, this class has the highest chance to be the bloated point of the app.
  */
-class TunnelViewModel: ViewModel() {
+class TunnelViewModel : ViewModel() {
 
     private val log = Logger("Blocka")
     private val persistence = PersistenceService
@@ -92,7 +92,8 @@ class TunnelViewModel: ViewModel() {
                 val s = engine.getTunnelStatus()
                 if (!s.inProgress && !s.active) {
                     try {
-                        val cfg = _config.value?.copy(tunnelEnabled = true) ?: throw BlokadaException("Config not set")
+                        val cfg = _config.value?.copy(tunnelEnabled = true)
+                            ?: throw BlokadaException("Config not set")
                         engine.updateConfig(user = cfg)
                         if (cfg.vpnEnabled) lease.checkLease(cfg)
                         cfg.copy(tunnelEnabled = true).emit()
@@ -114,7 +115,8 @@ class TunnelViewModel: ViewModel() {
             val s = engine.getTunnelStatus()
             if (!s.inProgress && s.active) {
                 try {
-                    val cfg = _config.value?.copy(tunnelEnabled = false) ?: throw BlokadaException("Config not set")
+                    val cfg = _config.value?.copy(tunnelEnabled = false)
+                        ?: throw BlokadaException("Config not set")
                     engine.updateConfig(user = cfg)
                     cfg.emit()
                     NotificationService.cancel(MonitorNotification.STATUS_NOTIFICATION_ID)
@@ -122,7 +124,7 @@ class TunnelViewModel: ViewModel() {
                 } catch (ex: Exception) {
                     handleException(ex)
                 }
-        } else {
+            } else {
                 log.w("Tunnel busy or already stopped")
                 s.emit()
             }

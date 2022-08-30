@@ -151,12 +151,17 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
+        var previousState = LaunchHelper.getCurrentState(EngineService.getTunnelStatus())
         tunnelVM.tunnelStatus.observeForever { status ->
             MonitorService.setTunnelStatus(status)
             val current = LaunchHelper.getCurrentState(status)
-            FdLog.d("stateTest", "initViewModel current:$current")
-            val uri = getContentUri(current)
-            contentResolver.insert(uri, null)
+
+            if (previousState != current) {
+                FdLog.d("stateTest", "initViewModel current:$current")
+                val uri = getContentUri(current)
+                contentResolver.insert(uri, null)
+                previousState = current
+            }
         }
 
         networksVM.activeConfig.observeForever {

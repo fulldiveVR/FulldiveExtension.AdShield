@@ -50,15 +50,12 @@ object LaunchHelper {
         val status = engine.getTunnelStatus()
         if (!status.inProgress && !status.active) {
             GlobalScope.launch(Dispatchers.IO) {
-                context.contentResolver.insert(getContentUri(AppExtensionState.PROGRESS.id), null)
                 try {
                     val config = currentConfig.copy(tunnelEnabled = true)
                     engine.updateConfig(user = config)
                     persistence.save(config)
                 } catch (ex: Exception) {
                 }
-                val uri = getContentUri(AppExtensionState.START.id)
-                context.contentResolver.insert(uri, null)
             }
         }
     }
@@ -70,15 +67,12 @@ object LaunchHelper {
         val status = engine.getTunnelStatus()
         if (!status.inProgress && status.active) {
             GlobalScope.launch(Dispatchers.IO) {
-                context.contentResolver.insert(getContentUri(AppExtensionState.PROGRESS.id), null)
                 try {
                     val config = currentConfig.copy(tunnelEnabled = false)
                     engine.updateConfig(user = config)
                     persistence.save(config)
                 } catch (ex: Exception) {
                 }
-                val uri = getContentUri(AppExtensionState.STOP.id)
-                context.contentResolver.insert(uri, null)
             }
         }
     }
