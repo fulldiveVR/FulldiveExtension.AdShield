@@ -40,7 +40,7 @@
 
     <permission
         android:name="com.fulldive.extension.adshield.access.read"
-        android:protectionLevel="signature" />
+        android:protectionLevel="normal" />
 
     <application
         android:name="ui.MainApplication"
@@ -232,7 +232,7 @@
             android:name="appextension.ExtensionContentProvider"
             android:authorities="com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
             android:exported="true"
-            android:permission="com.fulldive.extension.adshield.access.read" />
+            android:readPermission="com.fulldive.extension.adshield.access.read" />
 
         <receiver
             android:name="ui.CommandReceiver"

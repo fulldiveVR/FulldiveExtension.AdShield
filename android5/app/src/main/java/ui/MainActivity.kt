@@ -35,7 +35,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import appextension.*
+import appextension.AppExtensionWorkType
+import appextension.EmailHelper
+import appextension.StatisticHelper
 import appextension.dialogs.PopupManager
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
@@ -245,8 +247,6 @@ class MainActivity : LocalizationActivity(),
                     fragment.show(supportFragmentManager, null)
                 }
             }
-            val uri = getContentUri(LaunchHelper.getCurrentState(status))
-            contentResolver.insert(uri, null)
         })
     }
 

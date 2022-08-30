@@ -18,6 +18,8 @@ import android.app.Service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import appextension.LaunchHelper
+import appextension.getContentUri
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.flurry.android.FlurryAgent
@@ -149,8 +151,12 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
-        tunnelVM.tunnelStatus.observeForever {
-            MonitorService.setTunnelStatus(it)
+        tunnelVM.tunnelStatus.observeForever { status ->
+            MonitorService.setTunnelStatus(status)
+            val current = LaunchHelper.getCurrentState(status)
+            FdLog.d("stateTest", "initViewModel current:$current")
+            val uri = getContentUri(current)
+            contentResolver.insert(uri, null)
         }
 
         networksVM.activeConfig.observeForever {
