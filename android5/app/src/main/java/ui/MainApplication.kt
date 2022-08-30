@@ -157,7 +157,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             val current = LaunchHelper.getCurrentState(status)
 
             if (previousState != current) {
-                FdLog.d("stateTest", "initViewModel current:$current")
                 val uri = getContentUri(current)
                 contentResolver.insert(uri, null)
                 previousState = current
