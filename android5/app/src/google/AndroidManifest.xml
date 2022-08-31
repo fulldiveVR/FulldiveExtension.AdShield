@@ -21,7 +21,7 @@
             android:name="appextension.ExtensionContentProvider"
             android:authorities="com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
             android:exported="true"
-            android:readPermission="com.fulldive.extension.adshield.access.read" />
+            android:permission="com.fulldive.extension.adshield.access.read" />
     </application>
 
 </manifest>
