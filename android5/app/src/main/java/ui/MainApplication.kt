@@ -18,6 +18,8 @@ import android.app.Service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import appextension.LaunchHelper
 import appextension.getContentUri
 import blocka.LegacyAccountImport
@@ -50,6 +52,8 @@ import ui.advanced.packs.PacksViewModel
 import utils.Logger
 import utils.cause
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjectorHolder {
 
@@ -103,6 +107,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         FlurryAgent.Builder()
             .withLogEnabled(true)
             .build(this, BuildConfig.FLURRY_API_KEY)
+
+        val periodicWork = PeriodicWorkRequest
+            .Builder(CheckAdblockWorkManager::class.java, 12, TimeUnit.HOURS)
+            .build()
+        WorkManager.getInstance().enqueue(periodicWork)
     }
 
     private fun setupEvents() {
@@ -226,6 +235,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             .subscribe(
                 {
                     initFiltering()
+                    statsVM.updateBlockedDomains()
                     FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
                 },
                 { error ->

@@ -23,3 +23,12 @@ fun IRemoteConfigFetcher.getIsRewardsLimited() =
 
 fun IRemoteConfigFetcher.getIsStatsLimited() =
     getRemoteBoolean("is_adshield_stats_limited")
+
+fun IRemoteConfigFetcher.getAdblockWorkCheckUrl() =
+    getRemoteString("adblock_work_check_url")
+
+fun IRemoteConfigFetcher.getAdblockWorkCheckDomain() =
+    getRemoteString("adblock_work_check_domain")
+
+fun IRemoteConfigFetcher.getAdblockTutorialUrl() =
+    getRemoteString("adblock_tutorial_url")

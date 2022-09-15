@@ -65,4 +65,16 @@ object RemoteConfigService {
     fun getIsStatsLimited(): Boolean {
         return remoteConfig?.getIsStatsLimited().orTrue()
     }
+
+    fun getAdblockWorkCheckUrl(): String {
+        return remoteConfig?.getAdblockWorkCheckUrl().orEmpty()
+    }
+
+    fun getAdblockWorkCheckDomain(): String {
+        return remoteConfig?.getAdblockWorkCheckDomain().orEmpty()
+    }
+
+    fun getAdblockTutorialUrl(): String {
+        return remoteConfig?.getAdblockTutorialUrl().orEmpty()
+    }
 }
