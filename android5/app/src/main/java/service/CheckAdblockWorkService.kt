@@ -18,6 +18,7 @@ package service
 
 import appextension.AppExtensionState
 import appextension.LaunchHelper
+import org.adshield.R
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.UnknownHostException
@@ -36,7 +37,9 @@ object CheckAdblockWorkService {
                 val url = URL(RemoteConfigService.getAdblockWorkCheckUrl())
                 urlConnection = url.openConnection() as HttpURLConnection
                 urlConnection.doOutput = true
-
+                //to catch in UnknownHostException
+                urlConnection.responseCode
+                urlConnection.responseMessage
             } catch (exception: Exception) {
                 if (exception is UnknownHostException) {
                     isAdblockWork = true
@@ -45,6 +48,7 @@ object CheckAdblockWorkService {
                 (urlConnection as HttpURLConnection).disconnect()
             }
         }
+        MonitorService.setInfo(if (!isAdblockWork) R.string.str_stop_working_push_info else 0)
         return isAdblockWork
     }
 }
