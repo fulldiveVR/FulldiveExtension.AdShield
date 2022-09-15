@@ -14,30 +14,29 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package appextension.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.EditText
 import org.adshield.R
 
-object RateReportDialogBuilder {
+object UpdateAppDialog {
 
-    fun show(context: Context, onPositiveClicked: (String) -> Unit) {
-        val view = LayoutInflater.from(context).inflate(R.layout.rate_report_dialog_layout, null)
-        val messageEditText = view.findViewById<EditText>(R.id.messageEditText)
+    fun show(
+        context: Context
+    ) {
+        val view = LayoutInflater.from(context).inflate(R.layout.app_update_available_dialog_layout, null)
+
         val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
             .setView(view)
-            .setTitle(R.string.rate_us_title)
-            .setPositiveButton(R.string.rate_submit) { _, _ ->
-                onPositiveClicked.invoke(messageEditText.text.toString())
+            .setPositiveButton(R.string.str_ok) { _, _ ->
             }
             .create()
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(context.getColor(R.color.textColorPrimary))
+                ?.setTextColor(context.getColor(R.color.colorAccent))
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 ?.setTextColor(context.getColor(R.color.textColorSecondary))
         }

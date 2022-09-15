@@ -76,13 +76,13 @@ class StatsAdapter(
             when (item.type) {
                 HistoryEntryType.passed_allowed -> {
                     iconCounter.visibility = View.VISIBLE
-                    action.setText(R.string.activity_forwarded)
-                    action.setTextColor(context.getColorCompat(R.color.textColorForwarded))
+                    action.setText(R.string.activity_regular)
+                    action.setTextColor(context.getColorCompat(R.color.textColorDenied))
                 }
                 HistoryEntryType.blocked_denied -> {
                     iconCounter.visibility = View.VISIBLE
-                    action.setText(R.string.activity_regular)
-                    action.setTextColor(context.getColorCompat(R.color.textColorDenied))
+                    action.setText(R.string.activity_forwarded)
+                    action.setTextColor(context.getColorCompat(R.color.textColorForwarded))
                 }
                 HistoryEntryType.passed -> {
                     iconCounter.visibility = View.VISIBLE

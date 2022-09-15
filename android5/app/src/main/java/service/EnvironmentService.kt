@@ -45,7 +45,7 @@ object EnvironmentService {
     }
 
     fun isSlim(): Boolean {
-        return false
+        return AppSettingsService.compareVersions() > 0
     }
 
     fun isFdroid(): Boolean {

@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -40,11 +55,22 @@
             android:layout_marginBottom="@dimen/size_12dp"
             android:text="@string/exchange_button_title"
             android:textAlignment="center"
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/experienceProgressViewLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/timeIconView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.4"
+            android:src="@drawable/ic_time"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/exchangeButton"
+            app:layout_constraintEnd_toEndOf="@+id/exchangeButton"
+            app:layout_constraintStart_toStartOf="@+id/exchangeButton"
+            app:layout_constraintTop_toTopOf="@+id/exchangeButton" />
 
         <ui.rewards.board.ExperienceProgressViewLayout
             android:id="@+id/experienceProgressViewLayout"

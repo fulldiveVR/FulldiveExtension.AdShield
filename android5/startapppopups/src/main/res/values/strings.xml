@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2022 FullDive
+  ~  This program is free software: you can redistribute it and/or modify
+  ~  it under the terms of the GNU General Public License as published by
+  ~  the Free Software Foundation, either version 3 of the License, or
+  ~  (at your option) any later version.
+  ~
+  ~  This program is distributed in the hope that it will be useful,
+  ~  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  GNU General Public License for more details.
+  ~
+  ~  You should have received a copy of the GNU General Public License
+  ~  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="rate_submit">Rate</string>
+    <string name="install_submit">Learn more</string>
+    <string name="rate_cancel">Not now</string>
+    <string name="maybe_later">Maybe Later</string>
+    <string name="rate_us_title">Rate us</string>
+    <string name="install_browser_title">Sync with Fulldive and get rewards</string>
+    <string name="install_browser_description">Thank you for trying our Full apps, we feature many more great apps such as a browser that rewards you cash when you browse, check it out!</string>
+    <string name="rate_us_description">Do you like Fulldive? We would love to hear your feedback and make the app better for you.</string>
+    <string name="donate_title">Buy Fulldive a cup of coffee</string>
+    <string name="donate_description">We are a small US based team, working to bring the best free and private apps to you</string>
+    <string name="donation_done">DONE</string>
+    <string name="donation_title">Success!</string>
+    <string name="donation_message">Thank you for your amazing support. </string>
+</resources>

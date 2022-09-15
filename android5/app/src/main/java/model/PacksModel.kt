@@ -12,7 +12,6 @@
 
 package model
 
-import android.util.Log
 import com.squareup.moshi.JsonClass
 import service.Localised
 import utils.Logger

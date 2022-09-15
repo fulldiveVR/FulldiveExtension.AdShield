@@ -26,7 +26,7 @@ object Links {
     const val tunnelFailure = FULLDIVE_URL
     const val startOnBoot = FULLDIVE_URL
 
-    const val kb = FULLDIVE_URL
+    const val kb = "https://github.com/fulldiveVR/FulldiveExtension.AdShield/blob/release/FaQ"
     const val discordInvite = "https://discord.com/invite/3f79ygxZ3y"
     const val donate = FULLDIVE_URL
     const val privacy = "https://fulldive.com/privacy-policy"
@@ -35,6 +35,8 @@ object Links {
     const val community = FULLDIVE_URL
     const val idoAnnouncement = "https://www.fulldive.com/fulladshield"
     const val dnsSettings = "https://static.fdvr.co/dns-settings/index.html"
+    const val appsSettings = "https://static.fdvr.co/app-settings/index.html"
+    const val customSettings = "https://static.fdvr.co/hosts-settings/index.html"
 
     val updated = if (EnvironmentService.isSlim()) FULLDIVE_URL else FULLDIVE_URL
 

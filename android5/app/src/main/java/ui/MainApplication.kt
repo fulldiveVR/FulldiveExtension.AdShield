@@ -12,33 +12,48 @@
 
 package ui
 
+import analytics.FdLog
 import android.app.Activity
 import android.app.Service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import appextension.LaunchHelper
+import appextension.getContentUri
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
+import com.flurry.android.FlurryAgent
 import com.fulldive.wallet.di.EnrichableLifecycleCallbacks
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.AppSettingsInteractor
 import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.models.Chain
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
+import model.CustomBlocklistConfig
+import org.adshield.BuildConfig
+import remoteconfig.IRemoteConfigFetcher
 import service.*
 import ui.advanced.packs.PacksViewModel
 import utils.Logger
 import utils.cause
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjectorHolder {
 
@@ -68,6 +83,9 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private lateinit var packsVM: PacksViewModel
 
     private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
+    private val remoteConfig by lazy { appInjector.getInstance<IRemoteConfigFetcher>() }
+    private var remoteConfigDisposable: Disposable? = null
+    private val appSettingsInteractor by lazy { appInjector.getInstance<AppSettingsInteractor>() }
 
     override fun onCreate() {
         super.onCreate()
@@ -85,21 +103,30 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         ABPService.initABP(ContextService.requireContext())
         ABPService.setAdblockState(true)
         ABPService.retainAdblockProvider()
+
+        FlurryAgent.Builder()
+            .withLogEnabled(true)
+            .build(this, BuildConfig.FLURRY_API_KEY)
+
+        val periodicWork = PeriodicWorkRequest
+            .Builder(CheckAdblockWorkManager::class.java, 12, TimeUnit.HOURS)
+            .build()
+        WorkManager.getInstance().enqueue(periodicWork)
     }
 
     private fun setupEvents() {
         networksVM = ViewModelProvider(this).get(NetworksViewModel::class.java)
         EngineService.setup(
             network = networksVM.getActiveNetworkConfig(),
-            user = PersistenceService.load(BlockaConfig::class) // TODO: not nice
+            user = PersistenceService.load(BlockaConfig::class)
         )
 
-        accountVM = ViewModelProvider(this).get(AccountViewModel::class.java)
-        tunnelVM = ViewModelProvider(this).get(TunnelViewModel::class.java)
-        settingsVM = ViewModelProvider(this).get(SettingsViewModel::class.java)
-        statsVM = ViewModelProvider(this).get(StatsViewModel::class.java)
-        adsCounterVM = ViewModelProvider(this).get(AdsCounterViewModel::class.java)
-        packsVM = ViewModelProvider(this).get(PacksViewModel::class.java)
+        accountVM = ViewModelProvider(this)[AccountViewModel::class.java]
+        tunnelVM = ViewModelProvider(this)[TunnelViewModel::class.java]
+        settingsVM = ViewModelProvider(this)[SettingsViewModel::class.java]
+        statsVM = ViewModelProvider(this)[StatsViewModel::class.java]
+        adsCounterVM = ViewModelProvider(this)[AdsCounterViewModel::class.java]
+        packsVM = ViewModelProvider(this)[PacksViewModel::class.java]
 
         accountVM.account.observeForever { account ->
             tunnelVM.checkConfigAfterAccountChanged(account)
@@ -116,14 +143,33 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             stats?.let { stats ->
                 MonitorService.setStats(stats)
                 val counter = stats.denied.toLong()
-                adsCounterVM.setRuntimeCounter(counter, experienceExchangeInterator)
+                adsCounterVM.setRuntimeCounter(counter)
             }
         }
+
+        experienceExchangeInterator
+            .getExchangeRateForToken(Chain.fdCoinDenom)
+            .withDefaults()
+            .subscribe()
+
+        appSettingsInteractor
+            .loadAppIconUrls()
+            .withDefaults()
+            .subscribe()
+
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
-        tunnelVM.tunnelStatus.observeForever {
-            MonitorService.setTunnelStatus(it)
+        var previousState = LaunchHelper.getCurrentState(EngineService.getTunnelStatus())
+        tunnelVM.tunnelStatus.observeForever { status ->
+            MonitorService.setTunnelStatus(status)
+            val current = LaunchHelper.getCurrentState(status)
+
+            if (previousState != current) {
+                val uri = getContentUri(current)
+                contentResolver.insert(uri, null)
+                previousState = current
+            }
         }
 
         networksVM.activeConfig.observeForever {
@@ -142,10 +188,19 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         }
         ConnectivityService.setup()
 
+        initRemoteConfig()
+        initFiltering()
+    }
+
+    private fun initFiltering() {
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
-            FilteringService.reload(packsVM.getActiveUrls())
+            FilteringService.reload(
+                packsVM.getActiveUrls(),
+                statsVM.getCustomBlocklistConfig(),
+                CustomBlocklistConfig.emptyConfig
+            )
         }
     }
 
@@ -170,6 +225,23 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             log.v("Marking repo payload as acted on")
             persistence.save(payload)
         }
+    }
+
+    private fun initRemoteConfig() {
+        RemoteConfigService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
+        remoteConfigDisposable = remoteConfig
+            .fetch(force = false)
+            .withDefaults()
+            .subscribe(
+                {
+                    initFiltering()
+                    statsVM.updateBlockedDomains()
+                    FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
+                },
+                { error ->
+                    FdLog.d("initRemoteConfig", "RemoteConfig fetching was failed", error)
+                }
+            )
     }
 
     override fun getDefaultLanguage(): Locale {

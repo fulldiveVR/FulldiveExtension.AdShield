@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/colorPrimaryDark">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/containerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/backgroundTabsAndNavBars"
+        app:cardElevation="@dimen/size_4dp"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/subscribeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/subscribeButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tutorialLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/size_24dp">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/tutorialImageView"
+                        android:layout_width="@dimen/flat_subscription_tutorial_icon_size"
+                        android:layout_height="@dimen/flat_subscription_tutorial_icon_size"
+                        android:layout_marginTop="@dimen/size_24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/lottie_subscribe_res" />
+
+                    <TextView
+                        android:id="@+id/titleTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="@dimen/textsize_xxlarge"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tutorialImageView"
+                        tools:text="@string/str_subscription_tutorial_title" />
+
+                    <TextView
+                        android:id="@+id/tutorialTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:lineSpacingExtra="@dimen/spacing_extra_dialog"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="@dimen/text_size_small"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                        tools:text="@string/str_subscription_tutorial_checkmarks" />
+
+                    <TextView
+                        android:id="@+id/viewAllProPerksTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_12dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawablePadding="@dimen/text_size_small"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingTop="@dimen/size_16dp"
+                        android:text="@string/str_subscription_tutorial_limited"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_xsmall"
+                        app:drawableStartCompat="@drawable/ic_limited_offer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tutorialTextView" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/text_size_small"
+                        android:background="@drawable/background_subscription_section"
+                        android:padding="@dimen/size_12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/viewAllProPerksTextView">
+
+                        <TextView
+                            android:id="@+id/discountCurrencyTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingTop="6dp"
+                            android:textSize="@dimen/text_size_small"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/discountTextView"
+                            tools:text="$" />
+
+                        <TextView
+                            android:id="@+id/discountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="@dimen/size_4dp"
+                            android:fontFamily="@font/roboto_medium"
+                            android:textSize="@dimen/textsize_xxxlarge"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/discountCurrencyTextView"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="1.99" />
+
+                        <TextView
+                            android:id="@+id/discountPeriodTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="@dimen/size_4dp"
+                            android:paddingBottom="6dp"
+                            android:text="@string/str_subscription_tutorial_period"
+                            android:textSize="@dimen/text_size_small"
+                            app:layout_constraintBottom_toBottomOf="@+id/discountTextView"
+                            app:layout_constraintStart_toEndOf="@+id/discountTextView" />
+
+                        <TextView
+                            android:id="@+id/fullPriceCurrencyTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingStart="@dimen/size_4dp"
+                            android:paddingTop="6dp"
+                            android:paddingEnd="@dimen/size_4dp"
+                            android:textColor="@color/textColorTertiary"
+                            android:textSize="@dimen/text_size_small"
+                            app:layout_constraintEnd_toStartOf="@+id/fullPriceTextView"
+                            app:layout_constraintTop_toTopOf="@+id/fullPriceTextView"
+                            tools:text="$" />
+
+                        <TextView
+                            android:id="@+id/fullPriceTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:fontFamily="@font/roboto_medium"
+                            android:paddingEnd="@dimen/size_4dp"
+                            android:textColor="@color/textColorTertiary"
+                            android:textSize="@dimen/textsize_xxxlarge"
+                            android:textStyle=""
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="5.99" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAlert"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/fullPriceTextView"
+                            app:layout_constraintStart_toStartOf="@+id/fullPriceCurrencyTextView"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <TextView
+                android:id="@+id/subscribeButton"
+                style="@style/FlatTheme.ColoredButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_48dp"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:layout_marginBottom="@dimen/size_32dp"
+                android:paddingStart="@dimen/size_32dp"
+                android:paddingEnd="@dimen/size_32dp"
+                android:text="@string/str_subscription_tutorial_subscribe"
+                android:textSize="@dimen/text_size_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

@@ -31,7 +31,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,6 +43,7 @@ class WalletLocalSource @Inject constructor(
     context: Context
 ) {
     private val gson = Gson()
+    private val accountObserver = BehaviorSubject.create<Account>()
     private var currentAccount: Account? = null
 
     private var sharedPreferences = context.getPrivateSharedPreferences(KEY_CRYPTO)
@@ -48,6 +51,15 @@ class WalletLocalSource @Inject constructor(
     fun getAccount(): Single<Account> {
         return safeSingle {
             getCurrentAccount()
+        }
+    }
+
+    fun observeAccount(): Observable<Account> {
+        return if (currentAccount == null) {
+            getAccount()
+                .flatMapObservable { accountObserver.distinctUntilChanged() }
+        } else {
+            accountObserver.distinctUntilChanged()
         }
     }
 
@@ -130,7 +142,7 @@ class WalletLocalSource @Inject constructor(
         }
     }
 
-    private fun getCurrentAccount(): Account? {
+    fun getCurrentAccount(): Account? {
         return currentAccount
             .or {
                 sharedPreferences
@@ -150,12 +162,14 @@ class WalletLocalSource @Inject constructor(
                     }
                     ?.also { account ->
                         currentAccount = account
+                        accountObserver.onNext(account)
                     }
             }
     }
 
     private fun setCurrentAccount(account: Account) {
         currentAccount = account
+        accountObserver.onNext(account)
         gson
             .toJson(account)
             .let { json ->

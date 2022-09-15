@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
@@ -26,6 +27,7 @@ import androidx.navigation.fragment.findNavController
 import model.TunnelStatus
 import org.adshield.R
 import service.EnvironmentService
+import service.RemoteConfigService
 import ui.TunnelViewModel
 import ui.app
 import utils.Links
@@ -41,55 +43,34 @@ class AdvancedFragment : Fragment() {
         val destination: NavDirections
     )
 
-//    private val isSlimMode = EnvironmentService.isSlim()
-    private val isSlimMode = true
+    private val isSlimMode = EnvironmentService.isSlim()
 
     private val sections by lazy {
         listOfNotNull(
-            if (isSlimMode) null
-            else {
-                Section(
-                    name = getString(R.string.advanced_section_header_packs),
-                    slugline = getString(R.string.advanced_section_slugline_packs),
-                    iconResId = R.drawable.ic_blocklists,
-                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToNavigationPacks()
-                )
-            },
-
-            if (isSlimMode) null
-            else {
-                Section(
-                    name = getString(R.string.userdenied_section_header),
-                    slugline = getString(R.string.userdenied_section_slugline),
-                    iconResId = R.drawable.ic_my_blocklists,
-                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToUserDeniedFragment()
-                )
-            },
-
-            if (isSlimMode) null
-            else {
-                Section(
-                    name = getString(R.string.apps_section_header),
-                    slugline = getString(R.string.advanced_section_slugline_apps),
-                    iconResId = R.drawable.ic_apps,
-                    destination = AdvancedFragmentDirections.actionAdvancedFragmentToAppsFragment()
-                )
-            },
-
             Section(
                 name = getString(R.string.networks_section_header),
                 slugline = getString(R.string.networks_section_label),
                 iconResId = R.drawable.ic_networks,
                 destination = AdvancedFragmentDirections.actionAdvancedFragmentToSettingsNetworksFragment()
             ),
-            Section(
-                name = getString(R.string.dns_forwarding_lists_title),
-                slugline = getString(R.string.dns_forwarding_lists_description),
-                iconResId = R.drawable.ic_forwarding_lists,
-                destination = AdvancedFragmentDirections.actionNavigationSettingsToWebFragment(
-                    Links.dnsSettings, getString(R.string.dns_forwarding_lists_title)
+            if (isSlimMode) {
+                null
+            } else {
+                Section(
+                    name = getString(R.string.str_dns_settings),
+                    slugline = getString(R.string.dns_forwarding_lists_description),
+                    iconResId = R.drawable.ic_forwarding_lists,
+                    destination = AdvancedFragmentDirections.actionNavigationSettingsToWebFragment(
+                        Links.dnsSettings, getString(R.string.str_dns_settings)
+                    )
                 )
-            )
+            },
+            Section(
+                name = getString(R.string.str_presets_settings),
+                slugline = getString(R.string.str_presets_settings_description),
+                iconResId = R.drawable.ic_my_blocklists,
+                destination = AdvancedFragmentDirections.actionAdvancedFragmentToPresetsFragment()
+            ),
         )
     }
 
@@ -126,6 +107,13 @@ class AdvancedFragment : Fragment() {
             val iconView = sectionView.findViewById<ImageView>(R.id.advanced_icon)
             iconView.setImageResource(iconResId)
         }
+
+        val developImageView = root.findViewById<ImageView>(R.id.developImageView)
+        val developTextView = root.findViewById<TextView>(R.id.advanced_migrateslim)
+        val isDevelopVisible = RemoteConfigService.getIsWebAppsSettingsLimited()
+                || RemoteConfigService.getIsWebCustomSettingsEnabled()
+        developImageView.isVisible = isDevelopVisible
+        developTextView.isVisible = isDevelopVisible
         return root
     }
 }

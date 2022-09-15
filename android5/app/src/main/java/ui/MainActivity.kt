@@ -12,6 +12,7 @@
 
 package ui
 
+import analytics.TrackerConstants
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -22,7 +23,9 @@ import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,17 +35,21 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import appextension.*
+import appextension.AppExtensionWorkType
+import appextension.EmailHelper
+import appextension.StatisticHelper
+import appextension.dialogs.PopupManager
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
+import com.fulldive.wallet.presentation.base.subscription.SubscriptionSuccessDialogFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.adshield.MobileNavigationDirections
 import org.adshield.R
-import service.ContextService
-import service.NetworkMonitorPermissionService
-import service.TranslationService
-import service.VpnPermissionService
+import service.*
 import ui.home.FirstTimeFragment
 import ui.home.HomeFragmentDirections
 import ui.settings.SettingsFragmentDirections
@@ -61,7 +68,8 @@ class MainActivity : LocalizationActivity(),
     private lateinit var accountVM: AccountViewModel
     private lateinit var settingsVM: SettingsViewModel
     private lateinit var appSettingsVm: AppSettingsViewModel
-     lateinit var toolbar: Toolbar
+    lateinit var toolbar: Toolbar
+    lateinit var proStatusImageView: ImageView
 
     override lateinit var appInjector: Injector
 
@@ -78,6 +86,7 @@ class MainActivity : LocalizationActivity(),
         ContextService.setActivityContext(this)
         TranslationService.setup()
         initViewModel()
+        StatisticHelper.init(baseContext)
 
         appSettingsVm.initAppTheme()
 
@@ -86,6 +95,49 @@ class MainActivity : LocalizationActivity(),
         val navigationView: BottomNavigationView = findViewById(R.id.nav_view)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        proStatusImageView = findViewById(R.id.proStatusImageView)
+        lifecycleScope.launch {
+            SubscriptionService.init(baseContext)
+        }
+
+        proStatusImageView.isVisible = !RemoteConfigService.getIsProLimited()
+
+        lifecycleScope.launch {
+            SubscriptionService.isProStatusPurchasedState.collect { isPurchased ->
+                if (isPurchased) {
+                    proStatusImageView.setImageResource(R.drawable.ic_pro_active)
+                    proStatusImageView.setOnClickListener {
+                        val fragment = SubscriptionSuccessDialogFragment.newInstance()
+                        fragment.show(supportFragmentManager, null)
+                    }
+                } else {
+                    proStatusImageView.setImageResource(R.drawable.ic_pro_inactive)
+                    proStatusImageView.setOnClickListener {
+                        findNavController(R.id.nav_host_fragment)
+                            .apply {
+                                try {
+                                    StatisticHelper.logAction(TrackerConstants.EVENT_PRO_TUTORIAL_OPENED_FROM_TOOLBAR)
+                                    navigate(
+                                        MobileNavigationDirections.activityToSubscriptionTutorial()
+                                    )
+                                } catch (e: Exception) {
+                                }
+                            }
+                    }
+                }
+            }
+        }
+
+        appSettingsVm.isRewardsLimited.observe(this) { isLimited ->
+            val rewardMenuItem = navigationView.menu.findItem(R.id.rewardsFragment)
+            rewardMenuItem.isVisible = !isLimited
+        }
+
+        appSettingsVm.isStatsLimited.observe(this) { isLimited ->
+            val statsMenuItem = navigationView.menu.findItem(R.id.navigation_stats)
+            statsMenuItem.isVisible = !isLimited
+        }
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -144,11 +196,14 @@ class MainActivity : LocalizationActivity(),
                 R.id.settingsNetworksFragment -> R.string.networks_section_header
                 R.id.networksDetailFragment -> R.string.all_networks_title
                 R.id.appsFragment -> R.string.apps_section_header
+                R.id.appsWebSettingsFragment -> R.string.apps_section_header
+                R.id.customSettingsWebSettingsFragment -> R.string.str_custom_forwarding_lists_title
                 R.id.navigation_settings -> R.string.main_tab_settings
                 R.id.navigation_settings_account -> R.string.account_action_my_account
                 R.id.settingsLogoutFragment -> R.string.account_header_logout
                 R.id.settingsAppFragment -> R.string.app_settings_section_header
                 R.id.leasesFragment -> R.string.account_action_devices
+                R.id.presetsFragment -> R.string.str_presets_settings
                 else -> null
             }
             toolbar.title = translationId?.let {
@@ -169,6 +224,10 @@ class MainActivity : LocalizationActivity(),
         }
 
         PopupManager.onAppStarted(this)
+        lifecycleScope.launch {
+            delay(5000)
+            PopupManager.showUpdateDialog(this@MainActivity)
+        }
     }
 
     private fun initViewModel() {
@@ -188,8 +247,6 @@ class MainActivity : LocalizationActivity(),
                     fragment.show(supportFragmentManager, null)
                 }
             }
-            val uri = getContentUri(LaunchHelper.getCurrentState(status))
-            contentResolver.insert(uri, null)
         })
     }
 
@@ -274,6 +331,7 @@ class MainActivity : LocalizationActivity(),
                     }
             }
             R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
+            R.id.help_join_discord -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }
         return true

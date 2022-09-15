@@ -14,23 +14,25 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package appextension.dialogs
 
 import android.app.AlertDialog
 import android.content.Context
+import android.view.LayoutInflater
 import org.adshield.R
 
-object ContactSupportDialogBuilder {
+object InstallBrowserDialogBuilder {
 
     fun show(context: Context, onPositiveClicked: () -> Unit) {
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.install_browser_dialog_layout, null)
         val dialog = AlertDialog
             .Builder(context, R.style.AppTheme_DialogStyle)
-            .setTitle(R.string.support_title)
-            .setMessage(R.string.support_description)
-            .setPositiveButton(R.string.support_submit) { _, _ ->
+            .setView(view)
+            .setPositiveButton(R.string.install_submit) { _, _ ->
                 onPositiveClicked.invoke()
             }
-            .setNegativeButton(R.string.maybe_later) { _, _ -> }
+            .setNegativeButton(R.string.rate_cancel) { _, _ -> }
             .create()
 
         dialog.setOnShowListener {

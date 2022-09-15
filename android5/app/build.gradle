@@ -13,6 +13,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -21,8 +22,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.joom.lightsaber.android'
 
 def versionMajor = 1
-def versionMinor = 2
-def versionPatch = 3
+def versionMinor = 5
+def versionPatch = 5
 
 android {
     compileSdkVersion 32
@@ -52,22 +53,30 @@ android {
 
         buildConfigField 'String', 'API_URL', '\"https://api.fdvr.co\"'
         buildConfigField 'String', 'GRPC_API_HOST', '\"qc.imversed.com\"'
+        buildConfigField 'String', 'FLURRY_API_KEY', new File('./flurrykey.txt').getText('UTF-8')
+        buildConfigField 'String', 'EXTENSIONS_CONTENT_PROVIDER', '\"com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider\"'
+        buildConfigField 'long', 'XP_PER_AD', '1'
     }
 
     buildTypes {
         debug {
+            applicationIdSuffix ".dnschanger"
             // By default it is a 'debuggable' build, signed with a debug key.
         }
 
         stage {
+            applicationIdSuffix ".stage"
             signingConfig signingConfigs.debug
             minifyEnabled false
             debuggable true
             buildConfigField 'String', 'API_URL', '\"https://api-staging.fdvr.co\"'
             buildConfigField 'String', 'GRPC_API_HOST', '\"qt.imversed.com\"'
+            buildConfigField 'String', 'EXTENSIONS_CONTENT_PROVIDER', '\"com.fulldive.extension.adshield.stage.FulldiveContentProvider\"'
+            buildConfigField 'long', 'XP_PER_AD', '40'
         }
 
         release {
+            applicationIdSuffix ".dnschanger"
             signingConfig signingConfigs.release
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
@@ -98,17 +107,7 @@ android {
 
         google {
             // google build lands on Google Play, missing some features.
-            applicationId "com.fulldive.extension.adshield.dnschanger"
-        }
-
-        escaped {
-            // escaped build can be installed on top of google build to get all features.
-            applicationId "com.fulldive.extension.adshield.dnschanger"
-        }
-
-        droid {
-            // droid lands on F-Droid.
-            applicationId "com.fulldive.extension.adshield.fdroid"
+            applicationId "com.fulldive.extension.adshield"
         }
     }
 
@@ -150,23 +149,18 @@ android {
         full.res.srcDirs += 'src/notgoogle/res'
         full.java.srcDirs += 'src/notgoogle/kotlin'
 
-        droid.res.srcDirs += 'src/notgoogle/res'
-        droid.java.srcDirs += 'src/notgoogle/kotlin'
-
-        escaped.res.srcDirs += 'src/notgoogle/res'
-        escaped.java.srcDirs += 'src/notgoogle/kotlin'
-
         // Do not include translations in debug builds (does not clutter search during development)
         release.res.srcDirs += 'src/translations/res'
         beta.res.srcDirs += 'src/translations/res'
     }
-    ndkVersion '24.0.8215888'
 }
 
 dependencies {
+    implementation project(path: ':iap')
+    implementation project(path: ':startapppopups')
     // forgot what is it for
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
+    implementation 'org.jsoup:jsoup:1.10.1'
     // androidx and kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -242,7 +236,7 @@ dependencies {
     implementation "com.github.moxy-community:moxy-ktx:2.2.2"
     kapt "com.github.moxy-community:moxy-compiler:2.2.2"
 
-
+    implementation "com.airbnb.android:lottie:5.2.0"
     implementation 'com.google.code.gson:gson:2.9.0'
 
     // test deps
@@ -252,6 +246,11 @@ dependencies {
 
     // legacy (for import of v4 settings)
     implementation 'io.paperdb:paperdb:2.7.1'
+
+    implementation 'com.flurry.android:analytics:13.3.0'
+    implementation 'com.google.android.gms:play-services-measurement-api:21.0.0'
+    implementation 'com.google.firebase:firebase-analytics:21.0.0'
+    implementation 'com.google.firebase:firebase-config:21.0.2'
 }
 
 apply plugin: 'org.mozilla.rust-android-gradle.rust-android'

@@ -51,7 +51,7 @@ class AppsFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         activity?.run {
-            vm = ViewModelProvider(this).get(AppsViewModel::class.java)
+            vm = ViewModelProvider(this)[AppsViewModel::class.java]
         }
 
         val root = inflater.inflate(R.layout.fragment_apps, container, false)

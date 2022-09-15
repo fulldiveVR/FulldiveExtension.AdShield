@@ -14,13 +14,13 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package appextension
+package com.fulldive.startapppopups
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.appcompat.widget.AppCompatRatingBar
-import org.adshield.R
+import androidx.core.content.ContextCompat
 import kotlin.math.roundToInt
 
 object RateUsDialogBuilder {
@@ -35,7 +35,8 @@ object RateUsDialogBuilder {
             }
         }
 
-        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
+        val dialog = AlertDialog
+            .Builder(context)
             .setView(view)
             .setTitle(R.string.rate_us_title)
             .setPositiveButton(R.string.rate_submit) { _, _ ->
@@ -46,9 +47,9 @@ object RateUsDialogBuilder {
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(context.getColor(R.color.textColorPrimary))
+                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                ?.setTextColor(context.getColor(R.color.textColorSecondary))
+                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorSecondary))
         }
         dialog.show()
     }

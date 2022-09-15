@@ -17,15 +17,46 @@
 package ui
 
 import androidx.lifecycle.*
+import com.fulldive.wallet.di.IInjectorHolder
+import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.orTrue
+import com.fulldive.wallet.interactors.WalletInteractor
+import com.joom.lightsaber.Injector
+import com.joom.lightsaber.Lightsaber
+import com.joom.lightsaber.getInstance
 import kotlinx.coroutines.launch
 import model.AppTheme
 import model.ThemeHelper
 import service.AppSettingsService
+import service.ContextService
+import service.RemoteConfigService
 
-class AppSettingsViewModel : ViewModel() {
+class AppSettingsViewModel : ViewModel(), IInjectorHolder {
+
+    private var appInjector: Injector = Lightsaber.Builder().build().createInjector(
+        ApplicationComponent(ContextService.requireContext())
+    )
+
+    private val walletInteractor: WalletInteractor = appInjector.getInstance()
+
+    override fun getInjector(): Injector {
+        return appInjector
+    }
 
     private val isIdoAnnouncementClickedLd = MutableLiveData<Boolean>()
     val isIdoAnnouncementClicked: LiveData<Boolean> = isIdoAnnouncementClickedLd
+        .distinctUntilChanged()
+
+    private val isSubscribeSuccessShowLd = MutableLiveData<Boolean>()
+    val isSubscribeSuccessShow: LiveData<Boolean> = isSubscribeSuccessShowLd
+        .distinctUntilChanged()
+
+    private val isRewardsLimitedLd = MutableLiveData<Boolean>()
+    val isRewardsLimited: LiveData<Boolean> = isRewardsLimitedLd
+        .distinctUntilChanged()
+
+    private val isStatsLimitedLd = MutableLiveData<Boolean>()
+    val isStatsLimited: LiveData<Boolean> = isStatsLimitedLd
         .distinctUntilChanged()
 
     private val currentThemeLd = MutableLiveData<AppTheme>()
@@ -47,8 +78,16 @@ class AppSettingsViewModel : ViewModel() {
 
     fun updateLiveData() {
         isIdoAnnouncementClickedLd.value = AppSettingsService.isIdoAnnouncementClicked()
+        isSubscribeSuccessShowLd.value = AppSettingsService.isSubscribeSuccessShow()
         currentThemeLd.value = AppSettingsService
             .getCurrentAppTheme().let { AppTheme.getThemeByType(it) }
+        isRewardsLimitedLd.value =
+            RemoteConfigService.getIsRewardsLimited() && walletInteractor.getCurrentAccount() == null
+        isStatsLimitedLd.value = if (isRewardsLimitedLd.value.orTrue()) {
+            RemoteConfigService.getIsStatsLimited()
+        } else {
+            true
+        }
     }
 
     fun initAppTheme() {
@@ -62,5 +101,9 @@ class AppSettingsViewModel : ViewModel() {
             currentThemeLd.value = AppSettingsService
                 .getCurrentAppTheme().let { AppTheme.getThemeByType(it) }
         }
+    }
+
+    fun setSubscribeSuccessShow(isShow: Boolean) {
+        AppSettingsService.setSubscribeSuccessShow(isShow)
     }
 }

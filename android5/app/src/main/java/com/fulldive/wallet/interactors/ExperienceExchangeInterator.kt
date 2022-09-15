@@ -34,6 +34,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.adshield.R
+import service.RemoteConfigService
 import ui.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -65,16 +66,15 @@ open class ExperienceExchangeInterator @Inject constructor(
             observeExchangeRateForToken(denom)
                 .subscribeOn(schedulers.io()),
             walletInteractor
-                .getAccount()
+                .observeAccount()
                 .map(Account::address)
                 .onErrorReturnItem("")
-                .toObservable()
                 .subscribeOn(schedulers.io()),
             settingsInteractor
                 .observeExchangePushShownTime()
                 .subscribeOn(schedulers.io()),
         ) { (experience, minExperience), isTimeIntervalPassed, exchangeRateForToken, address, pushShownTime ->
-            val isExchangeAvailable = address.isNotEmpty() && exchangeRateForToken > 0 &&
+            val isExchangeAvailable = exchangeRateForToken > 0 &&
                     isTimeIntervalPassed && experience >= minExperience
             val isExchangePushNeedToShow = experienceExchangeRepository.isDaysIntervalPassed(
                 System.currentTimeMillis(),
@@ -85,7 +85,9 @@ open class ExperienceExchangeInterator @Inject constructor(
                 experience = experience,
                 minExperience = minExperience,
                 isExchangeAvailable = isExchangeAvailable,
-                isExchangePushNeedToShow = isExchangePushNeedToShow
+                isExchangePushNeedToShow = isExchangePushNeedToShow,
+                isExchangeTimeout = !isTimeIntervalPassed,
+                isEmptyAddress = address.isEmpty()
             )
         }.flatMap { exchangeConfig ->
             if (exchangeConfig.isExchangePushNeedToShow) {
@@ -104,7 +106,9 @@ open class ExperienceExchangeInterator @Inject constructor(
     }
 
     fun setExperience(adsCount: Long) {
-        experienceExchangeRepository.setExperience(adsCount)
+        if (!RemoteConfigService.getIsRewardsLimited()) {
+            experienceExchangeRepository.setExperience(adsCount)
+        }
     }
 
     fun getAvailableTokenAmount(experience: Int, rate: Int): Int {
@@ -130,6 +134,17 @@ open class ExperienceExchangeInterator @Inject constructor(
                 setTextViewText(R.id.messageView, description)
             }
 
+            val notificationLayoutSmall = RemoteViews(
+                context.packageName,
+                R.layout.layout_notification_exchange_xp_small
+            ).apply {
+                setImageViewResource(
+                    R.id.imageView,
+                    R.drawable.ic_crypto_push
+                )
+                setTextViewText(R.id.titleView, title)
+            }
+
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_adshield)
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
@@ -140,9 +155,11 @@ open class ExperienceExchangeInterator @Inject constructor(
 
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("update", true)
-            val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+            val pendingIntent =
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
             builder.setContentIntent(pendingIntent)
-                .setCustomContentView(notificationLayout)
+                .setCustomContentView(notificationLayoutSmall)
+                .setCustomBigContentView(notificationLayout)
 
             val notificationManager = context
                 .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -189,5 +206,7 @@ data class ExchangeConfig(
     val experience: Int,
     val minExperience: Int,
     val isExchangeAvailable: Boolean,
-    val isExchangePushNeedToShow: Boolean
+    val isExchangePushNeedToShow: Boolean,
+    val isExchangeTimeout: Boolean,
+    val isEmptyAddress: Boolean
 )

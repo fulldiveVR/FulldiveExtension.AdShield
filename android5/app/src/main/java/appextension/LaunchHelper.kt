@@ -17,7 +17,6 @@
 package appextension
 
 import android.content.Context
-import android.util.Log
 import engine.EngineService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +24,6 @@ import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.TunnelStatus
 import service.PersistenceService
-import service.VpnPermissionService
 
 object LaunchHelper {
 
@@ -34,14 +32,14 @@ object LaunchHelper {
     }
 
     fun getCurrentState(status: TunnelStatus): String {
-        return if (status.active) {
-            AppExtensionState.START.id
-        } else {
-            AppExtensionState.STOP.id
+        return when {
+            status.inProgress -> AppExtensionState.PROGRESS.id
+            status.active -> AppExtensionState.START.id
+            else -> AppExtensionState.STOP.id
         }
     }
 
-    fun isChangingState() : Boolean {
+    fun isChangingState(): Boolean {
         return EngineService.getTunnelStatus().inProgress
     }
 
@@ -58,8 +56,6 @@ object LaunchHelper {
                     persistence.save(config)
                 } catch (ex: Exception) {
                 }
-                val uri = getContentUri(AppExtensionState.START.id)
-                context.contentResolver.insert(uri, null)
             }
         }
     }
@@ -77,8 +73,6 @@ object LaunchHelper {
                     persistence.save(config)
                 } catch (ex: Exception) {
                 }
-                val uri = getContentUri(AppExtensionState.STOP.id)
-                context.contentResolver.insert(uri, null)
             }
         }
     }

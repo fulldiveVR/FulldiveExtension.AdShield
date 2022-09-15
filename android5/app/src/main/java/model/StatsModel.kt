@@ -99,3 +99,12 @@ class StatsPersistedEntry(
     var lastEncounter: Long,
     var occurrences: Int
 )
+
+data class CustomBlocklistConfig(
+    val isAllowed: List<String>,
+    val isDenied: List<String>
+) {
+    companion object {
+        val emptyConfig = CustomBlocklistConfig(emptyList(), emptyList())
+    }
+}

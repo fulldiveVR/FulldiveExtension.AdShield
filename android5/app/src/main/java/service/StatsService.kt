@@ -12,14 +12,26 @@
 
 package service
 
+import com.fulldive.wallet.di.IInjectorHolder
+import com.fulldive.wallet.di.components.ApplicationComponent
+import com.fulldive.wallet.extensions.withDefaults
+import com.fulldive.wallet.interactors.ExperienceExchangeInterator
+import com.fulldive.wallet.models.Chain
+import com.joom.lightsaber.Injector
+import com.joom.lightsaber.Lightsaber
+import com.joom.lightsaber.getInstance
 import engine.Host
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import model.*
+import org.adshield.BuildConfig
 import utils.Logger
 import java.util.*
 
-object StatsService : PrintsDebugInfo {
+object StatsService : PrintsDebugInfo, IInjectorHolder {
+
+    private const val XP_PER_AD = BuildConfig.XP_PER_AD
 
     private val blockedHosts: MutableMap<Host, Long> = mutableMapOf()
     private val internalStats: MutableMap<StatsPersistedKey, StatsPersistedEntry> = mutableMapOf()
@@ -28,7 +40,25 @@ object StatsService : PrintsDebugInfo {
     private var runtimeAllowed = 0
     private var runtimeDenied = 0
 
+    override fun getInjector(): Injector {
+        return appInjector
+    }
+
+    private lateinit var appInjector: Injector
+    private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
+
+    var disposable: Disposable? = null
+
     fun setup() {
+        appInjector = Lightsaber.Builder().build().createInjector(
+            ApplicationComponent(ContextService.requireAppContext())
+        )
+        if (disposable?.isDisposed != false) {
+            disposable = experienceExchangeInterator
+                .observeIfExperienceExchangeAvailable(Chain.fdCoinDenom)
+                .withDefaults()
+                .subscribe()
+        }
         internalStats.clear()
         internalStats.putAll(persistence.load(StatsPersisted::class).entries)
         LogService.onShareLog("Stats", this)
@@ -37,6 +67,8 @@ object StatsService : PrintsDebugInfo {
     fun clear() {
         internalStats.clear()
         persistence.save(StatsPersisted(internalStats))
+        disposable?.dispose()
+        disposable = null
     }
 
     suspend fun passedAllowed(host: Host) {
@@ -52,6 +84,7 @@ object StatsService : PrintsDebugInfo {
     suspend fun blocked(host: Host) {
         if (needIncrement(host)) {
             increment(host, HistoryEntryType.blocked)
+            incrementXP()
             runtimeDenied += 1
         }
     }
@@ -100,6 +133,9 @@ object StatsService : PrintsDebugInfo {
         }
     }
 
+    private fun incrementXP() {
+        experienceExchangeInterator.setExperience(XP_PER_AD)
+    }
 
     private fun needIncrement(host: Host): Boolean {
         val hostLastCheckTime = blockedHosts[host]

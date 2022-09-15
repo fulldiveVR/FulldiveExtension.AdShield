@@ -13,4 +13,6 @@
  */
 
 rootProject.name = "AdShield"
+include ':iap'
 include ':app'
+include ':startapppopups'

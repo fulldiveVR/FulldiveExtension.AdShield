@@ -25,6 +25,7 @@ import android.net.VpnService
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import appextension.LaunchHelper.isChangingState
+import org.adshield.BuildConfig
 import ui.MainActivity
 import java.util.*
 
@@ -106,8 +107,8 @@ class ExtensionContentProvider : ContentProvider() {
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int = 0
 
     companion object {
-        private const val PREFERENCE_AUTHORITY =
-            "com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
+        private const val PREFERENCE_AUTHORITY = BuildConfig.EXTENSIONS_CONTENT_PROVIDER
+//            "com.fulldive.extension.adshield.dnschanger.FulldiveContentProvider"
         const val BASE_URL = "content://$PREFERENCE_AUTHORITY"
         const val KEY_WORK_STATUS = "work_status"
         const val KEY_RESULT = "result"

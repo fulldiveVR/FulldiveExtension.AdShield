@@ -16,6 +16,23 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <action
+        android:id="@+id/activity_to_subscriptionTutorial"
+        app:destination="@id/subscriptionTutorial"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim" />
+
+    <action
+        android:id="@+id/action_activity_to_web_fragment"
+        app:destination="@id/webFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_enter_anim"
+        app:popExitAnim="@anim/nav_default_exit_anim"
+        app:popUpTo="@id/advancedFragment" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="ui.home.HomeFragment"
@@ -38,6 +55,7 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@id/navigation_home" />
+
     </fragment>
 
     <fragment
@@ -228,6 +246,20 @@
         android:id="@+id/appsFragment"
         android:name="ui.advanced.apps.AppsFragment"
         tools:layout="@layout/fragment_apps" />
+
+    <fragment
+        android:id="@+id/appsWebSettingsFragment"
+        android:name="ui.web.appsettings.AppsWebSettingsFragment"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/customSettingsWebSettingsFragment"
+        android:name="ui.web.customsettings.CustomWebSettingsFragment"
+        tools:layout="@layout/fragment_web_view" />
+    <fragment
+        android:id="@+id/presetsFragment"
+        android:name="ui.advanced.presets.PresetsFragment"
+        tools:layout="@layout/fragment_packs_presets" />
     <fragment
         android:id="@+id/settingsAppFragment"
         android:name="ui.settings.SettingsAppFragment">
@@ -253,7 +285,25 @@
             app:popUpTo="@id/advancedFragment" />
         <action
             android:id="@+id/action_advancedFragment_to_appsFragment"
-            app:destination="@id/appsFragment"
+            app:destination="@id/appsWebSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/advancedFragment" />
+
+        <action
+            android:id="@+id/action_advancedFragment_to_customSettingsFragment"
+            app:destination="@id/customSettingsWebSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@id/advancedFragment" />
+
+        <action
+            android:id="@+id/action_advancedFragment_to_presets_fragment"
+            app:destination="@id/presetsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -295,4 +345,7 @@
     <fragment
         android:id="@+id/userDeniedFragment"
         android:name="ui.advanced.userdenied.UserDeniedFragment" />
+    <fragment
+        android:id="@+id/subscriptionTutorial"
+        android:name="com.fulldive.wallet.presentation.base.subscription.SubscriptionTutorialFragment" />
 </navigation>

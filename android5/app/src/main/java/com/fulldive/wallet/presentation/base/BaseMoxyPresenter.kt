@@ -1,24 +1,48 @@
+/*
+ * Copyright (c) 2022 FullDive
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.fulldive.wallet.presentation.base
 
 import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.*
 import moxy.MvpPresenter
 import org.adshield.R
 import timber.log.Timber
 import java.io.IOException
 import java.net.UnknownHostException
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseMoxyPresenter<View : BaseMoxyView>
-    : MvpPresenter<View>(), ICompositable {
+    : MvpPresenter<View>(), ICompositable, CoroutineScope {
 
+    protected open val coroutineExceptionHandler = CoroutineExceptionHandler { _, t ->
+        defaultOnErrorConsumer.invoke(t)
+    }
+    open val supervisionJob by lazy { SupervisorJob() }
+    override val coroutineContext: CoroutineContext by lazy { supervisionJob + Dispatchers.Main + coroutineExceptionHandler }
     override val compositeDisposable by lazy { CompositeDisposable() }
 
     override val defaultOnErrorConsumer: (Throwable) -> Unit by lazy { OnErrorConsumer() }
 
     @CallSuper
     override fun onDestroy() {
+        coroutineContext.cancelChildren()
         compositeDisposable.dispose()
         super.onDestroy()
     }
