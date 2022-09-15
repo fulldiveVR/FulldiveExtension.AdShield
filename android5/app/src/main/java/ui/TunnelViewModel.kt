@@ -40,7 +40,7 @@ class TunnelViewModel : ViewModel() {
     private val _config = MutableLiveData<BlockaConfig>()
     val config: LiveData<BlockaConfig> = _config
 
-    private val _isAdblockWork = MutableLiveData<Boolean>()
+    private val _isAdblockWork: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isAdblockWork: LiveData<Boolean> = _isAdblockWork
 
     private val _tunnelStatus = MutableLiveData<TunnelStatus>()
