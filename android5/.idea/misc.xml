@@ -187,6 +187,9 @@
         <entry key="app/src/main/res/layout/layout_limited_offer.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/layout_notification_exchange_xp.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/layout_notification_exchange_xp_small.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/layout_notification_exchange_xp.xml" value="0.2015625" />
+        <entry key="app/src/main/res/layout/layout_notification_exchange_xp.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/layout_notification_exchange_xp_small.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/layout_settings_item.xml" value="0.32382246376811596" />
         <entry key="app/src/main/res/layout/layout_stop_working.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/layout_suggestion_list_item.xml" value="0.14791666666666667" />

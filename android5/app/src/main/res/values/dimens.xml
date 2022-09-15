@@ -29,9 +29,9 @@
     <dimen name="header_width_payment">130dp</dimen>
     <dimen name="header_height">24dp</dimen>
 
-    <dimen name="powerview">200dp</dimen>
-    <dimen name="powerview_below">32dp</dimen>
-    <dimen name="plusbutton_above">90dp</dimen>
+    <dimen name="powerview">120dp</dimen>
+    <dimen name="powerview_below">4dp</dimen>
+    <dimen name="plusbutton_above">48dp</dimen>
 
     <dimen name="maxwidth">600dp</dimen>
     <dimen name="sheet_maxwidth">300dp</dimen>
@@ -44,6 +44,8 @@
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="textsize_xlarge">20sp</dimen>
+    <dimen name="textsize_xxlarge">24sp</dimen>
+    <dimen name="textsize_xxxlarge">28sp</dimen>
 
     <dimen name="size_1dp">1dp</dimen>
     <dimen name="size_2dp">2dp</dimen>
@@ -66,6 +68,7 @@
     <dimen name="flat_subscription_tutorial_icon_size">150dp</dimen>
     <dimen name="size_32dp">32dp</dimen>
     <dimen name="shapeButtonRadius">32dp</dimen>
+
 
     <dimen name="connotative_cereus">252dp</dimen>
     <dimen name="moines_most_margin">310dp</dimen>
