@@ -36,6 +36,7 @@ import com.fulldive.wallet.extensions.or
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.adshield.R
+import service.RemoteConfigService
 import ui.BottomSheetFragment
 import ui.StatsViewModel
 import ui.advanced.apps.AppsViewModel
@@ -289,7 +290,12 @@ class WebFragment : BottomSheetFragment() {
         var isLoaded = false
         statsVM.customBlocklistConfig.observe(viewLifecycleOwner) { config ->
             if (!isLoaded) {
-                val jsonConfig = Gson().toJson(config)
+                val mappedConfig = config.copy(
+                    isDenied = config.isDenied
+                        .toMutableList()
+                        .minus(RemoteConfigService.getAdblockWorkCheckDomain())
+                )
+                val jsonConfig = Gson().toJson(mappedConfig)
                 webView.isVisible = true
                 circleProgressView.isVisible = false
                 webView.loadUrl("javascript:loadHosts('$jsonConfig')")

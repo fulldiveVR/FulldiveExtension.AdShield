@@ -65,17 +65,31 @@
             android:textAlignment="center"
             android:textColor="@color/textColorSecondary"
             android:textSize="@dimen/text_size_xsmall"
-            app:layout_constraintBottom_toTopOf="@+id/statusDescriptionCardView"
+            app:layout_constraintBottom_toTopOf="@+id/stopWorkingLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statusTextView" />
+
+        <include
+            android:id="@+id/stopWorkingLayout"
+            layout="@layout/layout_stop_working"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_12dp"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:layout_marginEnd="@dimen/size_12dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/statusDescriptionCardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/legalStateDescriptionTextView"
+            tools:visibility="visible" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/statusDescriptionCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/size_12dp"
-            android:layout_marginTop="@dimen/size_24dp"
             android:layout_marginEnd="@dimen/size_12dp"
             android:layout_marginBottom="@dimen/size_8dp"
             app:cardBackgroundColor="@color/backgroundTabsAndNavBars"
@@ -84,7 +98,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/legalStateDescriptionTextView">
+            app:layout_constraintTop_toBottomOf="@+id/stopWorkingLayout">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

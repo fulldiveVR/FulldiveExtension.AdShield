@@ -24,4 +24,24 @@
         <key>adshield_current_version</key>
         <value>10401</value>
     </entry>
+    <entry>
+        <key>is_adshield_rewards_limited</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>is_adshield_stats_limited</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>adblock_work_check_url</key>
+        <value>https://traceback.fdvr.co/index.html</value>
+    </entry>
+    <entry>
+        <key>adblock_work_check_domain</key>
+        <value>traceback.fdvr.co</value>
+    </entry>
+    <entry>
+        <key>adblock_tutorial_url</key>
+        <value>https://www.fulldive.com/post/keep-fulldive-adblock-vpn-automatically-in-background</value>
+    </entry>
 </defaultsMap>

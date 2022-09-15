@@ -18,6 +18,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Binder
 import android.os.IBinder
+import androidx.annotation.StringRes
 import engine.Host
 import kotlinx.coroutines.CompletableDeferred
 import model.Stats
@@ -36,7 +37,7 @@ object MonitorService {
     fun setCounter(counter: Long) = strategy.setCounter(counter)
     fun setStats(stats: Stats) = strategy.setStats(stats)
     fun setTunnelStatus(tunnelStatus: TunnelStatus) = strategy.setTunnelStatus(tunnelStatus)
-
+    fun setInfo(@StringRes stringRes: Int) = strategy.setInfo(stringRes)
 }
 
 private interface MonitorServiceStrategy {
@@ -44,6 +45,7 @@ private interface MonitorServiceStrategy {
     fun setCounter(counter: Long)
     fun setStats(stats: Stats)
     fun setTunnelStatus(tunnelStatus: TunnelStatus)
+    fun setInfo(@StringRes infoStringRes: Int)
 }
 
 // This strategy just shows the notification
@@ -54,6 +56,7 @@ private class SimpleMonitorServiceStrategy : MonitorServiceStrategy {
     private var counter: Long = 0
     private var lastDenied: List<Host> = emptyList()
     private var tunnelStatus: TunnelStatus = TunnelStatus.off()
+    private var infoStringRes: Int = 0
 
     override fun setup() {}
 
@@ -72,13 +75,17 @@ private class SimpleMonitorServiceStrategy : MonitorServiceStrategy {
         updateNotification()
     }
 
+    override fun setInfo(@StringRes infoStringRes: Int) {
+        this.infoStringRes = infoStringRes
+        updateNotification()
+    }
+
     private fun updateNotification() {
         if (tunnelStatus.active) {
-            val prototype = MonitorNotification(tunnelStatus, counter, lastDenied)
+            val prototype = MonitorNotification(tunnelStatus, counter, lastDenied, infoStringRes)
             notification.show(prototype)
         }
     }
-
 }
 
 class ForegroundService : Service() {
@@ -89,6 +96,7 @@ class ForegroundService : Service() {
     private var counter: Long = 0
     private var lastDenied: List<Host> = emptyList()
     private var tunnelStatus: TunnelStatus = TunnelStatus.off()
+    private var infoStringRes: Int = 0
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         ContextService.setContext(this)
@@ -111,7 +119,7 @@ class ForegroundService : Service() {
     }
 
     private fun updateNotification() {
-        val prototype = MonitorNotification(tunnelStatus, counter, lastDenied)
+        val prototype = MonitorNotification(tunnelStatus, counter, lastDenied, infoStringRes)
         val n = notification.build(prototype)
         startForeground(prototype.id, n)
     }

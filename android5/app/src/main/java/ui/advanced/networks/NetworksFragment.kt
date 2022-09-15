@@ -143,5 +143,4 @@ class NetworksFragment : Fragment() {
             smoothScrollToPosition(0)
         }
     }
-
 }

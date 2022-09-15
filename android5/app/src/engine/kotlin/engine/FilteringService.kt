@@ -34,7 +34,11 @@ internal object FilteringService {
 
     private var filteringStrategy: FilteringStrategy = NoopFilteringStrategy
 
-    fun reload(urls: Set<String>, config: CustomBlocklistConfig, currentConfig: CustomBlocklistConfig) {
+    fun reload(
+        urls: Set<String>,
+        config: CustomBlocklistConfig,
+        currentConfig: CustomBlocklistConfig
+    ) {
         // init adp if have adp blocklist.
         log.v("Reloading blocklist")
         merged = blocklist.loadMerged()

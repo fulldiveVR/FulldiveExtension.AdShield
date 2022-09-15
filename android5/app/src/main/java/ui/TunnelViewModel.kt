@@ -14,7 +14,9 @@ package ui
 
 import androidx.lifecycle.*
 import engine.EngineService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import model.*
 import service.*
 import utils.cause
@@ -38,6 +40,9 @@ class TunnelViewModel: ViewModel() {
     private val _config = MutableLiveData<BlockaConfig>()
     val config: LiveData<BlockaConfig> = _config
 
+    private val _isAdblockWork = MutableLiveData<Boolean>()
+    val isAdblockWork: LiveData<Boolean> = _isAdblockWork
+
     private val _tunnelStatus = MutableLiveData<TunnelStatus>()
     val tunnelStatus: LiveData<TunnelStatus> = _tunnelStatus.distinctUntilChanged()
 
@@ -54,6 +59,15 @@ class TunnelViewModel: ViewModel() {
             if (cfg.tunnelEnabled) {
                 log.w("Starting tunnel after app start, as it was active before")
                 turnOnWhenStartedBySystem()
+            }
+        }
+    }
+
+    fun checkIfAdblockWork() {
+        viewModelScope.launch {
+            MonitorService.setInfo(0)
+            _isAdblockWork.value = withContext(Dispatchers.IO) {
+                CheckAdblockWorkService.isAdblockWork()
             }
         }
     }
@@ -303,5 +317,4 @@ class TunnelViewModel: ViewModel() {
         _config.value = this
         persistence.save(this)
     }
-
 }

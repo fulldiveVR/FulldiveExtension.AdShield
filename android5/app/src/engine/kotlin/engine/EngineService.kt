@@ -190,7 +190,11 @@ object EngineService {
         state.stopped()
     }
 
-    suspend fun reloadBlockLists(urls: Set<String>, blocklistConfig: CustomBlocklistConfig, currentBlocklistConfig: CustomBlocklistConfig) {
+    suspend fun reloadBlockLists(
+        urls: Set<String>,
+        blocklistConfig: CustomBlocklistConfig,
+        currentBlocklistConfig: CustomBlocklistConfig
+    ) {
         filtering.reload(urls, blocklistConfig, currentBlocklistConfig)
         reload(config, force = true)
     }

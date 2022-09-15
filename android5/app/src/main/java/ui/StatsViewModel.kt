@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.*
 import service.PersistenceService
+import service.RemoteConfigService
 import service.StatsService
 import ui.advanced.packs.PacksViewModel
 import utils.Logger
@@ -242,7 +243,13 @@ class StatsViewModel : ViewModel() {
         val type = object : TypeToken<CustomBlocklistConfig>() {}.type
         val config: CustomBlocklistConfig = Gson().fromJson(jsonConfig, type)
         persistence.save(Allowed(config.isAllowed))
-        persistence.save(Denied(config.isDenied))
+        persistence.save(
+            Denied(
+                config.isDenied.toSet()
+                    .plus(RemoteConfigService.getAdblockWorkCheckDomain())
+                    .toList()
+            )
+        )
 
         viewModelScope.launch(Dispatchers.Main) {
             engine.reloadBlockLists(
@@ -253,6 +260,29 @@ class StatsViewModel : ViewModel() {
             // This will cause to emit new event and to refresh the public LiveData
             _allowed.value = Allowed(config.isAllowed)
             _denied.value = Denied(config.isDenied)
+            _customBlocklistConfig.value = getCustomBlocklistConfig()
+        }
+    }
+
+    fun updateBlockedDomains() {
+        val t = getCustomBlocklistConfig()
+        val config = t.copy(
+            isDenied = t.isDenied
+                .toSet()
+                .plus(RemoteConfigService.getAdblockWorkCheckDomain())
+                .toList()
+        )
+        persistence.save(Allowed(config.isAllowed))
+        persistence.save(Denied(config.isDenied))
+        viewModelScope.launch(Dispatchers.Main) {
+            engine.reloadBlockLists(
+                getActiveUrls(),
+                config,
+                getCustomBlocklistConfig()
+            )
+            // This will cause to emit new event and to refresh the public LiveData
+            _allowed.value = Allowed(getCustomBlocklistConfig().isAllowed)
+            _denied.value = Denied(getCustomBlocklistConfig().isDenied)
             _customBlocklistConfig.value = getCustomBlocklistConfig()
         }
     }

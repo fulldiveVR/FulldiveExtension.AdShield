@@ -15,11 +15,13 @@ package ui.home
 import analytics.TrackerConstants
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +47,7 @@ import ui.settings.SettingsFragmentDirections
 import utils.Links
 import utils.getColorFromAttr
 import utils.withBoldSections
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -61,6 +64,7 @@ class HomeFragment : Fragment() {
     private lateinit var limitedOfferLayout: FrameLayout
     private lateinit var closePopupButton: ImageView
     private lateinit var legalStateDescriptionTextView: TextView
+    private lateinit var stopWorkingLayout: CardView
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -211,7 +215,17 @@ class HomeFragment : Fragment() {
             }
         }
 
+        stopWorkingLayout.setOnClickListener {
+            openUrlInBrowser("${RemoteConfigService.getAdblockTutorialUrl()}#${Build.MANUFACTURER.toLowerCase()}")
+        }
+
+        vm.isAdblockWork.observe(viewLifecycleOwner) { isAdshieldWork ->
+            stopWorkingLayout.isVisible = activateView.activeMode && !isAdshieldWork
+        }
+
         vm.tunnelStatus.observe(viewLifecycleOwner) { status ->
+            stopWorkingLayout.isVisible = stopWorkingLayout.isVisible && status.active
+
             activateView.inactiveMode = !status.inProgress && !status.active
             activateView.activeMode = status.active
             activateView.isEnabled = !status.inProgress
@@ -290,6 +304,11 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        vm.checkIfAdblockWork()
+    }
+
     private fun showVpnPermsSheet() {
         val fragment = AskVpnProfileFragment.newInstance()
         fragment.show(parentFragmentManager, null)
@@ -343,6 +362,7 @@ class HomeFragment : Fragment() {
         closePopupButton = root.findViewById(R.id.closePopupButton)
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
         legalStateDescriptionTextView = root.findViewById(R.id.legalStateDescriptionTextView)
+        stopWorkingLayout = root.findViewById(R.id.stopWorkingLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
