@@ -20,7 +20,6 @@ import analytics.FdLog
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import org.adshield.R
 
 class CheckAdblockWorkManager constructor(
     context: Context,
@@ -29,8 +28,7 @@ class CheckAdblockWorkManager constructor(
 
     override fun doWork(): Result {
         FdLog.d(TAG, "doWork()")
-        val isAdblockWork = CheckAdblockWorkService.isAdblockWork()
-        MonitorService.setInfo(if (!isAdblockWork) R.string.str_stop_working_push_info else 0)
+        CheckAdblockWorkService.isAdblockWork()
         return Result.success()
     }
 
