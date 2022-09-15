@@ -47,4 +47,9 @@
             android:visible="false"
             android:icon="@drawable/ic_baseline_bug_report_24"
             android:title="@string/menu_item_about_rewards" />
+
+    <item
+        android:id="@+id/help_join_discord"
+        android:icon="@drawable/ic_baseline_bug_report_24"
+        android:title="@string/str_menu_join_discord" />
 </menu>

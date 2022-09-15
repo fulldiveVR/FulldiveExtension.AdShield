@@ -62,6 +62,10 @@
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="keyboardMinHeight">240dp</dimen>
 
+    <dimen name="spacing_extra_dialog">3sp</dimen>
+    <dimen name="flat_subscription_tutorial_icon_size">150dp</dimen>
+    <dimen name="size_32dp">32dp</dimen>
+    <dimen name="shapeButtonRadius">32dp</dimen>
 
     <dimen name="connotative_cereus">252dp</dimen>
     <dimen name="moines_most_margin">310dp</dimen>
