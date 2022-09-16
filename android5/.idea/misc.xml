@@ -215,6 +215,7 @@
         <entry key="startapppopups/src/main/res/drawable/ic_fulldive_coins.xml" value="0.203" />
         <entry key="startapppopups/src/main/res/layout/install_browser_dialog_layout.xml" value="0.37604166666666666" />
         <entry key="startapppopups/src/main/res/layout/layout_donate.xml" value="0.37604166666666666" />
+        <entry key="startapppopups/src/main/res/layout/rate_report_dialog_layout.xml" value="0.42400881057268724" />
         <entry key="startapppopups/src/main/res/layout/rate_us_dialog_layout.xml" value="0.17300724637681159" />
       </map>
     </option>
