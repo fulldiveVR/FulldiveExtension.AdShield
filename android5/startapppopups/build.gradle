@@ -24,7 +24,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 21
+        minSdk 14
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -36,6 +36,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        stage {}
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -78,8 +79,8 @@ afterEvaluate {
 
                     // You can then customize attributes of the publication as shown below.
                     groupId = "com.fulldive"
-                    artifactId = 'FD-Popups'
-                    version = '1.0.0'
+                    artifactId = 'popups'
+                    version = '1.0.10'
                 }
             }
         }
