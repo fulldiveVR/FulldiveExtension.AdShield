@@ -68,7 +68,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
     fun onExchangeClicked() {
         walletInteractor
             .getAccount()
-            .map(Account::address)
+            . map(Account::address)
             .onErrorReturnItem("")
             .withDefaults()
             .compositeSubscribe(
