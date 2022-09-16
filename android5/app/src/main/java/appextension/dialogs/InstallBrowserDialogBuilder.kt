@@ -27,7 +27,7 @@ object InstallBrowserDialogBuilder {
         val view = LayoutInflater.from(context)
             .inflate(R.layout.install_browser_dialog_layout, null)
         val dialog = AlertDialog
-            .Builder(context, R.style.AppTheme_DialogStyle)
+            .Builder(context, R.style.PopupDialogTheme)
             .setView(view)
             .setPositiveButton(R.string.install_submit) { _, _ ->
                 onPositiveClicked.invoke()

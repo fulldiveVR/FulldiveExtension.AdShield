@@ -28,7 +28,7 @@ object AdBlockDialogBuilder {
         val view = LayoutInflater.from(context)
             .inflate(R.layout.adblock_dialog_layout, null)
         val dialog = AlertDialog
-            .Builder(context)
+            .Builder(context,R.style.PopupDialogTheme)
             .setView(view)
             .setPositiveButton(R.string.str_popup_block_ads_positive) { _, _ ->
                 onPositiveClicked.invoke()
