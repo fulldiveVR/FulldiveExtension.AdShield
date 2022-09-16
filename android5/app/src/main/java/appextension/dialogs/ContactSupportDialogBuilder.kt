@@ -24,7 +24,7 @@ object ContactSupportDialogBuilder {
 
     fun show(context: Context, onPositiveClicked: () -> Unit) {
         val dialog = AlertDialog
-            .Builder(context, R.style.AppTheme_DialogStyle)
+            .Builder(context, R.style.PopupDialogTheme)
             .setTitle(R.string.support_title)
             .setMessage(R.string.support_description)
             .setPositiveButton(R.string.support_submit) { _, _ ->

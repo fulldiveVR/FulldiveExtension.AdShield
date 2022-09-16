@@ -15,7 +15,8 @@
   -->
 
 <resources>
+
     <style name="PopupDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/backgroundTabsAndNavBars</item>
+        <item name="android:background">@color/colorPopupBackground</item>
     </style>
 </resources>

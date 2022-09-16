@@ -35,7 +35,7 @@ object RateUsDialogBuilder {
             }
         }
 
-        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
+        val dialog = AlertDialog.Builder(context, R.style.PopupDialogTheme)
             .setView(view)
             .setTitle(R.string.rate_us_title)
             .setPositiveButton(R.string.rate_submit) { _, _ ->

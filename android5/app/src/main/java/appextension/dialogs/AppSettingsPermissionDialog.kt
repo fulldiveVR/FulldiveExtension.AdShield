@@ -29,7 +29,7 @@ object AppSettingsPermissionDialog {
     ) {
         val view = LayoutInflater.from(context).inflate(R.layout.app_settings_dialog_layout, null)
 
-        val dialog = AlertDialog.Builder(context, R.style.AppTheme_DialogStyle)
+        val dialog = AlertDialog.Builder(context, R.style.PopupDialogTheme)
             .setView(view)
             .setPositiveButton(R.string.str_allow_button_title) { _, _ ->
                 onAppSettingsPermissionGranted.invoke(true)
