@@ -18,5 +18,6 @@
 
     <style name="PopupDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/colorPopupBackground</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 </resources>

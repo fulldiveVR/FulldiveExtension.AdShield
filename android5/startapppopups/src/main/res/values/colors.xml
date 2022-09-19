@@ -22,4 +22,5 @@
     <color name="textColorAccent">#FF9900</color>
 
     <color name="backgroundTabsAndNavBars">#ffffff</color>
+    <color name="colorTransparent">#00ffffff</color>
 </resources>
