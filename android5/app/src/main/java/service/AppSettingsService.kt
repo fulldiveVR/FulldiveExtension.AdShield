@@ -19,7 +19,9 @@ package service
 import android.annotation.SuppressLint
 import appextension.getPrivateSharedPreferences
 import appextension.getProperty
+import appextension.observeSettingsInt
 import appextension.setProperty
+import io.reactivex.Observable
 import model.AppTheme
 import model.ThemeHelper
 import org.adshield.BuildConfig
@@ -45,6 +47,8 @@ object AppSettingsService {
         "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
 
     private const val KEY_APP_SETTINGS_PERMISSION_GRANTED = "KEY_APP_SETTINGS_PERMISSION_GRANTED"
+
+    private const val KEY_CURRENT_APP_VERSION = "KEY_CURRENT_APP_VERSION"
 
     fun updateAndGetCurrentStartUpCount(): Int {
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -139,8 +143,28 @@ object AppSettingsService {
     }
 
     fun compareVersions(): Int {
-        return BuildConfig.VERSION_CODE - RemoteConfigService.getActualAppVersion()
+        return BuildConfig.VERSION_CODE - getActualAppVersion()
     }
+
+    fun getActualAppVersion(): Int {
+        val version = getCurrentAppVersion()
+        return if (version == 0) {
+            BuildConfig.VERSION_CODE
+        } else {
+            version
+        }
+    }
+
+    fun getCurrentAppVersion(): Int {
+        return sharedPreferences.getProperty(KEY_CURRENT_APP_VERSION, 0)
+    }
+
+    fun setCurrentAppVersion(version: Int) {
+        sharedPreferences.setProperty(KEY_CURRENT_APP_VERSION, version)
+    }
+
+    fun observeCurrentAppVersion(): Observable<Int> =
+        sharedPreferences.observeSettingsInt(KEY_CURRENT_APP_VERSION, 0)
 
     private fun initCurrentAppTheme(theme: AppTheme) {
         ThemeHelper.setCurrentAppTheme(theme.mode)

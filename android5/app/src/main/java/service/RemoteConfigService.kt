@@ -48,15 +48,6 @@ object RemoteConfigService {
         return remoteConfig?.isAdShieldAdsCounterLimited().orTrue()
     }
 
-    fun getActualAppVersion(): Int {
-        val version = remoteConfig?.getCurrentVersion() ?: 0
-        return if (version == 0) {
-            BuildConfig.VERSION_CODE
-        } else {
-            version
-        }
-    }
-
     fun getIsRewardsLimited(): Boolean {
         return remoteConfig?.getIsRewardsLimited().orTrue()
     }

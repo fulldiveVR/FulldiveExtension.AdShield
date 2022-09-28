@@ -65,6 +65,8 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
          * objects within some of the ViewModels would not be owned by them.
          */
         val viewModelStore = ViewModelStore()
+
+        private const val TAG = "MainApplication"
     }
 
     override fun getViewModelStore() = MainApplication.viewModelStore
@@ -150,12 +152,12 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         experienceExchangeInterator
             .getExchangeRateForToken(Chain.fdCoinDenom)
             .withDefaults()
-            .subscribe()
+            .subscribe({}, { error -> FdLog.d(TAG, "Error: ", error) })
 
         appSettingsInteractor
             .loadAppIconUrls()
             .withDefaults()
-            .subscribe()
+            .subscribe({}, { error -> FdLog.d(TAG, "Error: ", error) })
 
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
@@ -186,6 +188,22 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
                     settingsVM.setUseForegroundService(true)
             }
         }
+
+        AppSettingsService
+            .observeCurrentAppVersion()
+            .distinctUntilChanged()
+            .withDefaults()
+            .subscribe(
+                {
+                    initFiltering()
+                    statsVM.updateBlockedDomains()
+                    FdLog.d("observeCurrentAppVersion", "Current version was updated")
+                },
+                { error ->
+                    FdLog.d("observeCurrentAppVersion", "Current version was failed", error)
+                }
+            )
+
         ConnectivityService.setup()
 
         initRemoteConfig()
@@ -234,8 +252,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             .withDefaults()
             .subscribe(
                 {
-                    initFiltering()
-                    statsVM.updateBlockedDomains()
+                    tunnelVM.checkAppVersion()
                     FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
                 },
                 { error ->
