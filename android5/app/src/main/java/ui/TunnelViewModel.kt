@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import model.*
+import remoteconfig.FulldiveRemoteConfigFetcher
 import service.*
 import utils.cause
 import utils.Logger
@@ -60,6 +61,13 @@ class TunnelViewModel: ViewModel() {
                 log.w("Starting tunnel after app start, as it was active before")
                 turnOnWhenStartedBySystem()
             }
+        }
+    }
+
+    fun checkAppVersion() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentAppVersion = FulldiveRemoteConfigFetcher.getCurrentAppVersion()
+            AppSettingsService.setCurrentAppVersion(currentAppVersion)
         }
     }
 
