@@ -102,8 +102,8 @@ class HomeFragment : Fragment() {
                 }
         }
 
-        legalStateDescriptionTextView
-            .isVisible = RemoteConfigService.getIsLegalStateDescriptionEnabled()
+        legalStateDescriptionTextView.isVisible = RemoteConfigService
+            .getIsLegalStateDescriptionEnabled()
 
         context?.let { SubscriptionService.updateIsProLimited(it) }
         lifecycleScope.launch {
@@ -299,6 +299,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        vm.checkAppVersion()
         vm.checkIfAdblockWork()
     }
 
