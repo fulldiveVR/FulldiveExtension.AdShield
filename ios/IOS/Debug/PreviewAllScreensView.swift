@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -117,11 +108,11 @@ struct PreviewAllScreensView: View {
                 }
                 .padding()
             } else if counter == 5 {
-                AskVpnProfileView(homeVM: defaultHomeVM, showSheet: .constant(false))
+                AskVpnProfileView(homeVM: defaultHomeVM, activeSheet: .constant(nil))
             } else if counter == 6 {
-                RateAppView(showSheet: .constant(false))
+                RateAppView(activeSheet: .constant(nil))
             } else if counter == 7 {
-                AdsCounterShareView(homeVM: vmAdsCounter, sheet: .constant(""), showSheet: .constant(false))
+                AdsCounterShareView(homeVM: vmAdsCounter, activeSheet: .constant(nil))
             } else if counter == 8 {
                 MainView(
                       accountVM: defaultAccountVM,
@@ -131,11 +122,10 @@ struct PreviewAllScreensView: View {
                       inboxVM: InboxViewModel(),
                       leaseVM: LeaseListViewModel(),
                       tabVM: defaultTabVM,
-                      showSheet: .constant(false),
-                      sheet: .constant("")
+                      activeSheet: .constant(nil)
                   )
             } else if counter == 9 {
-                LocationListView(showSheet: .constant(false))
+                LocationListView(activeSheet: .constant(nil))
             } else if counter == 10 {
                 SettingsTabView(
                     homeVM: defaultHomeVM,
@@ -143,20 +133,17 @@ struct PreviewAllScreensView: View {
                     tabVM: defaultTabVM,
                     inboxVM: InboxViewModel(),
                     leaseVM: LeaseListViewModel(),
-                    showSheet: .constant(false),
-                    sheet: .constant("")
+                    activeSheet: .constant(nil)
                 )
             } else if counter == 11 {
                 EncryptionExplanationView(
-                    showSheet: .constant(false),
-                    sheet: .constant(""),
+                    activeSheet: .constant(nil),
                     vm: defaultHomeVM,
                     level: 3
                 )
             } else if counter == 12 {
                 AfterActivatedView(
-                    showSheet: .constant(false),
-                    sheet: .constant("")
+                    activeSheet: .constant(nil)
                 )
             } else {
                 EmptyView()

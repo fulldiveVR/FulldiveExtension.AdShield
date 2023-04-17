@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -29,8 +20,7 @@ struct SettingsTabView: View {
     @ObservedObject var inboxVM: InboxViewModel
     @ObservedObject var leaseVM: LeaseListViewModel
 
-    @Binding var showSheet: Bool
-    @Binding var sheet: String
+    @Binding var activeSheet: ActiveSheet?
 
     var body: some View {
         GeometryReader { geo in
@@ -38,17 +28,24 @@ struct SettingsTabView: View {
                Form {
                 HStack {
                     BlokadaView(animate: true)
-                      .frame(width: 64, height: 64)
-                      .padding()
+                        .frame(width: 64, height: 64)
+                        .padding([.bottom, .top, .trailing], 6)
 
-                    L10n.accountStatusText(self.vm.type, self.vm.activeUntil)
-                        .toBlokadaText()
-                        .font(.footnote)
-                        .padding(.trailing)
+                    if self.vm.active {
+                        L10n.accountStatusText(self.vm.type, self.vm.activeUntil)
+                            .toBlokadaText()
+                            .font(.footnote)
+                            .padding(.trailing)
+                    } else {
+                        L10n.accountStatusTextLibre
+                            .toBlokadaText()
+                            .font(.footnote)
+                            .padding(.trailing)
+                    }
                 }
 
                 Section(header: Text(L10n.accountSectionHeaderPrimary)) {
-                    NavigationLink(destination: AccountView(vm: self.vm, showSheet: self.$showSheet, sheet: self.$sheet), tag: "manage", selection: self.$tabVM.selection) {
+                    NavigationLink(destination: AccountView(vm: self.vm, activeSheet: self.$activeSheet), tag: "manage", selection: self.$tabVM.selection) {
                         HStack {
                          Image(systemName: Image.fAccount)
                              .imageScale(.large)
@@ -56,6 +53,7 @@ struct SettingsTabView: View {
                              .frame(width: 32, height: 32)
 
                             Text(L10n.accountActionMyAccount)
+                                .padding(.leading, 6)
 
                         }
                     }
@@ -68,17 +66,19 @@ struct SettingsTabView: View {
                              .frame(width: 32, height: 32)
 
                             Text(L10n.accountActionInbox)
+                                .padding(.leading, 6)
+                                .lineLimit(1)
                         }
 
                         Spacer()
 
-                        if self.tabVM.hasInboxBadge() {
+                       if self.tabVM.hasInboxBadge() {
                             BadgeView(number: self.tabVM.inboxBadge)
                                 .padding(.trailing, 8)
-                        }
+                       }
                     }
 
-                    NavigationLink(destination: EncryptionView(homeVM: self.homeVM, showSheet: self.$showSheet, sheet: self.$sheet), tag: "encryption", selection: self.$tabVM.selection) {
+                    NavigationLink(destination: EncryptionView(homeVM: self.homeVM, activeSheet: self.$activeSheet), tag: "encryption", selection: self.$tabVM.selection) {
                          HStack {
                           Image(systemName: "lock")
                               .imageScale(.large)
@@ -86,6 +86,7 @@ struct SettingsTabView: View {
                               .frame(width: 32, height: 32)
 
                             Text(L10n.accountActionEncryption)
+                                .padding(.leading, 6)
                          }
                      }
 
@@ -97,13 +98,14 @@ struct SettingsTabView: View {
                              .frame(width: 32, height: 32)
 
                             Text(L10n.accountActionDevices)
+                                .padding(.leading, 6)
 
                         }
                     }
                 }
 
                     Section(header: Text(L10n.accountSectionHeaderOther)) {
-                        NavigationLink(destination: ChangeAccountView(vm: self.vm, showSheet: .constant(true)), tag: "changeaccount", selection: self.$tabVM.selection) {
+                        NavigationLink(destination: ChangeAccountView(vm: self.vm, activeSheet: self.$activeSheet), tag: "changeaccount", selection: self.$tabVM.selection) {
                             HStack {
                              Image(systemName: Image.fLogout)
                                  .imageScale(.large)
@@ -111,13 +113,13 @@ struct SettingsTabView: View {
                                  .frame(width: 32, height: 32)
 
                                 Text(L10n.accountActionLogout)
+                                    .padding(.leading, 6)
 
                             }
                         }
 
                          Button(action: {
-                            self.sheet = "help"
-                            self.showSheet = true
+                            self.activeSheet = .help
                          }) {
                             HStack {
                              Image(systemName: Image.fHelp)
@@ -127,6 +129,7 @@ struct SettingsTabView: View {
 
                                 Text(L10n.universalActionSupport)
                                     .foregroundColor(Color.primary)
+                                    .padding(.leading, 6)
 
                             }
                         }
@@ -142,6 +145,7 @@ struct SettingsTabView: View {
 
                                 Text(L10n.accountActionAbout)
                                     .foregroundColor(.primary)
+                                    .padding(.leading, 6)
 
                             }
                         }
@@ -159,6 +163,6 @@ struct SettingsTabView: View {
 
 struct SettingsTabView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsTabView(homeVM: HomeViewModel(), vm: AccountViewModel(), tabVM: TabViewModel(), inboxVM: InboxViewModel(), leaseVM: LeaseListViewModel(), showSheet: .constant(true), sheet: .constant(""))
+        SettingsTabView(homeVM: HomeViewModel(), vm: AccountViewModel(), tabVM: TabViewModel(), inboxVM: InboxViewModel(), leaseVM: LeaseListViewModel(), activeSheet: .constant(nil))
     }
 }

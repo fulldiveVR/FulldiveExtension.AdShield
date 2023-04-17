@@ -1,6 +1,7 @@
 //
 //  This file is part of Blokada.
 //
+<<<<<<< HEAD
 //  Blokada is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
@@ -13,6 +14,11 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+=======
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -25,8 +31,12 @@ struct AccountView: View {
 
     @ObservedObject var vm: AccountViewModel
 
+<<<<<<< HEAD
     @Binding var showSheet: Bool
     @Binding var sheet: String
+=======
+    @Binding var activeSheet: ActiveSheet?
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 
     @State var showChangeAccount = false
     @State var showDevices = false
@@ -81,8 +91,12 @@ struct AccountView: View {
                         }
                     } else {
                         Button(action: {
+<<<<<<< HEAD
                             self.sheet = "plus"
                             self.showSheet = true
+=======
+                            self.activeSheet = .plus
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
                         }) {
                             L10n.universalActionUpgrade.toBlokadaPlusText()
                         }
@@ -111,6 +125,10 @@ struct AccountView: View {
 
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
+<<<<<<< HEAD
         AccountView(vm: AccountViewModel(), showSheet: .constant(true), sheet: .constant(""))
+=======
+        AccountView(vm: AccountViewModel(), activeSheet: .constant(nil))
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
     }
 }

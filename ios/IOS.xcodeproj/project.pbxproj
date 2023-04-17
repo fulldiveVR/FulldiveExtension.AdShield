@@ -412,6 +412,9 @@
 		4E78E362245ED1D80017B234 /* PackDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackDetailViewModel.swift; sourceTree = "<group>"; };
 		4E7FE9D8244DC28900851E9F /* Preview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Preview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E85E98A243382B3001B2795 /* BlockaApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockaApiModel.swift; sourceTree = "<group>"; };
+		4E8800F325C401CD001FD4C9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E8800F425C401CE001FD4C9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E8800F525C401CE001FD4C9 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Ui.strings; sourceTree = "<group>"; };
 		4E94C2FC2420B0A60008E318 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		4E94C2FE2420D3B00008E318 /* PaymentGatewayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentGatewayView.swift; sourceTree = "<group>"; };
 		4E94C3022428F1C20008E318 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -423,6 +426,36 @@
 		4E971F7B246ADB3300809EA6 /* SKPaymentTransaction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKPaymentTransaction+Extensions.swift"; sourceTree = "<group>"; };
 		4E971F7E246BCEA300809EA6 /* PlusFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusFeaturesView.swift; sourceTree = "<group>"; };
 		4E971F81246C14A400809EA6 /* DeviceTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTokenService.swift; sourceTree = "<group>"; };
+		4E99A3932514980E0054BF69 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Packs.strings"; sourceTree = "<group>"; };
+		4E99A3942514980E0054BF69 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PackTags.strings"; sourceTree = "<group>"; };
+		4E99A3952514980E0054BF69 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Ui.strings"; sourceTree = "<group>"; };
+		4E99A396251498180054BF69 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A397251498180054BF69 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A398251498180054BF69 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A39C251498280054BF69 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A39D251498280054BF69 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A39E251498280054BF69 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A39F2514982D0054BF69 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Packs.strings"; sourceTree = "<group>"; };
+		4E99A3A02514982D0054BF69 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/PackTags.strings"; sourceTree = "<group>"; };
+		4E99A3A12514982D0054BF69 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Ui.strings"; sourceTree = "<group>"; };
+		4E99A3A2251498340054BF69 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3A3251498340054BF69 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3A4251498340054BF69 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A3A52514983B0054BF69 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3A62514983B0054BF69 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3A72514983B0054BF69 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A3AB2514984A0054BF69 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3AC2514984A0054BF69 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3AD2514984A0054BF69 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A3B12514985C0054BF69 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3B22514985C0054BF69 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3B32514985C0054BF69 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A3B4251498630054BF69 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3B5251498630054BF69 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3B6251498630054BF69 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Ui.strings; sourceTree = "<group>"; };
+		4E99A3BA2514986C0054BF69 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Packs.strings; sourceTree = "<group>"; };
+		4E99A3BB2514986C0054BF69 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/PackTags.strings; sourceTree = "<group>"; };
+		4E99A3BC2514986C0054BF69 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Ui.strings; sourceTree = "<group>"; };
 		4E9A045F2448A8C9003AB48D /* NetworkServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceMock.swift; sourceTree = "<group>"; };
 		4E9A04612448A93F003AB48D /* NetworkCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCommand.swift; sourceTree = "<group>"; };
 		4E9A046324499317003AB48D /* NELogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NELogger.swift; sourceTree = "<group>"; };
@@ -875,7 +908,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B2240DCB2417F83100F13E97 /* Build configuration list for PBXNativeTarget "Blocka Engine" */;
 			buildPhases = (
-				B2240DCE2417F83A00F13E97 /* ShellScript */,
+				B2240DCE2417F83A00F13E97 /* Run Script */,
 				3DACB097F954FE40B0737A34 /* Frameworks */,
 			);
 			buildRules = (
@@ -894,7 +927,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Blocka AB";
 				TargetAttributes = {
 					47729E0122F447C800B9B36B = {
@@ -918,6 +951,17 @@
 				Base,
 				pl,
 				de,
+				"zh-Hant",
+				ja,
+				ru,
+				"pt-BR",
+				it,
+				tr,
+				ar,
+				id,
+				cs,
+				ro,
+				sv,
 			);
 			mainGroup = 47729DF922F447C800B9B36B;
 			productRefGroup = 47729E0322F447C800B9B36B /* Products */;
@@ -988,7 +1032,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\nexport PATH=$PATH:~/.cargo/bin:/usr/local/bin\n";
 		};
-		B2240DCE2417F83A00F13E97 /* ShellScript */ = {
+		B2240DCE2417F83A00F13E97 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -997,13 +1041,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nexport PATH=$PATH:~/.cargo/bin:/usr/local/bin\n\ncd $BLOCKA_ENGINE_PATH\ncargo lipo ${CARGO_LIPO_FLAG} -p engine\ncp target/universal/${CARGO_TARGET}/libengine.a engine/libengine.h $PROJECT_DIR/Engine\n";
+			shellScript = "set -e\nexport PATH=$PATH:~/.cargo/bin:/usr/local/bin\nexport LIBRARY_PATH=\"${DEVELOPER_SDK_DIR}/MacOSX.sdk/usr/lib:${LIBRARY_PATH:-}\"\n\ncd $BLOCKA_ENGINE_PATH\ncargo lipo ${CARGO_LIPO_FLAG} -p engine\ncp target/universal/${CARGO_TARGET}/libengine.a engine/libengine.h $PROJECT_DIR/Engine\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1303,6 +1348,17 @@
 				4E290FBD2498A3E200FC4C61 /* en */,
 				4E290FD5249A636E00FC4C61 /* pl */,
 				4EC0A24D24D29D18004C1EFF /* de */,
+				4E99A3932514980E0054BF69 /* zh-Hant */,
+				4E99A396251498180054BF69 /* ja */,
+				4E99A39C251498280054BF69 /* ru */,
+				4E99A39F2514982D0054BF69 /* pt-BR */,
+				4E99A3A2251498340054BF69 /* it */,
+				4E99A3A52514983B0054BF69 /* tr */,
+				4E99A3AB2514984A0054BF69 /* ar */,
+				4E99A3B12514985C0054BF69 /* id */,
+				4E99A3B4251498630054BF69 /* cs */,
+				4E99A3BA2514986C0054BF69 /* ro */,
+				4E8800F325C401CD001FD4C9 /* sv */,
 			);
 			name = Packs.strings;
 			sourceTree = "<group>";
@@ -1313,6 +1369,17 @@
 				4E290FCA2498AA5900FC4C61 /* en */,
 				4E290FD6249A636E00FC4C61 /* pl */,
 				4EC0A24E24D29D19004C1EFF /* de */,
+				4E99A3942514980E0054BF69 /* zh-Hant */,
+				4E99A397251498180054BF69 /* ja */,
+				4E99A39D251498280054BF69 /* ru */,
+				4E99A3A02514982D0054BF69 /* pt-BR */,
+				4E99A3A3251498340054BF69 /* it */,
+				4E99A3A62514983B0054BF69 /* tr */,
+				4E99A3AC2514984A0054BF69 /* ar */,
+				4E99A3B22514985C0054BF69 /* id */,
+				4E99A3B5251498630054BF69 /* cs */,
+				4E99A3BB2514986C0054BF69 /* ro */,
+				4E8800F425C401CE001FD4C9 /* sv */,
 			);
 			name = PackTags.strings;
 			sourceTree = "<group>";
@@ -1323,6 +1390,17 @@
 				4E65293B248F760700EB871A /* en */,
 				4E290FD7249A636E00FC4C61 /* pl */,
 				4EC0A24F24D29D1A004C1EFF /* de */,
+				4E99A3952514980E0054BF69 /* zh-Hant */,
+				4E99A398251498180054BF69 /* ja */,
+				4E99A39E251498280054BF69 /* ru */,
+				4E99A3A12514982D0054BF69 /* pt-BR */,
+				4E99A3A4251498340054BF69 /* it */,
+				4E99A3A72514983B0054BF69 /* tr */,
+				4E99A3AD2514984A0054BF69 /* ar */,
+				4E99A3B32514985C0054BF69 /* id */,
+				4E99A3B6251498630054BF69 /* cs */,
+				4E99A3BC2514986C0054BF69 /* ro */,
+				4E8800F525C401CE001FD4C9 /* sv */,
 			);
 			name = Ui.strings;
 			sourceTree = "<group>";
@@ -1357,6 +1435,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1419,6 +1498,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1457,7 +1537,7 @@
 				CODE_SIGN_ENTITLEMENTS = IOS/Assets/IOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1475,7 +1555,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Engine",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.14;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				"OTHER_SWIFT_FLAGS[sdk=iphonesimulator*]" = "$(inherited) -D PREVIEW";
 				PRODUCT_BUNDLE_IDENTIFIER = net.blocka.app;
@@ -1497,7 +1577,7 @@
 				CODE_SIGN_ENTITLEMENTS = IOS/Assets/IOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1515,7 +1595,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Engine",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.14;
 				PRODUCT_BUNDLE_IDENTIFIER = net.blocka.app;
 				PRODUCT_NAME = Blokada;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1533,7 +1613,7 @@
 				CODE_SIGN_ENTITLEMENTS = IOS/Assets/IOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1572,7 +1652,7 @@
 				CODE_SIGN_ENTITLEMENTS = IOS/Assets/IOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1606,11 +1686,11 @@
 				CODE_SIGN_ENTITLEMENTS = IOSNetworkExtension/IOSNetworkExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IOSNetworkExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1620,7 +1700,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Engine",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.14;
 				PRODUCT_BUNDLE_IDENTIFIER = net.blocka.app.engine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1638,11 +1718,11 @@
 				CODE_SIGN_ENTITLEMENTS = IOSNetworkExtension/IOSNetworkExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HQH5AFGB68;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IOSNetworkExtension/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1652,7 +1732,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Engine",
 				);
-				MARKETING_VERSION = 5.0.8;
+				MARKETING_VERSION = 5.14;
 				PRODUCT_BUNDLE_IDENTIFIER = net.blocka.app.engine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

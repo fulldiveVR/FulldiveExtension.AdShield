@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -35,14 +26,26 @@ struct LoadingButtonView: View {
             self.action()
         }) {
             ZStack(alignment: alignTrailing ? .trailing : .leading) {
-                Toggle("", isOn: .constant(self.isOn))
-                    .labelsHidden()
-                    .opacity(loading ? 0 : 1)
-                    .animation(.easeInOut)
+                if #available(iOS 14.0, *) {
+                    Toggle("", isOn: .constant(self.isOn))
+                        .labelsHidden()
+                        .opacity(loading ? 0 : 1)
+                        .animation(.easeInOut)
+                        .toggleStyle(SwitchToggleStyle(tint: Color.cAccent))
 
-                SpinnerView()
-                    .opacity(loading ? 1 : 0)
-                    .animation(.easeInOut)
+                    ProgressView()
+                        .opacity(loading ? 1 : 0)
+                        .animation(.easeInOut)
+                } else {
+                    Toggle("", isOn: .constant(self.isOn))
+                        .labelsHidden()
+                        .opacity(loading ? 0 : 1)
+                        .animation(.easeInOut)
+
+                    SpinnerView()
+                        .opacity(loading ? 1 : 0)
+                        .animation(.easeInOut)
+                }
             }
 
         }.buttonStyle(BorderlessButtonStyle())

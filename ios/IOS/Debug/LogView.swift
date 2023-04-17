@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -25,8 +16,7 @@ struct LogView: View {
 
     @ObservedObject var vm: LogViewModel
 
-    @Binding var showSheet: Bool
-    @Binding var sheet: String
+    @Binding var activeSheet: ActiveSheet?
 
     var body: some View {
         return VStack(alignment: .leading) {
@@ -57,7 +47,11 @@ struct LogView: View {
                     .foregroundColor(Color.cActivePlus)
                     .frame(width: 32, height: 32)
                     .onTapGesture {
-                        self.sheet = "sharelog"
+                        self.activeSheet = nil
+                        onBackground {
+                            sleep(1)
+                            onMain { self.activeSheet = .sharelog }
+                        }
                     }
                 if !Env.isProduction {
                     Image(systemName: "ant.circle")
@@ -65,7 +59,11 @@ struct LogView: View {
                         .foregroundColor(Color.cActivePlus)
                         .frame(width: 32, height: 32)
                         .onTapGesture {
-                            self.sheet = "debug"
+                            self.activeSheet = nil
+                            onBackground {
+                                sleep(1)
+                                onMain { self.activeSheet = .debug }
+                            }
                         }
                 }
             }
@@ -91,6 +89,6 @@ struct LogView: View {
 
 struct LogView_Previews: PreviewProvider {
     static var previews: some View {
-        LogView(vm: LogViewModel(), showSheet: .constant(false), sheet: .constant(""))
+        LogView(vm: LogViewModel(), activeSheet: .constant(nil))
     }
 }

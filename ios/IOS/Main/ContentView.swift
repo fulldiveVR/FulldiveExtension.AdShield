@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -20,6 +11,15 @@
 //
 
 import SwiftUI
+
+enum ActiveSheet: Identifiable {
+    case help, plus, location, activated, askvpn, encryptionExplain,
+         log, sharelog, debug, rate, counter, sharecounter
+
+    var id: Int {
+        hashValue
+    }
+}
 
 struct ContentView: View {
 
@@ -36,8 +36,8 @@ struct ContentView: View {
     @ObservedObject var vm: HomeViewModel
 
     @State var showPreviewAllScreens = false
-    @State var showSheet = false
-    @State var sheet = "none"
+    @State var activeSheet: ActiveSheet?
+    @State var secondLevelSheet: ActiveSheet?
 
     var body: some View {
         // Set accent color on all switches
@@ -45,50 +45,39 @@ struct ContentView: View {
 
         return GeometryReader { geometry in
             ZStack {
-                MainView(accountVM: self.accountVM, packsVM: self.packsVM, activityVM: self.activityVM, vm: self.vm, inboxVM: self.inboxVM, leaseVM: self.leaseVM, tabVM: self.tabVM,
-                         showSheet: self.$showSheet, sheet: self.$sheet)
+                MainView(accountVM: self.accountVM, packsVM: self.packsVM, activityVM: self.activityVM, vm: self.vm, inboxVM: self.inboxVM, leaseVM: self.leaseVM, tabVM: self.tabVM, activeSheet: self.$activeSheet)
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                     .padding(.top, geometry.safeAreaInsets.top)
-                    .sheet(isPresented: self.$showSheet) {
-                        if self.sheet == "plus" {
-                            PaymentGatewayView(vm: self.paymentVM, showSheet: self.$showSheet, sheet: self.$sheet)
-                        } else if self.sheet == "location" {
-                            LocationListView(vm: self.locationVM, showSheet: self.$showSheet)
-                        } else if self.sheet == "activated" {
-                            AfterActivatedView(showSheet: self.$showSheet, sheet: self.$sheet)
-                        } else if self.sheet == "askvpn" {
-                            AskVpnProfileView(homeVM: self.vm, showSheet: self.$showSheet)
-                        } else if self.sheet == "encryption-explain" {
-                            EncryptionExplanationView(showSheet: self.$showSheet, sheet: self.$sheet, vm: self.vm, level: self.vm.encryptionLevel)
-                        } else if self.sheet == "log" {
-                            LogView(vm: self.logVM, showSheet: self.$showSheet, sheet: self.$sheet)
-                        } else if self.sheet == "sharelog" {
+                    .sheet(item: self.$activeSheet, onDismiss: { self.activeSheet = nil }) { item in
+                        switch item {
+                        case .plus:
+                            PaymentGatewayView(vm: self.paymentVM, activeSheet: self.$activeSheet)
+                        case .location:
+                            LocationListView(vm: self.locationVM, activeSheet: self.$activeSheet)
+                        case .activated:
+                            AfterActivatedView(activeSheet: self.$activeSheet)
+                        case .askvpn:
+                            AskVpnProfileView(homeVM: self.vm, activeSheet: self.$activeSheet)
+                        case .encryptionExplain:
+                            EncryptionExplanationView(activeSheet: self.$activeSheet, vm: self.vm, level: self.vm.encryptionLevel)
+                        case .log:
+                            LogView(vm: self.logVM, activeSheet: self.$activeSheet)
+                        case .sharelog:
                             ShareSheet(activityItems: [LoggerSaver.logFile])
-                        } else if self.sheet == "debug" {
-                            DebugView(vm: DebugViewModel(homeVM: self.vm), showSheet: self.$showSheet, sheet: self.$sheet, showPreviewAllScreens: self.$showPreviewAllScreens)
-                        } else if self.sheet == "rate" {
-                            RateAppView(showSheet: self.$showSheet)
-                        } else if self.sheet == "counter" {
-                            AdsCounterShareView(homeVM: self.vm, sheet: self.$sheet, showSheet: self.$showSheet)
-                        } else if self.sheet == "sharecounter" {
+                        case .debug:
+                            DebugView(vm: DebugViewModel(homeVM: self.vm), activeSheet: self.$activeSheet, showPreviewAllScreens: self.$showPreviewAllScreens)
+                        case .rate:
+                            RateAppView(activeSheet: self.$activeSheet)
+                        case .counter:
+                            AdsCounterShareView(homeVM: self.vm, activeSheet: self.$activeSheet)
+                        case .sharecounter:
                             ShareSheet(activityItems: [L10n.mainShareMessage(self.vm.blockedCounter.compact)])
-                        } else if self.sheet == "help" {
-                            SupportView(showSheet: self.$showSheet)
-                        } else {
-                            VStack {
-                                Spacer()
-                                HStack {
-                                    Spacer()
-                                    SpinnerView()
-                                    Spacer()
-                                }
-                                Spacer()
-                            }
-                            .background(Color.cBackground)
+                        case .help:
+                            SupportView(activeSheet: self.$activeSheet)
                         }
                     }
-            }
-            .background(Color.cBackground)
+                }
+                .background(Color.cBackground)
 
 //            if self.showPreviewAllScreens {
 //                PreviewAllScreensView(showPreviewAllScreens: self.$showPreviewAllScreens)

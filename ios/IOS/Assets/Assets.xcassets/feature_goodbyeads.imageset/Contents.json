@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "images" : [
     {
       "filename" : "feature_goodbyeads.png",
@@ -19,3 +20,27 @@
     "version" : 1
   }
 }
+=======
+    "images" : [
+        {
+            "idiom" : "universal",
+            "scale" : "1x",
+            "filename" : "feature_goodbyeads@1x.png"
+        },
+        {
+            "idiom" : "universal",
+            "scale" : "2x",
+            "filename" : "feature_goodbyeads@2x.png"
+        },
+        {
+            "idiom" : "universal",
+            "scale" : "3x",
+            "filename" : "feature_goodbyeads@3x.png"
+        }
+    ],
+    "info" : {
+        "version" : 1,
+        "author" : "xcode"
+    }
+}
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c

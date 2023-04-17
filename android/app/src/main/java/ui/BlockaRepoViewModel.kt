@@ -25,11 +25,20 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.*
 import repository.BlockaRepoRepository
+<<<<<<< HEAD
 import service.EnvironmentService
 import service.PersistenceService
 import utils.Logger
 import utils.cause
 import utils.now
+=======
+import service.AlertDialogService
+import service.EnvironmentService
+import service.PersistenceService
+import ui.utils.cause
+import ui.utils.now
+import utils.Logger
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 
 class BlockaRepoViewModel: ViewModel() {
 
@@ -58,6 +67,7 @@ class BlockaRepoViewModel: ViewModel() {
     }
 
     fun refreshRepo() {
+<<<<<<< HEAD
 //        viewModelScope.launch {
 //            try {
 //                val config = processConfig(repository.fetch()).copy(
@@ -69,6 +79,19 @@ class BlockaRepoViewModel: ViewModel() {
 //                log.w("Could not refresh repo, ignoring".cause(ex))
 //            }
 //        }
+=======
+        viewModelScope.launch {
+            try {
+                val config = processConfig(repository.fetch()).copy(
+                    lastRefresh = now()
+                )
+                _repoConfig.value = config
+                persistence.save(config)
+            } catch (ex: Exception) {
+                log.w("Could not refresh repo, ignoring".cause(ex))
+            }
+        }
+>>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
     }
 
     private fun applyConfig(repo: BlockaRepo): BlockaRepoConfig {

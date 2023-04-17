@@ -22,3 +22,5 @@ ios/IOS/Assets/cs.lproj
 ios/IOS/Assets/zh-Hant.lproj
 ios/IOS/Assets/ar.lproj
 ios/IOS/Assets/fi.lproj
+# Dirs from the 4 branch, not relevant to 5
+android4

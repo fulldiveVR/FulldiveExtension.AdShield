@@ -1,4 +1,5 @@
-#!/bin/shexport ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle/
+#!/bin/sh
+
 #
 # This file is part of Blokada.
 #

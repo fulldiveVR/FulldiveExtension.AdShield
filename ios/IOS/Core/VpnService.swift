@@ -13,6 +13,9 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -85,7 +88,7 @@ class VpnService {
     func restartTunnel(done: @escaping Callback<Void>) {
        onBackground {
            self.network.queryStatus { error, status in
-                self.network.updateConfig(lease: Config.shared.lease(), gateway: Config.shared.gateway()) { _, _ in
+            self.network.updateConfig(lease: Config.shared.lease(), gateway: Config.shared.gateway()) { _, _ in
                     if status?.active ?? false {
                         self.log.v("Restarting tunnel")
                         self.network.stopTunnel { error, _ in

@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -25,8 +16,7 @@ struct AdsCounterShareView: View {
 
     @ObservedObject var homeVM: HomeViewModel
 
-    @Binding var sheet: String
-    @Binding var showSheet: Bool
+    @Binding var activeSheet: ActiveSheet?
 
     @State var point = UnitPoint(x: 1, y: 1)
     @State var counter = 0
@@ -82,13 +72,16 @@ struct AdsCounterShareView: View {
             }
             .frame(maxWidth: 500)
             .navigationBarItems(leading: Button(action: {
-                self.showSheet = false
+                self.activeSheet = nil
             }) {
                 Text(L10n.universalActionDone)
             }.contentShape(Rectangle()),
             trailing: Button(action: {
-                self.sheet = "sharecounter"
-                self.showSheet = true
+                self.activeSheet = nil
+                onBackground {
+                    sleep(1)
+                    onMain { self.activeSheet = .sharecounter }
+                }
             }) {
                 Image(systemName: Image.fShare)
                    .imageScale(.large)
@@ -130,11 +123,11 @@ struct AdsCounterShareView_Previews: PreviewProvider {
         vm3.blockedCounter = 100101
 
         return Group {
-            AdsCounterShareView(homeVM: vm, sheet: .constant(""), showSheet: .constant(false))
-            AdsCounterShareView(homeVM: vm2, sheet: .constant(""), showSheet: .constant(false))
+            AdsCounterShareView(homeVM: vm, activeSheet: .constant(nil))
+            AdsCounterShareView(homeVM: vm2, activeSheet: .constant(nil))
                 .environment(\.sizeCategory, .extraExtraExtraLarge)
                 .environment(\.colorScheme, .dark)
-            AdsCounterShareView(homeVM: vm3, sheet: .constant(""), showSheet: .constant(false))
+            AdsCounterShareView(homeVM: vm3, activeSheet: .constant(nil))
         }
     }
 }

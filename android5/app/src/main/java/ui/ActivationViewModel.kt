@@ -27,6 +27,7 @@ class ActivationViewModel : ViewModel() {
 
     private val log = Logger("Activation")
     private val persistence = PersistenceService
+    private val expiration = ExpirationService
 
     private val _state = MutableLiveData<ActivationState>()
     val state: LiveData<ActivationState> = _state.distinctUntilChanged()
@@ -34,6 +35,9 @@ class ActivationViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _state.value = persistence.load(ActivationState::class)
+        }
+        expiration.onExpired = {
+            setExpiration(Date(0))
         }
     }
 
@@ -63,6 +67,8 @@ class ActivationViewModel : ViewModel() {
                         updateLiveData(ActivationState.ACTIVE)
                     }
                 }
+
+                if (active) expiration.setExpirationAlarm(activeUntil)
             }
         }
     }

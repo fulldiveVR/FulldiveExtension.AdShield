@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -31,6 +22,13 @@ struct TunnelConfig {
     var gatewayPort: String
     var vip4: String
     var vip6: String
+}
+
+struct DnsConfig {
+    var name: String
+    var path: String
+    var ips: String
+    var plusIps: String
 }
 
 enum PacketTunnelProviderError: String, Error {
@@ -55,6 +53,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
     private var networkMonitor: NWPathMonitor?
     private var currentGatewayStack: IPStack?
     private var pauseTimer: Timer?
+    private var dns: DnsConfig?
 
     deinit {
         networkMonitor?.cancel()
@@ -85,9 +84,16 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
 
         self.apiHandle = api_new(10, config["userAgent"] as! String)
 
-        self.setupDNS(dnsName: config["dnsName"] as! String, dnsIps: config["dnsIps"] as! String, dnsPath: config["dnsPath"] as! String)
+        self.dns = DnsConfig(
+            name: config["dnsName"] as! String,
+            path: config["dnsPath"] as! String,
+            ips: config["dnsIps"] as! String,
+            plusIps: config["plusDnsIps"] as? String ?? config["dnsIps"] as! String
+        )
 
         if config["mode"] as? String == "plus" {
+            self.setupDNS(plusMode: true)
+
             tunnelConfig = TunnelConfig(
                 privateKey: config["privateKey"] as! String,
                 gatewayId: config["gatewayId"] as! String,
@@ -98,6 +104,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
                 vip6: config["vip6"] as! String
             )
             return self.connectVPN(completionHandler: startTunnelCompletionHandler)
+        } else {
+            self.setupDNS(plusMode: false)
         }
 
         NELogger.v("PacketTunnelProvider: startTunnel: using black hole configuration")
@@ -115,6 +123,12 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
                 return
             }
             guard let config = self.tunnelConfig else { fatalError("connectVPN: no config") }
+
+            if self.shouldRestartDns() {
+                NELogger.w("PacketTunnelProvider: restarting DNS to use different IPs")
+                self.tearDownDNS()
+                self.setupDNS(plusMode: true)
+            }
 
             NELogger.v("PacketTunnelProvider: connecting to: \(self.tunnelConfig!.gatewayId)")
             self.device.stop()
@@ -199,14 +213,26 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
         dns_via(dnsHandle, mode)
     }
 
-    private func setupDNS(dnsName: String, dnsIps: String, dnsPath: String) {
+    private func setupDNS(plusMode: Bool) {
+        let dns = self.dns!
+
+        var ips = dns.ips
+        if plusMode {
+            ips = dns.plusIps
+        }
+
+        NELogger.v("Using DNS: \(dns.name) (\(ips))")
         self.dnsHandle = new_dns(
             "127.0.0.1:53", self.blocklist(), self.allowlist(),
-            dnsIps, dnsName, dnsPath
+            ips, dns.name, dns.path
         )
         if self.dnsHandle == nil {
             fatalError("could not start DNS")
         }
+    }
+
+    private func shouldRestartDns() -> Bool {
+        return self.dns!.ips != self.dns!.plusIps
     }
 
     private func blocklist() -> String {
@@ -247,6 +273,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider, TunnelSessionDelegate {
         self.device.stop()
         self.networkMonitor?.cancel()
         self.networkMonitor = nil
+        if (shouldRestartDns()) {
+            self.tearDownDNS()
+            self.setupDNS(plusMode: false)
+        }
         NELogger.v("PacketTunnelProvider: disconnectVPN done")
     }
 

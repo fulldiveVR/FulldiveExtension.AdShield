@@ -1,18 +1,9 @@
 //
 //  This file is part of Blokada.
 //
-//  Blokada is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  Blokada is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 //  Copyright © 2020 Blocka AB. All rights reserved.
 //
@@ -25,8 +16,7 @@ struct PlusButtonView: View {
 
     @ObservedObject var vm: HomeViewModel
 
-    @Binding var showSheet: Bool
-    @Binding var sheet: String
+    @Binding var activeSheet: ActiveSheet?
 
     @State var orientationOpacity = 0.0
 
@@ -35,8 +25,7 @@ struct PlusButtonView: View {
             ButtonView(enabled: .constant(!self.vm.vpnEnabled), plus: .constant(true))
             HStack {
                 Button(action: {
-                    self.showSheet = true
-                    self.sheet = self.vm.accountActive ? "location" : "plus"
+                    self.activeSheet = self.vm.accountActive ? .location : .plus
                     self.vm.expiredAlertShown = false
                 }) {
                     ZStack {
@@ -46,6 +35,7 @@ struct PlusButtonView: View {
                                 L10n.universalActionUpgrade
                                     .toBlokadaPlusText(color: self.vm.vpnEnabled ? Color.primary : Color.white, plusColor: self.vm.vpnEnabled ? Color.primary : Color.white)
                                     .foregroundColor(self.vm.vpnEnabled ? Color.primary : Color.white)
+                                    .font(.system(size: 14))
                             } else if !self.vm.vpnEnabled {
                                 if !self.vm.hasLease {
                                     Spacer()
@@ -54,14 +44,17 @@ struct PlusButtonView: View {
                                 L10n.homePlusButtonDeactivated
                                     .toBlokadaPlusText(color: Color.white, plusColor: Color.white)
                                     .foregroundColor(.white)
+                                    .font(.system(size: 14))
                             } else if !self.vm.hasSelectedLocation {
                                 Spacer()
                                 Text(L10n.homePlusButtonSelectLocation)
                                     .foregroundColor(.white)
+                                    .font(.system(size: 14))
                             } else {
                                 L10n.homePlusButtonLocation(self.vm.location)
-                                    .withBoldSections(font: .headline)
+                                    .withBoldSections(font: .system(size: 14))
                                     .foregroundColor(.primary)
+                                    .font(.system(size: 14))
                             }
                             Spacer()
                         }
@@ -74,13 +67,24 @@ struct PlusButtonView: View {
                             .fill(Color.cBackground)
                             .frame(width: 58)
 
-                        Toggle("", isOn: self.$vm.vpnEnabled)
-                            .labelsHidden()
-                            .frame(width: 64)
-                            .padding(.trailing, 4)
-                            .onTapGesture {
-                                self.vm.switchVpn(activate: !self.vm.vpnEnabled)
-                            }
+                        if #available(iOS 14.0, *) {
+                            Toggle("", isOn: self.$vm.vpnEnabled)
+                                .labelsHidden()
+                                .frame(width: 64)
+                                .padding(.trailing, 4)
+                                .onTapGesture {
+                                    self.vm.switchVpn(activate: !self.vm.vpnEnabled)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: Color.cAccent))
+                        } else {
+                            Toggle("", isOn: self.$vm.vpnEnabled)
+                                .labelsHidden()
+                                .frame(width: 64)
+                                .padding(.trailing, 4)
+                                .onTapGesture {
+                                    self.vm.switchVpn(activate: !self.vm.vpnEnabled)
+                                }
+                        }
                     }
                     .padding(.top, 4)
                     .padding(.bottom, 4)
@@ -88,7 +92,7 @@ struct PlusButtonView: View {
             }
         }
         .frame(height: 44)
-        .padding()
+        .padding([.bottom, .leading, .trailing])
         .transition(.slide)
         .offset(y: self.vm.mainSwitch && !self.vm.isPaused ? 0 : 64)
         .animation(
@@ -106,8 +110,7 @@ struct PlusButtonView_Previews: PreviewProvider {
     static var previews: some View {
         PlusButtonView(
             vm: HomeViewModel(),
-            showSheet: .constant(false),
-            sheet: .constant("")
+            activeSheet: .constant(nil)
         )
     }
 }

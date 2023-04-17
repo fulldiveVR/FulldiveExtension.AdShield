@@ -244,6 +244,7 @@ class MainActivity : LocalizationActivity(),
         super.onResume()
         tunnelVM.refreshStatus()
         accountVM.checkAccount()
+        blockaRepoVM.maybeRefreshRepo() //todo
         lifecycleScope.launch {
             statsVM.refresh()
         }
