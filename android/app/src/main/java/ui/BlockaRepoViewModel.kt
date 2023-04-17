@@ -25,12 +25,11 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.*
 import repository.BlockaRepoRepository
-import service.AlertDialogService
 import service.EnvironmentService
 import service.PersistenceService
-import ui.utils.cause
-import ui.utils.now
 import utils.Logger
+import utils.cause
+import utils.now
 
 class BlockaRepoViewModel: ViewModel() {
 
@@ -59,17 +58,17 @@ class BlockaRepoViewModel: ViewModel() {
     }
 
     fun refreshRepo() {
-        viewModelScope.launch {
-            try {
-                val config = processConfig(repository.fetch()).copy(
-                    lastRefresh = now()
-                )
-                _repoConfig.value = config
-                persistence.save(config)
-            } catch (ex: Exception) {
-                log.w("Could not refresh repo, ignoring".cause(ex))
-            }
-        }
+//        viewModelScope.launch {
+//            try {
+//                val config = processConfig(repository.fetch()).copy(
+//                    lastRefresh = now()
+//                )
+//                _repoConfig.value = config
+//                persistence.save(config)
+//            } catch (ex: Exception) {
+//                log.w("Could not refresh repo, ignoring".cause(ex))
+//            }
+//        }
     }
 
     private fun applyConfig(repo: BlockaRepo): BlockaRepoConfig {

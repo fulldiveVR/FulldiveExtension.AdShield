@@ -30,8 +30,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import engine.MetricsService
-import org.blokada.R
-import ui.utils.getColorFromAttr
+import org.adshield.R
+import utils.getColorFromAttr
 import java.lang.Long.max
 import java.lang.Long.min
 

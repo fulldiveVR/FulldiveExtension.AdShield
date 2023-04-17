@@ -24,7 +24,7 @@ import appextension.setProperty
 import io.reactivex.Observable
 import model.AppTheme
 import model.ThemeHelper
-import org.adshield.BuildConfig
+import org.adblockplus.libadblockplus.BuildConfig
 
 @SuppressLint("StaticFieldLeak")
 object AppSettingsService {

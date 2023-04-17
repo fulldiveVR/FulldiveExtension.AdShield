@@ -43,4 +43,13 @@ interface RewardsView : BaseMoxyView{
         tag: String,
         cancelable: Boolean
     )
+
+    @OneExecution
+    fun showCheckPassword()
+
+    @OneExecution
+    fun showMnemonic()
+
+    @OneExecution
+    fun showPrivateKey()
 }

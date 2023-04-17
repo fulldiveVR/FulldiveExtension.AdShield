@@ -41,8 +41,8 @@ class TunnelViewModel: ViewModel() {
     private val _config = MutableLiveData<BlockaConfig>()
     val config: LiveData<BlockaConfig> = _config
 
-    private val _isAdblockWork = MutableLiveData<Boolean>()
-    val isAdblockWork: LiveData<Boolean> = _isAdblockWork
+    private val _isAdblockWork: MutableLiveData<Boolean> = MutableLiveData()
+    val isAdblockWork: LiveData<Boolean> get() = _isAdblockWork
 
     private val _tunnelStatus = MutableLiveData<TunnelStatus>()
     val tunnelStatus: LiveData<TunnelStatus> = _tunnelStatus.distinctUntilChanged()
@@ -74,9 +74,10 @@ class TunnelViewModel: ViewModel() {
     fun checkIfAdblockWork() {
         viewModelScope.launch {
             MonitorService.setInfo(0)
-            _isAdblockWork.value = withContext(Dispatchers.IO) {
+            val isAdblockWork = withContext(Dispatchers.IO) {
                 CheckAdblockWorkService.isAdblockWork()
             }
+            this@TunnelViewModel._isAdblockWork.value = isAdblockWork
         }
     }
 

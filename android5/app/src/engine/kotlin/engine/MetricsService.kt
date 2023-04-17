@@ -17,9 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.BlokadaException
+import utils.Logger
 import utils.cause
 import utils.now
-import utils.Logger
 import java.net.InetSocketAddress
 import java.net.Socket
 

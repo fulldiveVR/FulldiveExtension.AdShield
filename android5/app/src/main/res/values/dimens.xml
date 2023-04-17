@@ -29,16 +29,11 @@
     <dimen name="header_width_payment">130dp</dimen>
     <dimen name="header_height">24dp</dimen>
 
-    <dimen name="powerview">120dp</dimen>
-    <dimen name="powerview_below">4dp</dimen>
-    <dimen name="plusbutton_above">48dp</dimen>
-
-    <dimen name="maxwidth">600dp</dimen>
-    <dimen name="sheet_maxwidth">300dp</dimen>
     <dimen name="tab_layout_min_width">56dp</dimen>
     <dimen name="divider_width_xsmall">0.5dp</dimen>
 
     <dimen name="text_size_xxxsmall">8sp</dimen>
+    <dimen name="text_size_xxsmall">10sp</dimen>
     <dimen name="text_size_xsmall">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
@@ -57,6 +52,10 @@
     <dimen name="size_30dp">30dp</dimen>
     <dimen name="size_36dp">36dp</dimen>
     <dimen name="size_48dp">48dp</dimen>
+
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_45dp">45dp</dimen>
+
 
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="keyboardMinHeight">240dp</dimen>

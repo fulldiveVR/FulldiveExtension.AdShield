@@ -21,8 +21,8 @@ import android.telephony.SubscriptionManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.*
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.net.InetAddress
 
 object ConnectivityService {

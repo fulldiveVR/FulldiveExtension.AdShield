@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -28,9 +19,9 @@ import android.content.Context
 import android.content.Intent
 import model.ActiveUntil
 import ui.beforeNow
-import ui.utils.cause
 import utils.ExpiredNotification
 import utils.Logger
+import utils.cause
 
 
 object ExpirationService {
@@ -69,7 +60,6 @@ object ExpirationService {
 
 class ExpirationReceiver : BroadcastReceiver() {
     override fun onReceive(ctx: Context, p1: Intent) {
-        ContextService.setContext(ctx)
         Logger.v("Expiration", "Alarm received")
         NotificationService.show(ExpiredNotification())
         ExpirationService.onExpired()

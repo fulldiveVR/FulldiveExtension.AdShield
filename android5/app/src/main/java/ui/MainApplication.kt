@@ -12,11 +12,16 @@
 
 package ui
 
+import analytics.FdLog
 import android.app.Activity
 import android.app.Service
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import appextension.LaunchHelper
+import appextension.getContentUri
 import blocka.LegacyAccountImport
 import com.akexorcist.localizationactivity.ui.LocalizationApplication
 import com.flurry.android.FlurryAgent
@@ -33,17 +38,22 @@ import com.joom.lightsaber.getInstance
 import engine.ABPService
 import engine.EngineService
 import engine.FilteringService
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlockaConfig
 import model.BlockaRepoConfig
 import model.BlockaRepoPayload
+import model.CustomBlocklistConfig
 import org.adshield.BuildConfig
+import remoteconfig.IRemoteConfigFetcher
 import service.*
 import ui.advanced.packs.PacksViewModel
 import utils.Logger
 import utils.cause
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjectorHolder {
 
@@ -55,6 +65,8 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
          * objects within some of the ViewModels would not be owned by them.
          */
         val viewModelStore = ViewModelStore()
+
+        private const val TAG = "MainApplication"
     }
 
     override fun getViewModelStore() = MainApplication.viewModelStore
@@ -73,6 +85,8 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private lateinit var packsVM: PacksViewModel
 
     private val experienceExchangeInterator by lazy { appInjector.getInstance<ExperienceExchangeInterator>() }
+    private val remoteConfig by lazy { appInjector.getInstance<IRemoteConfigFetcher>() }
+    private var remoteConfigDisposable: Disposable? = null
     private val appSettingsInteractor by lazy { appInjector.getInstance<AppSettingsInteractor>() }
 
     override fun onCreate() {
@@ -95,6 +109,11 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         FlurryAgent.Builder()
             .withLogEnabled(true)
             .build(this, BuildConfig.FLURRY_API_KEY)
+
+        val periodicWork = PeriodicWorkRequest
+            .Builder(CheckAdblockWorkManager::class.java, 12, TimeUnit.HOURS)
+            .build()
+        WorkManager.getInstance().enqueue(periodicWork)
     }
 
     private fun setupEvents() {
@@ -133,18 +152,26 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         experienceExchangeInterator
             .getExchangeRateForToken(Chain.fdCoinDenom)
             .withDefaults()
-            .subscribe()
+            .subscribe({}, { error -> FdLog.d(TAG, "Error: ", error) })
 
         appSettingsInteractor
             .loadAppIconUrls()
             .withDefaults()
-            .subscribe()
+            .subscribe({}, { error -> FdLog.d(TAG, "Error: ", error) })
 
         adsCounterVM.counter.observeForever {
             MonitorService.setCounter(it)
         }
-        tunnelVM.tunnelStatus.observeForever {
-            MonitorService.setTunnelStatus(it)
+        var previousState = LaunchHelper.getCurrentState(EngineService.getTunnelStatus())
+        tunnelVM.tunnelStatus.observeForever { status ->
+            MonitorService.setTunnelStatus(status)
+            val current = LaunchHelper.getCurrentState(status)
+
+            if (previousState != current) {
+                val uri = getContentUri(current)
+                contentResolver.insert(uri, null)
+                previousState = current
+            }
         }
 
         networksVM.activeConfig.observeForever {
@@ -161,12 +188,37 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
                     settingsVM.setUseForegroundService(true)
             }
         }
+
+        AppSettingsService
+            .observeCurrentAppVersion()
+            .distinctUntilChanged()
+            .withDefaults()
+            .subscribe(
+                {
+                    initFiltering()
+                    statsVM.updateBlockedDomains()
+                    FdLog.d("observeCurrentAppVersion", "Current version was updated")
+                },
+                { error ->
+                    FdLog.d("observeCurrentAppVersion", "Current version was failed", error)
+                }
+            )
+
         ConnectivityService.setup()
 
+        initRemoteConfig()
+        initFiltering()
+    }
+
+    private fun initFiltering() {
         GlobalScope.launch {
             BlocklistService.setup()
             packsVM.setup()
-            FilteringService.reload(packsVM.getActiveUrls())
+            FilteringService.reload(
+                packsVM.getActiveUrls(),
+                statsVM.getCustomBlocklistConfig(),
+                CustomBlocklistConfig.emptyConfig
+            )
         }
     }
 
@@ -191,6 +243,22 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
             log.v("Marking repo payload as acted on")
             persistence.save(payload)
         }
+    }
+
+    private fun initRemoteConfig() {
+        RemoteConfigService.setRemoteConfigFetcher(appInjector.getInstance<IRemoteConfigFetcher>())
+        remoteConfigDisposable = remoteConfig
+            .fetch(force = false)
+            .withDefaults()
+            .subscribe(
+                {
+                    tunnelVM.checkAppVersion()
+                    FdLog.d("initRemoteConfig", "RemoteConfig was fetched")
+                },
+                { error ->
+                    FdLog.d("initRemoteConfig", "RemoteConfig fetching was failed", error)
+                }
+            )
     }
 
     override fun getDefaultLanguage(): Locale {

@@ -25,7 +25,7 @@ object BlockaRepoRepository {
     private val log = Logger("BlockaRepo")
     private val serializer = JsonSerializationService
     private val http = HttpService
-//
+
 //    suspend fun fetch(): BlockaRepo {
 //        return coroutineScope {
 //            async(Dispatchers.IO) {

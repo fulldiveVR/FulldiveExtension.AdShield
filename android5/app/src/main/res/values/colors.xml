@@ -51,4 +51,13 @@
     <color name="colorGamificationPrimary">#80D789</color>
     <color name="colorGamificationSecondary">#63CAC6</color>
     <color name="colorLevelReward">#FFC63E</color>
+
+    <color name="colorDivider">#C6C6C8B2</color>
+    <color name="backgroundColoredButton">#FF9900</color>
+    <color name="backgroundColoredButtonAlpha40">#66FF9900</color>
+    <color name="backgroundPrimary">#ffffff</color>
+    <color name="backgroundPrimaryAlpha40">#66ffffff</color>
+
+    <color name="backgroundSearchBar">#F3F3F3</color>
+
 </resources>

@@ -40,17 +40,21 @@ class RewardsPresenter @Inject constructor(
     private val accountsInteractor: WalletInteractor
 ) : BaseMoxyPresenter<RewardsView>() {
 
+    private var checkForMnemonic = false
+
     override fun attachView(view: RewardsView?) {
         super.attachView(view)
         requestAccount()
     }
 
-    fun onViewPrivateKeyClicked() {
-
+    fun onShowMnemonicClicked() {
+        checkForMnemonic = true
+        viewState.showCheckPassword()
     }
 
-    fun onViewMnemonicClicked() {
-
+    fun onShowPrivateKeyClicked() {
+        checkForMnemonic = false
+        viewState.showCheckPassword()
     }
 
     fun onWalletAddressCopyClicked(address: String) {
@@ -108,14 +112,11 @@ class RewardsPresenter @Inject constructor(
         viewState.showBalance(spannableString, Chain.fdCoinSymbolTitle)
     }
 
-    //    fun onDeleteWalletClicked() {
-//        accountsInteractor
-//            .deleteAccount()
-//            .withDefaults()
-//            .compositeSubscribe(
-//                onSuccess = {
-//                    viewState.showCreateWalletLayout()
-//                }
-//            )
-//    }
+    fun onCheckPasswordSuccessfully() {
+        if (checkForMnemonic) {
+            viewState.showMnemonic()
+        } else {
+            viewState.showPrivateKey()
+        }
+    }
 }
