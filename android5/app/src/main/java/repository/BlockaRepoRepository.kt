@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Copyright © 2022 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -26,19 +26,19 @@ object BlockaRepoRepository {
     private val serializer = JsonSerializationService
     private val http = HttpService
 
-//    suspend fun fetch(): BlockaRepo {
-//        return coroutineScope {
-//            async(Dispatchers.IO) {
-//                log.v("Fetching Blocka repo to check for updates and configuration")
-//                val content = http.makeRequest(REPO_URL)
-//                serializer.deserialize(
-//                    content,
-//                    BlockaRepo::class
-//                )
-//            }
-//        }.await()
-//    }
+    suspend fun fetch(): BlockaRepo {
+        return coroutineScope {
+            async(Dispatchers.IO) {
+                log.v("Fetching Blocka repo to check for updates and configuration")
+                val content = http.makeRequest(REPO_URL)
+                serializer.deserialize(
+                    content,
+                    BlockaRepo::class
+                )
+            }
+        }.await()
+    }
 
 }
 
-//private const val REPO_URL = "https://blokada.org/api/v5/repo.json"
+private const val REPO_URL = "https://blokada.org/api/v5/repo.json"

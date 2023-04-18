@@ -19,6 +19,7 @@ package com.fulldive.wallet.presentation.base.subscription
 import analytics.TrackerConstants
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import appextension.StatisticHelper
 import com.fulldive.iap.DataWrappers
 import com.fulldive.iap.IapConnector
@@ -53,6 +54,7 @@ object SubscriptionService {
     private var iapConnector: IapConnector? = null
 
     suspend fun init(context: Context) {
+        Log.d("TestB","init")
         iapConnector = IapConnector(
             context = context, // activity / context
             nonConsumableKeys = emptyList(), // pass the list of non-consumables
@@ -66,6 +68,7 @@ object SubscriptionService {
         iapConnector?.addPurchaseListener(object : PurchaseServiceListener {
             override fun onPricesUpdated(iapKeyPrices: Map<String, DataWrappers.ProductDetails>) {
                 subscriptionPrices.putAll(iapKeyPrices)
+                Log.d("TestB","subscriptionPrices: $subscriptionPrices")
             }
 
             override fun onProductPurchased(purchaseInfo: DataWrappers.PurchaseInfo) {
@@ -113,6 +116,7 @@ object SubscriptionService {
 
             override fun onPricesUpdated(iapKeyPrices: Map<String, DataWrappers.ProductDetails>) {
                 subscriptionPrices.putAll(iapKeyPrices)
+                Log.d("TestB","subscriptionPrices: $subscriptionPrices")
             }
         })
         handlePromoPopupState(context)
@@ -159,6 +163,7 @@ object SubscriptionService {
     }
 
     private fun getSkuPrice(sku: String): Pair<String, String> {
+        Log.d("TestB","getSkuPrice $subscriptionPrices")
         return subscriptionPrices[sku]?.let {
             Pair(it.priceAmount.toString(), it.priceCurrencyCode.orEmptyString())
         } ?: Pair("", "")

@@ -12,6 +12,7 @@
 
 package ui
 
+import android.util.Log
 import androidx.lifecycle.*
 import engine.EngineService
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +68,7 @@ class TunnelViewModel: ViewModel() {
     fun checkAppVersion() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentAppVersion = FulldiveRemoteConfigFetcher.getCurrentAppVersion()
+            //Log.d("TestB","currentAppVersion $currentAppVersion")
             AppSettingsService.setCurrentAppVersion(currentAppVersion)
         }
     }
@@ -75,7 +77,9 @@ class TunnelViewModel: ViewModel() {
         viewModelScope.launch {
             MonitorService.setInfo(0)
             val isAdblockWork = withContext(Dispatchers.IO) {
-                CheckAdblockWorkService.isAdblockWork()
+                val test  = CheckAdblockWorkService.isAdblockWork()
+                Log.d("TestB","isAdblockWork checkIfAdblockWork $test")
+                test
             }
             this@TunnelViewModel._isAdblockWork.value = isAdblockWork
         }

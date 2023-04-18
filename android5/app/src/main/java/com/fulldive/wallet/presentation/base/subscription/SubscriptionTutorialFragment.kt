@@ -7,6 +7,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.DynamicDrawableSpan
 import android.text.style.ImageSpan
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.fulldive.wallet.extensions.fromHtmlToSpanned
@@ -66,6 +67,8 @@ class SubscriptionTutorialFragment :
     override fun showSubscriptionInfo(
         proSubscriptionInfo: ProSubscriptionInfo
     ) {
+        Log.d("TestB","proSubscriptionInfo: $proSubscriptionInfo")
+
         binding {
             discountCurrencyTextView.text = proSubscriptionInfo.currency
             fullPriceCurrencyTextView.text = proSubscriptionInfo.currency

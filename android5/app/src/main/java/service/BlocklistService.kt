@@ -5,7 +5,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Copyright © 2022 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -33,6 +33,7 @@ object BlocklistService {
     private val log = Logger("Blocklist")
     private val http = HttpService
     private val file = FileService
+    private val context = ContextService
 
     suspend fun setup() {
         val destination = file.commonDir().file(MERGED_BLOCKLIST)
@@ -40,12 +41,12 @@ object BlocklistService {
             log.w("Initiating default blocklist file")
             val default = file.commonDir().file(DEFAULT_BLOCKLIST)
             try {
-                val asset = ContextService.requireAppContext().assets.open(DEFAULT_BLOCKLIST_ZIP)
+                val asset = context.requireAppContext().assets.open(DEFAULT_BLOCKLIST_ZIP)
                 val decodedAsset = ZipService.decodeStream(asset, key = DEFAULT_BLOCKLIST)
                 file.save(source = decodedAsset, destination = default)
             } catch (ex: Exception) {
                 log.w("No zip blocklist, falling back to plaintext one".cause(ex))
-                val asset = ContextService.requireAppContext().assets.open(DEFAULT_BLOCKLIST)
+                val asset = context.requireAppContext().assets.open(DEFAULT_BLOCKLIST)
                 file.save(source = asset, destination = default)
             }
             file.merge(listOf(default), destination)

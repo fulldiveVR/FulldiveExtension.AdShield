@@ -73,7 +73,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/doubled"
                     android:layout_marginBottom="@dimen/normal"
-                    android:background="?android:attr/shadowColor" />
+                    android:background="@color/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <TextView
                             style="@style/Text.H3"
@@ -239,7 +239,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <Button
                             android:id="@+id/encryption_continue"
