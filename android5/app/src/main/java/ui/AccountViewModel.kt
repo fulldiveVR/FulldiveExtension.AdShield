@@ -24,8 +24,8 @@ import service.AlertDialogService
 import service.ConnectivityService
 import service.EnvironmentService
 import service.PersistenceService
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.util.*
 
 class AccountViewModel: ViewModel() {

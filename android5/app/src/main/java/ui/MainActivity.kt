@@ -35,9 +35,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import appextension.AppExtensionWorkType
-import appextension.EmailHelper
-import appextension.StatisticHelper
+import appextension.*
 import appextension.dialogs.PopupManager
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
@@ -87,7 +85,6 @@ class MainActivity : LocalizationActivity(),
         TranslationService.setup()
         initViewModel()
         StatisticHelper.init(baseContext)
-
         appSettingsVm.initAppTheme()
 
         setContentView(R.layout.activity_main)
@@ -127,16 +124,6 @@ class MainActivity : LocalizationActivity(),
                     }
                 }
             }
-        }
-
-        appSettingsVm.isRewardsLimited.observe(this) { isLimited ->
-            val rewardMenuItem = navigationView.menu.findItem(R.id.rewardsFragment)
-            rewardMenuItem.isVisible = !isLimited
-        }
-
-        appSettingsVm.isStatsLimited.observe(this) { isLimited ->
-            val statsMenuItem = navigationView.menu.findItem(R.id.navigation_stats)
-            statsMenuItem.isVisible = !isLimited
         }
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -247,6 +234,8 @@ class MainActivity : LocalizationActivity(),
                     fragment.show(supportFragmentManager, null)
                 }
             }
+            val uri = getContentUri(LaunchHelper.getCurrentState(status))
+            contentResolver.insert(uri, null)
         })
     }
 
@@ -254,6 +243,7 @@ class MainActivity : LocalizationActivity(),
         super.onResume()
         tunnelVM.refreshStatus()
         accountVM.checkAccount()
+      //  blockaRepoVM.maybeRefreshRepo() //todo
         lifecycleScope.launch {
             statsVM.refresh()
         }

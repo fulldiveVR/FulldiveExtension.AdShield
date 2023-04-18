@@ -5,13 +5,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Copyright © 2022 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
 
 package repository
 
+import model.Account
 import model.AccountId
 import model.Lease
 import model.LeaseRequest
@@ -34,4 +35,5 @@ object BlockaRepository {
             alias = lease.alias ?: ""
         )
     )
+
 }

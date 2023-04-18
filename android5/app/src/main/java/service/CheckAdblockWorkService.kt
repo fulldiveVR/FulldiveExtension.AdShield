@@ -29,7 +29,7 @@ object CheckAdblockWorkService {
         var isAdblockWork = true
         var urlConnection: HttpURLConnection? = null
 
-        if (LaunchHelper.getCurrentState() == AppExtensionState.START.id &&
+        if (LaunchHelper.getCurrentState() == AppExtensionState.PROGRESS.id &&
             RemoteConfigService.getAdblockWorkCheckDomain().isNotEmpty()
         ) {
             try {

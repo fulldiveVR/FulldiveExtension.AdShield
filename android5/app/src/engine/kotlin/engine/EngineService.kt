@@ -20,12 +20,11 @@ import model.*
 import newengine.BlockaDnsService
 import repository.DnsDataSource
 import service.ConnectivityService
-import service.EnvironmentService
 import service.NotificationService
 import service.VpnPermissionService
 import utils.Logger
-import utils.cause
 import utils.MonitorNotification
+import utils.cause
 import java.net.DatagramSocket
 import java.net.InetAddress
 import java.net.Socket

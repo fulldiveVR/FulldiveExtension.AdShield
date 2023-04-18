@@ -82,10 +82,12 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
     override fun initLayout() {
         super.initLayout()
         exchangeButton?.setOnClickListener {
+            //TODO Mocked
             findNavController()
                 .apply {
                     navigate(RewardsFragmentDirections.actionNavigationRewardsToExchangeFragment())
                 }
+            //  presenter.onExchangeClicked()
         }
     }
 
@@ -145,7 +147,8 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
 
     override fun updateExperienceProgress(
         experience: Int,
-        maxExperience: Int
+        maxExperience: Int,
+        isExchangeAvailable: Boolean
     ) {
         experienceProgressViewLayout?.animateExperience(
             progress = experience,
@@ -153,6 +156,7 @@ abstract class BaseExperienceLayout<V : ViewBinding, P> : BaseMvpFrameLayout<V>,
             animationDuration = ANIMATION_DURATION,
             endAction = { setExperienceProgressText(experience, maxExperience) }
         )
+        exchangeButton?.isVisible = isExchangeAvailable
     }
 
     override fun navigateToExchangeScreen() {

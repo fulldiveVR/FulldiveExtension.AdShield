@@ -17,8 +17,8 @@ import android.os.Build
 import android.system.OsConstants
 import model.*
 import repository.AppRepository
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.net.Inet4Address
 
 object SystemTunnelConfigurator {

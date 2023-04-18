@@ -1,4 +1,5 @@
-#!/bin/shexport ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle/
+#!/bin/sh
+
 #
 # This file is part of Blokada.
 #
@@ -11,6 +12,9 @@
 # @author Karol Gusak (karol@blocka.net)
 #
 
+# I couldnt make that gradle rust android plugin work
+
+export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle/
 cd ../blocka_engine
 
 echo "Building for arm"

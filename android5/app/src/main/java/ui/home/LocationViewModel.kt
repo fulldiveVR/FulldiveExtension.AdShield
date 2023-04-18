@@ -16,8 +16,8 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import model.Gateway
 import repository.BlockaRepository
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.lang.Exception
 
 class LocationViewModel : ViewModel() {

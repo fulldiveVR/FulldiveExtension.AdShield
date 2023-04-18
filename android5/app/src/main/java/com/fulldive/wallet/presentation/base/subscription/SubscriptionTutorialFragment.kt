@@ -66,6 +66,7 @@ class SubscriptionTutorialFragment :
     override fun showSubscriptionInfo(
         proSubscriptionInfo: ProSubscriptionInfo
     ) {
+
         binding {
             discountCurrencyTextView.text = proSubscriptionInfo.currency
             fullPriceCurrencyTextView.text = proSubscriptionInfo.currency
