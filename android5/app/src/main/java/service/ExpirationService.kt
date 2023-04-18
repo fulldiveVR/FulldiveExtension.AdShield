@@ -19,7 +19,7 @@ import android.content.Context
 import android.content.Intent
 import model.ActiveUntil
 import ui.beforeNow
-import ui.utils.cause
+import utils.cause
 import utils.ExpiredNotification
 import utils.Logger
 import java.util.Date

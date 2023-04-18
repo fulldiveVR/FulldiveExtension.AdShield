@@ -64,4 +64,11 @@
     <dimen name="flat_subscription_tutorial_icon_size">150dp</dimen>
     <dimen name="size_32dp">32dp</dimen>
     <dimen name="shapeButtonRadius">32dp</dimen>
+
+    <dimen name="powerview">140dp</dimen>
+    <dimen name="powerview_below">32dp</dimen>
+    <dimen name="plusbutton_above">90dp</dimen>
+
+    <dimen name="maxwidth">600dp</dimen>
+    <dimen name="sheet_maxwidth">300dp</dimen>
 </resources>

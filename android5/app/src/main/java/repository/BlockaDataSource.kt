@@ -12,7 +12,6 @@
 
 package repository
 
-import com.fulldive.wallet.models.ExchangePack
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import model.*

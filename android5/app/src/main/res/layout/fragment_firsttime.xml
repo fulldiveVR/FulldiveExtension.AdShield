@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -16,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
+    android:background="@color/colorPrimary"
     android:padding="@dimen/half"
     tools:context="ui.home.HelpFragment">
 
@@ -63,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/normal"
-                    android:background="?android:attr/shadowColor" />
+                    android:background="@color/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -83,29 +82,32 @@
                         app:layout_constraintWidth_max="@dimen/sheet_maxwidth">
 
                         <TextView
+                            android:id="@+id/intro_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/intro_text" />
+                            android:text="@string/intro_text"
+                            android:textColor="@color/textColorPrimary" />
 
                         <TextView
                             android:id="@+id/firsttime_more"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/doubled"
-                            android:gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginTop="@dimen/normal"
                             android:text="@string/universal_action_learn_more"
-                            android:textColor="?android:attr/colorPrimary" />
+                            android:textColor="@color/textColorPrimary" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/shadowColor" />
+                            android:background="@color/shadowColor" />
 
                         <Button
                             android:id="@+id/firsttime_continue"
-                            style="@style/accentButton"
+                            style="@style/AccentButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/size_16dp"

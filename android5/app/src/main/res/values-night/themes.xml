@@ -11,5 +11,5 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.Blokada.Default" parent="Theme.Blokada.Dark" />
+<!--    <style name="Theme.Blokada.Default" parent="Theme.Blokada.Dark" />-->
 </resources>

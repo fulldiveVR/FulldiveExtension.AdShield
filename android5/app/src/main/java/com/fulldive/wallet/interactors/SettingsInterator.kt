@@ -17,7 +17,6 @@
 package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
-import com.fulldive.wallet.extensions.safeCompletable
 import com.joom.lightsaber.ProvidedBy
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -28,11 +27,11 @@ class SettingsInterator @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) {
 
-    fun setExchangePushShownTime(): Completable {
-        return safeCompletable { }
+    fun setExchangePushShownTime(pushShownTime: Long): Completable {
+        return settingsRepository.setExchangePushShownTime(pushShownTime)
     }
 
     fun observeExchangePushShownTime(): Observable<Long> {
-        return Observable.fromCallable { 1000L }
+        return settingsRepository.observeExchangePushShownTime()
     }
 }

@@ -25,7 +25,7 @@ object Chain {
     const val fdCoinDenom = "FDToken"
     const val fullNameCoin = "Imversed Staking Coin"
     const val symbolTitle = "IMV"
-    const val fdCoinSymbolTitle = "FD Coin"
+    const val fdCoinSymbolTitle = "FD"
     const val divideDecimal = 18
     const val displayDecimal = 18
     val grpcApiHost = ApiHost.from(BuildConfig.GRPC_API_HOST)

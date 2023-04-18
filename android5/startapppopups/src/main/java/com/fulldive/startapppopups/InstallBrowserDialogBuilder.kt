@@ -18,7 +18,10 @@ package com.fulldive.startapppopups
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.widget.Button
 import androidx.core.content.ContextCompat
 
 object InstallBrowserDialogBuilder {
@@ -27,7 +30,7 @@ object InstallBrowserDialogBuilder {
         val view = LayoutInflater.from(context)
             .inflate(R.layout.install_browser_dialog_layout, null)
         val dialog = AlertDialog
-            .Builder(context)
+            .Builder(context, R.style.PopupDialogTheme)
             .setView(view)
             .setPositiveButton(R.string.install_submit) { _, _ ->
                 onPositiveClicked.invoke()

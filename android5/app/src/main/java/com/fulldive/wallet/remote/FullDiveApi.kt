@@ -16,19 +16,19 @@
 
 package com.fulldive.wallet.remote
 
-import com.fulldive.wallet.models.ExchangePack
 import com.fulldive.wallet.models.ExchangeRequest
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface FullDiveApi {
 
-    @GET("/sleep-money/xp/change/packs")
-    fun getAvailableExchangePacks(): Single<List<ExchangePack>>
+    @GET("/sleep-money/xp/exchange/rate/{denom}")
+    fun getExchangeRateForToken(@Path("denom") denom: String): Single<Int>
 
-    @POST("/sleep-money/xp/change")
+    @POST("/sleep-money/xp/exchange")
     fun exchangeExperience(@Body exchangeRequest: ExchangeRequest): Completable
 }

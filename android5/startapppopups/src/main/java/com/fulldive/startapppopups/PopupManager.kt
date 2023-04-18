@@ -60,6 +60,7 @@ class PopupManager {
         val sharedPreferences = activity.getPrivateSharedPreferences()
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
         val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        val isDonated = sharedPreferences.getProperty(KEY_IS_DONATED, false)
         val isPromoPopupCloseCounter = sharedPreferences
             .getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
 
@@ -99,7 +100,11 @@ class PopupManager {
             }
         }
 
-        if (isShowDonationPopup && (!isPromoPopupClosed || repeatPopupCounts.any { it == diff })) {
+        if (
+            isShowDonationPopup && ((!isPromoPopupClosed || isPromoPopupClosed && repeatPopupCounts.any { it == diff })
+                    && (!isDonated || isDonated && repeatPopupCountsIfDonated.any { it == diff })
+                    || (isPromoPopupClosed && isDonated && repeatPopupCountsIfDonated.any { it == diff }))
+        ) {
             val snackbar = DonationSnackbar()
             snackbar.showSnackBar(
                 activity.findViewById(android.R.id.content),
@@ -115,12 +120,13 @@ class PopupManager {
                             onPurchased = {
                                 donationActionListener.invoke(DonationAction.DonationSuccess)
                                 showDonationSuccess(activity)
+                                onDonationSuccess(sharedPreferences)
                             }
                         )
                     }
+                    onCloseDonationClicked(sharedPreferences)
                     donationActionListener.invoke(DonationAction.OpenedFromPopup)
                     snackbar.dismiss()
-                    onCloseDonationClicked(sharedPreferences)
                 },
                 onCloseClicked = {
                     donationActionListener.invoke(DonationAction.PopupClosed)
@@ -136,8 +142,34 @@ class PopupManager {
         }
     }
 
+    fun showDonationSuccess(context: Context) {
+        val dialog = AlertDialog
+            .Builder(context)
+            .setTitle(R.string.donation_title)
+            .setMessage(R.string.donation_message)
+            .setPositiveButton(R.string.donation_done) { _, _ -> }
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
+        }
+        dialog.show()
+    }
+
     private fun onCloseDonationClicked(sharedPreferences: SharedPreferences) {
-        sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
+        val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
+        if (!isPromoPopupClosed) {
+            sharedPreferences.setProperty(KEY_IS_PROMO_POPUP_CLOSED, true)
+            sharedPreferences.setProperty(
+                KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
+                sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+            )
+        }
+    }
+
+    private fun onDonationSuccess(sharedPreferences: SharedPreferences) {
+        sharedPreferences.setProperty(KEY_IS_DONATED, true)
         sharedPreferences.setProperty(
             KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER,
             sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
@@ -244,28 +276,15 @@ class PopupManager {
         return result
     }
 
-    fun showDonationSuccess(context: Context) {
-        val dialog = AlertDialog
-            .Builder(context)
-            .setTitle(R.string.donation_title)
-            .setMessage(R.string.donation_message)
-            .setPositiveButton(R.string.donation_done) { _, _ -> }
-            .create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
-        }
-        dialog.show()
-    }
-
     companion object {
         private val repeatPopupCounts = listOf(2, 5)
+        private val repeatPopupCountsIfDonated = listOf(20, 40)
         private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
         private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
         private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
         private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
         private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
+        private const val KEY_IS_DONATED = "KEY_IS_DONATED"
         private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
             "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
         private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"

@@ -48,11 +48,8 @@ class HelpFragment : BottomSheetFragment() {
             dismiss()
         }
 
-<<<<<<< HEAD
         val cancel: View = root.findViewById(R.id.cancelButton)
-=======
-        val cancel: View = root.findViewById(R.id.cancel)
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
+
         cancel.setOnClickListener {
             dismiss()
         }

@@ -15,9 +15,12 @@
   -->
 
 <resources>
+    <color name="colorPopupBackground">#ffffff</color>
+
     <color name="textColorPrimary">#0D1826</color>
     <color name="textColorSecondary">#BABDC1</color>
     <color name="textColorAccent">#FF9900</color>
 
     <color name="backgroundTabsAndNavBars">#ffffff</color>
+    <color name="colorTransparent">#00ffffff</color>
 </resources>

@@ -18,6 +18,8 @@ package com.fulldive.wallet.extensions
 
 import android.os.Bundle
 import timber.log.Timber
+import kotlin.math.max
+import kotlin.math.min
 
 fun Any?.isNotNull(): Boolean {
     return null != this
@@ -57,3 +59,9 @@ fun <A, B, C> combine(a: A, b: B, c: C) = Triple(a, b, c)
 fun <A> concat(a: List<A>, b: List<A>) = a + b
 
 fun String.withPrefix(prefix: String) = if (startsWith(prefix)) this else "$prefix$this"
+
+fun String.safeSubstring(startIndex: Int = 0, endIndex: Int = Integer.MAX_VALUE): String {
+    val end: Int = max(0, min(length, endIndex))
+    val start: Int = max(0, min(end, startIndex))
+    return if (end <= start) "" else substring(start, end)
+}

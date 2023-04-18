@@ -18,11 +18,19 @@ package com.fulldive.wallet.interactors
 
 import com.fulldive.wallet.di.modules.DefaultInteractorsModule
 import com.joom.lightsaber.ProvidedBy
+import io.reactivex.Completable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 @ProvidedBy(DefaultInteractorsModule::class)
 class SettingsRepository @Inject constructor(
     private val settingsLocalDataSource: SettingsLocalDataSource
 ) {
+    fun setExchangePushShownTime(pushShownTime: Long): Completable {
+        return settingsLocalDataSource.setExchangePushShownTime(pushShownTime)
+    }
 
+    fun observeExchangePushShownTime(): Observable<Long> {
+        return settingsLocalDataSource.observeExchangePushShownTime()
+    }
 }

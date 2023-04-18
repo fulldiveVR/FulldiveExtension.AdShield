@@ -67,7 +67,7 @@
         app:tabPaddingEnd="@dimen/size_8dp"
         app:tabPaddingStart="@dimen/size_8dp"
         app:tabSelectedTextColor="@color/textColorPrimary"
-        app:tabTextAppearance="@style/FlatTheme.TabLayoutTabText"
+        app:tabTextAppearance="@style/AppTheme.TabLayoutTabText"
         app:tabTextColor="@color/textColorSecondary">
 
         <com.google.android.material.tabs.TabItem
