@@ -85,7 +85,6 @@ class MainActivity : LocalizationActivity(),
         TranslationService.setup()
         initViewModel()
         StatisticHelper.init(baseContext)
-
         appSettingsVm.initAppTheme()
 
         setContentView(R.layout.activity_main)

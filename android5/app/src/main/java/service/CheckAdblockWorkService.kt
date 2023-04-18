@@ -16,7 +16,6 @@
 
 package service
 
-import android.util.Log
 import appextension.AppExtensionState
 import appextension.LaunchHelper
 import org.adshield.R
@@ -27,7 +26,6 @@ import java.net.UnknownHostException
 object CheckAdblockWorkService {
 
     fun isAdblockWork(): Boolean {
-        Log.d("TestB","isAdblockWork start ${LaunchHelper.getCurrentState()} - ${RemoteConfigService.getAdblockWorkCheckDomain()}")
         var isAdblockWork = true
         var urlConnection: HttpURLConnection? = null
 
@@ -42,11 +40,9 @@ object CheckAdblockWorkService {
                 //to catch in UnknownHostException
                 urlConnection.responseCode
                 urlConnection.responseMessage
-                Log.d("TestB","isAdshieldWork 1  $isAdblockWork")
             } catch (exception: Exception) {
                 if (exception is UnknownHostException) {
                     isAdblockWork = true
-                    Log.d("TestB","isAdshieldWork 2 catch $exception $isAdblockWork")
                 }
             } finally {
                 (urlConnection as HttpURLConnection).disconnect()

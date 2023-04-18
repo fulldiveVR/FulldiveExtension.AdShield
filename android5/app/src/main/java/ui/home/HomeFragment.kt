@@ -17,7 +17,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -215,7 +214,6 @@ class HomeFragment : Fragment() {
 
         vm.isAdblockWork.observe(viewLifecycleOwner) { isAdshieldWork ->
             stopWorkingLayout.isVisible = activateView.activeMode && !isAdshieldWork
-            Log.d("TestB","isAdshieldWork $isAdshieldWork")
         }
 
         vm.tunnelStatus.observe(viewLifecycleOwner) { status ->
