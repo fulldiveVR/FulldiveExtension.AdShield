@@ -1,26 +1,4 @@
 {
-<<<<<<< HEAD
-  "images" : [
-    {
-      "filename" : "feature_goodbyeads.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
-    }
-  ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  }
-}
-=======
     "images" : [
         {
             "idiom" : "universal",
@@ -43,4 +21,3 @@
         "author" : "xcode"
     }
 }
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
