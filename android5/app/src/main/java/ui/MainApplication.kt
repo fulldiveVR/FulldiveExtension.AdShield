@@ -99,7 +99,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         LogService.setup()
         DozeService.setup(this)
         setupEvents()
-//        MonitorService.setup(settingsVM.getUseForegroundService())
+        MonitorService.setup(settingsVM.getUseForegroundService())
         registerActivityLifecycleCallbacks(EnrichableLifecycleCallbacks(this))
 
         ABPService.initABP(ContextService.requireContext())

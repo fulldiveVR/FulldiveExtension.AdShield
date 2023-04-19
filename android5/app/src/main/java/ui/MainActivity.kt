@@ -126,6 +126,16 @@ class MainActivity : LocalizationActivity(),
             }
         }
 
+        appSettingsVm.isRewardsLimited.observe(this) { isLimited ->
+            val rewardMenuItem = navigationView.menu.findItem(R.id.rewardsFragment)
+            rewardMenuItem.isVisible = !isLimited
+        }
+
+        appSettingsVm.isStatsLimited.observe(this) { isLimited ->
+            val statsMenuItem = navigationView.menu.findItem(R.id.navigation_stats)
+            statsMenuItem.isVisible = !isLimited
+        }
+
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -243,7 +253,6 @@ class MainActivity : LocalizationActivity(),
         super.onResume()
         tunnelVM.refreshStatus()
         accountVM.checkAccount()
-      //  blockaRepoVM.maybeRefreshRepo() //todo
         lifecycleScope.launch {
             statsVM.refresh()
         }

@@ -2,7 +2,6 @@ package com.fulldive.iap
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 /**
@@ -31,7 +30,6 @@ class IapConnector @JvmOverloads constructor(
         val contextLocal = context.applicationContext ?: context
         mBillingService = BillingService(contextLocal, nonConsumableKeys, consumableKeys, subscriptionKeys)
         getBillingService().init(key)
-        Log.d("TestB","getBillingService init ${getBillingService()}")
         getBillingService().enableDebugLogging(enableLogging)
     }
 
