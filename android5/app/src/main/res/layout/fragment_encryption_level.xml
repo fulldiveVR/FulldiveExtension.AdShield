@@ -16,7 +16,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/colorBackgroundFloating"
     android:orientation="vertical"
     android:padding="@dimen/half"
     tools:context="ui.home.LocationFragment">
@@ -63,8 +62,7 @@
                         style="@style/Text.Header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/account_encrypt_level_low"
-                        android:textColor="?android:attr/textColor" />
+                        android:text="@string/account_encrypt_level_low" />
 
                 </LinearLayout>
 
