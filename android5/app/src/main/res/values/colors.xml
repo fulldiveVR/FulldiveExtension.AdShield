@@ -16,7 +16,7 @@
     <color name="colorSecondary">#0D1826</color>
     <color name="colorOppositePrimary">#121212</color>
 
-    <color name="colorAccent">#FF9900</color>
+    <color name="colorAccent">#705BE7</color>
     <color name="colorAlert">#FF5E10</color>
 
     <color name="colorBar">#F2F3F4</color>
@@ -33,8 +33,8 @@
     <color name="textColorForwarded">#63CAC6</color>
     <color name="textColorDenied">#8E83FF</color>
 
-    <color name="colorAccentAlpha5">#0CFF9900</color>
-    <color name="colorAccentAlpha30">#4CFF9900</color>
+    <color name="colorAccentAlpha5">#0C705BE7</color>
+    <color name="colorAccentAlpha30">#4C705BE7</color>
 
     <color name="colorTransparent">#00ffffff</color>
     <color name="backgroundTabsAndNavBars">#ffffff</color>
@@ -45,7 +45,7 @@
 
     <color name="colorGreen">#33C75A</color>
 
-    <color name="colorConnected">#0CFF9900</color>
+    <color name="colorConnected">#0C705BE7</color>
 
     <!-- gamification-->
     <color name="colorGamificationPrimary">#80D789</color>
@@ -53,8 +53,8 @@
     <color name="colorLevelReward">#FFC63E</color>
 
     <color name="colorDivider">#C6C6C8B2</color>
-    <color name="backgroundColoredButton">#FF9900</color>
-    <color name="backgroundColoredButtonAlpha40">#66FF9900</color>
+    <color name="backgroundColoredButton">#705BE7</color>
+    <color name="backgroundColoredButtonAlpha40">#66705BE7</color>
     <color name="backgroundPrimary">#ffffff</color>
     <color name="backgroundPrimaryAlpha40">#66ffffff</color>
 
