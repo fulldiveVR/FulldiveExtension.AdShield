@@ -23,8 +23,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import model.BlokadaException
 import model.Uri
-import utils.cause
 import utils.Logger
+import utils.cause
 import java.io.File
 
 object UpdateDownloaderService {

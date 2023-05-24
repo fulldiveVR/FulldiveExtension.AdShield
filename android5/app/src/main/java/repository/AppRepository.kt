@@ -19,13 +19,12 @@ import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import com.fulldive.wallet.di.IInjectorHolder
 import com.fulldive.wallet.di.components.ApplicationComponent
-import com.fulldive.wallet.extensions.orEmptyString
-import com.fulldive.wallet.models.AppIcon
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import model.App
 import model.AppId
 import model.BypassedAppIds
@@ -37,7 +36,9 @@ import utils.cause
 object AppRepository : IInjectorHolder {
 
     private val log = Logger("AppRepository")
+    private val context = ContextService
     private val persistence = PersistenceService
+    private val scope = GlobalScope
 
     private var appInjector: Injector = Lightsaber.Builder().build().createInjector(
         ApplicationComponent(ContextService.requireContext())
@@ -111,9 +112,9 @@ object AppRepository : IInjectorHolder {
     }
 
     suspend fun getApps(): List<App> {
-        return withContext(Dispatchers.Default) {
+        return scope.async(Dispatchers.Default) {
             log.v("Fetching apps")
-            val ctx = ContextService.requireContext()
+            val ctx = context.requireContext()
             val installed = try {
                 ctx.packageManager.queryIntentActivities(
                     Intent(Intent.ACTION_MAIN),
@@ -123,14 +124,6 @@ object AppRepository : IInjectorHolder {
                 log.w("Could not fetch apps, ignoring".cause(ex))
                 emptySet<ResolveInfo>()
             }.map { it.activityInfo.applicationInfo }.toSet()
-
-            val appIcons = try {
-                appIconLocalDataSource.getAllAppIcons()
-            } catch (ex: Exception) {
-                log.w("Could not apps icons, ignoring".cause(ex))
-                emptyList<AppIcon>()
-            }
-
             log.v("Fetched ${installed.size} apps, mapping")
             val apps = installed.mapNotNull { appInfo ->
                 try {
@@ -139,8 +132,7 @@ object AppRepository : IInjectorHolder {
                         id = appId,
                         name = ctx.packageManager.getApplicationLabel(appInfo).toString(),
                         isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
-                        isBypassed = isAppBypassed(appInfo.packageName),
-                        iconUrl = appIcons.firstOrNull { it.appId == appId }?.iconUrl.orEmptyString()
+                        isBypassed = isAppBypassed(appInfo.packageName)
                     )
                 } catch (ex: Exception) {
                     log.w("Could not map app, ignoring".cause(ex))
@@ -151,7 +143,7 @@ object AppRepository : IInjectorHolder {
                 .toList()
             log.v("Mapped ${apps.size} apps")
             apps
-        }
+        }.await()
     }
 
     fun isAppBypassed(id: AppId): Boolean {
@@ -174,7 +166,7 @@ object AppRepository : IInjectorHolder {
 
     fun getAppIcon(id: AppId): Drawable? {
         return try {
-            val ctx = ContextService.requireContext()
+            val ctx = context.requireContext()
             ctx.packageManager.getApplicationIcon(
                 ctx.packageManager.getApplicationInfo(id, PackageManager.GET_META_DATA)
             )

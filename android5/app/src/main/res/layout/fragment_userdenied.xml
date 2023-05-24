@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ This file is part of Blokada.
   ~
   ~ This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,14 +19,14 @@
     tools:context="ui.stats.StatsFragment">
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/activity_searchgroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="?android:attr/colorBackground"
         android:orientation="horizontal"
         android:paddingStart="@dimen/half"
         android:paddingEnd="@dimen/half"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/activity_tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,9 +51,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"
+        android:background="?android:attr/colorBackground"
         android:fontFamily="@font/roboto_regular"
-        android:minHeight="@dimen/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
         app:layout_constraintBottom_toTopOf="@+id/activity_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,10 +96,10 @@
         android:id="@+id/activity_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
+        android:background="?android:attr/colorBackground"
         android:orientation="vertical"
         android:padding="@dimen/normal"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,15 +108,15 @@
         <ImageView
             android:layout_width="@dimen/icon_huge"
             android:layout_height="@dimen/icon_huge"
-            android:src="@drawable/ic_baseline_remove_red_eye_24"
-            app:tint="@color/shadowColor" />
+            app:tint="?android:attr/textColorTertiary"
+            android:src="@drawable/ic_baseline_remove_red_eye_24" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxWidth="@dimen/sheet_maxwidth"
             android:padding="@dimen/doubled"
+            android:maxWidth="@dimen/sheet_maxwidth"
+            android:gravity="center"
             android:text="@string/userdenied_section_slugline" />
     </LinearLayout>
 

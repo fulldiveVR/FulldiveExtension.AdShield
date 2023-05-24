@@ -568,5 +568,5 @@
   <string name="str_popup_block_ads_positive">Go to settings</string>
   <string name="str_popup_block_ads_neutral">Visit FaQ</string>
   <string name="str_stop_working_tutorial_info">Something doesn’t work?\nView the tutorial</string>
-  <string name="str_stop_working_push_info">Adblock VPN is turned off now.Try to reconnect</string>
+  <string name="str_stop_working_push_info">Adblock VPN is turned off now. Try to reconnect</string>
 </resources>

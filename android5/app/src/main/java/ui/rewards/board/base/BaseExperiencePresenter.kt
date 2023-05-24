@@ -42,17 +42,19 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
             .withDefaults()
             .compositeSubscribe(
                 onNext = { (experience, minExperience, isExchangeAvailable, _, isExchangeTimeout, isEmptyAddress) ->
-                    viewState.setExperience(
-                        experience,
-                        minExperience,
-                        isExchangeAvailable,
-                        isExchangeTimeout,
-                        isEmptyAddress
-                    )
-                    if (userExperience != 0 && userExperience != experience) {
+                    if (userExperience == 0 || userExperience == experience) {
+                        viewState.setExperience(
+                            experience,
+                            minExperience,
+                            isExchangeAvailable,
+                            isExchangeTimeout,
+                            isEmptyAddress
+                        )
+                    } else {
                         viewState.updateExperienceProgress(
                             experience,
-                            minExperience
+                            minExperience,
+                            isExchangeAvailable
                         )
                     }
                     userExperience = experience
@@ -68,7 +70,7 @@ abstract class BaseExperiencePresenter<VS : ExperienceView> constructor(
     fun onExchangeClicked() {
         walletInteractor
             .getAccount()
-            . map(Account::address)
+            .map(Account::address)
             .onErrorReturnItem("")
             .withDefaults()
             .compositeSubscribe(

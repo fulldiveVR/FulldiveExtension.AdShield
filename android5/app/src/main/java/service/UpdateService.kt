@@ -19,10 +19,10 @@ import model.*
 import org.adshield.R
 import ui.Command
 import ui.executeCommand
-import utils.cause
 import utils.openInBrowser
 import utils.Logger
 import utils.UpdateNotification
+import utils.cause
 
 object UpdateService {
 

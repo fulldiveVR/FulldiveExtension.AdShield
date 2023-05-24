@@ -200,10 +200,16 @@ class HomeFragment : Fragment() {
                     status.inProgress -> Unit
                     status.error != null -> Unit
                     status.active -> {
-                        val fragment = ProtectionLevelFragment.newInstance()
-                        fragment.show(parentFragmentManager, null)
+                        try {
+                            val fragment = ProtectionLevelFragment.newInstance()
+                            fragment.show(parentFragmentManager, null)
+                        } catch (e: Exception) {
+                        }
+
                     }
-                    else -> vm.turnOn()
+                    else -> {
+                        vm.turnOn()
+                    }
                 }
             }
         }

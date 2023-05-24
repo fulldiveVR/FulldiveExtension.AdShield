@@ -67,7 +67,7 @@ class FirstTimeFragment : BottomSheetFragment() {
             }
         } else {
             val batteryString = getString(R.string.first_start_battery_exception)
-             getTextWithLink(batteryString) {
+            getTextWithLink(batteryString) {
                 checkDoze()
             }
         }
