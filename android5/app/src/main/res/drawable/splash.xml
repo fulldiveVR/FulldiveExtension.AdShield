@@ -1,28 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-  ~ This file is part of Blokada.
-  ~
-  ~ This Source Code Form is subject to the terms of the Mozilla Public
-  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
-  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
-  ~
-  ~ Copyright © 2022 Blocka AB. All rights reserved.
-  ~
-  ~ @author Karol Gusak (karol@blocka.net)
-  -->
-
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <color android:color="@color/colorPrimary" />
-    </item>
-    <item
-        android:gravity="center"
-        android:width="@dimen/icon_huge"
-        android:height="@dimen/icon_huge">
-        <bitmap
-            android:src="@drawable/full_adshield_logo"
-            android:gravity="fill"
-            />
-    </item>
-</layer-list>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="811dp"
+    android:height="812dp"
+    android:viewportWidth="811"
+    android:viewportHeight="812">
+  <path
+      android:pathData="M401.17,0.62L181.34,59.83C173.44,61.95 168.33,69.31 169.09,77.45C169.37,80.51 169.52,83.61 169.52,86.75C169.52,136.91 132.43,178.41 84.19,185.34C75.94,186.53 69.9,193.49 69.9,201.83V468.19C69.9,666.74 234.18,734.78 398.61,809.47C403.14,811.52 407.85,811.52 412.39,809.47C576.81,734.78 741.09,666.74 741.09,468.19V201.83C741.09,193.49 735.06,186.53 726.8,185.34C678.56,178.41 641.48,136.91 641.48,86.75C641.48,83.61 641.62,80.51 641.91,77.45C642.66,69.31 637.55,61.95 629.65,59.83L409.83,0.62C406.86,-0.18 404.13,-0.18 401.17,0.62Z"
+      android:fillType="evenOdd">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="155.71"
+          android:startY="200.05"
+          android:endX="612.04"
+          android:endY="665.03"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF9B52EC"/>
+        <item android:offset="1" android:color="#FF5B60E5"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M405.5,73.8L234.32,119.9C226.48,174.37 190.04,220.34 139.76,240.78V465.96C139.76,512.8 150.95,554.53 179.79,591.9C229.7,656.54 328.76,700.1 405.5,734.54C482.24,700.1 581.29,656.54 631.2,591.9C660.05,554.53 671.23,512.8 671.23,465.96V240.78C620.96,220.34 584.52,174.37 576.68,119.9L405.5,73.8Z"
+      android:fillType="evenOdd">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="139.76"
+          android:startY="404.17"
+          android:endX="671.23"
+          android:endY="404.17"
+          android:type="linear">
+        <item android:offset="0" android:color="#FFFFFFFF"/>
+        <item android:offset="1" android:color="#FFECECFF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M275.4,426.36C275.36,430.43 275.36,434.5 275.4,438.58C275.4,485.66 282.37,539.12 319.22,572.02C367.43,615.07 454.36,601.15 498.01,544.76C515.23,522.52 528.16,487.29 539.31,457.49C544.13,444.63 555.03,422.96 557.3,413C561.37,395.13 544.03,381.3 528.31,391.1C519.63,396.51 473.93,514.28 473.57,445.05C473.54,440.01 473.61,433.56 473.74,426.1H473.73C473.75,425.7 473.76,425.3 473.76,424.9V424.69C474.46,384.05 476.66,314.58 473.76,271.73V249.56C473.76,238.67 464.85,229.76 453.96,229.76C443.07,229.76 434.15,238.67 434.15,249.56V369.84C434.15,373.5 431.16,376.5 427.5,376.5C423.84,376.5 420.85,373.5 420.85,369.84L420.84,230.96C420.64,220.07 411.93,211.16 401.04,211.16C390.15,211.16 381.23,220.07 381.23,230.96V368.46C381.23,372.13 378.24,375.12 374.58,375.12C370.92,375.12 367.93,372.13 367.93,368.46V254.39C367.93,243.5 359.02,234.59 348.12,234.59C337.23,234.59 328.32,243.5 328.32,254.39V375.7C328.32,379.36 325.32,382.35 321.66,382.35C318,382.35 315.01,379.36 315.01,375.7V278.51C315.01,267.61 306.1,258.7 295.2,258.7C284.31,258.7 275.4,267.61 275.4,278.51V426.36ZM405.11,211.16C403.79,211.03 402.55,211.05 401.37,211.16H405.11Z"
+      android:fillType="evenOdd">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="299.53"
+          android:startY="298.45"
+          android:endX="485.52"
+          android:endY="549.32"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF9853EC"/>
+        <item android:offset="1" android:color="#FF5C60E5"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+</vector>
