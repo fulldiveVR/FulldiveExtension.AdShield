@@ -447,9 +447,9 @@
   <string name="rate_cancel">Not now</string>
   <string name="maybe_later">Maybe Later</string>
   <string name="rate_us_title">Rate us</string>
-  <string name="install_browser_title">Sync with Fulldive and get rewards</string>
+  <string name="install_browser_title">Sync with Wize Browser and get rewards</string>
   <string name="install_browser_description">Thank you for trying our Full apps, we feature many more great apps such as a browser that rewards you cash when you browse, check it out!</string>
-  <string name="rate_us_description">Do you like Fulldive? We would love to hear your feedback and make the app better for you.</string>
+  <string name="rate_us_description">Do you like Wize Browser? We would love to hear your feedback and make the app better for you.</string>
   <string name="flat_fraud_intent_chooser">Send email</string>
   <string name="support_description">Need help? Send us e-mail and we will solve your issue shortly.</string>
   <string name="support_submit">Send</string>
