@@ -12,14 +12,17 @@
 
 package ui.advanced.apps
 
-import androidx.lifecycle.*
-import kotlinx.coroutines.launch
-import model.*
-import repository.AppRepository
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import engine.EngineService
-import utils.Logger
+import kotlinx.coroutines.launch
+import model.App
+import model.AppId
+import repository.AppRepository
 import utils.cause
-import java.lang.Exception
+import utils.Logger
 
 class AppsViewModel : ViewModel() {
 

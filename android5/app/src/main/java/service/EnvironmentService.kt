@@ -44,8 +44,9 @@ object EnvironmentService {
         return BuildConfig.BUILD_TYPE == "release"
     }
 
+    //todo mocked!!!
     fun isSlim(): Boolean {
-        return AppSettingsService.compareVersions() > 0
+        return false//AppSettingsService.compareVersions() > 0
     }
 
     fun isFdroid(): Boolean {

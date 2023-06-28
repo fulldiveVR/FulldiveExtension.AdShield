@@ -17,11 +17,11 @@
 <!--        app:key="app_category"-->
 <!--        app:title="@string/account_section_header_general">-->
 
-        <ListPreference
-            app:icon="@drawable/ic_baseline_color_lens_24"
-            app:key="app_theme"
-            app:title="@string/app_settings_theme_label"
-            app:useSimpleSummaryProvider="true" />
+<!--        <ListPreference-->
+<!--            app:icon="@drawable/ic_baseline_color_lens_24"-->
+<!--            app:key="app_theme"-->
+<!--            app:title="@string/app_settings_theme_label"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
 <!--        &lt;!&ndash;        <ListPreference&ndash;&gt;-->
 <!--        &lt;!&ndash;            app:icon="@drawable/ic_baseline_backup_24"&ndash;&gt;-->

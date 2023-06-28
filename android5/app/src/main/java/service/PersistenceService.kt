@@ -18,8 +18,8 @@ import repository.PackMigration
 import tunnel.LegacyAdsCounterImport
 import tunnel.LegacyBlocklistImport
 import ui.ActivationViewModel
-import utils.Logger
 import utils.cause
+import utils.Logger
 import kotlin.reflect.KClass
 
 object PersistenceService {

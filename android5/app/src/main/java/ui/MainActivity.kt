@@ -329,7 +329,7 @@ class MainActivity : LocalizationActivity(),
                         )
                     }
             }
-            R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
+          //  R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
             R.id.help_join_discord -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }

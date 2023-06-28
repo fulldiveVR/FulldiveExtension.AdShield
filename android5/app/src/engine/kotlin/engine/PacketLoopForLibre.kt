@@ -12,7 +12,6 @@
 
 package engine
 
-import utils.Logger
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
@@ -22,9 +21,17 @@ import org.pcap4j.packet.*
 import org.pcap4j.packet.factory.PacketFactoryPropertiesLoader
 import org.pcap4j.util.PropertiesLoader
 import utils.cause
-import java.io.*
-import java.net.*
+import utils.Logger
+import java.io.FileDescriptor
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.Inet4Address
+import java.net.Inet6Address
 import java.nio.ByteBuffer
+
 
 internal class PacketLoopForLibre(
     private val deviceIn: FileInputStream,
@@ -178,23 +185,23 @@ internal class PacketLoopForLibre(
         deviceOut.write(b.array(), b.arrayOffset() + b.position(), b.limit())
     }
 
-    private fun setupErrorsPipe(): StructPollfd {
+    private fun setupErrorsPipe() = {
         val pipe = Os.pipe()
         errorPipe = pipe[0]
         val errors = StructPollfd()
         errors.fd = errorPipe
         errors.listenFor(OsConstants.POLLHUP or OsConstants.POLLERR)
-        return errors
-    }
+        errors
+    }()
 
-    private fun setupDevicePipe(input: FileInputStream): StructPollfd {
-        devicePipe = input.fd
+    private fun setupDevicePipe(input: FileInputStream) = {
+        this.devicePipe = input.fd
         val device = StructPollfd()
         device.fd = input.fd
-        return device
-    }
+        device
+    }()
 
-    private fun setupPolls(errors: StructPollfd, device: StructPollfd): Array<StructPollfd> {
+    private fun setupPolls(errors: StructPollfd, device: StructPollfd): Array<StructPollfd> = {
         val polls = arrayOfNulls<StructPollfd>(2 + forwarder.size()) as Array<StructPollfd>
         polls[0] = errors
         polls[1] = device
@@ -203,8 +210,8 @@ internal class PacketLoopForLibre(
             polls[2 + i] = forwarder[i].pipe
             i++
         }
-        return polls
-    }
+        polls
+    }()
 
     private fun poll(polls: Array<StructPollfd>) {
         while (true) {

@@ -138,6 +138,10 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="Widget.Design.BottomNavigationView.Blokada" parent="">
         <item name="elevation">0dp</item>
         <item name="itemTextColor">@color/colorAccent</item>

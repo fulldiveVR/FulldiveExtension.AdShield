@@ -75,8 +75,7 @@ class TunnelViewModel: ViewModel() {
         viewModelScope.launch {
             MonitorService.setInfo(0)
             val isAdblockWork = withContext(Dispatchers.IO) {
-                val test  = CheckAdblockWorkService.isAdblockWork()
-                test
+                CheckAdblockWorkService.isAdblockWork()
             }
             this@TunnelViewModel._isAdblockWork.value = isAdblockWork
         }
@@ -116,7 +115,8 @@ class TunnelViewModel: ViewModel() {
                 val s = engine.getTunnelStatus()
                 if (!s.inProgress && !s.active) {
                     try {
-                        val cfg = _config.value?.copy(tunnelEnabled = true) ?: throw BlokadaException("Config not set")
+                        val cfg = _config.value?.copy(tunnelEnabled = true)
+                            ?: throw BlokadaException("Config not set")
                         engine.updateConfig(user = cfg)
                         if (cfg.vpnEnabled) lease.checkLease(cfg)
                         cfg.copy(tunnelEnabled = true).emit()
@@ -138,7 +138,8 @@ class TunnelViewModel: ViewModel() {
             val s = engine.getTunnelStatus()
             if (!s.inProgress && s.active) {
                 try {
-                    val cfg = _config.value?.copy(tunnelEnabled = false) ?: throw BlokadaException("Config not set")
+                    val cfg = _config.value?.copy(tunnelEnabled = false)
+                        ?: throw BlokadaException("Config not set")
                     engine.updateConfig(user = cfg)
                     cfg.emit()
                     NotificationService.cancel(MonitorNotification.STATUS_NOTIFICATION_ID)
@@ -146,7 +147,7 @@ class TunnelViewModel: ViewModel() {
                 } catch (ex: Exception) {
                     handleException(ex)
                 }
-        } else {
+            } else {
                 log.w("Tunnel busy or already stopped")
                 s.emit()
             }

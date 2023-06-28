@@ -21,8 +21,8 @@ import android.os.IBinder
 import kotlinx.coroutines.CompletableDeferred
 import model.BlokadaException
 import service.ContextService
-import utils.Logger
 import utils.cause
+import utils.Logger
 import java.net.DatagramSocket
 import java.net.Socket
 

@@ -18,8 +18,8 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import model.BlokadaException
 import model.LocalConfig
-import utils.Logger
 import utils.cause
+import utils.Logger
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
