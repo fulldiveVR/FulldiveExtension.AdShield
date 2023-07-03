@@ -68,7 +68,7 @@ class NetworksFragment : Fragment() {
 
         val showPermsGrantedInfo = {
             permsText.text = getString(R.string.networks_permission_request_granted)
-            permsText.setTextColor(getColor(R.color.green))
+            permsText.setTextColor(getColor(R.color.colorAccent))
             permsButton.setOnClickListener {
                 dialog.showAlert(
                     message = getString(R.string.networks_permission_dialog),

@@ -20,7 +20,8 @@ class App(
     val id: AppId,
     val name: String,
     val isBypassed: Boolean,
-    val isSystem: Boolean
+    val isSystem: Boolean,
+    val iconUrl: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

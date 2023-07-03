@@ -12,7 +12,6 @@
 
 package service
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.job.JobInfo
 import android.app.job.JobParameters
@@ -27,8 +26,8 @@ import android.util.Log
 import android.widget.TextView
 import androidx.core.content.FileProvider
 import org.adshield.R
-import utils.Logger
 import utils.cause
+import utils.Logger
 import java.io.File
 import kotlin.system.exitProcess
 

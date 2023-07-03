@@ -106,7 +106,7 @@ open class ExperienceExchangeInterator @Inject constructor(
     }
 
     fun setExperience(adsCount: Long) {
-        if (RemoteConfigService.getIsRewardsLimited()) {
+        if (!RemoteConfigService.getIsRewardsLimited()) {
             experienceExchangeRepository.setExperience(adsCount)
         }
     }

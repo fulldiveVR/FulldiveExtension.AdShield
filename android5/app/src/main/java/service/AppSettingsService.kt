@@ -17,6 +17,7 @@
 package service
 
 import android.annotation.SuppressLint
+import android.util.Log
 import appextension.getPrivateSharedPreferences
 import appextension.getProperty
 import appextension.observeSettingsInt
@@ -142,11 +143,13 @@ object AppSettingsService {
     }
 
     fun compareVersions(): Int {
+        Log.d("TestB","compareVersions ${getActualAppVersion()}")
         return BuildConfig.VERSION_CODE - getActualAppVersion()
     }
 
     fun getActualAppVersion(): Int {
         val version = getCurrentAppVersion()
+        Log.d("TestB","version $version ")
         return if (version == 0) {
             BuildConfig.VERSION_CODE
         } else {

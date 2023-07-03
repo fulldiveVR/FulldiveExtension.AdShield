@@ -169,20 +169,3 @@ class UpdateNotification(versionName: String) :
             b.setContentIntent(piActivity)
         }
     )
-
-class ExpiredNotification: NotificationPrototype(4, NotificationChannels.ANNOUNCEMENT,
-    create = { ctx ->
-        val b = NotificationCompat.Builder(ctx)
-        b.setContentTitle(ctx.getString(R.string.notification_vpn_expired_header))
-        b.setContentText(ctx.getString(R.string.notification_vpn_expired_subtitle))
-        b.setStyle(NotificationCompat.BigTextStyle().bigText(ctx.getString(R.string.notification_vpn_expired_body)))
-        //b.setSmallIcon(R.drawable.ic_stat_blokada)
-        b.setSmallIcon(R.drawable.ic_stat_blokada)
-        b.setPriority(NotificationCompat.PRIORITY_MAX)
-        b.setVibrate(LongArray(0))
-
-        val intentActivity = Intent(ctx, MainActivity::class.java)
-        val piActivity = PendingIntent.getActivity(ctx, 0, intentActivity, 0)
-        b.setContentIntent(piActivity)
-    }
-)

@@ -2085,12 +2085,8 @@ checksum = "fbee7696b84bbf3d89a1c2eccff0850e3047ed46bfcd2e92c29a2d074d57e252"
 [[package]]
 name = "socket2"
 version = "0.3.12"
-<<<<<<< HEAD
-source = "git+https://github.com/balboah/socket2-rs.git?branch=feature/set_bound_interface#48fe983fa3d4b5e4543e00d2b423765b212a290f"
-=======
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03088793f677dce356f3ccc2edb1b314ad191ab702a5de3faf49304f7e104918"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "cfg-if",
  "libc",
@@ -2101,12 +2097,7 @@ dependencies = [
 [[package]]
 name = "socket2"
 version = "0.3.12"
-<<<<<<< HEAD
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03088793f677dce356f3ccc2edb1b314ad191ab702a5de3faf49304f7e104918"
-=======
 source = "git+https://github.com/balboah/socket2-rs.git?branch=feature/set_bound_interface#48fe983fa3d4b5e4543e00d2b423765b212a290f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "cfg-if",
  "libc",
@@ -2379,11 +2370,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-client"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "backtrace",
  "chrono",
@@ -2406,11 +2393,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-https"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "backtrace",
  "bytes",
@@ -2433,11 +2416,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-proto"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "async-trait",
  "backtrace",
@@ -2463,11 +2442,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-resolver"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "backtrace",
  "cfg-if",
@@ -2492,11 +2467,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-rustls"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "futures",
  "log",
@@ -2510,11 +2481,7 @@ dependencies = [
 [[package]]
 name = "trust-dns-server"
 version = "0.20.0"
-<<<<<<< HEAD
-source = "git+https://github.com/bluejekyll/trust-dns.git?rev=fb5716cf#fb5716cfb5a238eb3d920b4aa655bccbce497242"
-=======
 source = "git+https://github.com/bluejekyll/trust-dns.git?rev=e1ef6e08#e1ef6e0886685ce14c992bcbe0a1623a9f9a481f"
->>>>>>> 63a7ee16293d39745148c05cf2e03c80b3dc239c
 dependencies = [
  "backtrace",
  "bytes",
