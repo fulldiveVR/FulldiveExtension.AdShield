@@ -22,6 +22,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -44,7 +45,6 @@ import ui.settings.SettingsFragmentDirections
 import utils.Links
 import utils.getColorFromAttr
 import utils.withBoldSections
-import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -62,6 +62,10 @@ class HomeFragment : Fragment() {
     private lateinit var closePopupButton: ImageView
     private lateinit var legalStateDescriptionTextView: TextView
     private lateinit var stopWorkingLayout: CardView
+    private lateinit var tutorialLayout: CardView
+    private lateinit var settingsButton: ConstraintLayout
+    private lateinit var tutorialButton: ConstraintLayout
+    private lateinit var closeTutorialButton: TextView
 
     private val colorConnected by lazy { requireContext().getColorCompat(R.color.colorAccent) }
     private val colorDisconnected by lazy { requireContext().getColorCompat(R.color.colorIconPrimary) }
@@ -119,6 +123,13 @@ class HomeFragment : Fragment() {
                 }
         }
 
+        lifecycleScope.launch {
+            appSettingsVm.isTutorialPopupShowState
+                .collect { isVisible ->
+                    tutorialLayout.isVisible = isVisible && !stopWorkingLayout.isVisible
+                }
+        }
+
         limitedOfferLayout.setOnClickListener {
             findNavController()
                 .apply {
@@ -134,10 +145,15 @@ class HomeFragment : Fragment() {
             SubscriptionService.setClosePopup(true)
         }
 
+        closeTutorialButton.setOnClickListener {
+            appSettingsVm.setTutorialClosePopup(true)
+        }
+
         val updateLongStatus = { status: TunnelStatus, counter: Long? ->
             when {
                 status.inProgress -> longStatusTextView.text =
                     getString(R.string.home_status_detail_progress)
+
                 status.active && status.gatewayId != null && counter == null -> {
                     setStatusConnected()
                     longStatusTextView.text =
@@ -151,15 +167,18 @@ class HomeFragment : Fragment() {
                                 )
                         }
                 }
+
                 status.active && EnvironmentService.isSlim() -> {
                     setStatusConnected()
                     longStatusTextView.text = getString(R.string.home_status_detail_active_slim)
                 }
+
                 status.active && counter == null -> {
                     setStatusConnected()
                     longStatusTextView.text = getString(R.string.home_status_detail_active)
                         .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
+
                 status.active && status.gatewayId != null -> {
                     setStatusConnected()
                     val statusString = if (RemoteConfigService.getIsAdShieldAdsCounterLimited()) {
@@ -175,6 +194,7 @@ class HomeFragment : Fragment() {
                     longStatusTextView.text =
                         statusString.withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                 }
+
                 status.active -> {
                     setStatusConnected()
                     longStatusTextView.text =
@@ -188,6 +208,7 @@ class HomeFragment : Fragment() {
                                 .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
                         }
                 }
+
                 else -> {
                     setStatusDisconnected()
                     statusTextView.text = getString(R.string.status_disconnected)
@@ -207,6 +228,7 @@ class HomeFragment : Fragment() {
                         }
 
                     }
+
                     else -> {
                         vm.turnOn()
                     }
@@ -218,12 +240,33 @@ class HomeFragment : Fragment() {
             openUrlInBrowser("${RemoteConfigService.getAdblockTutorialUrl()}#${Build.MANUFACTURER.toLowerCase()}")
         }
 
+        settingsButton.setOnClickListener {
+            findNavController()
+                .apply {
+                    navigate(R.id.navigation_home)
+                    navigate(
+                        HomeFragmentDirections.actionNavigationHomeToWebFragment(
+                            Links.dnsSettings,
+                            context.getString(R.string.str_dns_settings)
+                        )
+                    )
+                }
+        }
+
+        tutorialButton.setOnClickListener {
+            openUrlInBrowser("${RemoteConfigService.getAdblockTutorialUrl()}#${Build.MANUFACTURER.toLowerCase()}")
+        }
+
         vm.isAdblockWork.observe(viewLifecycleOwner) { isAdshieldWork ->
             stopWorkingLayout.isVisible = activateView.activeMode && !isAdshieldWork
         }
 
         vm.tunnelStatus.observe(viewLifecycleOwner) { status ->
             stopWorkingLayout.isVisible = stopWorkingLayout.isVisible && status.active
+
+            if (tutorialLayout.isVisible && stopWorkingLayout.isVisible) {
+                tutorialLayout.isVisible = false
+            }
 
             activateView.inactiveMode = !status.inProgress && !status.active
             activateView.activeMode = status.active
@@ -238,6 +281,7 @@ class HomeFragment : Fragment() {
                         vm.turnOff()
                         adsCounterVm.roll()
                     }
+
                     else -> vm.turnOn()
                 }
             }
@@ -245,6 +289,7 @@ class HomeFragment : Fragment() {
             when {
                 status.inProgress -> statusTextView.text =
                     getString(R.string.home_status_detail_progress)
+
                 status.active -> setStatusConnected()
                 else -> setStatusDisconnected()
             }
@@ -307,6 +352,7 @@ class HomeFragment : Fragment() {
         super.onResume()
         vm.checkAppVersion()
         vm.checkIfAdblockWork()
+        appSettingsVm.handleTutorialPopupState()
     }
 
     private fun showVpnPermsSheet() {
@@ -363,6 +409,10 @@ class HomeFragment : Fragment() {
         longStatusTextView = root.findViewById(R.id.statusDescriptionTextView)
         legalStateDescriptionTextView = root.findViewById(R.id.legalStateDescriptionTextView)
         stopWorkingLayout = root.findViewById(R.id.stopWorkingLayout)
+        tutorialLayout = root.findViewById(R.id.tutorialLayout)
+        settingsButton = root.findViewById(R.id.settingsContainer)
+        tutorialButton = root.findViewById(R.id.tutorialContainer)
+        closeTutorialButton = root.findViewById(R.id.closeButton)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -385,6 +435,7 @@ class HomeFragment : Fragment() {
 
                 true
             }
+
             else -> false
         }
     }

@@ -1,0 +1,102 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/containerCardView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/size_12dp"
+    android:layout_marginEnd="@dimen/size_12dp"
+    app:cardBackgroundColor="@color/backgroundTabsAndNavBars"
+    app:cardCornerRadius="@dimen/size_8dp"
+    app:cardElevation="@dimen/size_4dp"
+    app:cardUseCompatPadding="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/legalStateDescriptionTextView">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/size_8dp"
+        android:paddingBottom="@dimen/size_8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingStart="@dimen/size_16dp"
+            android:paddingEnd="@dimen/size_16dp">
+
+            <TextView
+                android:id="@+id/settingsTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Improve via settings"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorIconPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/settingsArrowImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/settingsArrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/size_8dp"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorIconPrimary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tutorialContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingStart="@dimen/size_16dp"
+            android:paddingTop="@dimen/size_4dp"
+            android:paddingEnd="@dimen/size_16dp"
+            android:paddingBottom="@dimen/size_4dp">
+
+            <TextView
+                android:id="@+id/tutorialTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Watch the tutorial"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorIconPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/tutorialArrowImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/tutorialArrowImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/size_8dp"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorIconPrimary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/closeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="@font/roboto_medium"
+            android:paddingStart="@dimen/size_16dp"
+            android:paddingTop="@dimen/size_4dp"
+            android:paddingEnd="@dimen/size_16dp"
+            android:paddingBottom="@dimen/size_4dp"
+            android:text="Close"
+            android:textAlignment="textStart"
+            android:textColor="@color/textColorDenied" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

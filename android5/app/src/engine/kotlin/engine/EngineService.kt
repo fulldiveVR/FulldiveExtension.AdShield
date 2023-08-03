@@ -20,10 +20,9 @@ import model.*
 import newengine.BlockaDnsService
 import repository.DnsDataSource
 import service.ConnectivityService
-import service.NotificationService
+import service.EnvironmentService
 import service.VpnPermissionService
 import utils.Logger
-import utils.MonitorNotification
 import utils.cause
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -100,6 +99,7 @@ object EngineService {
                 log.w("Reloading engine already in progress, ignoring")
                 return
             }
+
             !force && config == state.currentConfig -> {
                 log.v("Reloading engine unnecessary, ignoring")
                 return
@@ -119,6 +119,7 @@ object EngineService {
                     log.w("No VPN permissions, engine stopped")
                     state.stopped(config.copy(tunnelEnabled = false))
                 }
+
                 else -> startAll(config)
             }
 
@@ -154,6 +155,17 @@ object EngineService {
                         gateway = config.gateway()
                     )
                     state.plusMode(config)
+                }
+                // Slim mode
+                EnvironmentService.isSlim() -> {
+                    dnsMapper.setDns(dns, dnsAlter, doh)
+                    if (doh) dnsService.startDnsProxy(dns)
+                    systemTunnel.onConfigureTunnel = { tun ->
+                        configurator.forLibre(tun, dns)
+                    }
+                    val tunnelConfig = systemTunnel.open()
+                    packetLoop.startSlimMode(doh, dns, tunnelConfig)
+                    state.libreMode(config)
                 }
                 // Libre mode
                 else -> {
@@ -297,6 +309,7 @@ private data class EngineConfiguration(
                     // Network provided DNS are likely not accessibly within the VPN.
                     false
                 }
+
                 network.forceLibreMode -> false
                 else -> true
             }
@@ -306,15 +319,18 @@ private data class EngineConfiguration(
                 // Only plaintext network DNS are supported currently
                 false
             }
+
             plusMode && dns.plusIps != null -> {
                 // If plusIps are set, they will point to a clear text DNS, because the plus mode
                 // VPN itself is encrypting everything, so there is no need to encrypt DNS.
                 false
             }
+
             dns.isDnsOverHttps() && !dns.canUseInCleartext -> {
                 // If DNS supports only DoH and no clear text, we are forced to use it
                 true
             }
+
             else -> {
                 dns.isDnsOverHttps() && encryptDns
             }
@@ -407,7 +423,6 @@ private data class EngineState(
         restarting = false
         tunnel = TunnelStatus.error(TunnelFailure(ex))
         onTunnelStatusChanged(tunnel)
-        NotificationService.cancel(MonitorNotification.STATUS_NOTIFICATION_ID)
     }
 
     @Synchronized

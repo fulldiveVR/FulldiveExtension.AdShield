@@ -24,6 +24,7 @@ import com.fulldive.wallet.interactors.WalletInteractor
 import com.joom.lightsaber.Injector
 import com.joom.lightsaber.Lightsaber
 import com.joom.lightsaber.getInstance
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import model.AppTheme
 import model.ThemeHelper
@@ -33,11 +34,15 @@ import service.RemoteConfigService
 
 class AppSettingsViewModel : ViewModel(), IInjectorHolder {
 
+    val isTutorialPopupShowState = MutableStateFlow<Boolean>(false)
+
     private var appInjector: Injector = Lightsaber.Builder().build().createInjector(
         ApplicationComponent(ContextService.requireContext())
     )
 
     private val walletInteractor: WalletInteractor = appInjector.getInstance()
+
+    private val repeatPopupCounts = listOf(4, 6)
 
     override fun getInjector(): Injector {
         return appInjector
@@ -105,5 +110,24 @@ class AppSettingsViewModel : ViewModel(), IInjectorHolder {
 
     fun setSubscribeSuccessShow(isShow: Boolean) {
         AppSettingsService.setSubscribeSuccessShow(isShow)
+    }
+
+    fun setTutorialClosePopup(isClose: Boolean) {
+        isTutorialPopupShowState.value = !isClose
+        AppSettingsService.setIsTutorialPopupClosed(true)
+    }
+
+    fun handleTutorialPopupState() {
+        val isClosed = AppSettingsService.getIsTutorialPopupClosed()
+        isTutorialPopupShowState.value = when {
+            isClosed -> {
+                val closeCount = AppSettingsService.getTutorialCloseStartCounter()
+                val startCount = AppSettingsService.getCurrentStartCounter()
+                val diff = startCount - closeCount
+                repeatPopupCounts.any { it == diff }
+            }
+
+            else -> true
+        } && AppSettingsService.compareVersions() >= 0 && AppSettingsService.getCurrentStartCounter() > 4
     }
 }
