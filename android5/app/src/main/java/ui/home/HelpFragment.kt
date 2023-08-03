@@ -49,7 +49,6 @@ class HelpFragment : BottomSheetFragment() {
         }
 
         val cancel: View = root.findViewById(R.id.cancelButton)
-
         cancel.setOnClickListener {
             dismiss()
         }

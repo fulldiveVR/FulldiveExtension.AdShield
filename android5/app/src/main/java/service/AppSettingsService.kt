@@ -46,6 +46,10 @@ object AppSettingsService {
     private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
         "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
 
+    private const val KEY_IS_TUTORIAL_POPUP_CLOSED = "KEY_IS_TUTORIAL_POPUP_CLOSED"
+    private const val KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER =
+        "KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER"
+
     private const val KEY_APP_SETTINGS_PERMISSION_GRANTED = "KEY_APP_SETTINGS_PERMISSION_GRANTED"
 
     private const val KEY_CURRENT_APP_VERSION = "KEY_CURRENT_APP_VERSION"
@@ -134,6 +138,22 @@ object AppSettingsService {
         return sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
     }
 
+    fun setIsTutorialPopupClosed(isClosed: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_TUTORIAL_POPUP_CLOSED, isClosed)
+        sharedPreferences.setProperty(
+            KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER,
+            getCurrentStartCounter()
+        )
+    }
+
+    fun getIsTutorialPopupClosed(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_TUTORIAL_POPUP_CLOSED, false)
+    }
+
+    fun getTutorialCloseStartCounter(): Int {
+        return sharedPreferences.getProperty(KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER, 0)
+    }
+
     fun isAppSettingsPermissionGranted(): Boolean {
         return sharedPreferences.getProperty(KEY_APP_SETTINGS_PERMISSION_GRANTED, false)
     }
@@ -143,13 +163,11 @@ object AppSettingsService {
     }
 
     fun compareVersions(): Int {
-        Log.d("TestB","compareVersions ${getActualAppVersion()}")
         return BuildConfig.VERSION_CODE - getActualAppVersion()
     }
 
     fun getActualAppVersion(): Int {
         val version = getCurrentAppVersion()
-        Log.d("TestB","version $version ")
         return if (version == 0) {
             BuildConfig.VERSION_CODE
         } else {
