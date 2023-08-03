@@ -30,6 +30,7 @@ import model.AppTheme
 import model.ThemeHelper
 import service.AppSettingsService
 import service.ContextService
+import service.EnvironmentService
 import service.RemoteConfigService
 
 class AppSettingsViewModel : ViewModel(), IInjectorHolder {
@@ -128,6 +129,6 @@ class AppSettingsViewModel : ViewModel(), IInjectorHolder {
             }
 
             else -> true
-        } && AppSettingsService.compareVersions() >= 0 && AppSettingsService.getCurrentStartCounter() > 4
+        } && !EnvironmentService.isSlim() && AppSettingsService.getCurrentStartCounter() > 4
     }
 }
