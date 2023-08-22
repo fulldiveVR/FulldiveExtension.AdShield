@@ -159,13 +159,13 @@ class ExperienceProgressViewLayout : FrameLayout {
             interpolator = DecelerateInterpolator()
             startDelay = delayBeforeStart
             addListener(object : Animator.AnimatorListener {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     endAction?.invoke()
                 }
 
-                override fun onAnimationStart(animation: Animator?) = Unit
-                override fun onAnimationCancel(animation: Animator?) = Unit
-                override fun onAnimationRepeat(animation: Animator?) = Unit
+                override fun onAnimationStart(animation: Animator) = Unit
+                override fun onAnimationCancel(animation: Animator) = Unit
+                override fun onAnimationRepeat(animation: Animator) = Unit
             }
             )
             start()
