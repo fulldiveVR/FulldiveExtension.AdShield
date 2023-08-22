@@ -236,19 +236,25 @@ class WebFragment : BottomSheetFragment() {
     }
 
     private fun processSettingsPage() {
-        packsVM.packs.removeObservers(viewLifecycleOwner)
-        appsVM.apps.removeObservers(viewLifecycleOwner)
-        statsVM.customBlocklistConfig.removeObservers(viewLifecycleOwner)
+        viewLifecycleOwner?.let { owner ->
+            packsVM?.packs?.removeObservers(owner)
+            appsVM?.apps?.removeObservers(owner)
+            statsVM?.customBlocklistConfig?.removeObservers(owner)
+        }
+
         when (currentSettings) {
             WebSettings.BlockListsSettings -> {
                 loadPacksConfig()
             }
+
             WebSettings.AppsListsSettings -> {
                 loadAppsConfig()
             }
+
             WebSettings.CustomBlockListsSettings -> {
                 loadCustomConfig()
             }
+
             else -> {}
         }
     }

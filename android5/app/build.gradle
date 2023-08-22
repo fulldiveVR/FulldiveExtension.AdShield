@@ -26,8 +26,8 @@ def versionMinor = 5
 def versionPatch = 14
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.2"
 
     signingConfigs {
         release {
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
