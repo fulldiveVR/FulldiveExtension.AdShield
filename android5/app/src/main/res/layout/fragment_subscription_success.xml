@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    tools:context="ui.home.HelpFragment"
-    android:padding="@dimen/half">
+    android:padding="@dimen/half"
+    tools:context="ui.home.HelpFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
