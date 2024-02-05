@@ -29,11 +29,11 @@ object Links {
     const val kb = "https://github.com/fulldiveVR/FulldiveExtension.AdShield/blob/release/FaQ"
     const val discordInvite = "https://discord.com/invite/3f79ygxZ3y"
     const val donate = FULLDIVE_URL
-    const val privacy = "https://fulldive.com/privacy-policy"
+    const val privacy = "https://www.browser.fulldive.com/privacy-policy"
     const val terms = FULLDIVE_URL
     const val credits = FULLDIVE_URL
     const val community = FULLDIVE_URL
-    const val idoAnnouncement = "https://www.fulldive.com/fulladshield"
+    const val idoAnnouncement = "https://www.browser.fulldive.com/fulladshield"
     const val dnsSettings = "https://static.fdvr.co/dns-settings/index.html"
     const val appsSettings = "https://static.fdvr.co/app-settings/index.html"
     const val customSettings = "https://static.fdvr.co/hosts-settings/index.html"

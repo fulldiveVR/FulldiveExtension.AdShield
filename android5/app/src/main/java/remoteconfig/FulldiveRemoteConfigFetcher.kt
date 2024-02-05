@@ -17,6 +17,9 @@
 package remoteconfig
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Resources
+import android.os.Build
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.squareup.okhttp.OkHttpClient
@@ -30,6 +33,7 @@ import utils.cause
 import java.lang.reflect.Type
 import java.util.*
 
+@SuppressLint("StaticFieldLeak")
 object FulldiveRemoteConfigFetcher {
 
     @SuppressLint("StaticFieldLeak")
@@ -85,8 +89,7 @@ object FulldiveRemoteConfigFetcher {
     }
 
     private fun parseConfigs(configsData: String): Map<String, Any> {
-        val locale = Locale.getDefault().country.lowercase()
-
+        val locale =  Resources.getSystem().configuration.locales.get(0).country.toString().lowercase()
         val responseJson = JSONObject(configsData)
         val configsJson = try {
             responseJson.get(locale).toString()

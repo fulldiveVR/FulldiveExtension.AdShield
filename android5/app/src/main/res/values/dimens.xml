@@ -68,4 +68,5 @@
     <dimen name="flat_subscription_tutorial_icon_size">150dp</dimen>
     <dimen name="size_32dp">32dp</dimen>
     <dimen name="shapeButtonRadius">32dp</dimen>
+
 </resources>

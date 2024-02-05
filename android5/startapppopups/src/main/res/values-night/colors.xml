@@ -18,6 +18,6 @@
     <color name="colorPopupBackground">#121212</color>
     <color name="textColorPrimary">#F3F3F3</color>
     <color name="textColorSecondary">#676B71</color>
-    <color name="textColorAccent">#FFCA28</color>
+    <color name="textColorAccent">#9883FF</color>
     <color name="backgroundTabsAndNavBars">#1C1C1E</color>
 </resources>

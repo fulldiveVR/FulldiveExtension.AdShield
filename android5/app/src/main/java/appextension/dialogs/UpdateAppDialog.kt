@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import org.adshield.R
 
 object UpdateAppDialog {
-
     fun show(
         context: Context
     ) {

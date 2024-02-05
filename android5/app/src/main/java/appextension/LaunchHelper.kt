@@ -50,6 +50,7 @@ object LaunchHelper {
         val status = engine.getTunnelStatus()
         if (!status.inProgress && !status.active) {
             GlobalScope.launch(Dispatchers.IO) {
+                context.contentResolver.insert(getContentUri(AppExtensionState.PROGRESS.id), null)
                 try {
                     val config = currentConfig.copy(tunnelEnabled = true)
                     engine.updateConfig(user = config)
@@ -67,6 +68,7 @@ object LaunchHelper {
         val status = engine.getTunnelStatus()
         if (!status.inProgress && status.active) {
             GlobalScope.launch(Dispatchers.IO) {
+                context.contentResolver.insert(getContentUri(AppExtensionState.PROGRESS.id), null)
                 try {
                     val config = currentConfig.copy(tunnelEnabled = false)
                     engine.updateConfig(user = config)

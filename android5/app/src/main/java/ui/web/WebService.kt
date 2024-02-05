@@ -26,6 +26,7 @@ object WebService {
 
     private val log = Logger("Web")
     private val pattern by unsafeLazy { Pattern.compile("(https?)://(-\\.)?([^\\s/?\\.#-]+\\.?)+(/[^\\s]*)?") }
+    private val context = ContextService
 
     private var webView = WeakReference<WebView?>(null)
     private var goingBack = false

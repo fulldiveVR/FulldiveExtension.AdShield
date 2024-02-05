@@ -13,7 +13,6 @@
 package ui.stats
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -32,6 +31,7 @@ import ui.StatsViewModel
 import ui.app
 import ui.utils.Tab
 import ui.utils.TabLayout
+
 
 class StatsFragment : Fragment() {
 

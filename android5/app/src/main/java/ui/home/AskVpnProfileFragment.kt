@@ -44,7 +44,7 @@ class AskVpnProfileFragment : BottomSheetFragment() {
         back.setOnClickListener {
             dismiss()
         }
-        
+
         val vpnContinue: View = root.findViewById(R.id.vpnperm_continue)
         vpnContinue.setOnClickListener {
             vpnPerm.askPermission()

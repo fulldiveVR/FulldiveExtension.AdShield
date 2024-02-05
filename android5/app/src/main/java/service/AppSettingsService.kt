@@ -17,6 +17,7 @@
 package service
 
 import android.annotation.SuppressLint
+import android.util.Log
 import appextension.getPrivateSharedPreferences
 import appextension.getProperty
 import appextension.observeSettingsInt
@@ -40,11 +41,14 @@ object AppSettingsService {
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
     private const val KEY_SUBSCRIBE_SUCCESS_SHOWN = "KEY_SUBSCRIBE_SUCCESS_SHOWN"
     private const val KEY_APP_THEME = "KEY_APP_THEME"
-
     private const val KEY_IS_BLOCK_HISTORY_AT_NOTIFICATIONS = "KEY_IS_SHOW_HISTORY_AT_NOTIFICATIONS"
     private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
     private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
         "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
+
+    private const val KEY_IS_TUTORIAL_POPUP_CLOSED = "KEY_IS_TUTORIAL_POPUP_CLOSED"
+    private const val KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER =
+        "KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER"
 
     private const val KEY_APP_SETTINGS_PERMISSION_GRANTED = "KEY_APP_SETTINGS_PERMISSION_GRANTED"
 
@@ -132,6 +136,22 @@ object AppSettingsService {
 
     fun getPromoCloseStartCounter(): Int {
         return sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER, 0)
+    }
+
+    fun setIsTutorialPopupClosed(isClosed: Boolean) {
+        sharedPreferences.setProperty(KEY_IS_TUTORIAL_POPUP_CLOSED, isClosed)
+        sharedPreferences.setProperty(
+            KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER,
+            getCurrentStartCounter()
+        )
+    }
+
+    fun getIsTutorialPopupClosed(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_TUTORIAL_POPUP_CLOSED, false)
+    }
+
+    fun getTutorialCloseStartCounter(): Int {
+        return sharedPreferences.getProperty(KEY_IS_TUTORIAL_POPUP_CLOSED_START_COUNTER, 0)
     }
 
     fun isAppSettingsPermissionGranted(): Boolean {
