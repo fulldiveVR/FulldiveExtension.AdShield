@@ -75,24 +75,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
                         tools:text="@string/str_subscription_tutorial_checkmarks" />
 
-                    <TextView
-                        android:id="@+id/viewAllProPerksTextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_12dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:drawablePadding="@dimen/text_size_small"
-                        android:fontFamily="@font/roboto_medium"
-                        android:paddingTop="@dimen/size_16dp"
-                        android:text="@string/str_subscription_tutorial_limited"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/text_size_xsmall"
-                        app:drawableStartCompat="@drawable/ic_limited_offer"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tutorialTextView" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/discountLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/text_size_small"
@@ -100,7 +85,7 @@
                         android:padding="@dimen/size_12dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/viewAllProPerksTextView">
+                        app:layout_constraintTop_toBottomOf="@+id/tutorialTextView">
 
                         <TextView
                             android:id="@+id/discountCurrencyTextView"
@@ -180,6 +165,18 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <TextView
+                        android:id="@+id/disclaimerTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_subscription_tutorial_disclaimer"
+                        android:paddingTop="@dimen/size_16dp"
+                        android:drawablePadding="@dimen/text_size_small"
+                        app:drawableStartCompat="@drawable/ic_limited_offer"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/discountLayout" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
 
