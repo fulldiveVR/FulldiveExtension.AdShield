@@ -28,7 +28,7 @@ object AdBlockDialogBuilder {
         val view = LayoutInflater.from(context)
             .inflate(R.layout.adblock_dialog_layout, null)
         val dialog = AlertDialog
-            .Builder(context,R.style.PopupDialogTheme)
+            .Builder(context,com.fulldive.startapppopups.R.style.PopupDialogTheme)
             .setView(view)
             .setPositiveButton(R.string.str_popup_block_ads_positive) { _, _ ->
                 onPositiveClicked.invoke()
@@ -41,7 +41,7 @@ object AdBlockDialogBuilder {
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                ?.setTextColor(ContextCompat.getColor(context, R.color.textColorAccent))
+                ?.setTextColor(ContextCompat.getColor(context, com.fulldive.startapppopups.R.color.textColorAccent))
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 ?.setTextColor(ContextCompat.getColor(context, R.color.textColorSecondary))
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL)

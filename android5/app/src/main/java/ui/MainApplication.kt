@@ -69,7 +69,7 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
         private const val TAG = "MainApplication"
     }
 
-    override fun getViewModelStore() = MainApplication.viewModelStore
+    override val viewModelStore: ViewModelStore = MainApplication.viewModelStore
 
     override fun getInjector(): Injector {
         return appInjector
@@ -264,7 +264,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     override fun getDefaultLanguage(): Locale {
         return TranslationService.getLocale()
     }
-
 }
 
 fun Activity.app(): MainApplication {

@@ -28,4 +28,6 @@
     <string name="donation_done">DONE</string>
     <string name="donation_title">Success!</string>
     <string name="donation_message">Thank you for your amazing support. </string>
+    <string name="flat_finwize_popup_title">Invest smarter with FinWize AI</string>
+    <string name="flat_finwize_popup_disclaimer">AI-Powered financial news companion, news summarizer.</string>
 </resources>

@@ -16,6 +16,7 @@
 
 package com.fulldive.startapppopups
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -65,14 +66,14 @@ fun Context.openAppInGooglePlay(appPackageName: String? = null) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=$packName")
+                Uri.parse("https://play.google.com/store/apps/details?id=$packName")
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
-    } catch (anfe: android.content.ActivityNotFoundException) {
+    } catch (anfe: ActivityNotFoundException) {
         startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=$packName")
+                Uri.parse("market://details?id=$packName")
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }

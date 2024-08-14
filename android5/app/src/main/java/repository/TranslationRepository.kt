@@ -42,32 +42,36 @@ fun LocaleListCompat.getFirstSupportedLocale(): Locale {
      * settings to "system default" will have no effect.
      */
     var index = 0
-    while(index < size()) {
+    while (index < size()) {
         val locale = this[index]
-        if (locale.toLanguageTag() in SUPPORTED_LANGUAGES) return locale
-        if ("%s_%s".format(locale.language, locale.country) in SUPPORTED_LANGUAGES) return locale
-        if (locale.language in SUPPORTED_LANGUAGES) return locale
+        if (locale?.toLanguageTag() in SUPPORTED_LANGUAGES) return locale!!
+        if ("%s_%s".format(
+                locale?.language,
+                locale?.country
+            ) in SUPPORTED_LANGUAGES
+        ) return locale!!
+        if (locale?.language in SUPPORTED_LANGUAGES) return locale!!
         index++
     }
     return Locale.ENGLISH
 }
 
-fun getTranslationRepository(locale: Locale) = factories[locale.toLanguageTag()] ?:
-factories[locale.language] ?: run {
-    Logger.w("Translation", "Falling back to root translation factory")
-    root
-}
+fun getTranslationRepository(locale: Locale) =
+    factories[locale.toLanguageTag()] ?: factories[locale.language] ?: run {
+        Logger.w("Translation", "Falling back to root translation factory")
+        root
+    }
 
 interface TranslationRepository {
     fun getText(key: String): String?
 }
 
-private class FallbackAssetsTranslationRepository(locale: String): TranslationRepository {
+private class FallbackAssetsTranslationRepository(locale: String) : TranslationRepository {
     private val local = AssetsTranslationRepository(locale)
     override fun getText(key: String) = local.getText(key) ?: root.getText(key)
 }
 
-private class AssetsTranslationRepository(locale: String): TranslationRepository {
+private class AssetsTranslationRepository(locale: String) : TranslationRepository {
 
     private val log = Logger("Translation")
     private val context = ContextService

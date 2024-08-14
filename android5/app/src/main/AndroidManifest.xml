@@ -12,7 +12,6 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.adshield"
     android:sharedUserId="org.adshield">
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -169,7 +169,6 @@
                         android:id="@+id/disclaimerTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/str_subscription_tutorial_disclaimer"
                         android:paddingTop="@dimen/size_16dp"
                         android:drawablePadding="@dimen/text_size_small"
                         app:drawableStartCompat="@drawable/ic_limited_offer"
