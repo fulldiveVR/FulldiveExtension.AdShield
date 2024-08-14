@@ -38,6 +38,7 @@ class PopupManager {
     private val popupsFlow = listOf(
         StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
+        StartAppDialog.FinWize,
         StartAppDialog.RateUs,
         StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
