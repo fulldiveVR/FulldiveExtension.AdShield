@@ -74,10 +74,10 @@ class SubscriptionTutorialFragment :
             fullPriceTextView.text = proSubscriptionInfo.price
             subscribeButton.setOnClickListener { presenter.onAddProSubscriptionClicked(context as Activity) }
 
-            disclaimerTextView.text = String.format(
-                getString(R.string.str_subscription_tutorial_disclaimer),
-                "${proSubscriptionInfo.salePrice} ${proSubscriptionInfo.currency}"
-            )
+//            disclaimerTextView.text = String.format(
+//                getString(R.string.str_subscription_tutorial_disclaimer),
+//                "${proSubscriptionInfo.salePrice} ${proSubscriptionInfo.currency}"
+//            )
         }
     }
 

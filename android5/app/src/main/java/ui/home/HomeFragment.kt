@@ -161,10 +161,7 @@ class HomeFragment : Fragment() {
                             getString(R.string.home_status_detail_active_slim)
                         } else {
                             ("${getString(R.string.home_status_detail_active)}\n${getString(R.string.home_status_detail_plus)}")
-                                .withBoldSections(
-                                    requireContext()
-                                        .getColorFromAttr(R.attr.colorAccent)
-                                )
+                                .withBoldSections(colorConnected)
                         }
                 }
 
@@ -176,7 +173,7 @@ class HomeFragment : Fragment() {
                 status.active && counter == null -> {
                     setStatusConnected()
                     longStatusTextView.text = getString(R.string.home_status_detail_active)
-                        .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                        .withBoldSections(colorConnected)
                 }
 
                 status.active && status.gatewayId != null -> {
@@ -192,7 +189,7 @@ class HomeFragment : Fragment() {
                         }\n ${getString(R.string.home_status_detail_plus)}"
                     }
                     longStatusTextView.text =
-                        statusString.withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                        statusString.withBoldSections(colorConnected)
                 }
 
                 status.active -> {
@@ -205,7 +202,7 @@ class HomeFragment : Fragment() {
                                 R.string.home_status_detail_active_with_counter,
                                 counter.toString()
                             )
-                                .withBoldSections(requireContext().getColorFromAttr(R.attr.colorAccent))
+                                .withBoldSections(colorConnected)
                         }
                 }
 

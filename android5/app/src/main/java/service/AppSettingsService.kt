@@ -17,7 +17,6 @@
 package service
 
 import android.annotation.SuppressLint
-import android.util.Log
 import appextension.getPrivateSharedPreferences
 import appextension.getProperty
 import appextension.observeSettingsInt
@@ -36,6 +35,7 @@ object AppSettingsService {
 
     private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
     private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
+    private const val KEY_IS_FIN_WIZE_CLICKED = "KEY_IS_FIN_WIZE_CLICKED"
     private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
     private const val KEY_ADBLOCK_DONE = "KEY_ADBLOCK_DONE"
     private const val KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN = "KEY_IS_IDO_ANNOUNCEMENT_POPUP_SHOWN"
@@ -70,6 +70,14 @@ object AppSettingsService {
 
     fun setRateUsDone() {
         sharedPreferences.setProperty(KEY_RATE_US_DONE, true)
+    }
+
+    fun isFinWizeClicked(): Boolean {
+        return sharedPreferences.getProperty(KEY_IS_FIN_WIZE_CLICKED, false)
+    }
+
+    fun setFinWizeClicked() {
+        sharedPreferences.setProperty(KEY_IS_FIN_WIZE_CLICKED, true)
     }
 
     fun isInstallBrowserDone(): Boolean {

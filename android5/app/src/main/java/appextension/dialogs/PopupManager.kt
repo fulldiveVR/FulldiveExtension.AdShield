@@ -21,6 +21,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.navigation.findNavController
 import appextension.openAppInGooglePlay
+import com.fulldive.startapppopups.FIN_WIZE_APP
+import com.fulldive.startapppopups.FinWizeSnackbar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -44,16 +46,18 @@ object PopupManager {
 
     private val client = OkHttpClient()
     private val popupsFlow = listOf(
-        StartAppDialog.Empty,
-        StartAppDialog.BlockAds,
-        StartAppDialog.Empty,
-        StartAppDialog.Empty,
-        StartAppDialog.Empty,
+        StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
-        StartAppDialog.Empty,
-        StartAppDialog.Empty,
-        StartAppDialog.Empty,
-        StartAppDialog.Empty,
+        StartAppDialog.FinWize,
+        StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
+        StartAppDialog.InstallBrowser,
+        StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
+        StartAppDialog.InstallBrowser,
+        StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
+        StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
         StartAppDialog.Empty,
         StartAppDialog.Empty
@@ -65,6 +69,7 @@ object PopupManager {
         val startCounter = AppSettingsService.updateAndGetCurrentStartUpCount()
 
         val rateUsDone = AppSettingsService.isRateUsDone()
+        val isFinWizeClicked = AppSettingsService.isFinWizeClicked()
         val installBrowserDone = AppSettingsService.isInstallBrowserDone()
         val adBlockDone = AppSettingsService.isAdBlockDone()
 
@@ -80,6 +85,25 @@ object PopupManager {
                         }
                     }
                 }
+
+                StartAppDialog.FinWize -> {
+                    if (!isFinWizeClicked) {
+                        val snackbar = FinWizeSnackbar()
+                        snackbar.showSnackBar(
+                            context.findViewById(android.R.id.content),
+                            onOpenFinWizeClicked = {
+                                AppSettingsService.setFinWizeClicked()
+                                context.openAppInGooglePlay(FIN_WIZE_APP)
+                                snackbar.dismiss()
+                            },
+                            onCloseClicked = {
+                                snackbar.dismiss()
+                            },
+                            bottomMargin = context.resources.getDimensionPixelSize(com.fulldive.startapppopups.R.dimen.size_48dp)
+                        )
+                    }
+                }
+
                 StartAppDialog.InstallBrowser -> {
                     if ((!installBrowserDone) && !isBrowserInstalled(context)) {
                         showInstallBrowserDialog(context) {
@@ -87,6 +111,7 @@ object PopupManager {
                         }
                     }
                 }
+
                 StartAppDialog.BlockAds -> {
                     if (!adBlockDone && !EnvironmentService.isSlim()) {
                         showAdBlockDialog(context,
@@ -109,6 +134,7 @@ object PopupManager {
                         )
                     }
                 }
+
                 else -> {
                 }
             }
@@ -163,6 +189,7 @@ object PopupManager {
                         onPermissionGranted.invoke(isGranted)
                     }
             }
+
             else -> onPermissionGranted.invoke(true)
         }
     }
@@ -259,8 +286,9 @@ object PopupManager {
 }
 
 sealed class StartAppDialog(val id: String) {
-    object RateUs : StartAppDialog("RateUs")
-    object InstallBrowser : StartAppDialog("InstallBrowser")
-    object BlockAds : StartAppDialog("BlockAds")
-    object Empty : StartAppDialog("Empty")
+    data object RateUs : StartAppDialog("RateUs")
+    data object FinWize : StartAppDialog("FinWize")
+    data object InstallBrowser : StartAppDialog("InstallBrowser")
+    data object BlockAds : StartAppDialog("BlockAds")
+    data object Empty : StartAppDialog("Empty")
 }

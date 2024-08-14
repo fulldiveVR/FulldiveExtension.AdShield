@@ -36,12 +36,17 @@ class PopupManager {
 
     private val client = OkHttpClient()
     private val popupsFlow = listOf(
+        StartAppDialog.FinWize,
+        StartAppDialog.InstallBrowser,
+        StartAppDialog.FinWize,
+        StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
-        StartAppDialog.InstallBrowser,
-        StartAppDialog.RateUs,
+        StartAppDialog.FinWize,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
         StartAppDialog.Empty,
@@ -59,6 +64,7 @@ class PopupManager {
     ) {
         val sharedPreferences = activity.getPrivateSharedPreferences()
         val startCounter = sharedPreferences.getProperty(KEY_START_APP_COUNTER, 0)
+        val isFinWizePopupClicked = sharedPreferences.getProperty(KEY_IS_FIN_WIZE_CLICKED, false)
         val isPromoPopupClosed = sharedPreferences.getProperty(KEY_IS_PROMO_POPUP_CLOSED, false)
         val isDonated = sharedPreferences.getProperty(KEY_IS_DONATED, false)
         val isPromoPopupCloseCounter = sharedPreferences
@@ -85,6 +91,29 @@ class PopupManager {
                         }
                     }
                 }
+
+                StartAppDialog.FinWize -> {
+                    if (!isFinWizePopupClicked) {
+                        val snackbar = FinWizeSnackbar()
+                        snackbar.showSnackBar(
+                            activity.findViewById(android.R.id.content),
+                            onOpenFinWizeClicked = {
+                                sharedPreferences.setProperty(KEY_IS_FIN_WIZE_CLICKED, true)
+                                activity.openAppInGooglePlay(FIN_WIZE_APP)
+                                snackbar.dismiss()
+                            },
+                            onCloseClicked = {
+                                snackbar.dismiss()
+                            },
+                            bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
+                                activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
+                            } else {
+                                donationPopupBottomMarginInPixels
+                            }
+                        )
+                    }
+                }
+
                 StartAppDialog.InstallBrowser -> {
                     if (isShowInstallBrowserPopup && (!installBrowserDone) && !isBrowserInstalled(
                             activity
@@ -95,6 +124,7 @@ class PopupManager {
                         }
                     }
                 }
+
                 else -> {
                 }
             }
@@ -283,6 +313,7 @@ class PopupManager {
         private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
         private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
         private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
+        private const val KEY_IS_FIN_WIZE_CLICKED = "KEY_IS_FIN_WIZE_CLICKED"
         private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
         private const val KEY_IS_DONATED = "KEY_IS_DONATED"
         private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
@@ -293,7 +324,11 @@ class PopupManager {
 }
 
 sealed class StartAppDialog(val id: String) {
-    object RateUs : StartAppDialog("RateUs")
-    object InstallBrowser : StartAppDialog("InstallBrowser")
-    object Empty : StartAppDialog("Empty")
+    data object RateUs : StartAppDialog("RateUs")
+    data object FinWize : StartAppDialog("FinWize")
+    data object InstallBrowser : StartAppDialog("InstallBrowser")
+    data object Empty : StartAppDialog("Empty")
 }
+
+const val FIN_WIZE_APP =
+    "ai.invest.stock.market.top.finance.trade.crypto.news.chat.bot.make.money.new.etf.save"

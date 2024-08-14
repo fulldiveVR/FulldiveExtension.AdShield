@@ -264,7 +264,7 @@ class BillingService(
             purchase.developerPayload,
             purchase.isAcknowledged,
             purchase.isAutoRenewing,
-            purchase.orderId,
+            purchase.orderId.orEmpty(),
             purchase.originalJson,
             purchase.packageName,
             purchase.purchaseTime,
