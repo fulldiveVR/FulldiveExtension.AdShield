@@ -15,7 +15,7 @@ buildscript {
     ext{
         kotlin_version = '1.9.23'
         kotlin_coroutines_version = '1.8.0'
-        ndkVersion = "28.0.12433566"
+        ndkVersion = "25.2.9519653"
     }
     repositories {
         google()
