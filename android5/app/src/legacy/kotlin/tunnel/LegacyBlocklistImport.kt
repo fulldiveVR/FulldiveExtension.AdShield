@@ -30,17 +30,18 @@ object LegacyBlocklistImport {
     private fun importLegacyBlocklist(whitelist: Boolean): List<String>? {
         val key = "filters2"
         val filters = try {
-            Paper.book().read<FilterStore>(key).cache
+            Paper.book().read<FilterStore>(key)?.cache
         } catch (ex: Exception) {
             null
         }
 
-         val list = filters?.filter { it.active && it.source.id == "single" && it.whitelist == whitelist }
+        val list = filters
+            ?.filter { it.active && it.source.id == "single" && it.whitelist == whitelist }
             ?.mapNotNull {
                 try {
                     val ruleset = Paper.book().read("rules:set:${it.id}", Ruleset())
                     Paper.book().delete("rules:set:${it.id}")
-                    if (ruleset.size > 0) {
+                    if (ruleset != null && ruleset.size > 0) {
                         log.v("Found a ruleset with ${ruleset.size} rules")
                         ruleset
                     } else null

@@ -29,10 +29,10 @@ object LegacyAccountImport {
     fun importLegacyAccount(): Account? {
         val key = "current-account"
         return try {
-            val currentAccount: CurrentAccount = Paper.book().read(key)
+            val currentAccount = Paper.book().read<CurrentAccount>(key)
             Paper.book().delete(key)
             Logger.w("Legacy", "Using legacy imported account ID")
-            Account(id = currentAccount.id)
+            Account(id = currentAccount?.id.orEmpty())
         } catch (ex: Exception) {
             null
         }

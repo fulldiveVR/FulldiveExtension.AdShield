@@ -37,11 +37,11 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.billingclient:billing-ktx:7.0.0'
+    implementation 'com.android.billingclient:billing-ktx:7.1.1'
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
@@ -51,25 +51,31 @@ dependencies {
 //----- PUBLISH -----//
 def publishPath = "file:" + System.getenv("MAVEN_REPOSITORY_PATH")
 afterEvaluate {
+    println "Starting afterEvaluate block"
+
     publishing {
+        println "Configuring publishing"
+
         repositories {
             maven {
                 url publishPath
+                println "Configured maven repository with URL: $publishPath"
             }
         }
-        publishing {
-            publications {
-                // Creates a Maven publication called "release".
-                release(MavenPublication) {
-                    // Applies the component for the release build variant.
-                    from components.release
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = "com.fulldive"
+                artifactId = 'Google-IAP'
+                version = '1.0.4'
 
-                    // You can then customize attributes of the publication as shown below.
-                    groupId = "com.fulldive"
-                    artifactId = 'Google-IAP'
-                    version = '1.0.4'
-                }
+                println "Configured MavenPublication:"
+                println "  GroupId: $groupId"
+                println "  ArtifactId: $artifactId"
+                println "  Version: $version"
             }
         }
     }
+
+    println "Finished afterEvaluate block"
 }

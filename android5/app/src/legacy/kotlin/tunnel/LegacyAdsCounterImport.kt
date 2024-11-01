@@ -28,9 +28,9 @@ object LegacyAdsCounterImport {
 
             val key = "LogConfig"
             val legacy4 = try {
-                val config: LogConfig = Paper.book().read(key)
+                val config = Paper.book().read<LogConfig>(key)
                 Paper.book().delete(key)
-                config.dropCount
+                config?.dropCount
             } catch (ex: Exception) {
                 null
             }

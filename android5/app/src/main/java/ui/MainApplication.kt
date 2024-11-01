@@ -15,6 +15,7 @@ package ui
 import analytics.FdLog
 import android.app.Activity
 import android.app.Service
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -88,6 +89,10 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
     private val remoteConfig by lazy { appInjector.getInstance<IRemoteConfigFetcher>() }
     private var remoteConfigDisposable: Disposable? = null
     private val appSettingsInteractor by lazy { appInjector.getInstance<AppSettingsInteractor>() }
+
+    override fun getDefaultLanguage(context: Context): Locale {
+        return TranslationService.getLocale()
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -259,10 +264,6 @@ class MainApplication : LocalizationApplication(), ViewModelStoreOwner, IInjecto
                     FdLog.d("initRemoteConfig", "RemoteConfig fetching was failed", error)
                 }
             )
-    }
-
-    override fun getDefaultLanguage(): Locale {
-        return TranslationService.getLocale()
     }
 }
 
