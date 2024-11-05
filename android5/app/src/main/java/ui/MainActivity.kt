@@ -36,7 +36,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import appextension.*
-import appextension.dialogs.PopupManager
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.fulldive.wallet.di.IEnrichableActivity
 import com.fulldive.wallet.presentation.base.subscription.SubscriptionService
@@ -45,6 +44,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.joom.lightsaber.Injector
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.adshield.BuildConfig
 import org.adshield.MobileNavigationDirections
 import org.adshield.R
 import service.*
@@ -210,6 +210,7 @@ class MainActivity : LocalizationActivity(),
 
             if (destination.id == R.id.navigation_home) {
                 toolbar.setLogo(R.drawable.ic_adshield)
+                com.fulldive.startapppopups.PopupManager.onAppStarted(this, BuildConfig.APPLICATION_ID)
             } else {
                 toolbar.logo = null
             }
@@ -220,10 +221,9 @@ class MainActivity : LocalizationActivity(),
             VpnPermissionService.askPermission()
         }
 
-        PopupManager.onAppStarted(this)
         lifecycleScope.launch {
             delay(5000)
-            PopupManager.showUpdateDialog(this@MainActivity)
+            appextension.dialogs.PopupManager.showUpdateDialog(this@MainActivity)
         }
     }
 
@@ -313,8 +313,9 @@ class MainActivity : LocalizationActivity(),
                     }
                 toolbar.title = getString(R.string.activity_section_header)
             }
+
             R.id.help_help -> {
-                PopupManager.showContactSupportDialog(this) {
+                appextension.dialogs.PopupManager.showContactSupportDialog(this) {
                     EmailHelper.sendEmailToSupport(this)
                 }
             }
@@ -329,7 +330,7 @@ class MainActivity : LocalizationActivity(),
                         )
                     }
             }
-          //  R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
+            //  R.id.help_about_rewards -> openUrlInBrowser(Links.idoAnnouncement)
             R.id.help_join_discord -> openUrlInBrowser(Links.idoAnnouncement)
             else -> return false
         }

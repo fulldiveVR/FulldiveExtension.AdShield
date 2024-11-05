@@ -12,7 +12,7 @@
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext{
+    ext {
         kotlin_version = '1.9.23'
         kotlin_coroutines_version = '1.8.0'
         ndkVersion = "25.2.9519653"
@@ -51,7 +51,7 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
 

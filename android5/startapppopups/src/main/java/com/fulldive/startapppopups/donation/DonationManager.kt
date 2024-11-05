@@ -23,7 +23,6 @@ import com.fulldive.iap.DataWrappers
 import com.fulldive.iap.IapConnector
 import com.fulldive.iap.PurchaseServiceListener
 
-
 object DonationManager {
 
     private const val PURCHASE_ID = "support_fulldive_team"

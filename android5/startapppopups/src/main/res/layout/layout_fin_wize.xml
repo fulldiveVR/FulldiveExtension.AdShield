@@ -71,6 +71,7 @@
                 android:id="@+id/closePopupButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/size_4dp"
                 android:src="@drawable/ic_cross"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

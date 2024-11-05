@@ -37,6 +37,7 @@ object SubscriptionService {
 
     const val proSku = "adshield_pro_subscription"
     const val proSkuDiscount = "adshield_pro_subscription_discount"
+    const val supportFulldiveTeam = "support_fulldive_team"
 
     const val STATE_PURCHASED = 1
     const val STATE_PENDING = 2
@@ -55,7 +56,7 @@ object SubscriptionService {
     suspend fun init(context: Context) {
         iapConnector = IapConnector(
             context = context, // activity / context
-            nonConsumableKeys = emptyList(), // pass the list of non-consumables
+            nonConsumableKeys = listOf(supportFulldiveTeam), // pass the list of non-consumables
             consumableKeys = emptyList(), // pass the list of consumables
             subscriptionKeys = listOf(proSku, proSkuDiscount), // pass the list of subscriptions
             enableLogging = true // to enable / disable logging
@@ -127,6 +128,7 @@ object SubscriptionService {
             subscriptionPrices[proSkuDiscount] != null -> {
                 iapConnector?.subscribe(activity, proSkuDiscount)
             }
+
             subscriptionPrices[proSku] != null -> {
                 iapConnector?.subscribe(activity, proSku)
             }
@@ -170,13 +172,15 @@ object SubscriptionService {
             isProLimited -> {
                 false
             }
+
             isClosed -> {
                 val closeCount = AppSettingsService.getPromoCloseStartCounter()
                 val startCount = AppSettingsService.getCurrentStartCounter()
                 val diff = startCount - closeCount
                 repeatPopupCounts.any { it == diff }
             }
+
             else -> true
-        }&& !context.isBrowserInstalled()
+        } && !context.isBrowserInstalled()
     }
 }

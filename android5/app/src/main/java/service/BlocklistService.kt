@@ -108,15 +108,27 @@ object BlocklistService {
     }
 
     fun loadMerged(): List<String> {
-        return file.load(file.commonDir().file(MERGED_BLOCKLIST))
+        return try {
+            file.load(file.commonDir().file(MERGED_BLOCKLIST))
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     fun loadUserAllowed(): List<String> {
-        return file.load(file.commonDir().file(USER_ALLOWED))
+        return try {
+            file.load(file.commonDir().file(USER_ALLOWED))
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     fun loadUserDenied(): List<String> {
-        return file.load(file.commonDir().file(USER_DENIED))
+        return try {
+            file.load(file.commonDir().file(USER_DENIED))
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
     private fun sanitize(list: Uri) {

@@ -32,7 +32,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
-class PopupManager {
+object PopupManager {
 
     private val client = OkHttpClient()
     private val popupsFlow = listOf(
@@ -40,17 +40,26 @@ class PopupManager {
         StartAppDialog.InstallBrowser,
         StartAppDialog.FinWize,
         StartAppDialog.RateUs,
+        StartAppDialog.Empty,
+        StartAppDialog.Donation,
         StartAppDialog.FinWize,
+        StartAppDialog.Empty,
+        StartAppDialog.Empty,
         StartAppDialog.InstallBrowser,
+        StartAppDialog.Donation,
         StartAppDialog.RateUs,
         StartAppDialog.FinWize,
+        StartAppDialog.Empty,
         StartAppDialog.InstallBrowser,
+        StartAppDialog.Donation,
         StartAppDialog.RateUs,
         StartAppDialog.FinWize,
+        StartAppDialog.Donation,
         StartAppDialog.InstallBrowser,
         StartAppDialog.RateUs,
         StartAppDialog.Empty,
-        StartAppDialog.Empty
+        StartAppDialog.Empty,
+        StartAppDialog.Donation,
     )
 
     fun onAppStarted(
@@ -77,102 +86,102 @@ class PopupManager {
         val rateUsDone = sharedPreferences.getProperty(KEY_RATE_US_DONE, false)
         val installBrowserDone = sharedPreferences.getProperty(KEY_INSTALL_BROWSER_DONE, false)
 
-        if (!rateUsDone || !installBrowserDone) {
-            when (getShowingPopup(startCounter)) {
-                StartAppDialog.RateUs -> {
-                    if (isShowRateUsPopup && !rateUsDone) {
-                        showRateUsDialog(activity) {
-                            onRateUsPositiveClicked(
-                                activity,
-                                sharedPreferences,
-                                it,
-                                appId
-                            )
+        when (getShowingPopup(startCounter)) {
+            StartAppDialog.FinWize -> {
+                if (!isFinWizePopupClicked) {
+                    val snackbar = FinWizeSnackbar()
+                    snackbar.showSnackBar(
+                        activity.findViewById(android.R.id.content),
+                        onOpenFinWizeClicked = {
+                            sharedPreferences.setProperty(KEY_IS_FIN_WIZE_CLICKED, true)
+                            activity.openAppInGooglePlay(FIN_WIZE_APP)
+                            snackbar.dismiss()
+                        },
+                        onCloseClicked = {
+                            snackbar.dismiss()
+                        },
+                        bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
+                            activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
+                        } else {
+                            donationPopupBottomMarginInPixels
                         }
-                    }
-                }
-
-                StartAppDialog.FinWize -> {
-                    if (!isFinWizePopupClicked) {
-                        val snackbar = FinWizeSnackbar()
-                        snackbar.showSnackBar(
-                            activity.findViewById(android.R.id.content),
-                            onOpenFinWizeClicked = {
-                                sharedPreferences.setProperty(KEY_IS_FIN_WIZE_CLICKED, true)
-                                activity.openAppInGooglePlay(FIN_WIZE_APP)
-                                snackbar.dismiss()
-                            },
-                            onCloseClicked = {
-                                snackbar.dismiss()
-                            },
-                            bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
-                                activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
-                            } else {
-                                donationPopupBottomMarginInPixels
-                            }
-                        )
-                    }
-                }
-
-                StartAppDialog.InstallBrowser -> {
-                    if (isShowInstallBrowserPopup && (!installBrowserDone) && !isBrowserInstalled(
-                            activity
-                        )
-                    ) {
-                        showInstallBrowserDialog(activity) {
-                            onInstallAppPositiveClicked(activity, sharedPreferences)
-                        }
-                    }
-                }
-
-                else -> {
+                    )
                 }
             }
-        }
 
-        if (
-            isShowDonationPopup && ((!isPromoPopupClosed || isPromoPopupClosed && repeatPopupCounts.any { it == diff })
+            StartAppDialog.Donation -> {
+                if (
+                    isShowDonationPopup
                     && (!isDonated || isDonated && repeatPopupCountsIfDonated.any { it == diff })
-                    || (isPromoPopupClosed && isDonated && repeatPopupCountsIfDonated.any { it == diff }))
-        ) {
-            val snackbar = DonationSnackbar()
-            snackbar.showSnackBar(
-                activity.findViewById(android.R.id.content),
-                onDonateClicked = {
-                    if (DonationManager.isConnected) {
-                        DonationManager.purchase(activity)
-                    } else {
-                        DonationManager.init(
-                            activity,
-                            onConnected = {
+                    || (isPromoPopupClosed && isDonated && repeatPopupCountsIfDonated.any { it == diff })
+                ) {
+                    val snackbar = DonationSnackbar()
+                    snackbar.showSnackBar(
+                        activity.findViewById(android.R.id.content),
+                        onDonateClicked = {
+                            if (DonationManager.isConnected) {
                                 DonationManager.purchase(activity)
-                            },
-                            onPurchased = {
-                                donationActionListener.invoke(DonationAction.DonationSuccess)
-                                showDonationSuccess(activity)
-                                onDonationSuccess(sharedPreferences)
+                            } else {
+                                DonationManager.init(
+                                    activity,
+                                    onConnected = {
+                                        DonationManager.purchase(activity)
+                                    },
+                                    onPurchased = {
+                                        donationActionListener.invoke(DonationAction.DonationSuccess)
+                                        showDonationSuccess(activity)
+                                        onDonationSuccess(sharedPreferences)
+                                    }
+                                )
                             }
+                            onCloseDonationClicked(sharedPreferences)
+                            donationActionListener.invoke(DonationAction.OpenedFromPopup)
+                            snackbar.dismiss()
+                        },
+                        onCloseClicked = {
+                            donationActionListener.invoke(DonationAction.PopupClosed)
+                            onCloseDonationClicked(sharedPreferences)
+                        },
+                        bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
+                            activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
+                        } else {
+                            donationPopupBottomMarginInPixels
+                        }
+                    )
+                    donationActionListener.invoke(DonationAction.PopupShown)
+                }
+            }
+
+            StartAppDialog.RateUs -> {
+                if (isShowRateUsPopup && !rateUsDone) {
+                    showRateUsDialog(activity) {
+                        onRateUsPositiveClicked(
+                            activity,
+                            sharedPreferences,
+                            it,
+                            appId
                         )
                     }
-                    onCloseDonationClicked(sharedPreferences)
-                    donationActionListener.invoke(DonationAction.OpenedFromPopup)
-                    snackbar.dismiss()
-                },
-                onCloseClicked = {
-                    donationActionListener.invoke(DonationAction.PopupClosed)
-                    onCloseDonationClicked(sharedPreferences)
-                },
-                bottomMargin = if (donationPopupBottomMarginInPixels == 0) {
-                    activity.resources.getDimensionPixelSize(R.dimen.size_48dp)
-                } else {
-                    donationPopupBottomMarginInPixels
                 }
-            )
-            donationActionListener.invoke(DonationAction.PopupShown)
+            }
+
+            StartAppDialog.InstallBrowser -> {
+                if (isShowInstallBrowserPopup && (!installBrowserDone) && !isBrowserInstalled(
+                        activity
+                    )
+                ) {
+                    showInstallBrowserDialog(activity) {
+                        onInstallAppPositiveClicked(activity, sharedPreferences)
+                    }
+                }
+            }
+
+            else -> {
+            }
         }
     }
 
-    fun showDonationSuccess(context: Context) {
+    private fun showDonationSuccess(context: Context) {
         val dialog = AlertDialog
             .Builder(context)
             .setTitle(R.string.donation_title)
@@ -306,26 +315,25 @@ class PopupManager {
         return result
     }
 
-    companion object {
-        private val repeatPopupCounts = listOf(2, 5)
-        private val repeatPopupCountsIfDonated = listOf(20, 40)
-        private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
-        private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
-        private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
-        private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
-        private const val KEY_IS_FIN_WIZE_CLICKED = "KEY_IS_FIN_WIZE_CLICKED"
-        private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
-        private const val KEY_IS_DONATED = "KEY_IS_DONATED"
-        private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
-            "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
-        private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"
-        private const val SUCCESS_RATING_VALUE = 4
-    }
+    // private val repeatPopupCounts = listOf(2, 5)
+    private val repeatPopupCountsIfDonated = listOf(20, 40)
+    private const val INBOX_URL = "https://api.fdvr.co/v2/inbox"
+    private const val KEY_START_APP_COUNTER = "KEY_START_APP_COUNTER"
+    private const val KEY_RATE_US_DONE = "KEY_RATE_US_DONE"
+    private const val KEY_INSTALL_BROWSER_DONE = "KEY_INSTALL_BROWSER_DONE"
+    private const val KEY_IS_FIN_WIZE_CLICKED = "KEY_IS_FIN_WIZE_CLICKED"
+    private const val KEY_IS_PROMO_POPUP_CLOSED = "KEY_IS_PROMO_POPUP_CLOSED"
+    private const val KEY_IS_DONATED = "KEY_IS_DONATED"
+    private const val KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER =
+        "KEY_IS_PROMO_POPUP_CLOSED_START_COUNTER"
+    private const val BROWSER_PACKAGE_NAME = "com.fulldive.mobile"
+    private const val SUCCESS_RATING_VALUE = 4
 }
 
 sealed class StartAppDialog(val id: String) {
-    data object RateUs : StartAppDialog("RateUs")
     data object FinWize : StartAppDialog("FinWize")
+    data object Donation : StartAppDialog("Donation")
+    data object RateUs : StartAppDialog("RateUs")
     data object InstallBrowser : StartAppDialog("InstallBrowser")
     data object Empty : StartAppDialog("Empty")
 }
