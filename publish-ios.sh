@@ -19,9 +19,9 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
-echo "Publishing Blokada 6 for Android: $1..."
+echo "Publishing Blokada 6 for iOS: $1..."
 
-cd six-android
+cd six-ios
 git co main 
 git pull
 git co $1
@@ -29,12 +29,14 @@ git submodule update
 
 cd ../
 
-commit="publish Blokada 6 for Android: $1"
-tag="android.v6.$1"
+commit="iOS push: $1"
+tag="ios.v6.$1"
+tagFamily="ios.family.$1"
 
-git add six-android
+git add six-ios
 git commit -m "$commit"
 git tag $tag
+git tag $tagFamily
 
 git push
 git push --tags

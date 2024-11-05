@@ -1,14 +1,14 @@
-name: android v6 push
+name: android family push 
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - android.v6.**
+      - android.family.**
 
 env:
   main_project_module: app
-  playstore_name: org.blokada.sex
+  playstore_name: org.blokada.family
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
         run: |
           set -o pipefail  # Ensure any command failure in the pipeline fails the step
           REPO="blokadaorg/six-android"
-          ARTIFACT_NAME="blokada6.aab"
+          ARTIFACT_NAME="blokadafamily.aab"
           WORKFLOW_RUN_ID=${{ env.WORKFLOW_RUN_ID }}
 
           # Get the artifact download URL
@@ -87,7 +87,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: org.blokada.sex
+          packageName: org.blokada.family
           releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
           track: internal
           status: completed
@@ -100,7 +100,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: org.blokada.sex
+          packageName: org.blokada.family
           releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
           track: internal
           status: completed
