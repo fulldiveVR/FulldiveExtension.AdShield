@@ -1,59 +1,79 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
 
 package model
 
-import com.squareup.moshi.JsonClass
-import service.EnvironmentService
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
+data class LegacyGateway(
+    val publicKey: String,
+    val region: String,
+    val location: String,
+    val resourceUsagePercent: Long,
+    val ipv4: String,
+    val ipv6: String,
+    val port: Long,
+    val country: String? = null
+) {
+    fun niceName(): String {
+        return location.split('-').map { it.capitalize() }.joinToString(" ")
+    }
+}
+
+@Serializable
+data class LegacyLease(
+    val publicKey: String,
+    val gatewayId: String,
+    val alias: String?,
+    val vip4: String,
+    val vip6: String
+)
+
+@Serializable
 data class BlockaConfig(
     val privateKey: PrivateKey,
     val publicKey: PublicKey,
     val keysGeneratedForAccountId: AccountId,
     val keysGeneratedForDevice: DeviceId,
-    val lease: Lease?,
-    val gateway: Gateway?,
+    val lease: LegacyLease?,
+    val gateway: LegacyGateway?,
     val vpnEnabled: Boolean,
-    val tunnelEnabled: Boolean = false
+    val tunnelEnabled: Boolean = false,
+    val bypassedAppIds: List<String> = emptyList(),
 ) {
-    fun getAccountId() = keysGeneratedForAccountId
+    fun lease() = lease!!
+    fun gateway() = gateway!!
 }
 
 // These settings are never backed up to the cloud
-@JsonClass(generateAdapter = true)
+@Serializable
 data class LocalConfig(
-    val dnsChoice: DnsId,
+    val dnsChoice: DnsId, // Deprecated
     val useChromeTabs: Boolean = false,
     val useDarkTheme: Boolean? = null,
     val themeName: String? = null,
     val locale: String? = null,
-    val ipv6: Boolean = true,
+    val ipv6: Boolean = true, // Deprecated
     val backup: Boolean = true,
-    val useDnsOverHttps: Boolean = true,
-    val useBlockaDnsInPlusMode: Boolean = true
+    val useDnsOverHttps: Boolean = false, // Deprecated
+    val useBlockaDnsInPlusMode: Boolean = true, // Deprecated
+    val escaped: Boolean = false,
+    val useForegroundService: Boolean = false, // Deprecated
+    val pingToCheckNetwork: Boolean = false
 )
 
 // These settings are always backed up to the cloud (if possible)
-@JsonClass(generateAdapter = true)
+@Serializable
 data class SyncableConfig(
     val rateAppShown: Boolean,
     val notFirstRun: Boolean,

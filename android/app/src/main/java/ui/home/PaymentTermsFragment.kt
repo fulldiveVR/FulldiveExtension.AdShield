@@ -1,43 +1,30 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
 
 package ui.home
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import binding.CommonBinding
+import binding.StageBinding
 import org.blokada.R
-import ui.AccountViewModel
+import service.Flavor
 import ui.BottomSheetFragment
-import ui.app
-import utils.Links
 
 class PaymentTermsFragment : BottomSheetFragment() {
-
-    private lateinit var vm: AccountViewModel
+    private val stage by lazy { StageBinding }
+    private val common by lazy { CommonBinding }
 
     companion object {
         fun newInstance() = PaymentTermsFragment()
@@ -47,12 +34,7 @@ class PaymentTermsFragment : BottomSheetFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.let {
-            vm = ViewModelProvider(it.app()).get(AccountViewModel::class.java)
-        }
-
         val root = inflater.inflate(R.layout.fragment_payment_terms, container, false)
-        val nav = findNavController()
 
         val back: View = root.findViewById(R.id.back)
         back.setOnClickListener {
@@ -64,35 +46,23 @@ class PaymentTermsFragment : BottomSheetFragment() {
             dismiss()
         }
 
-        vm.account.observe(viewLifecycleOwner, Observer { account ->
-            val contact: View = root.findViewById(R.id.payment_support)
-            contact.setOnClickListener {
-                nav.navigate(
-                    HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                        Links.support(account.id), getString(R.string.universal_action_contact_us)
-                    )
-                )
-                dismiss()
-            }
-        })
+        val contact: View = root.findViewById(R.id.payment_support)
+        contact.setOnClickListener {
+            stage.setRoute(common.links["support"]!!)
+            dismiss()
+        }
+
+        val isFamily = Flavor.isFamily();
 
         val terms: View = root.findViewById(R.id.payment_terms)
         terms.setOnClickListener {
-            nav.navigate(
-                HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.terms, getString(R.string.payment_action_terms)
-                )
-            )
+            stage.setRoute(common.links["tos"]!!)
             dismiss()
         }
 
         val privacy: View = root.findViewById(R.id.payment_privacy)
         privacy.setOnClickListener {
-            nav.navigate(
-                HomeFragmentDirections.actionNavigationHomeToWebFragment(
-                    Links.privacy, getString(R.string.payment_action_policy)
-                )
-            )
+            stage.setRoute(common.links["privacy"]!!)
             dismiss()
         }
 

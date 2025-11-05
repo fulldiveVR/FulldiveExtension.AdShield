@@ -1,15 +1,9 @@
-[submodule "five-android"]
-	path = five-android
-	url = https://github.com/blokadaorg/five-android.git
-[submodule "six-android"]
-	path = six-android
-	url = https://github.com/blokadaorg/six-android.git
-[submodule "six-ios"]
-	path = six-ios
-	url = https://github.com/blokadaorg/six-ios.git
-[submodule "landing"]
-	path = landing
-	url = git@github.com:blokadaorg/landing.git
-[submodule "landing-github-pages"]
-	path = landing-github-pages
-	url = git@github.com:blokadaorg/landing-github-pages.git
+[submodule "deps/translate"]
+	path = deps/translate
+	url = https://github.com/blokadaorg/translate
+[submodule "deps/wireguard-apple"]
+	path = deps/wireguard-apple
+	url = https://github.com/blokadaorg/wireguard-apple
+[submodule "deps/landing-github-pages"]
+	path = deps/landing-github-pages
+	url = https://github.com/blokadaorg/landing-github-pages.git

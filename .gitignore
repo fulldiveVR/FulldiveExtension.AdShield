@@ -7,3 +7,23 @@ keystore.properties
 
 # Dirs from the 4 branch, not relevant to 5
 android4
+
+ios/Pods
+ios/Podfile.lock
+
+local.properties
+keystore.properties
+blokada-gplay.json
+blokada-appstore.json
+*.jks
+*.keystore
+
+*.local.json
+!.claude/
+!.claude/settings.json
+
+# Appium / WDIO artifacts
+automation/appium/output/
+automation/appium/wdio/node_modules/
+automation/appium/wdio/.npmrc
+!.appiumrc.yaml

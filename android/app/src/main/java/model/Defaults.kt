@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -22,18 +13,14 @@
 package model
 
 import repository.DnsDataSource
-import repository.PackDataSource
 import service.EnvironmentService
+import utils.now
 
 object Defaults {
 
-    val PACKS_VERSION = 4
+    val PACKS_VERSION = 30
 
-    fun stats() = Stats(allowed = 0, denied = 0, entries = listOf())
-    fun allowed() = Allowed(value = listOf())
-    fun denied() = Denied(value = listOf())
-    fun packs() = Packs(PackDataSource.getPacks(), version = PACKS_VERSION)
-    fun localConfig() = LocalConfig(dnsChoice = BuildSpecificDefaults.dns)
+    fun localConfig() = LocalConfig(dnsChoice = FlavorSpecificDefaults.dns)
     fun syncableConfig() = SyncableConfig(rateAppShown = false, notFirstRun = false)
     fun dnsWrapper() = DnsWrapper(DnsDataSource.getDns())
 
@@ -47,25 +34,27 @@ object Defaults {
         vpnEnabled = false
     )
 
-    fun adsCounter() = AdsCounter(persistedValue = 0L)
-
     fun bypassedAppIds() = BypassedAppIds(emptyList()) // Also check AppRepository
 
-    fun blockaRepoConfig() = BlockaRepoConfig(
-        name = "default",
-        forBuild = "*"
+    fun noNetworkSpecificConfigs() = NetworkSpecificConfigs(
+        configs = listOf(
+            defaultNetworkConfig(),
+            defaultNetworkConfig().copy(network = NetworkDescriptor.cell(null)),
+            defaultNetworkConfig().copy(network = NetworkDescriptor.wifi(null))
+        )
     )
 
-    fun noSeenUpdate() = BlockaRepoUpdate(
-        mirrors = emptyList(),
-        infoUrl = "",
-        newest = ""
-    )
+    fun networkConfig(network: NetworkDescriptor) = defaultNetworkConfig().copy(network = network)
 
-    fun noPayload() = BlockaRepoPayload(
-        cmd = ""
+    fun defaultNetworkConfig() = NetworkSpecificConfig(
+        network = NetworkDescriptor.fallback(),
+        encryptDns = true,
+        useNetworkDns = false,
+        dnsChoice = DnsDataSource.cloudflare.id,
+        useBlockaDnsInPlusMode = true,
+        forceLibreMode = false,
+        enabled = false,
+        createdAt = now()
     )
-
-    fun noAfterUpdate() = BlockaAfterUpdate()
 
 }

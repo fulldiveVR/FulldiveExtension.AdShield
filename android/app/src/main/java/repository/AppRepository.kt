@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -23,81 +14,43 @@ package repository
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.os.Build
+import androidx.core.graphics.createBitmap
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import model.App
 import model.AppId
-import model.BypassedAppIds
 import service.ContextService
-import service.PersistenceService
-import ui.utils.cause
+import utils.cause
 import utils.Logger
+import java.io.ByteArrayOutputStream
 
 object AppRepository {
 
     private val log = Logger("AppRepository")
-    private val context = ContextService
-    private val persistence = PersistenceService
-    private val scope = GlobalScope
+    private val context by lazy { ContextService }
+    private val scope by lazy { CoroutineScope(Dispatchers.Main) }
 
-    private var bypassedAppIds = persistence.load(BypassedAppIds::class).ids
-        set(value) {
-            persistence.save(BypassedAppIds(value))
-            field = value
-        }
-
-    private val alwaysBypassed by lazy {
+    val alwaysBypassed: List<AppId> by lazy {
         listOf<AppId>(
             // This app package name
-            //context.requireContext().packageName
+            context.requireContext().packageName
         )
-    }
-
-    private val bypassedForFakeVpn = listOf(
-        "com.android.vending",
-        "com.android.providers.downloads",
-        "com.google.android.apps.fireball",
-        "com.google.android.apps.authenticator2",
-        "com.google.android.apps.docs",
-        "com.google.android.apps.tachyon",
-        "com.google.android.gm",
-        "com.google.android.apps.photos",
-        "com.google.android.play.games",
-        "org.thoughtcrime.securesms",
-        "com.plexapp.android",
-        "org.kde.kdeconnect_tp",
-        "com.samsung.android.email.provider",
-        "com.xda.labs",
-        "com.android.incallui",
-        "com.android.phone",
-        "com.android.providers.telephony",
-        "com.huawei.systemmanager",
-        "com.android.service.ims.RcsServiceApp",
-        "com.google.android.carriersetup",
-        "com.google.android.ims",
-        "com.codeaurora.ims",
-        "com.android.carrierconfig",
-        "ch.threema.app",
-        "ch.threema.app.work",
-        "com.xiaomi.discover",
-        "eu.siacs.conversations",
-        "org.jitsi.meet"
-    )
-
-    fun getPackageNamesOfAppsToBypass(forRealTunnel: Boolean = false): List<AppId> {
-        return if (forRealTunnel) alwaysBypassed + bypassedAppIds
-        else alwaysBypassed + bypassedForFakeVpn + bypassedAppIds
     }
 
     suspend fun getApps(): List<App> {
         return scope.async(Dispatchers.Default) {
-            log.v("Fetching apps")
+            log.v("Fetching apps (Android ${Build.VERSION.SDK_INT})")
             val ctx = context.requireContext()
             val installed = try {
+                // On Android 11+ (API 30+), this requires QUERY_ALL_PACKAGES permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    log.v("Android 11+ detected, using QUERY_ALL_PACKAGES permission")
+                }
                 ctx.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-                    .filter { it.packageName != ctx.packageName }
             } catch (ex: Exception) {
                 log.w("Could not fetch apps, ignoring".cause(ex))
                 emptyList<ApplicationInfo>()
@@ -110,7 +63,6 @@ object AppRepository {
                         id = it.packageName,
                         name = ctx.packageManager.getApplicationLabel(it).toString(),
                         isSystem = (it.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
-                        isBypassed = isAppBypassed(it.packageName)
                     )
                 } catch (ex: Exception) {
                     log.w("Could not map app, ignoring".cause(ex))
@@ -122,22 +74,32 @@ object AppRepository {
         }.await()
     }
 
-    fun isAppBypassed(id: AppId): Boolean {
-        return bypassedAppIds.contains(id)
-    }
-
-    fun switchBypassForApp(id: AppId) {
-        if (isAppBypassed(id)) bypassedAppIds -= id
-        else bypassedAppIds += id
-    }
-
-    fun getAppIcon(id: AppId): Drawable? {
+    fun getAppIcon(packageName: String): ByteArray? {
         return try {
             val ctx = context.requireContext()
-            ctx.packageManager.getApplicationIcon(
-                ctx.packageManager.getApplicationInfo(id, PackageManager.GET_META_DATA)
-            )
-        } catch (e: Exception) {
+            val packageManager = ctx.packageManager
+
+            // Get the application info to access the icon
+            val appInfo = packageManager.getApplicationInfo(packageName, 0)
+            val icon = packageManager.getDrawable(packageName, appInfo.icon, appInfo) ?: return null
+
+            // Convert the drawable to a bitmap
+            val bitmap = createBitmap(icon.intrinsicWidth, icon.intrinsicHeight)
+            val canvas = Canvas(bitmap)
+            icon.setBounds(0, 0, canvas.width, canvas.height)
+            icon.draw(canvas)
+
+            // Convert the bitmap to a byte array
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val byteArray = stream.toByteArray()
+
+            byteArray
+        } catch (ex: PackageManager.NameNotFoundException) {
+            log.w("Package not found: $packageName")
+            null
+        } catch (ex: Exception) {
+            log.w("Could not get app icon for $packageName".cause(ex))
             null
         }
     }

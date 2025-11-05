@@ -1,0 +1,65 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Six: build release"
+  lane :build_ios_six do
+    build_app(
+      workspace: "IOS.xcworkspace",
+      scheme: "Prod",
+      export_options: {
+        provisioningProfiles: {
+          "net.blocka.app" => "match AppStore net.blocka.app",
+          "net.blocka.app.family" => "match AppStore net.blocka.app.family",
+          "net.blocka.app.network-extension" => "match AppStore net.blocka.app.network-extension",
+          "net.blocka.app.web-extension" => "match AppStore net.blocka.app.web-extension"
+        }
+      }
+    )
+  end
+
+  desc "Family: build release"
+  lane :build_ios_family do
+    build_app(workspace: "IOS.xcworkspace", scheme: "FamilyProd")
+  end
+
+  lane :publish_ios_six do
+   deliver(
+      ipa: "Blokada 6.ipa",
+      app_identifier: "net.blocka.app",
+      metadata_path: "../metadata/ios-six/",
+      api_key_path: "./blokada-appstore.json",
+      skip_screenshots: true,
+      skip_app_version_update: false,
+      force: true, # skips verification of HTML preview file
+      run_precheck_before_submit: false # not supported through ASC API yet
+   )
+  end
+
+  lane :publish_ios_family do
+   deliver(
+      ipa: "Blokada Family.ipa",
+      app_identifier: "net.blocka.app.family",
+      metadata_path: "../metadata/ios-family/",
+      api_key_path: "./blokada-appstore.json",
+      skip_screenshots: true,
+      skip_app_version_update: false,
+      force: true, # skips verification of HTML preview file
+      run_precheck_before_submit: false # not supported through ASC API yet
+   )
+  end
+end

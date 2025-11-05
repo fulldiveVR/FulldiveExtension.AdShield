@@ -2,20 +2,11 @@
 <!--
   ~ This file is part of Blokada.
   ~
-  ~ Blokada is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   ~
-  ~ Blokada is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
-  ~
-  ~ Copyright © 2020 Blocka AB. All rights reserved.
+  ~ Copyright © 2021 Blocka AB. All rights reserved.
   ~
   ~ @author Karol Gusak (karol@blocka.net)
   -->
@@ -57,6 +48,7 @@
                 app:layout_constraintWidth_max="@dimen/maxwidth">
 
                 <TextView
+                    android:id="@+id/location_header"
                     style="@style/Text.Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/normal"
-                    android:background="?android:attr/textColorTertiary" />
+                    android:background="?android:attr/shadowColor" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -162,14 +154,13 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:visibility="invisible">
+                                android:orientation="vertical">
 
                                 <TextView
                                     style="@style/Text.Small"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Other" />
+                                    android:text="@string/location_region_australia" />
 
                                 <LinearLayout
                                     android:id="@+id/location_container4"
@@ -186,7 +177,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="@dimen/normal"
                             android:layout_marginBottom="@dimen/normal"
-                            android:background="?android:attr/textColorTertiary" />
+                            android:background="?android:attr/shadowColor" />
 
                         <Button
                             android:id="@+id/cancel"

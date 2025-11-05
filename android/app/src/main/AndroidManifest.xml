@@ -1,47 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ This file is part of Blokada.
   ~
-  ~ Blokada is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
   ~
-  ~ Blokada is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
-  ~
-  ~ Copyright © 2020 Blocka AB. All rights reserved.
+  ~ Copyright © 2021 Blocka AB. All rights reserved.
   ~
   ~ @author Karol Gusak (karol@blocka.net)
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.blokada"
-    android:sharedUserId="org.blokada">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.blokada">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
 
     <application
         android:name="ui.MainApplication"
-        android:allowBackup="true"
-        android:backupAgent="service.BackupAgent"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -55,7 +49,8 @@
             android:name="ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,66 +69,44 @@
                     android:pathPrefix="/success"
                     android:scheme="https" />
             </intent-filter>
-        </activity>
 
-        <activity
-            android:name="ui.CommandActivity"
-            android:excludeFromRecents="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Blokada.Translucent">
+            <!-- QuickSettings preferences - for now just redirect to the app -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="cmd"
-                    android:scheme="blocka" />
-            </intent-filter>
-
-            <!-- Legacy commands to be removed in the future -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="log"
-                    android:scheme="blocka" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="acc"
-                    android:scheme="blocka" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
             </intent-filter>
         </activity>
 
-        <receiver android:name="service.ExpirationReceiver" />
+        <activity android:name="ui.CommandActivity" />
+
+        <receiver android:name="service.DozeReceiver" />
+
+        <receiver android:name="service.NotificationAlarmReceiver" />
+
+        <receiver
+            android:name="service.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.blokada.sex.DEBUG_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service
-            android:name="engine.SystemTunnel"
-            android:permission="android.permission.BIND_VPN_SERVICE">
+            android:name="ui.QuickSettingsToggle"
+            android:icon="@drawable/blokada_logo"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.net.VpnService" />
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-
-        <service
-            android:name="service.RestartJob"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <service android:name="service.ForegroundService" />
-
-        <service android:name="ui.CommandService" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -146,5 +119,12 @@
         </provider>
 
     </application>
+
+    <queries>
+        <package android:name="org.blokada.origin.alarm" />
+        <package android:name="org.blokada.alarm.dnschanger" />
+        <package android:name="org.blokada.fem.fdroid" />
+        <package android:name="org.blokada.sex" />
+    </queries>
 
 </manifest>

@@ -1,0 +1,65 @@
+//
+//  This file is part of Blokada.
+//
+//  This Source Code Form is subject to the terms of the Mozilla Public
+//  License, v. 2.0. If a copy of the MPL was not distributed with this
+//  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+//  Copyright © 2020 Blocka AB. All rights reserved.
+//
+//  @author Karol Gusak
+//
+// One of the tags used for searching blocklists
+
+"recommended" = "önerilen";
+// One of the tags used for searching blocklists
+"official" = "resmi";
+// One of the tags used for searching blocklists
+"adblocking" = "reklam engelleme";
+// One of the tags used for searching blocklists
+"tracking" = "izleme";
+// One of the tags used for searching blocklists
+"privacy" = "gizlilik";
+// One of the tags used for searching blocklists
+"adult" = "yetişkin";
+// One of the tags used for searching blocklists
+"porn" = "porno";
+// One of the tags used for searching blocklists
+"social" = "sosyal";
+// One of the tags used for searching blocklists
+"regional" = "bölgesel";
+// One of the tags used for searching blocklists
+"fake news" = "sahte haberler";
+// One of the tags used for searching blocklists
+"gambling" = "kumar";
+// One of the tags used for searching blocklists
+"youtube" = "youtube";
+// One of the tags used for searching blocklists
+"phishing" = "oltalama";
+// One of the tags used for searching blocklists
+"security" = "güvenlik";
+// Family tags below
+// One of the tags used for searching blocklists
+"malware" = "zararlı yazılım";
+// One of the tags used for searching blocklists
+"spam" = "spam";
+// One of the tags used for searching blocklists
+"dating" = "tanışma";
+// One of the tags used for searching blocklists
+"piracy" = "korsan";
+// One of the tags used for searching blocklists
+"torrent" = "torrent";
+// One of the tags used for searching blocklists
+"streaming" = "yayın";
+// One of the tags used for searching blocklists
+"apps" = "uygulamalar";
+// One of the tags used for searching blocklists
+"chat" = "sohbet";
+// One of the tags used for searching blocklists
+"gaming" = "oyun";
+// One of the tags used for searching blocklists
+"games" = "oyunlar";
+// One of the tags used for searching blocklists
+"e-commerce" = "e-ticaret";
+// One of the tags used for searching blocklists
+"other" = "diğer";
