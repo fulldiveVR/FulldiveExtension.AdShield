@@ -23,14 +23,14 @@ apply plugin: 'com.joom.lightsaber.android'
 
 def versionMajor = 1
 def versionMinor = 5
-def versionPatch = 21
+def versionPatch = 22
 
 android {
 
     namespace 'org.adshield'
 
-    compileSdkVersion 34
-    buildToolsVersion "34.0.0"
+    compileSdkVersion 36
+    buildToolsVersion "36.0.0"
     ndkVersion "25.2.9519653"
 
     signingConfigs {
@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId "com.fulldive.extension.adshield" // Not a real name, see flavors below
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
