@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -23,16 +14,29 @@ package model
 
 import org.blokada.R
 import service.ContextService
-import service.tr
+import utils.cause
 
-open class BlokadaException(msg: String, cause: Throwable? = null): Exception(msg, cause)
+open class BlokadaException(
+    private val msg: String, private val reason: Throwable? = null
+) : Exception(msg, reason) {
+    override fun toString(): String {
+        return if (reason != null) {
+            msg.cause(reason)
+        } else super.toString()
+    }
+}
 
-class TooManyDevices(cause: Throwable? = null): BlokadaException("Too many devices", cause)
-class SystemTunnelRevoked: BlokadaException("Revoked")
-class NoPersistedAccount: BlokadaException("No persisted account")
-class NoPermissions: BlokadaException("No VPN profile permissions")
-class TunnelFailure(cause: Throwable): BlokadaException("Tunnel failure: ${cause.message}", cause)
-class BlockaDnsInFilteringMode(): BlokadaException("Blocka DNS in filtering mode")
+class TooManyDevices(cause: Throwable? = null) : BlokadaException("Too many devices", cause)
+class SystemTunnelRevoked : BlokadaException("Revoked")
+class NoPersistedAccount : BlokadaException("No persisted account")
+class NoPermissions : BlokadaException("No VPN profile permissions")
+class TunnelFailure(cause: Throwable) : BlokadaException("Tunnel failure: ${cause.message}", cause)
+class BlockaDnsInFilteringMode() : BlokadaException("Blocka DNS in filtering mode")
+class NoPayments() : BlokadaException("Payments are unavailable")
+class TimeoutException(owner: String, cause: Throwable? = null) :
+    BlokadaException("Task timeout: $owner", cause)
+
+class NoRelevantPurchase : BlokadaException("Found no relevant purchase")
 
 fun mapErrorToUserFriendly(ex: Exception?): String {
     val ctx = ContextService.requireAppContext()
@@ -46,6 +50,14 @@ fun mapErrorToUserFriendly(ex: Exception?): String {
     }
     string += "\n\n(debug info: ${ex?.message?.atMost(100) ?: "none"})"
     return string
+}
+
+suspend fun <T> runIgnoringException(block: suspend (() -> T), otherwise: T): T {
+    return try {
+        block()
+    } catch (ex: Throwable) {
+        otherwise
+    }
 }
 
 fun shouldShowKbLink(ex: Exception?): Boolean {

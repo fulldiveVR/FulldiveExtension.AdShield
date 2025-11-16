@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -22,14 +13,12 @@
 package service
 
 import androidx.core.os.LocaleListCompat
-import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import repository.TranslationRepository
 import repository.getFirstSupportedLocale
 import repository.getTranslationRepository
-import ui.utils.cause
+import utils.cause
 import utils.Logger
-import java.lang.NullPointerException
-import java.util.*
+import java.util.Locale
 
 object TranslationService {
 
@@ -50,33 +39,34 @@ object TranslationService {
     private val untranslated = mutableListOf<Localised>()
 
     fun setup() {
-        log.v("Translation service set up, locale: $locale")
+        setLocale(null)
+        log.v("Translation service set up, locale: $locale (${locale.toLanguageTag()})")
         initialized = true
-        reload()
+        reload(skipUpdatingActivity = true)
     }
 
-    fun setLocale(locale: String?) {
+    private fun setLocale(locale: String?) {
         try {
             this.locale = Locale.forLanguageTag(locale!!)
         } catch (ex: NullPointerException) {
             // Just use default
-            this.locale = LocaleListCompat.getAdjustedDefault().getFirstSupportedLocale()
+            this.locale = findDefaultLocale()
         } catch (ex: Exception) {
             log.w("Could not use configured locale: $locale".cause(ex))
-            this.locale = LocaleListCompat.getAdjustedDefault().getFirstSupportedLocale()
+            this.locale = findDefaultLocale()
         }
         log.v("Setting locale to: ${this.locale}")
         reload()
     }
 
-    fun setLocale(locale: Locale) {
-        log.v("Setting locale to: $locale")
-        this.locale = LocaleListCompat.getAdjustedDefault().getFirstSupportedLocale()
-        reload()
+    private fun findDefaultLocale(): Locale {
+        val supported = LocaleListCompat.getAdjustedDefault()
+        log.v("Supported locales are: ${supported.toLanguageTags()} (size: ${supported.size()})")
+        return supported.getFirstSupportedLocale()
     }
 
-    fun getLocale(): Locale {
-        return locale
+    fun getLocale(): String {
+        return locale.toLanguageTag()
     }
 
     fun get(string: Localised): String {
@@ -92,21 +82,11 @@ object TranslationService {
         }
     }
 
-    private fun reload() {
+    private fun reload(skipUpdatingActivity: Boolean = false) {
         if (initialized) {
             log.v("Reloading translations repositories")
-            applyLocaleToActivity()
+//            if (!skipUpdatingActivity) applyLocaleToActivity()
             repo = getTranslationRepository(this.locale)
-        }
-    }
-
-    private fun applyLocaleToActivity() {
-        try {
-            val ctx = ContextService.requireContext() as LocalizationActivity
-            ctx.setLanguage(locale)
-            log.v("Applied locale to activity")
-        } catch (ex: Exception) {
-            log.e("Could not apply locale to activity".cause(ex))
         }
     }
 

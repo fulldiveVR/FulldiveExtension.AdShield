@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -23,16 +14,13 @@ package service
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.widget.TextView
-import android.graphics.Typeface
-import android.widget.Toast
 import org.blokada.R
 import utils.Logger
 
 object AlertDialogService {
 
     private val log = Logger("Dialog")
-    private val context = ContextService
+    private val context by lazy { ContextService }
 
     private var displayedDialog: AlertDialog? = null
 
@@ -41,7 +29,7 @@ object AlertDialogService {
         title: Int? = null,
         onDismiss: () -> Unit = {},
         additionalAction: Pair<String, () -> Unit>? = null
-    ) {
+    ): Boolean {
         val ctx = context.requireContext()
         showAlert(
             message = ctx.getString(message),
@@ -49,6 +37,7 @@ object AlertDialogService {
             onDismiss = onDismiss,
             additionalAction = additionalAction
         )
+        return true
     }
 
     fun showAlert(
@@ -108,7 +97,9 @@ object AlertDialogService {
     }
 
     private fun AlertDialog.Builder.showButNotCrash(): AlertDialog? {
-        return try { this.show() } catch (ex: Exception) {
+        return try {
+            this.show()
+        } catch (ex: Exception) {
             log.e("Could not show dialog, ignoring: ${ex.message}")
             null
         }

@@ -1,20 +1,11 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
@@ -22,40 +13,41 @@
 package ui
 
 import android.app.IntentService
-import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import binding.AppBinding
+import binding.CommandBinding
+import channel.command.CommandName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import model.BlokadaException
 import service.ContextService
-import service.LogService
-import ui.utils.cause
+import service.NotificationService
+import utils.cause
+import utils.ExecutingCommandNotification
 import utils.Logger
+import java.util.Locale
 
 enum class Command {
-    OFF, ON, DNS, LOG, ACC
+    OFF, ON, FAMILY_LINK
 }
-
-const val ACC_MANAGE = "manage_account"
 
 private typealias Param = String
 
 class CommandActivity : AppCompatActivity() {
-
+    private val app by lazy { AppBinding }
     private val log = Logger("Command")
-
-    private lateinit var tunnelVM: TunnelViewModel
-    private lateinit var settingsVM: SettingsViewModel
+    private val cmd by lazy { CommandBinding }
+    private val scope by lazy { CoroutineScope(Dispatchers.Main) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tunnelVM = ViewModelProvider(app()).get(TunnelViewModel::class.java)
-        settingsVM = ViewModelProvider(app()).get(SettingsViewModel::class.java)
 
         interpretCommand(intent.data.toString())?.let {
             val (cmd, param) = it
@@ -75,82 +67,52 @@ class CommandActivity : AppCompatActivity() {
 
     private fun execute(command: Command, param: Param?) {
         when (command) {
-            Command.OFF -> tunnelVM.turnOff()
-            Command.ON -> tunnelVM.turnOn()
-            Command.DNS -> {
-                val desiredDns = ensureParam(param)
-                settingsVM.selectedDns.value?.let { selectedDns ->
-                    if (selectedDns != desiredDns) {
-                        settingsVM.setSelectedDns(desiredDns)
-                    } else log.w("Desired DNS already set, ignoring")
-                } ?: settingsVM.setSelectedDns(desiredDns)
+            Command.OFF -> {
+                scope.launch { app.pause() }
             }
-            Command.LOG -> LogService.shareLog()
-            Command.ACC -> {
-                if (param == ACC_MANAGE) {
-                    log.v("Starting account management screen")
-                    val intent = Intent(this, MainActivity::class.java).also {
-                        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        it.putExtra(MainActivity.ACTION, ACC_MANAGE)
-                    }
-                    startActivity(intent)
-                } else throw BlokadaException("Unknown param for command ACC: $param, ignoring")
+
+            Command.ON -> {
+                scope.launch { app.unpause() }
+            }
+
+            Command.FAMILY_LINK -> {
+                // Now bring the MainActivity to the foreground
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+                startActivity(intent)
+
+                if (param?.isBlank() != false) {
+                    throw BlokadaException("Family link param not provided")
+                }
+
+                Toast.makeText(this, "Linking device ...", Toast.LENGTH_LONG).show()
+
+                scope.launch {
+                    cmd.execute(CommandName.FAMILYLINK, param)
+                }
             }
         }
     }
 
     private fun interpretCommand(input: String): Pair<Command, Param?>? {
         return when {
-            input.startsWith("blocka://cmd/") -> {
-                input.replace("blocka://cmd/", "")
+            // Family link command
+            input.startsWith("https://go.blokada.org/family/link_device") -> {
+                input.replace("https://go.blokada.org/family/link_device", "")
+                    .replace("?token=", "")
                     .trimEnd('/')
-                    .split("/")
                     .let {
                         try {
-                            Command.valueOf(it[0].toUpperCase()) to it.getOrNull(1)
-                        } catch (ex: Exception) { null }
+                            Command.FAMILY_LINK to it
+                        } catch (ex: Exception) {
+                            null
+                        }
                     }
             }
-            // Legacy commands to be removed in the future
-            input.startsWith("blocka://log") -> Command.LOG to null
-            input.startsWith("blocka://acc") -> Command.ACC to ACC_MANAGE
+
             else -> null
         }
-    }
-
-    private fun ensureParam(param: Param?): Param {
-        return param ?: throw BlokadaException("Required param not provided")
-    }
-
-}
-
-class CommandService : IntentService("cmd") {
-
-    override fun onHandleIntent(intent: Intent?) {
-        intent?.let {
-            val ctx = ContextService.requireContext()
-            ctx.startActivity(Intent(ACTION_VIEW, it.data).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
-        }
-    }
-
-}
-
-fun getIntentForCommand(command: Command, param: Param? = null): Intent {
-    val ctx = ContextService.requireContext()
-    return Intent(ctx, CommandService::class.java).apply {
-        if (param == null) {
-            data = Uri.parse("blocka://cmd/${command.name}")
-        } else {
-            data = Uri.parse("blocka://cmd/${command.name}/$param")
-        }
-    }
-}
-
-fun getIntentForCommand(cmd: String): Intent {
-    val ctx = ContextService.requireContext()
-    return Intent(ctx, CommandService::class.java).apply {
-        data = Uri.parse("blocka://cmd/$cmd")
     }
 }

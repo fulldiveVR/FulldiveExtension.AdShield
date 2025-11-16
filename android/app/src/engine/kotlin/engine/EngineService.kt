@@ -1,232 +1,346 @@
 /*
  * This file is part of Blokada.
  *
- * Blokada is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Blokada is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Blokada.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Copyright © 2020 Blocka AB. All rights reserved.
+ * Copyright © 2021 Blocka AB. All rights reserved.
  *
  * @author Karol Gusak (karol@blocka.net)
  */
 
 package engine
 
-import com.cloudflare.app.boringtun.BoringTunJNI
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import model.*
-import newengine.BlockaDnsService
-import service.EnvironmentService
-import service.PersistenceService
+import model.BlockaConfig
+import model.BlokadaException
+import model.Dns
+import model.LegacyGateway
+import model.LegacyLease
+import model.NetworkSpecificConfig
+import model.PrivateKey
+import model.TunnelFailure
+import model.TunnelStatus
+import repository.DnsDataSource
+import service.ConnectivityService
+import service.VpnPermissionService
+import utils.cause
 import utils.Logger
-import java.net.DatagramSocket
-import java.net.Socket
+import java.net.InetAddress
 
 object EngineService {
 
-    private var status = TunnelStatus.off()
-
     private val log = Logger("Engine")
-    private val systemTunnel = SystemTunnelService
-    private val packetLoop = PacketLoopService
-    private val filtering = FilteringService
-    private val dnsMapper = DnsMapperService
-    private val dnsService = BlockaDnsService
-    private val configurator = SystemTunnelConfigurator
+    private val vpnPerm = VpnPermissionService
+    private val wgTunnel by lazy { WgTunnel }
     private val scope = GlobalScope
 
-    private var lease: Lease? = null
-    private var config: BlockaConfig? = null
+    private lateinit var config: EngineConfiguration
+        @Synchronized set
+        @Synchronized get
 
-    private lateinit var dns: Dns
-    private lateinit var dnsForPlusMode: Dns
+    private val state = EngineState()
 
-    var onTunnelStoppedUnexpectedly = { ex: BlokadaException -> }
+    fun setup(network: NetworkSpecificConfig, user: BlockaConfig) {
+        log.v("Engine initializing")
+        config = EngineConfiguration.new(network, user)
+    }
 
-    fun setup() {
-        JniService.setup()
+    suspend fun updateConfig(network: NetworkSpecificConfig? = null, user: BlockaConfig? = null) {
+        log.v("Updating engine config")
 
-        packetLoop.onCreateSocket = {
-            val socket = DatagramSocket()
-            systemTunnel.protectSocket(socket)
-            socket
+        network?.let {
+            config = config.newNetworkConfig(network)
+            reload(config)
         }
 
-        packetLoop.onStoppedUnexpectedly = {
-            scope.launch {
-                systemTunnel.close()
-                status = TunnelStatus.off()
-                onTunnelStoppedUnexpectedly(BlokadaException("PacketLoop stopped"))
-            }
-        }
-
-        systemTunnel.onTunnelClosed = { ex: BlokadaException? ->
-            ex?.let {
-                scope.launch {
-                    packetLoop.stop()
-                    status = TunnelStatus.off()
-                    onTunnelStoppedUnexpectedly(it)
-                }
-            }
+        user?.let {
+            config = config.newUserConfig(user)
+            reload(config)
         }
     }
 
-    suspend fun getTunnelStatus(): TunnelStatus {
-        packetLoop.getStatus()?.let {
-            status = TunnelStatus.connected(it)
-        } ?: run {
-            status = systemTunnel.getStatus()
-            if (status.active) {
-                // Make sure to communicate DoH status too
-                status = TunnelStatus.filteringOnly(useDoh(dns))
-            }
-        }
-        return status
-    }
-
-    suspend fun goToBackground() {
-        systemTunnel.unbind()
-    }
-
-    suspend fun newKeypair(): Pair<PrivateKey, PublicKey> {
-        val secret = BoringTunJNI.x25519_secret_key()
-        val public = BoringTunJNI.x25519_public_key(secret)
-        val secretString = BoringTunJNI.x25519_key_to_base64(secret)
-        val publicString = BoringTunJNI.x25519_key_to_base64(public)
-        return secretString to publicString
-    }
-
-    suspend fun startTunnel(lease: Lease?) {
-        status = TunnelStatus.inProgress()
-        this.lease = lease
+    private suspend fun reload(config: EngineConfiguration, force: Boolean = false) {
+        log.v("Reloading engine, config: $config for ${config.network.network}, tun: ${config.tunnelEnabled}")
 
         when {
-            // Slim mode
-            lease == null && EnvironmentService.isSlim() -> {
-                val useDoh = useDoh(dns)
-                dnsMapper.setDns(dns, useDoh)
-                if (useDoh) dnsService.startDnsProxy(dns)
-//                systemTunnel.onConfigureTunnel = { tun ->
-//                    configurator.forSlim(tun, useDoh, dns)
-//                }
-//                systemTunnel.open()
-//                status = TunnelStatus.filteringOnly(useDoh)
-                systemTunnel.onConfigureTunnel = { tun ->
-                    configurator.forLibre(tun, dns)
-                }
-                val tunnelConfig = systemTunnel.open()
-                packetLoop.startSlimMode(useDoh, dns, tunnelConfig)
-                status = TunnelStatus.filteringOnly(useDoh)
+            state.isInProgress() -> {
+                log.w("Reloading engine already in progress, ignoring")
+                return
             }
-            // Libre mode
-            lease == null -> {
-                val useDoh = useDoh(dns)
-                dnsMapper.setDns(dns, useDoh)
-                if (useDoh) dnsService.startDnsProxy(dns)
-                systemTunnel.onConfigureTunnel = { tun ->
-                    configurator.forLibre(tun, dns)
-                }
-                val tunnelConfig = systemTunnel.open()
-                packetLoop.startLibreMode(useDoh, dns, tunnelConfig)
-                status = TunnelStatus.filteringOnly(useDoh)
+
+            !force && config == state.currentConfig -> {
+                log.v("Reloading engine unnecessary, ignoring")
+                return
             }
-            // Plus mode
-            else -> {
-                val useDoh = useDoh(dnsForPlusMode)
-                dnsMapper.setDns(dnsForPlusMode, useDoh)
-                if (useDoh) dnsService.startDnsProxy(dnsForPlusMode)
-                systemTunnel.onConfigureTunnel = { tun ->
-                    val ipv6 = PersistenceService.load(LocalConfig::class).ipv6
-                    configurator.forPlus(tun, ipv6, dnsForPlusMode, lease = lease)
+        }
+
+        val wasActive = state.tunnel.active
+
+        state.restarting()
+
+        try {
+            if (wasActive) stopAll()
+
+            when {
+                !config.tunnelEnabled -> {
+                    log.v("Marking engine stopped")
+                    wgTunnel.stop()
+                    state.stopped(config)
                 }
-                systemTunnel.open()
-                status = TunnelStatus.filteringOnly(useDoh)
+
+                !vpnPerm.hasPermission() -> {
+                    log.w("No VPN permissions, engine stopped")
+                    state.stopped(config.copy(tunnelEnabled = false))
+                }
+
+                else -> {
+                    log.v("Starting engine")
+                    startAll(config)
+                }
+            }
+
+            if (this.config != config) {
+                log.v("Another reload was queued, executing")
+                reload(this.config)
+            }
+        } catch (ex: Exception) {
+            log.e("Engine reload failed".cause(ex))
+            state.error(ex)
+            stopAll()
+            throw ex
+        }
+    }
+
+    private suspend fun startAll(config: EngineConfiguration) {
+        state.inProgress()
+        config.run {
+            when {
+                // Plus mode for v6 (cloud filtering)
+                isPlusMode() -> {
+                    wgTunnel.start(
+                        config.privateKey,
+                        config.lease(),
+                        config.gateway(),
+                        config.user.bypassedAppIds,
+                    )
+                    state.plusMode(config)
+                }
+
+                else -> {
+                    throw BlokadaException("Cannot start v6 in Libre mode")
+                }
             }
         }
     }
 
-    suspend fun stopTunnel() {
-        status = TunnelStatus.inProgress()
-        dnsService.stopDnsProxy()
-        packetLoop.stop()
-        systemTunnel.close()
-        status = TunnelStatus.off()
+    private suspend fun stopAll() {
+        state.inProgress()
+        try {
+            wgTunnel.stop()
+            log.w("Waiting after stopping system tunnel, before another start")
+            delay(4000)
+        } catch (ex: Exception) {
+            log.w("Failed stopping wg".cause(ex))
+        }
+        state.stopped()
     }
 
-    suspend fun connectVpn(config: BlockaConfig) {
-        if (!status.active) throw BlokadaException("Wrong tunnel state")
-        if (config.gateway == null) throw BlokadaException("No gateway configured")
-        status = TunnelStatus.inProgress()
-        packetLoop.startPlusMode(
-            useDoh =useDoh(dnsForPlusMode), dnsForPlusMode,
-            tunnelConfig = systemTunnel.getTunnelConfig(),
-            privateKey = config.privateKey,
-            gateway = config.gateway
-        )
-        this.config = config
-        status = TunnelStatus.connected(config.gateway.public_key)
+    suspend fun forceReload() {
+        reload(config, force = true)
     }
 
-    suspend fun disconnectVpn() {
-        if (!status.active) throw BlokadaException("Wrong tunnel state")
-        status = TunnelStatus.inProgress()
-        packetLoop.stop()
-        status = TunnelStatus.filteringOnly(useDoh(dns))
+    fun getTunnelStatus(): TunnelStatus {
+        return state.tunnel
     }
 
-    fun setDns(dns: Dns, dnsForPlusMode: Dns? = null) {
-        this.dns = dns
-        this.dnsForPlusMode = dnsForPlusMode ?: dns
+    fun setOnTunnelStatusChangedListener(onTunnelStatusChanged: (TunnelStatus) -> Unit) {
+        state.onTunnelStatusChanged = onTunnelStatusChanged
     }
 
-    suspend fun changeDns(dns: Dns, dnsForPlusMode: Dns? = null) {
-        log.w("Requested to change DNS")
-        this.dns = dns
-        this.dnsForPlusMode = dnsForPlusMode ?: dns
-        restart()
-    }
+}
 
-    suspend fun reloadBlockLists() {
-        filtering.reload()
-        restart()
-    }
+private data class EngineConfiguration(
+    val tunnelEnabled: Boolean,
+    val dns: Dns,
+    val doh: Boolean,
+    val privateKey: PrivateKey,
+    val gateway: LegacyGateway?,
+    val lease: LegacyLease?,
+    var networkDns: List<InetAddress>,
+    val forceLibreMode: Boolean,
 
-    suspend fun restart() {
-        val status = getTunnelStatus()
-        if (status.active) {
-            if (status.gatewayId != null) disconnectVpn()
-            restartSystemTunnel(lease)
-            if (status.gatewayId != null) connectVpn(config!!)
+    val network: NetworkSpecificConfig,
+    val user: BlockaConfig
+) {
+
+    fun isPlusMode() = gateway != null
+    fun lease() = lease!!
+    fun gateway() = gateway!!
+
+    fun newUserConfig(user: BlockaConfig) = new(network, user)
+    fun newNetworkConfig(network: NetworkSpecificConfig) = new(network, user)
+
+    companion object {
+        fun new(network: NetworkSpecificConfig, user: BlockaConfig): EngineConfiguration {
+            val (dnsForLibre, dnsForPlus) = decideDnsForNetwork(network)
+            val plusMode = decidePlusMode(dnsForPlus, user, network)
+            val dns = if (plusMode) dnsForPlus else dnsForLibre
+
+            return EngineConfiguration(
+                tunnelEnabled = user.tunnelEnabled,
+                dns = dns,
+                doh = decideDoh(dns, plusMode, network.encryptDns),
+                privateKey = user.privateKey,
+                gateway = if (plusMode) user.gateway else null,
+                lease = if (plusMode) user.lease else null,
+                networkDns = if (network.useNetworkDns) ConnectivityService.getActiveNetworkDns() else emptyList(),
+                forceLibreMode = network.forceLibreMode,
+                network = network,
+                user = user
+            )
+        }
+
+        private fun decideDnsForNetwork(n: NetworkSpecificConfig): Pair<Dns, Dns> {
+            /**
+             * The DNS server choice gets a bit complicated:
+             * - useNetworkDns will force to use network-provided DNS servers (if any) and to not use DoH
+             *   despite user setting (in useDoh()). If no network DNS servers were detected, then it'll
+             *   use the cfg.dnsChoice after all.
+             * - For Plus Mode, ignore the useNetworkDns setting, since network DNS would not resolve
+             *   under the real VPN. Instead, use the useBlockaDnsInPlusMode flag (which is true by
+             *   default), to safely fallback to our DNS.
+             *
+             * This approach may not address all user network specific problems, but I could not think
+             * of a better one.
+             */
+
+            // Here we assume the network we work with is the currently active network
+            val forLibre =
+                if (n.useNetworkDns && ConnectivityService.getActiveNetworkDns().isNotEmpty()) {
+                    DnsDataSource.network
+                } else {
+                    DnsDataSource.byId(n.dnsChoice)
+                }
+
+            val forPlus = if (n.useBlockaDnsInPlusMode) DnsDataSource.blocka else forLibre
+
+            return forLibre to forPlus
+        }
+
+        private fun decidePlusMode(dns: Dns, user: BlockaConfig, network: NetworkSpecificConfig) =
+            when {
+                !user.tunnelEnabled -> false
+                !user.vpnEnabled -> false
+                user.lease == null -> false
+                user.gateway == null -> false
+                dns == DnsDataSource.network -> {
+                    // Network provided DNS are likely not accessibly within the VPN.
+                    false
+                }
+
+                network.forceLibreMode -> false
+                else -> true
+            }
+
+        private fun decideDoh(dns: Dns, plusMode: Boolean, encryptDns: Boolean): Boolean {
+            // v6 does not support DoH
+            return false
         }
     }
 
-    suspend fun restartSystemTunnel(lease: Lease?) {
-        stopTunnel()
-        log.w("Waiting after stopping system tunnel, before another start")
-        delay(5000)
-        startTunnel(lease)
+    override fun toString(): String {
+        return "(enabled=$tunnelEnabled, dns=${dns.id}, doh=$doh, gw=${gateway?.niceName()})"
     }
 
-    suspend fun pause() {
-        throw BlokadaException("TODO pause not implemented")
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as EngineConfiguration
+
+        if (tunnelEnabled != other.tunnelEnabled) return false
+        if (dns != other.dns) return false
+        if (doh != other.doh) return false
+        if (privateKey != other.privateKey) return false
+        if (gateway != other.gateway) return false
+        if (lease != other.lease) return false
+        if (networkDns != other.networkDns) return false
+        if (forceLibreMode != other.forceLibreMode) return false
+
+        return true
     }
 
-    fun protectSocket(socket: Socket) {
-        systemTunnel.protectSocket(socket)
+    override fun hashCode(): Int {
+        var result = tunnelEnabled.hashCode()
+        result = 31 * result + dns.hashCode()
+        result = 31 * result + doh.hashCode()
+        result = 31 * result + privateKey.hashCode()
+        result = 31 * result + (gateway?.hashCode() ?: 0)
+        result = 31 * result + (lease?.hashCode() ?: 0)
+        result = 31 * result + networkDns.hashCode()
+        result = 31 * result + forceLibreMode.hashCode()
+        return result
     }
 
-    private fun useDoh(dns: Dns): Boolean {
-        return dns.isDnsOverHttps() && PersistenceService.load(LocalConfig::class).useDnsOverHttps
+}
+
+private data class EngineState(
+    var tunnel: TunnelStatus = TunnelStatus.off(),
+    var currentConfig: EngineConfiguration? = null,
+    var onTunnelStatusChanged: (TunnelStatus) -> Unit = { _ -> },
+    var restarting: Boolean = false,
+) {
+
+    private val scope = GlobalScope
+
+    init {
+        notifyListener()
+    }
+
+    @Synchronized
+    fun inProgress() {
+        tunnel = TunnelStatus.inProgress()
+    }
+
+    @Synchronized
+    fun restarting() {
+        restarting = true
+        tunnel = TunnelStatus.inProgress()
+        notifyListener()
+    }
+
+    @Synchronized
+    fun plusMode(config: EngineConfiguration) {
+        restarting = false
+        tunnel = TunnelStatus.connected(config.dns, config.doh, config.gateway())
+        currentConfig = config
+        notifyListener()
+    }
+
+    @Synchronized
+    fun stopped(config: EngineConfiguration? = null) {
+        tunnel = TunnelStatus.off()
+        currentConfig = config
+        notifyListener()
+    }
+
+    @Synchronized
+    fun error(ex: Exception) {
+        restarting = false
+        tunnel = TunnelStatus.error(TunnelFailure(ex))
+        notifyListener()
+    }
+
+    @Synchronized
+    fun isInProgress() = tunnel.inProgress
+
+    private fun notifyListener() {
+        scope.launch {
+            onTunnelStatusChanged(tunnel)
+        }
     }
 }
