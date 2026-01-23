@@ -2,6 +2,17 @@
 
 For Blokada 5 repo, [go here](https://github.com/blokadaorg/fem).
 
+## 🛡️ Community & Support
+
+Join our Discord for VPN support and privacy discussions!
+
+**[Join FullDive Discord →](https://discord.gg/FV3ucz5M2S)** - Get help in `🛡️ vpn-firewall-support`
+
+- 🐛 **Report bugs**: [GitHub Issues](https://github.com/fulldiveVR/FulldiveExtension.AdShield/issues)
+- 💬 **VPN troubleshooting** and configuration help
+- 🔒 **Privacy tips** from the community
+
+
 Blokada is a free, open source, compact, fast ad blocker for Android that works for all apps and does not require root because it uses the VPN API
 
 Want to try out this app? Click here to **[download Blokada](http://go.blokada.org/download_section)**.
